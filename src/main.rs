@@ -14,17 +14,15 @@ fn main() {
         warn!("Unable to find log4rs.yml logging config. {}", err);
     }
 
-    // Find element by id.
-    let xml = std::fs::read_to_string("resources/work.xml").expect("can not read file");
-    let doc = roxmltree::Document::parse(&xml).unwrap();
     let mut writer = NodeWriter::default();
-    doc.descendants().for_each(|n| writer.print(&n));
+    writer.process_file("resources/smgr", "agentCommProfile.xsd");
 }
 
 struct NodeWriter {
     writer: Box<dyn std::io::Write>,
     level: usize,
     buffers: Vec<Cursor<Vec<u8>>>,
+    base_path: String,
 }
 
 impl Default for NodeWriter {
@@ -33,6 +31,7 @@ impl Default for NodeWriter {
             level: 0,
             writer: Box::new(stdout()),
             buffers: vec![],
+            base_path: String::default(),
         };
 
         n.print_header();
@@ -41,6 +40,18 @@ impl Default for NodeWriter {
 }
 
 impl NodeWriter {
+    fn process_file(&mut self, base_path: &str, file_name: &str) {
+        self.base_path = base_path.to_string();
+        self.process_file_in_path(file_name);
+    }
+
+    fn process_file_in_path(&mut self, file_name: &str) {
+        let f_in = format!("{}/{}", self.base_path, file_name);
+        let xml = std::fs::read_to_string(f_in).expect("can not read file");
+        let doc = roxmltree::Document::parse(&xml).unwrap();
+        doc.descendants().for_each(|n| self.print(&n));
+    }
+
     fn write(&mut self, buf: String) {
         if self.level == 0 {
             // write to output
@@ -114,6 +125,7 @@ impl NodeWriter {
     fn print_xsd(&mut self, node: &Node) {
         node.children()
             .for_each(|child| match child.tag_name().name() {
+                "import" => self.import_file(&child),
                 "element" => self.print_element(&child),
                 "complexType" => {
                     match self.get_some_attribute(&child, "name") {
@@ -123,6 +135,15 @@ impl NodeWriter {
                 }
                 _ => {}
             })
+    }
+
+    fn import_file(&mut self, node: &Node) {
+        let name = match self.get_some_attribute(node, "schemaLocation") {
+            None => return,
+            Some(n) => n,
+        };
+
+        self.process_file_in_path(name);
     }
 
     fn print_element(&mut self, node: &Node) {
@@ -161,14 +182,14 @@ impl NodeWriter {
                 if as_vec || as_option {
                     self.write(format!(
                         "\tpub {}: {}<{}>,\n",
-                        to_snake_case(element_name),
+                        self.shield_reserved_names(&to_snake_case(element_name)),
                         if as_vec { "Vec" } else { "Option" },
                         self.fetch_type(type_name)
                     ));
                 } else {
                     self.write(format!(
                         "\tpub {}: {},\n",
-                        to_snake_case(element_name),
+                        self.shield_reserved_names(&to_snake_case(element_name)),
                         self.fetch_type(type_name)
                     ));
                 }
@@ -185,9 +206,9 @@ impl NodeWriter {
 
     fn fetch_type(&self, node_type: &str) -> String {
         match self.split_type(node_type) {
-            "string" => "String".to_string(),
+            "string" | "base64Binary" => "String".to_string(),
             "decimal" => "f64".to_string(),
-            "integer" => "u64".to_string(),
+            "integer" | "int" | "long" => "u64".to_string(),
             "short" => "u8".to_string(),
             "boolean" => "bool".to_string(),
             "date" | "xs:time" => "SystemTime".to_string(),
@@ -266,5 +287,12 @@ impl NodeWriter {
             to_snake_case(&self.fetch_type(base)),
             self.fetch_type(base)
         ));
+    }
+
+    fn shield_reserved_names<'a>(&self, type_name: &'a str) -> &'a str {
+        match type_name {
+            "type" => "rs_type",
+            other => other,
+        }
     }
 }
