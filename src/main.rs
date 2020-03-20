@@ -110,12 +110,12 @@ impl NodeWriter {
     fn print_xsd(&mut self, node: &Node) {
         node.children()
             .for_each(|child| match child.tag_name().name() {
-                "element" => self.print_element(&child),
+                "element" => self.print_element(&child, false),
                 _ => {}
             })
     }
 
-    fn print_element(&mut self, node: &Node) {
+    fn print_element(&mut self, node: &Node, as_vec: bool) {
         let name = match self.get_some_attribute(node, "name") {
             None => return,
             Some(n) => n,
@@ -134,13 +134,15 @@ impl NodeWriter {
             .find(|child| child.tag_name().name() == "complexType")
             .take();
 
+        // fields
         if let Some(complex) = maybe_complex {
             self.print_complex_element(&complex)
         } else if let Some(element_name) = self.get_some_attribute(node, "name") {
             if let Some(type_name) = self.get_some_attribute(node, "type") {
                 self.write(format!(
-                    "\t{}: {},\n",
+                    "\t{}: {}<{}>,\n",
                     snakecase::to_snake_case(element_name),
+                    if as_vec { "Vec" } else { "Option" },
                     self.fetch_type(type_name)
                 ));
             }
@@ -190,7 +192,7 @@ impl NodeWriter {
         if let Some(sequence) = maybe_sequence {
             sequence
                 .children()
-                .for_each(|child| self.print_element(&child));
+                .for_each(|child| self.print_element(&child, true));
         }
 
         self.dec_level();
