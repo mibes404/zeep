@@ -4,14 +4,14 @@ use serde::{Deserialize, Serialize};
 #[serde(rename = "Get", default)]
 pub struct Get {
     #[serde(rename = "loginId", default)]
-    pub login_id: Option<String>,
+    pub login_id: String,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 #[serde(rename = "GetResponse", default)]
 pub struct GetResponse {
     #[serde(rename = "GetReturn", default)]
-    pub get_return: Option<Agent>,
+    pub get_return: Agent,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]
@@ -20,7 +20,7 @@ pub struct AgentAdvocateInfo {
     #[serde(rename = "LRMID", default)]
     pub lrmid: Option<String>,
     #[serde(rename = "enabled", default)]
-    pub enabled: Option<bool>,
+    pub enabled: bool,
     #[serde(rename = "telephonyLinkGroup", default)]
     pub telephony_link_group: Option<String>,
 }
@@ -40,7 +40,7 @@ pub struct AgentBasicProfile {
     #[serde(rename = "employeeId", default)]
     pub employee_id: Option<String>,
     #[serde(rename = "externalAgent", default)]
-    pub external_agent: Option<bool>,
+    pub external_agent: bool,
     #[serde(rename = "firstName", default)]
     pub first_name: Option<String>,
     #[serde(rename = "lastName", default)]
@@ -48,17 +48,17 @@ pub struct AgentBasicProfile {
     #[serde(rename = "middleName", default)]
     pub middle_name: Option<String>,
     #[serde(rename = "outOfOffice", default)]
-    pub out_of_office: Option<bool>,
+    pub out_of_office: bool,
     #[serde(rename = "preferredName", default)]
     pub preferred_name: Option<String>,
     #[serde(rename = "site", default)]
     pub site: Option<String>,
     #[serde(rename = "softwareAgent", default)]
-    pub software_agent: Option<bool>,
+    pub software_agent: bool,
     #[serde(rename = "title", default)]
     pub title: Option<String>,
     #[serde(rename = "userAddressable", default)]
-    pub user_addressable: Option<bool>,
+    pub user_addressable: bool,
     #[serde(rename = "workgroups", default)]
     pub workgroups: Option<ArrayOfXsdString>,
 }
@@ -67,26 +67,26 @@ pub struct AgentBasicProfile {
 #[serde(rename = "AgentChatChannel", default)]
 pub struct AgentChatChannel {
     #[serde(rename = "enabled", default)]
-    pub enabled: Option<bool>,
+    pub enabled: bool,
     #[serde(rename = "taskCeiling", default)]
-    pub task_ceiling: Option<u8>,
+    pub task_ceiling: u8,
     #[serde(rename = "taskLoad", default)]
-    pub task_load: Option<u8>,
+    pub task_load: u8,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 #[serde(rename = "AgentEmailChannel", default)]
 pub struct AgentEmailChannel {
     #[serde(rename = "enabled", default)]
-    pub enabled: Option<bool>,
+    pub enabled: bool,
     #[serde(rename = "fromAddress", default)]
     pub from_address: Option<String>,
     #[serde(rename = "showFullHeader", default)]
-    pub show_full_header: Option<bool>,
+    pub show_full_header: bool,
     #[serde(rename = "taskCeiling", default)]
-    pub task_ceiling: Option<u8>,
+    pub task_ceiling: u8,
     #[serde(rename = "taskLoad", default)]
-    pub task_load: Option<u8>,
+    pub task_load: u8,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]
@@ -179,43 +179,43 @@ pub struct AgentExtendedProfile {
 #[serde(rename = "AgentSecurity", default)]
 pub struct AgentSecurity {
     #[serde(rename = "disableLogin", default)]
-    pub disable_login: Option<bool>,
+    pub disable_login: bool,
     #[serde(rename = "forcePwdChange", default)]
-    pub force_pwd_change: Option<bool>,
+    pub force_pwd_change: bool,
     #[serde(rename = "password", default)]
     pub password: Option<String>,
     #[serde(rename = "roleAdmin", default)]
-    pub role_admin: Option<bool>,
+    pub role_admin: bool,
     #[serde(rename = "roleAgent", default)]
-    pub role_agent: Option<bool>,
+    pub role_agent: bool,
     #[serde(rename = "roleClerk", default)]
-    pub role_clerk: Option<bool>,
+    pub role_clerk: bool,
     #[serde(rename = "roleEditor", default)]
-    pub role_editor: Option<bool>,
+    pub role_editor: bool,
     #[serde(rename = "roleOperator", default)]
-    pub role_operator: Option<bool>,
+    pub role_operator: bool,
     #[serde(rename = "rolePostmaster", default)]
-    pub role_postmaster: Option<bool>,
+    pub role_postmaster: bool,
     #[serde(rename = "roleSupervisor", default)]
-    pub role_supervisor: Option<bool>,
+    pub role_supervisor: bool,
     #[serde(rename = "roleSupport", default)]
-    pub role_support: Option<bool>,
+    pub role_support: bool,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 #[serde(rename = "AgentTaskLoad", default)]
 pub struct AgentTaskLoad {
     #[serde(rename = "taskCeiling", default)]
-    pub task_ceiling: Option<u8>,
+    pub task_ceiling: u8,
     #[serde(rename = "taskLoad", default)]
-    pub task_load: Option<u8>,
+    pub task_load: u8,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 #[serde(rename = "AgentVoiceChannel", default)]
 pub struct AgentVoiceChannel {
     #[serde(rename = "enabled", default)]
-    pub enabled: Option<bool>,
+    pub enabled: bool,
     #[serde(rename = "equipment", default)]
     pub equipment: Option<String>,
     #[serde(rename = "password", default)]
@@ -227,9 +227,9 @@ pub struct AgentVoiceChannel {
     #[serde(rename = "queue", default)]
     pub queue: Option<String>,
     #[serde(rename = "taskCeiling", default)]
-    pub task_ceiling: Option<u8>,
+    pub task_ceiling: u8,
     #[serde(rename = "taskLoad", default)]
-    pub task_load: Option<u8>,
+    pub task_load: u8,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]
@@ -265,28 +265,28 @@ pub type Fault = AicServiceFault;
 #[serde(rename = "Update", default)]
 pub struct Update {
     #[serde(rename = "agent", default)]
-    pub agent: Option<Agent>,
+    pub agent: Agent,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 #[serde(rename = "UpdateResponse", default)]
 pub struct UpdateResponse {
     #[serde(rename = "UpdateReturn", default)]
-    pub update_return: Option<bool>,
+    pub update_return: bool,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 #[serde(rename = "Delete", default)]
 pub struct Delete {
     #[serde(rename = "loginId", default)]
-    pub login_id: Option<String>,
+    pub login_id: String,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 #[serde(rename = "DeleteResponse", default)]
 pub struct DeleteResponse {
     #[serde(rename = "DeleteReturn", default)]
-    pub delete_return: Option<bool>,
+    pub delete_return: bool,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]
@@ -370,12 +370,12 @@ pub struct LookupSitesResponse {
 #[serde(rename = "Create", default)]
 pub struct Create {
     #[serde(rename = "agent", default)]
-    pub agent: Option<Agent>,
+    pub agent: Agent,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 #[serde(rename = "CreateResponse", default)]
 pub struct CreateResponse {
     #[serde(rename = "CreateReturn", default)]
-    pub create_return: Option<bool>,
+    pub create_return: bool,
 }

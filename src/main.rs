@@ -132,6 +132,7 @@ impl NodeWriter {
         };
 
         let as_vec = self.get_some_attribute(node, "maxOccurs").is_some();
+        let as_option = self.get_some_attribute(node, "nillable").is_some();
 
         let maybe_complex = node
             .children()
@@ -158,12 +159,20 @@ impl NodeWriter {
                     element_name,
                 ));
 
-                self.write(format!(
-                    "\tpub {}: {}<{}>,\n",
-                    to_snake_case(element_name),
-                    if as_vec { "Vec" } else { "Option" },
-                    self.fetch_type(type_name)
-                ));
+                if as_vec || as_option {
+                    self.write(format!(
+                        "\tpub {}: {}<{}>,\n",
+                        to_snake_case(element_name),
+                        if as_vec { "Vec" } else { "Option" },
+                        self.fetch_type(type_name)
+                    ));
+                } else {
+                    self.write(format!(
+                        "\tpub {}: {},\n",
+                        to_snake_case(element_name),
+                        self.fetch_type(type_name)
+                    ));
+                }
             }
         }
     }
