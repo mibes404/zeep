@@ -1,5 +1,5 @@
 use crate::aic::{Agent, AgentChatChannel, Create};
-use crate::smgr::XmlUser;
+use crate::smgr::{XmlAgentProfile, XmlUser};
 
 mod aic;
 mod smgr;
@@ -69,5 +69,27 @@ fn main() {
 
     println!("----");
     let xml = quick_xml::se::to_string(&smu).expect("can not convert to XML");
+    println!("{}", xml);
+
+    let xma = XmlAgentProfile {
+        xml_comm_profile_type: Default::default(),
+        cm_name: vec![],
+        use_existing_agent: vec![],
+        template: vec![],
+        aas: vec![],
+        audix: vec![],
+        delete_on_unassign: vec![],
+        lwc_log_external_calls: vec![],
+        audix_namefor_messaging: vec![],
+        hears_service_observing_tone: vec![],
+        login_i_dfor_isdnsip_display: vec![],
+        service_objective: vec![],
+        direct_agent_calls_first: vec![],
+        local_call_preference: vec![],
+        skills: vec![],
+    };
+
+    println!("----");
+    let xml = quick_xml::se::to_string(&xma).expect("can not convert to XML");
     println!("{}", xml);
 }
