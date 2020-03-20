@@ -88,7 +88,7 @@ impl NodeWriter {
     }
 
     fn print_header(&mut self) {
-        self.write("use serde::{{Serialize, Deserialize}};\n".to_string());
+        self.write("use serde::{{Serialize, Deserialize}};\n\n".to_string());
     }
 
     fn print(&mut self, node: &Node) {
@@ -114,16 +114,24 @@ impl NodeWriter {
     fn print_xsd(&mut self, node: &Node) {
         node.children()
             .for_each(|child| match child.tag_name().name() {
-                "element" => self.print_element(&child, false),
+                "element" => self.print_element(&child),
+                "complexType" => {
+                    match self.get_some_attribute(&child, "name") {
+                        Some(n) => self.print_complex_element(&child, n),
+                        None => {}
+                    };
+                }
                 _ => {}
             })
     }
 
-    fn print_element(&mut self, node: &Node, as_vec: bool) {
+    fn print_element(&mut self, node: &Node) {
         let name = match self.get_some_attribute(node, "name") {
             None => return,
             Some(n) => n,
         };
+
+        let as_vec = self.get_some_attribute(node, "maxOccurs").is_some();
 
         let maybe_complex = node
             .children()
@@ -138,8 +146,8 @@ impl NodeWriter {
                 if self.level == 0 {
                     // top-level == type alias
                     self.write(format!(
-                        "type {} = {};\n\n",
-                        to_snake_case(element_name),
+                        "pub type {} = {};\n\n",
+                        to_pascal_case(element_name),
                         self.fetch_type(type_name)
                     ));
                     return;
@@ -151,7 +159,7 @@ impl NodeWriter {
                 ));
 
                 self.write(format!(
-                    "\t{}: {}<{}>,\n",
+                    "\tpub {}: {}<{}>,\n",
                     to_snake_case(element_name),
                     if as_vec { "Vec" } else { "Option" },
                     self.fetch_type(type_name)
@@ -177,6 +185,7 @@ impl NodeWriter {
             "string" => "String".to_string(),
             "decimal" => "f64".to_string(),
             "integer" => "u64".to_string(),
+            "short" => "u8".to_string(),
             "boolean" => "bool".to_string(),
             "date" | "xs:time" => "SystemTime".to_string(),
             v => to_pascal_case(v),
@@ -195,7 +204,7 @@ impl NodeWriter {
         self.write("#[derive(Debug, Default, Serialize, Deserialize)]\n".to_string());
 
         self.write(format!(
-            "#[serde(rename = \"{}\", default)]\nstruct {} {{\n",
+            "#[serde(rename = \"{}\", default)]\npub struct {} {{\n",
             name,
             to_pascal_case(name)
         ));
@@ -208,7 +217,7 @@ impl NodeWriter {
         if let Some(sequence) = maybe_sequence {
             sequence
                 .children()
-                .for_each(|child| self.print_element(&child, true));
+                .for_each(|child| self.print_element(&child));
         }
 
         self.write("}\n\n".to_string());
