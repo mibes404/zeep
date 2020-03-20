@@ -19,7 +19,7 @@ fn main() {
     let matches = App::new("XSD Generator")
         .version("0.1.0")
         .author("Marcel Ibes <mibes@avaya.com>")
-        .about("Generates Serde annotated Rust structs from XSD")
+        .about("Generate Serde annotated Rust structs from XSD")
         .arg(
             Arg::with_name("to_file")
                 .short("o")
@@ -45,13 +45,17 @@ fn main() {
 
     let to_file_name = matches.value_of("to_file");
     let from_file_name = matches
-        .value_of("to_file")
+        .value_of("from_file")
         .unwrap_or("agentCommProfile.xsd");
     let base_path = matches.value_of("path").unwrap_or("resources/smgr");
 
-    if let Some(file_name) = to_file_name {
-        let mut file = File::create(file_name).expect("can not create file");
+    if let Some(output_file) = to_file_name {
+        let mut file = File::create(output_file).expect("can not create file");
         let mut writer = NodeWriter::new_file(file);
+        println!(
+            "parsing {}/{} --> {}",
+            base_path, from_file_name, output_file
+        );
         writer.process_file(base_path, from_file_name);
     } else {
         let mut writer = NodeWriter::default();
