@@ -1,9 +1,11 @@
+use clap::{App, Arg};
 use inflector::cases::camelcase::to_camel_case;
 use inflector::cases::pascalcase::to_pascal_case;
 use inflector::cases::snakecase::to_snake_case;
 use inflector::cases::{pascalcase, snakecase};
 use log::{info, warn};
 use roxmltree::Node;
+use std::fs::File;
 use std::io;
 use std::io::{stdout, Cursor, Seek, Write};
 
@@ -14,8 +16,29 @@ fn main() {
         warn!("Unable to find log4rs.yml logging config. {}", err);
     }
 
-    let mut writer = NodeWriter::default();
-    writer.process_file("resources/smgr", "agentCommProfile.xsd");
+    let matches = App::new("XSD Generator")
+        .version("0.1.0")
+        .author("Marcel Ibes <mibes@avaya.com>")
+        .about("Generates Serde annotated Rust structs from XSD")
+        .arg(
+            Arg::with_name("to_file")
+                .short("f")
+                .long("file")
+                .takes_value(true)
+                .help("Output to file"),
+        )
+        .get_matches();
+
+    let to_file_name = matches.value_of("to_file");
+
+    if let Some(file_name) = to_file_name {
+        let mut file = File::create(file_name).expect("can not create file");
+        let mut writer = NodeWriter::new_file(file);
+        writer.process_file("resources/smgr", "agentCommProfile.xsd");
+    } else {
+        let mut writer = NodeWriter::default();
+        writer.process_file("resources/smgr", "agentCommProfile.xsd");
+    }
 }
 
 struct NodeWriter {
@@ -27,21 +50,28 @@ struct NodeWriter {
 
 impl Default for NodeWriter {
     fn default() -> Self {
-        let mut n = NodeWriter {
+        NodeWriter {
             level: 0,
             writer: Box::new(stdout()),
             buffers: vec![],
             base_path: String::default(),
-        };
-
-        n.print_header();
-        n
+        }
     }
 }
 
 impl NodeWriter {
+    fn new_file(dest_file_name: File) -> Self {
+        NodeWriter {
+            level: 0,
+            writer: Box::new(dest_file_name),
+            buffers: vec![],
+            base_path: String::default(),
+        }
+    }
+
     fn process_file(&mut self, base_path: &str, file_name: &str) {
         self.base_path = base_path.to_string();
+        self.print_header();
         self.process_file_in_path(file_name);
     }
 

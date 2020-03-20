@@ -13,3 +13,4 @@ log4rs = "0.11.0"
 Inflector = "0.11.4"
 serde = { version = "1.0.105", features = ["derive"] }
 quick-xml = { version = "0.18.1", features = [ "serialize" ] }
+clap = "2.33.0"
