@@ -12,4 +12,4 @@ log = "0.4.8"
 log4rs = "0.11.0"
 Inflector = "0.11.4"
 serde = { version = "1.0.105", features = ["derive"] }
-serde-xml-rs = "0.4.0"
+quick-xml = { version = "0.18.1", features = [ "serialize" ] }

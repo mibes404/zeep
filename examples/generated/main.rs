@@ -23,7 +23,7 @@ fn main() {
         },
     };
 
-    let xml = serde_xml_rs::to_string(&c).expect("can not convert to XML");
+    let xml = quick_xml::se::to_string(&c).expect("can not convert to XML");
     println!("{}", xml);
 
     let smu = XmlUser {
@@ -67,6 +67,6 @@ fn main() {
         comm_profile_set: vec![],
     };
 
-    let xml = serde_xml_rs::to_string(&smu).expect("can not convert to XML");
+    let xml = quick_xml::se::to_string(&smu).expect("can not convert to XML");
     println!("{}", xml);
 }
