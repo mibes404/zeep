@@ -1,0 +1,1 @@
+Generate Serde annotated structs for Rust based on XSD/WSDL.
