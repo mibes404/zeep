@@ -67,6 +67,7 @@ fn main() {
         comm_profile_set: vec![],
     };
 
+    println!("----");
     let xml = quick_xml::se::to_string(&smu).expect("can not convert to XML");
     println!("{}", xml);
 }
