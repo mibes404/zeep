@@ -1,15 +1,11 @@
 use clap::{App, Arg};
-use inflector::cases::camelcase::to_camel_case;
 use inflector::cases::pascalcase::to_pascal_case;
 use inflector::cases::snakecase::to_snake_case;
-use inflector::cases::{pascalcase, snakecase};
-use log::{info, warn};
+use log::warn;
 use roxmltree::Node;
 use std::fs::File;
 use std::io;
-use std::io::{stdout, Cursor, Seek, Write};
-
-const MAX_BUFFER: usize = 5_000_000;
+use std::io::{stdout, Cursor, Write};
 
 fn main() {
     if let Err(err) = log4rs::init_file("log4rs.yml", Default::default()) {
@@ -50,7 +46,7 @@ fn main() {
     let base_path = matches.value_of("path").unwrap_or("resources/smgr");
 
     if let Some(output_file) = to_file_name {
-        let mut file = File::create(output_file).expect("can not create file");
+        let file = File::create(output_file).expect("can not create file");
         let mut writer = NodeWriter::new_file(file);
         println!(
             "parsing {}/{} --> {}",
@@ -110,13 +106,11 @@ impl NodeWriter {
             self.writer
                 .write_all(buf.as_bytes())
                 .expect("can not write to output");
-        } else {
-            if let Some(mut buffer) = self.buffers.get_mut(self.level - 1) {
-                // store in buffer
-                buffer
-                    .write_all(buf.as_bytes())
-                    .expect("can not write buffer");
-            }
+        } else if let Some(buffer) = self.buffers.get_mut(self.level - 1) {
+            // store in buffer
+            buffer
+                .write_all(buf.as_bytes())
+                .expect("can not write buffer");
         }
     }
 
@@ -180,9 +174,8 @@ impl NodeWriter {
                 "import" => self.import_file(&child),
                 "element" => self.print_element(&child),
                 "complexType" => {
-                    match self.get_some_attribute(&child, "name") {
-                        Some(n) => self.print_complex_element(&child, n),
-                        None => {}
+                    if let Some(n) = self.get_some_attribute(&child, "name") {
+                        self.print_complex_element(&child, n)
                     };
                 }
                 _ => {}
@@ -310,20 +303,21 @@ impl NodeWriter {
     }
 
     fn print_complex_content(&mut self, node: &Node) {
-        node.children()
+        if let Some(extension) = node
+            .children()
             .find(|child| child.tag_name().name() == "extension")
-            .map(|extension| {
-                self.write("\t#[serde(flatten)]\n".to_string());
-                self.print_extension(&extension);
+        {
+            self.write("\t#[serde(flatten)]\n".to_string());
+            self.print_extension(&extension);
 
-                let maybe_sequence = extension
-                    .children()
-                    .find(|ext_child| ext_child.tag_name().name() == "sequence");
+            let maybe_sequence = extension
+                .children()
+                .find(|ext_child| ext_child.tag_name().name() == "sequence");
 
-                if let Some(sequence) = maybe_sequence {
-                    self.print_sequence(&sequence);
-                }
-            });
+            if let Some(sequence) = maybe_sequence {
+                self.print_sequence(&sequence);
+            }
+        }
 
         self.print_sequence(node);
     }
