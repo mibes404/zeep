@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://aiccore.avayacloud.com:9800/webservices/services/Version" 
+    xmlns:apachesoap="http://xml.apache.org/xml-soap" 
+    xmlns:impl="http://aiccore.avayacloud.com:9800/webservices/services/Version" 
+    xmlns:intf="http://aiccore.avayacloud.com:9800/webservices/services/Version" 
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+    xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <!--WSDL created by Apache Axis version: 1.2.1
+Built on Jun 14, 2005 (09:15:57 EDT)-->
+
+    <wsdl:message name="getVersionRequest">
+
+    </wsdl:message>
+
+    <wsdl:message name="getVersionResponse">
+
+        <wsdl:part name="getVersionReturn" type="xsd:string"/>
+
+    </wsdl:message>
+
+    <wsdl:portType name="Version">
+
+        <wsdl:operation name="getVersion">
+
+            <wsdl:input message="impl:getVersionRequest" name="getVersionRequest"/>
+
+            <wsdl:output message="impl:getVersionResponse" name="getVersionResponse"/>
+
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+    <wsdl:binding name="VersionSoapBinding" type="impl:Version">
+
+        <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <wsdl:operation name="getVersion">
+
+            <wsdlsoap:operation soapAction=""/>
+
+            <wsdl:input name="getVersionRequest">
+
+                <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://axis.apache.org" use="encoded"/>
+
+            </wsdl:input>
+
+            <wsdl:output name="getVersionResponse">
+
+                <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://aiccore.avayacloud.com:9800/webservices/services/Version" use="encoded"/>
+
+            </wsdl:output>
+
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+    <wsdl:service name="VersionService">
+
+        <wsdl:port binding="impl:VersionSoapBinding" name="Version">
+
+            <wsdlsoap:address location="http://aiccore.avayacloud.com:9800/webservices/services/Version"/>
+
+        </wsdl:port>
+
+    </wsdl:service>
+
+</wsdl:definitions>
+

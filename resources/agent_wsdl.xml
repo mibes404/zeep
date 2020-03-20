@@ -1,0 +1,819 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" xmlns:intf="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.2.1
+Built on Jun 14, 2005 (09:15:57 EDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="Get">
+    <complexType>
+     <sequence>
+      <element name="loginId" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="GetResponse">
+    <complexType>
+     <sequence>
+      <element name="GetReturn" type="impl:Agent"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="AgentAdvocateInfo">
+    <sequence>
+     <element name="LRMID" nillable="true" type="xsd:string"/>
+     <element name="enabled" type="xsd:boolean"/>
+     <element name="telephonyLinkGroup" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOf_xsd_string">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="AgentBasicProfile">
+    <sequence>
+     <element name="domain" nillable="true" type="xsd:string"/>
+     <element name="employeeId" nillable="true" type="xsd:string"/>
+     <element name="externalAgent" type="xsd:boolean"/>
+     <element name="firstName" nillable="true" type="xsd:string"/>
+     <element name="lastName" nillable="true" type="xsd:string"/>
+     <element name="middleName" nillable="true" type="xsd:string"/>
+     <element name="outOfOffice" type="xsd:boolean"/>
+     <element name="preferredName" nillable="true" type="xsd:string"/>
+     <element name="site" nillable="true" type="xsd:string"/>
+     <element name="softwareAgent" type="xsd:boolean"/>
+     <element name="title" nillable="true" type="xsd:string"/>
+     <element name="userAddressable" type="xsd:boolean"/>
+     <element name="workgroups" nillable="true" type="impl:ArrayOf_xsd_string"/>
+    </sequence>
+   </complexType>
+   <complexType name="AgentChatChannel">
+    <sequence>
+     <element name="enabled" type="xsd:boolean"/>
+     <element name="taskCeiling" type="xsd:short"/>
+     <element name="taskLoad" type="xsd:short"/>
+    </sequence>
+   </complexType>
+   <complexType name="AgentEmailChannel">
+    <sequence>
+     <element name="enabled" type="xsd:boolean"/>
+     <element name="fromAddress" nillable="true" type="xsd:string"/>
+     <element name="showFullHeader" type="xsd:boolean"/>
+     <element name="taskCeiling" type="xsd:short"/>
+     <element name="taskLoad" type="xsd:short"/>
+    </sequence>
+   </complexType>
+   <complexType name="AgentAddressInfo">
+    <sequence>
+     <element name="POBox" nillable="true" type="xsd:string"/>
+     <element name="address1" nillable="true" type="xsd:string"/>
+     <element name="address2" nillable="true" type="xsd:string"/>
+     <element name="building" nillable="true" type="xsd:string"/>
+     <element name="city" nillable="true" type="xsd:string"/>
+     <element name="company" nillable="true" type="xsd:string"/>
+     <element name="countryOrRegion" nillable="true" type="xsd:string"/>
+     <element name="mailStop" nillable="true" type="xsd:string"/>
+     <element name="stateOrProvince" nillable="true" type="xsd:string"/>
+     <element name="zipOrPostalCode" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="AgentAddress">
+    <sequence>
+     <element name="home" nillable="true" type="impl:AgentAddressInfo"/>
+     <element name="office" nillable="true" type="impl:AgentAddressInfo"/>
+     <element name="other" nillable="true" type="impl:AgentAddressInfo"/>
+    </sequence>
+   </complexType>
+   <complexType name="AgentEmail">
+    <sequence>
+     <element name="internal" nillable="true" type="xsd:string"/>
+     <element name="mobileDevice" nillable="true" type="xsd:string"/>
+     <element name="personal" nillable="true" type="xsd:string"/>
+     <element name="primary" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="AgentPhoneInfo">
+    <sequence>
+     <element name="extension" nillable="true" type="xsd:string"/>
+     <element name="phoneNumber" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="AgentPhone">
+    <sequence>
+     <element name="fax" nillable="true" type="impl:AgentPhoneInfo"/>
+     <element name="home" nillable="true" type="impl:AgentPhoneInfo"/>
+     <element name="mobile" nillable="true" type="impl:AgentPhoneInfo"/>
+     <element name="pager" nillable="true" type="impl:AgentPhoneInfo"/>
+     <element name="primary" nillable="true" type="impl:AgentPhoneInfo"/>
+     <element name="secondary" nillable="true" type="impl:AgentPhoneInfo"/>
+    </sequence>
+   </complexType>
+   <complexType name="AgentExtendedProfile">
+    <sequence>
+     <element name="address" nillable="true" type="impl:AgentAddress"/>
+     <element name="email" nillable="true" type="impl:AgentEmail"/>
+     <element name="phone" nillable="true" type="impl:AgentPhone"/>
+    </sequence>
+   </complexType>
+   <complexType name="AgentSecurity">
+    <sequence>
+     <element name="disableLogin" type="xsd:boolean"/>
+     <element name="forcePwdChange" type="xsd:boolean"/>
+     <element name="password" nillable="true" type="xsd:string"/>
+     <element name="roleAdmin" type="xsd:boolean"/>
+     <element name="roleAgent" type="xsd:boolean"/>
+     <element name="roleClerk" type="xsd:boolean"/>
+     <element name="roleEditor" type="xsd:boolean"/>
+     <element name="roleOperator" type="xsd:boolean"/>
+     <element name="rolePostmaster" type="xsd:boolean"/>
+     <element name="roleSupervisor" type="xsd:boolean"/>
+     <element name="roleSupport" type="xsd:boolean"/>
+    </sequence>
+   </complexType>
+   <complexType name="AgentTaskLoad">
+    <sequence>
+     <element name="taskCeiling" type="xsd:short"/>
+     <element name="taskLoad" type="xsd:short"/>
+    </sequence>
+   </complexType>
+   <complexType name="AgentVoiceChannel">
+    <sequence>
+     <element name="enabled" type="xsd:boolean"/>
+     <element name="equipment" nillable="true" type="xsd:string"/>
+     <element name="password" nillable="true" type="xsd:string"/>
+     <element name="phoneId" nillable="true" type="xsd:string"/>
+     <element name="phoneType" nillable="true" type="xsd:string"/>
+     <element name="queue" nillable="true" type="xsd:string"/>
+     <element name="taskCeiling" type="xsd:short"/>
+     <element name="taskLoad" type="xsd:short"/>
+    </sequence>
+   </complexType>
+   <complexType name="Agent">
+    <sequence>
+     <element name="advocateInfo" nillable="true" type="impl:AgentAdvocateInfo"/>
+     <element name="basicProfile" nillable="true" type="impl:AgentBasicProfile"/>
+     <element name="chatChannel" nillable="true" type="impl:AgentChatChannel"/>
+     <element name="emailChannel" nillable="true" type="impl:AgentEmailChannel"/>
+     <element name="extendedProfile" nillable="true" type="impl:AgentExtendedProfile"/>
+     <element name="loginId" nillable="true" type="xsd:string"/>
+     <element name="security" nillable="true" type="impl:AgentSecurity"/>
+     <element name="taskLoad" nillable="true" type="impl:AgentTaskLoad"/>
+     <element name="voiceChannel" nillable="true" type="impl:AgentVoiceChannel"/>
+    </sequence>
+   </complexType>
+   <complexType name="AicServiceFault">
+    <sequence/>
+   </complexType>
+   <element name="fault" type="impl:AicServiceFault"/>
+   <element name="Update">
+    <complexType>
+     <sequence>
+      <element name="agent" type="impl:Agent"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="UpdateResponse">
+    <complexType>
+     <sequence>
+      <element name="UpdateReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="Delete">
+    <complexType>
+     <sequence>
+      <element name="loginId" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="DeleteResponse">
+    <complexType>
+     <sequence>
+      <element name="DeleteReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="LookupAgentIds">
+    <complexType/>
+   </element>
+   <element name="LookupAgentIdsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="LookupAgentIdsReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="LookupLRMIds">
+    <complexType/>
+   </element>
+   <element name="LookupLRMIdsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="LookupLRMIdsReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="LookupWorkgroups">
+    <complexType/>
+   </element>
+   <element name="LookupWorkgroupsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="LookupWorkgroupsReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="LookupDomains">
+    <complexType/>
+   </element>
+   <element name="LookupDomainsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="LookupDomainsReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="LookupLinkGroups">
+    <complexType/>
+   </element>
+   <element name="LookupLinkGroupsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="LookupLinkGroupsReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="LookupPhoneTypes">
+    <complexType/>
+   </element>
+   <element name="LookupPhoneTypesResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="LookupPhoneTypesReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="LookupSites">
+    <complexType/>
+   </element>
+   <element name="LookupSitesResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="LookupSitesReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="Create">
+    <complexType>
+     <sequence>
+      <element name="agent" type="impl:Agent"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="CreateResponse">
+    <complexType>
+     <sequence>
+      <element name="CreateReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="LookupPhoneTypesRequest">
+
+      <wsdl:part element="impl:LookupPhoneTypes" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LookupLinkGroupsRequest">
+
+      <wsdl:part element="impl:LookupLinkGroups" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LookupLRMIdsResponse">
+
+      <wsdl:part element="impl:LookupLRMIdsResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="CreateRequest">
+
+      <wsdl:part element="impl:Create" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="CreateResponse">
+
+      <wsdl:part element="impl:CreateResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="UpdateRequest">
+
+      <wsdl:part element="impl:Update" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LookupSitesRequest">
+
+      <wsdl:part element="impl:LookupSites" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LookupDomainsRequest">
+
+      <wsdl:part element="impl:LookupDomains" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LookupDomainsResponse">
+
+      <wsdl:part element="impl:LookupDomainsResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="GetResponse">
+
+      <wsdl:part element="impl:GetResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="DeleteResponse">
+
+      <wsdl:part element="impl:DeleteResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LookupLRMIdsRequest">
+
+      <wsdl:part element="impl:LookupLRMIds" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LookupLinkGroupsResponse">
+
+      <wsdl:part element="impl:LookupLinkGroupsResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="UpdateResponse">
+
+      <wsdl:part element="impl:UpdateResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="GetRequest">
+
+      <wsdl:part element="impl:Get" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LookupAgentIdsResponse">
+
+      <wsdl:part element="impl:LookupAgentIdsResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LookupPhoneTypesResponse">
+
+      <wsdl:part element="impl:LookupPhoneTypesResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LookupAgentIdsRequest">
+
+      <wsdl:part element="impl:LookupAgentIds" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LookupSitesResponse">
+
+      <wsdl:part element="impl:LookupSitesResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LookupWorkgroupsResponse">
+
+      <wsdl:part element="impl:LookupWorkgroupsResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="AicServiceFault">
+
+      <wsdl:part element="impl:fault" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="DeleteRequest">
+
+      <wsdl:part element="impl:Delete" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LookupWorkgroupsRequest">
+
+      <wsdl:part element="impl:LookupWorkgroups" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="AicAgentAdmin">
+
+      <wsdl:operation name="Get">
+
+         <wsdl:input message="impl:GetRequest" name="GetRequest"/>
+
+         <wsdl:output message="impl:GetResponse" name="GetResponse"/>
+
+         <wsdl:fault message="impl:AicServiceFault" name="AicServiceFault"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="Update">
+
+         <wsdl:input message="impl:UpdateRequest" name="UpdateRequest"/>
+
+         <wsdl:output message="impl:UpdateResponse" name="UpdateResponse"/>
+
+         <wsdl:fault message="impl:AicServiceFault" name="AicServiceFault"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="Delete">
+
+         <wsdl:input message="impl:DeleteRequest" name="DeleteRequest"/>
+
+         <wsdl:output message="impl:DeleteResponse" name="DeleteResponse"/>
+
+         <wsdl:fault message="impl:AicServiceFault" name="AicServiceFault"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LookupAgentIds">
+
+         <wsdl:input message="impl:LookupAgentIdsRequest" name="LookupAgentIdsRequest"/>
+
+         <wsdl:output message="impl:LookupAgentIdsResponse" name="LookupAgentIdsResponse"/>
+
+         <wsdl:fault message="impl:AicServiceFault" name="AicServiceFault"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LookupLRMIds">
+
+         <wsdl:input message="impl:LookupLRMIdsRequest" name="LookupLRMIdsRequest"/>
+
+         <wsdl:output message="impl:LookupLRMIdsResponse" name="LookupLRMIdsResponse"/>
+
+         <wsdl:fault message="impl:AicServiceFault" name="AicServiceFault"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LookupWorkgroups">
+
+         <wsdl:input message="impl:LookupWorkgroupsRequest" name="LookupWorkgroupsRequest"/>
+
+         <wsdl:output message="impl:LookupWorkgroupsResponse" name="LookupWorkgroupsResponse"/>
+
+         <wsdl:fault message="impl:AicServiceFault" name="AicServiceFault"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LookupDomains">
+
+         <wsdl:input message="impl:LookupDomainsRequest" name="LookupDomainsRequest"/>
+
+         <wsdl:output message="impl:LookupDomainsResponse" name="LookupDomainsResponse"/>
+
+         <wsdl:fault message="impl:AicServiceFault" name="AicServiceFault"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LookupLinkGroups">
+
+         <wsdl:input message="impl:LookupLinkGroupsRequest" name="LookupLinkGroupsRequest"/>
+
+         <wsdl:output message="impl:LookupLinkGroupsResponse" name="LookupLinkGroupsResponse"/>
+
+         <wsdl:fault message="impl:AicServiceFault" name="AicServiceFault"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LookupPhoneTypes">
+
+         <wsdl:input message="impl:LookupPhoneTypesRequest" name="LookupPhoneTypesRequest"/>
+
+         <wsdl:output message="impl:LookupPhoneTypesResponse" name="LookupPhoneTypesResponse"/>
+
+         <wsdl:fault message="impl:AicServiceFault" name="AicServiceFault"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LookupSites">
+
+         <wsdl:input message="impl:LookupSitesRequest" name="LookupSitesRequest"/>
+
+         <wsdl:output message="impl:LookupSitesResponse" name="LookupSitesResponse"/>
+
+         <wsdl:fault message="impl:AicServiceFault" name="AicServiceFault"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="Create">
+
+         <wsdl:input message="impl:CreateRequest" name="CreateRequest"/>
+
+         <wsdl:output message="impl:CreateResponse" name="CreateResponse"/>
+
+         <wsdl:fault message="impl:AicServiceFault" name="AicServiceFault"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="AicAgentAdminSoapBinding" type="impl:AicAgentAdmin">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="Get">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="GetRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="GetResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AicServiceFault">
+
+            <wsdlsoap:fault name="AicServiceFault" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="Update">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="UpdateRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="UpdateResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AicServiceFault">
+
+            <wsdlsoap:fault name="AicServiceFault" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="Delete">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="DeleteRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="DeleteResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AicServiceFault">
+
+            <wsdlsoap:fault name="AicServiceFault" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LookupAgentIds">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="LookupAgentIdsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="LookupAgentIdsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AicServiceFault">
+
+            <wsdlsoap:fault name="AicServiceFault" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LookupLRMIds">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="LookupLRMIdsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="LookupLRMIdsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AicServiceFault">
+
+            <wsdlsoap:fault name="AicServiceFault" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LookupWorkgroups">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="LookupWorkgroupsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="LookupWorkgroupsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AicServiceFault">
+
+            <wsdlsoap:fault name="AicServiceFault" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LookupDomains">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="LookupDomainsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="LookupDomainsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AicServiceFault">
+
+            <wsdlsoap:fault name="AicServiceFault" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LookupLinkGroups">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="LookupLinkGroupsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="LookupLinkGroupsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AicServiceFault">
+
+            <wsdlsoap:fault name="AicServiceFault" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LookupPhoneTypes">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="LookupPhoneTypesRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="LookupPhoneTypesResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AicServiceFault">
+
+            <wsdlsoap:fault name="AicServiceFault" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LookupSites">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="LookupSitesRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="LookupSitesResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AicServiceFault">
+
+            <wsdlsoap:fault name="AicServiceFault" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="Create">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="CreateRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="CreateResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="AicServiceFault">
+
+            <wsdlsoap:fault name="AicServiceFault" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="AicAgentAdminService">
+
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+Service to Administor Agent in Avaya Interaction Center  </wsdl:documentation>
+
+      <wsdl:port binding="impl:AicAgentAdminSoapBinding" name="AicAgentAdmin">
+
+         <wsdlsoap:address location="http://aiccore.avayacloud.com:9800/webservices/services/AicAgentAdmin"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>
+
