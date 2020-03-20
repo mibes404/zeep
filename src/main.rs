@@ -1,8 +1,11 @@
+use inflector::cases::camelcase::to_camel_case;
+use inflector::cases::pascalcase::to_pascal_case;
+use inflector::cases::snakecase::to_snake_case;
 use inflector::cases::{pascalcase, snakecase};
 use log::{info, warn};
 use roxmltree::Node;
 use std::io;
-use std::io::{stdout, Cursor, Write};
+use std::io::{stdout, Cursor, Seek, Write};
 
 const MAX_BUFFER: usize = 5_000_000;
 
@@ -76,8 +79,9 @@ impl NodeWriter {
     }
 
     fn flush_buffers(&mut self) {
-        while let Some(mut buffer) = self.buffers.pop() {
-            if let Err(err) = io::copy(&mut buffer, &mut self.writer) {
+        while let Some(mut cursor) = self.buffers.pop() {
+            cursor.set_position(0);
+            if let Err(err) = io::copy(&mut cursor, &mut self.writer) {
                 warn!("Failed to flush buffer: {:?}", err);
             }
         }
@@ -121,14 +125,6 @@ impl NodeWriter {
             Some(n) => n,
         };
 
-        self.write("#[derive(Debug, Default, Serialize, Deserialize)]\n".to_string());
-
-        self.write(format!(
-            "#[serde(rename = \"{}\", default)]\nstruct {} {{\n",
-            name,
-            pascalcase::to_pascal_case(name)
-        ));
-
         let maybe_complex = node
             .children()
             .find(|child| child.tag_name().name() == "complexType")
@@ -136,19 +132,32 @@ impl NodeWriter {
 
         // fields
         if let Some(complex) = maybe_complex {
-            self.print_complex_element(&complex)
+            self.print_complex_element(&complex, name)
         } else if let Some(element_name) = self.get_some_attribute(node, "name") {
             if let Some(type_name) = self.get_some_attribute(node, "type") {
+                if self.level == 0 {
+                    // top-level == type alias
+                    self.write(format!(
+                        "type {} = {};\n\n",
+                        to_snake_case(element_name),
+                        self.fetch_type(type_name)
+                    ));
+                    return;
+                }
+
+                self.write(format!(
+                    "\t#[serde(rename = \"{}\", default)]\n",
+                    element_name,
+                ));
+
                 self.write(format!(
                     "\t{}: {}<{}>,\n",
-                    snakecase::to_snake_case(element_name),
+                    to_snake_case(element_name),
                     if as_vec { "Vec" } else { "Option" },
                     self.fetch_type(type_name)
                 ));
             }
         }
-
-        self.write("}\n\n".to_string());
     }
 
     fn get_some_attribute<'a>(&self, node: &'a Node, attr_name: &str) -> Option<&'a str> {
@@ -170,7 +179,7 @@ impl NodeWriter {
             "integer" => "u64".to_string(),
             "boolean" => "bool".to_string(),
             "date" | "xs:time" => "SystemTime".to_string(),
-            v => v.to_string(),
+            v => to_pascal_case(v),
         }
     }
 
@@ -181,8 +190,15 @@ impl NodeWriter {
         }
     }
 
-    fn print_complex_element(&mut self, node: &Node) {
+    fn print_complex_element(&mut self, node: &Node, name: &str) {
         self.inc_level();
+        self.write("#[derive(Debug, Default, Serialize, Deserialize)]\n".to_string());
+
+        self.write(format!(
+            "#[serde(rename = \"{}\", default)]\nstruct {} {{\n",
+            name,
+            to_pascal_case(name)
+        ));
 
         let maybe_sequence = node
             .children()
@@ -195,6 +211,7 @@ impl NodeWriter {
                 .for_each(|child| self.print_element(&child, true));
         }
 
+        self.write("}\n\n".to_string());
         self.dec_level();
     }
 }
