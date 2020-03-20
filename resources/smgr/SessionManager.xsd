@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			xmlns:smgr="http://xml.avaya.com/schema/import" 
+			targetNamespace="http://xml.avaya.com/schema/import_sessionmanager" 
+			elementFormDefault="qualified">
+
+<!-- This is the XML schema for the "Session Manager Profile".  It 
+     defines this profile inside of an XML document that defines 
+     a user record (see userimport.xsd) -->
+
+<xsd:import namespace="http://xml.avaya.com/schema/import"
+            schemaLocation="userimport.xsd"/>
+                        
+<xsd:complexType name="SessionManagerCommProfXML">
+	
+    <xsd:complexContent>
+        <xsd:extension base="smgr:xmlCommProfileType" >
+            
+	<xsd:sequence>
+	  <!-- 
+	   The following attributes are the names of objects that must
+	   already be administered in System Manager before performing
+  	   the user import.
+		 	  	   
+  	   The relative order here cannot be changed because it would
+  	   break backwards compatibility with existing XML documents
+  	   that could be used for an import.
+	  -->		
+	  
+	  <!-- Name of the primary Session Manager (required) -->
+	  <xsd:element name="primarySM" type="xsd:string" minOccurs="1" />
+			  
+	  <!--  Name of the secondary Session Manager (optional) -->
+          <xsd:element name="secondarySM" type="xsd:string" minOccurs="0" />
+              
+          <!-- Name of the Termination Application Sequence (optional)
+               - administered under 
+              	Session Manager / Application Configuration / Application Sequences --> 
+          <xsd:element name="terminationAppSequence" type="xsd:string"  minOccurs="0" />
+              
+          <!-- Name of the Origination Application Sequence (optional)
+               - administered under 
+                 Session Manager / Application Configuration / Application Sequences -->              
+          <xsd:element name="originationAppSequence" type="xsd:string" minOccurs="0" />
+              
+          <!-- Name of the Conference Factory Set (optional)
+              - administered under 
+                Session Manager / Application Configuration / Conference Factories  -->
+          <xsd:element name="confFactorySet" type="xsd:string" minOccurs="0" />
+              
+          <!-- Name of the Survivability Server (optional) 
+             - usually the name of a Branch Session Manager, but can be
+               any non-CM SIP Entity -->
+          <xsd:element name="survivabilityServer" type="xsd:string" minOccurs="0" />
+              
+          <!-- Name of the Home Location (required)
+      	      - administered under Routing / Locations -->
+          <xsd:element name="homeLocation" type="xsd:string"  minOccurs="1" />
+              
+          <!-- The maximum number of endpoints that can be simultaneously registered
+               using this Session Manager Profile. (optional)  
+               - The value is an integer between 1 and 10 and 
+                 defaults to 1 if not specified.  -->
+          <xsd:element name="maxSimultaneousDevices" minOccurs="0">
+        	<xsd:simpleType>
+              		<xsd:restriction base="xsd:integer">
+              			<xsd:minInclusive value="1" />
+             			<xsd:maxInclusive value="10" />
+              		</xsd:restriction>
+              	</xsd:simpleType>
+          </xsd:element>
+              
+  	  <!-- 
+	    If true, new registrations will be blocked for this Session Manager
+	    Profile if the maximum number of simultaneously registered endpoints
+	    (see "maxSimultaneousDevices" above) is currently registered.  If
+  	    false, an existing registration will be terminated to allow a new
+  	    registration for this Session Manager Profile. (optional)
+ 	     - the value defaults to false if not specified
+			  	   -->
+          <xsd:element name="blockNewRegistrationWhenMaxActive" minOccurs="0">
+            	<xsd:simpleType>
+              		<xsd:restriction base="xsd:boolean" />
+              	</xsd:simpleType>
+          </xsd:element>              
+                <!-- 
+			  Flag to enable/disable the offline Call Logging feature for the SIP users
+			  	   -->
+          <xsd:element name="enabledisablecalllog" minOccurs="0">
+            	<xsd:simpleType>
+              		<xsd:restriction base="xsd:boolean" />
+              	</xsd:simpleType>
+          </xsd:element>
+          
+          <!-- Name of the Emergency Termination Application Sequence (optional)
+               - administered under 
+              	Session Manager / Application Configuration / Emergency Application Sequences --> 
+          <xsd:element name="emergencyTerminationAppSequence" type="xsd:string"  minOccurs="0" />
+              
+          <!-- Name of the Emergency Origination Application Sequence (optional)
+               - administered under 
+                 Session Manager / Application Configuration / Emergency Application Sequences -->              
+          <xsd:element name="emergencyOriginationAppSequence" type="xsd:string" minOccurs="0" />                   
+	</xsd:sequence>
+  		
+        </xsd:extension>
+    </xsd:complexContent>   
+ </xsd:complexType>
+
+
+</xsd:schema>

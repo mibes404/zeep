@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+     xmlns:one="http://xml.avaya.com/schema/import"
+     targetNamespace="http://xml.avaya.com/schema/import1"
+     elementFormDefault="qualified"
+     xmlns:abc="http://xml.avaya.com/schema/import1">
+<xsd:import namespace="http://xml.avaya.com/schema/import"
+            schemaLocation="userimport.xsd"/>
+<xsd:complexType name="AccountCommProfileType">
+    <xsd:complexContent>
+        <xsd:extension base="one:xmlCommProfileType" >
+            <xsd:sequence>            
+               <xsd:element name="serviceDetails" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="element" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="target" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="template" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="serviceType" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="accountDetails" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="properties" type="abc:AccountPropertiesType" minOccurs="0"/>
+               <xsd:element name="isPublished" type="xsd:boolean" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:extension>
+    </xsd:complexContent>
+</xsd:complexType>
+
+<xsd:complexType name="AccountPropertiesType">
+   <xsd:sequence>
+      <xsd:element name="property" type="abc:AccountPropertyType" minOccurs="0" maxOccurs="unbounded"/>      
+   </xsd:sequence>
+</xsd:complexType>
+
+<xsd:complexType name="AccountPropertyType">
+   <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+         <xsd:attribute name="name" use="required" type="xsd:string"/>        
+      </xsd:extension>  
+   </xsd:simpleContent>       
+</xsd:complexType>
+
+</xsd:schema>

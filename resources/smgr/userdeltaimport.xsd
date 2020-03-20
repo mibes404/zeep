@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<xs:schema xmlns:delta="http://xml.avaya.com/schema/deltaImport" xmlns:base="http://xml.avaya.com/schema/import" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xml.avaya.com/schema/deltaImport" version="1.0">
+
+	<xs:import namespace="http://xml.avaya.com/schema/import" schemaLocation="userimport.xsd"/>
+
+
+	<xs:element name="userDelta" type="delta:xmlUserDelta"/>
+	<xs:element name="deltaUserList" type="delta:xmlDeltaUserList"/>
+
+	<xs:complexType name="xmlDeltaUserList">
+		<xs:sequence>
+			<xs:element name="secureStore" type="base:xmlSecureStore"></xs:element>
+			<xs:element name="userDelta" type="delta:xmlUserDelta" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="xmlUserDelta">
+		<xs:sequence>
+			<xs:element name="UserOrganizationDetails"  type="base:UserOrganizationDetailsType"
+				maxOccurs="1" minOccurs="0" />
+			<xs:element name="UserProvisionRules" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="UserProvisionRuleName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>	
+			<xs:element name="authenticationType" type="xs:string"
+				minOccurs="0" maxOccurs="1" />
+			<xs:element name="description" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="displayName" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="displayNameAscii" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dn" type="xs:string" minOccurs="0" />
+			<xs:element name="isDuplicatedLoginAllowed"
+				type="xs:boolean" minOccurs="0" />
+			<xs:element name="isEnabled" type="xs:boolean" minOccurs="0"
+				maxOccurs="1" />
+			<xs:element name="isVirtualUser" type="xs:boolean"
+				minOccurs="0" />
+			<xs:element name="givenName" type="xs:string" maxOccurs="1"
+				minOccurs="0" />
+			<xs:element name="givenNameAscii" type="xs:string" maxOccurs="1"
+				minOccurs="0" />
+			<xs:element name="honorific" type="xs:string" minOccurs="0" />
+			<xs:element name="loginName" type="xs:string" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="newLoginName" minOccurs="0" maxOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>	
+			<xs:element name="employeeNo" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+			</xs:element>
+			<xs:element name="department" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+			</xs:element>
+			<xs:element name="organization" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+			</xs:element>
+			<xs:element name="middleName" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="managerName" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="preferredGivenName" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="preferredLanguage" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="source" type="xs:string" minOccurs="0"
+				maxOccurs="1" />
+			<xs:element name="sourceUserKey" type="xs:string"
+				minOccurs="0" maxOccurs="1" />
+			<xs:element name="status" type="xs:string" minOccurs="0" />
+			<xs:element name="suffix" type="xs:string" minOccurs="0" />
+			<xs:element name="surname" type="xs:string" minOccurs="0"
+				maxOccurs="1" />
+			<xs:element name="surnameAscii" type="xs:string" minOccurs="0"
+				maxOccurs="1" />	
+			<xs:element name="timeZone" type="xs:string" minOccurs="0" />
+			<xs:element name="title" type="xs:string" minOccurs="0" />
+			<xs:element name="userName" type="xs:string" maxOccurs="1"
+				minOccurs="0" />
+			<xs:element name="userPassword" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="commPassword" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="userType" type="xs:string" minOccurs="0"
+				maxOccurs="unbounded" />
+			<xs:element name="roles" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="role" type="xs:string"
+							minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="localizedNames" type="base:xmLocalizedNames" minOccurs="0" maxOccurs="1"></xs:element>
+			<xs:element name="address" type="base:xmlAddress"
+				minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="securityIdentity"
+				type="base:xmlSecurityIdentity" minOccurs="0" maxOccurs="unbounded" />
+			<!-- Contact list Entries -->
+			<xs:element name="ownedContactLists" minOccurs="0"
+				maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="contactList"
+							type="base:xmlContactList" maxOccurs="1" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ownedContacts" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="contact"
+							type="base:xmlContact" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<!-- Presence ACL User Entries -->
+			<xs:element name="presenceUserDefault"
+				type="base:xmlPresUserDefaultType" minOccurs="0" />
+			<xs:element name="presenceUserACL"
+				type="base:xmlPresUserACLEntryType" minOccurs="0"
+				maxOccurs="unbounded" />
+			<xs:element name="presenceUserCLDefault"
+				type="base:xmlPresUserCLDefaultType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="commProfileSet"
+				type="base:xmlCommProfileSetType" maxOccurs="unbounded"
+				minOccurs="0">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

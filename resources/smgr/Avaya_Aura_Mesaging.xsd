@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:one="http://xml.avaya.com/schema/import" elementFormDefault="qualified"
+	targetNamespace="http://xml.avaya.com/schema/import_csm_mm" xmlns:csm="http://xml.avaya.com/schema/import_csm_mm">
+
+	<xs:import namespace="http://xml.avaya.com/schema/import"
+		schemaLocation="userimport.xsd" />
+	<!--Changes in xsd file need to generate jaxb src using this xsd-->
+	<xs:complexType name="xmlMessagingProfile">
+		<xs:complexContent>
+			<xs:extension base="one:xmlCommProfileType">
+				<xs:sequence>
+					<!--
+						Specifies the messaging system of the subscriber you want to add.
+						Name as it appears under 'Applications/Application
+						Management/Entities
+					-->
+					<xs:element name="messagingName" type="xs:string"
+						maxOccurs="1" minOccurs="1" />
+					<xs:element name="msgprefHandleId" type="xs:string" maxOccurs="1" minOccurs="0"/>
+					<xs:element name="useExisting" type="xs:boolean"
+						maxOccurs="1" minOccurs="0" /><!-- use existing -->
+
+					<!-- Specifies the messaging template of a subscriber.  -->
+					<xs:element name="messagingTemplate" type="xs:string"
+						maxOccurs="1" minOccurs="0" />
+
+
+					<xs:element name="mailboxNumber" maxOccurs="1"
+						minOccurs="1">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="[0-9]{1,50}" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+
+					<!--
+						Specifies the default password the subscriber must use to log in
+						to his or her mailbox. The password can be from one digit in
+						length to a maximum of 15 digits.
+					-->
+					<xs:element name="password" maxOccurs="1" minOccurs="0">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="[0-9]{0,15}" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="deleteOnUnassign" type="xs:boolean"
+						maxOccurs="1" minOccurs="0" />
+
+					<!-- follows overrriding  subscriber  data  -->
+
+					<!--
+						The class of service for this subscriber. The COS controls
+						subscriber access to many features and provides general settings,
+						such as mailbox size.
+					-->
+					<xs:element name="cos" maxOccurs="1" minOccurs="0"> <!-- MM/CMM field -->
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern
+									value="[0-9]|[0-9]{2}|[0-4][0-9]{2}|[5][0-4][0-9]|[5][5][0-1]" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+
+					<!--
+						Specifies the default community ID for the subscriber. Community
+						IDs are used to control message sending and receiving among groups
+						of subscribers. The default value is 1.
+					-->
+					<xs:element name="communityID" maxOccurs="1" minOccurs="0"> <!-- MM/CMM field -->
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="[0-9]|[0-1][0-5]" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+
+					<!--
+						Specifies the name that appears before the machine name and domain
+						in the subscriber's e-mail address. The machine name and domain
+						are automatically added to the handle you enter when the
+						subscriber sends or receives an e-mail.
+					-->
+					<xs:element name="emailHandle" maxOccurs="1" minOccurs="0"> <!-- MM/CMM field -->
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="[a-zA-Z0-9_@\w\.\-]*" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+
+					<!--
+						Specifies the display name of the subscriber in address book
+						listings, such as those for e-mail client applications. The name
+						you enter can be 1 to 64 characters in length.
+					-->
+					<xs:element name="commonName" type="xs:string"
+						maxOccurs="1" minOccurs="0" /> <!-- MM/CMM field -->
+
+					<!--
+						Specifies one or more alternate number to reach a subscriber. You
+						can use secondary extensions to specify a telephone number for
+						direct reception of faxes, to allow callers to use an existing
+						Caller Application, or to identify each line appearance on the
+						subscriber's telephone set if they have different telephone
+						numbers.
+					-->
+					<xs:element name="secondaryExtension" maxOccurs="1"
+						minOccurs="0"> <!-- MM/CMM field -->
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="[0-9]{0,50}" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+
+					<xs:element name="mmSpecific" type="csm:xmlMMSpecific"
+						maxOccurs="1" minOccurs="0" />
+					<xs:element name="cmmSpecific" type="csm:xmlCMMSpecific"
+						maxOccurs="1" minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+
+	<xs:complexType name="xmlMMSpecific">
+		<xs:sequence>
+			<!--
+				Specifies a unique address in the voice mail network. The numeric
+				address can be from 1 to 50 digits and can contain the Mailbox
+				Number.
+			-->
+			<xs:element name="numericAddress" maxOccurs="1" minOccurs="0"> <!-- MM field -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="([0-9])*" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<!-- The primary telephone extension of the subscriber. -->
+			<xs:element name="pbxExtension" maxOccurs="1" minOccurs="0"> <!-- MM field -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="([+0-9])*" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<!--
+				The telephone number of the subscriber as displayed in address book
+				listings and client applications. The entry can be a maximum of 50
+				characters in length and can contain any combination of digits
+				(0-9), period (.), hyphen (-), plus sign (+), and left and right
+				parentheses ([) and (]).
+			-->
+			<xs:element name="telephoneNumber" maxOccurs="1"
+				minOccurs="0"> <!-- MM field -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="([-+\.()0-9])*" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<!--
+				If the subscriber name is entered in multi-byte character format,
+				then this field specifies the ASCII translation of the subscriber
+				name.
+			-->
+			<xs:element name="asciiVersionOfName" type="xs:string"
+				maxOccurs="1" minOccurs="0" /> <!-- MM field -->
+
+			<!--
+				Specifies whether your password expires or not. You can choose one
+				of the following: - yes: for password to expire - no: if you do not
+				want your password to expire
+			-->
+			<xs:element name="expirePassword" type="csm:xmlyesNoType"
+				maxOccurs="1" minOccurs="0" />  <!-- MM field -->
+
+			<!--
+				Specifies whether you want your mailbox to be locked. A subscriber
+				mailbox can become locked after two unsuccessful login attempts. You
+				can choose one of the following: - no: to unlock your mailbox - yes:
+				to lock your mailbox and prevent access to it
+			-->
+			<xs:element name="mailBoxLocked" type="csm:xmlyesNoType"
+				maxOccurs="1" minOccurs="0" />  <!-- MM field -->
+
+			<!--
+				Specifies the mailbox number or transfer dial string of the
+				subscriber's personal operator or assistant. This field also
+				indicates the transfer target when a caller to this subscriber
+				presses 0 while listening to the subscriber's greeting.
+			-->
+			<xs:element name="personalOperatorMailbox" maxOccurs="1"
+				minOccurs="0"> <!-- MM field -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[0-9]+([*#,][0-9]+)*" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<!--
+				Specifies subscriber's personal attendant. 
+			-->
+			<xs:element name="personalAttendant" maxOccurs="1"
+				minOccurs="0"> <!-- MM field -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[0-9]+([*#,][0-9]+)*" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<!--
+				Specifies when to route calls to the backup operator mailbox. The
+				default value for this field is Always Active.
+			-->
+			<xs:element name="personalOperatorSchedule" type="xs:string"
+				maxOccurs="1" minOccurs="0" /> <!-- MM field -->
+
+			<!--
+				Specifies the order in which the subscriber hears the voice
+				messages. You can choose one of the following: - urgent first then
+				newest: to direct the system to play any messages marked as urgent
+				prior to playing non-urgent messages. Both the urgent and non-urgent
+				messages are played in the reverse order of how they were received.
+				- oldest messages first: to direct the system to play messages in
+				the order they were received. - urgent first then oldest: to direct
+				the system to play any messages marked as urgent prior to playing
+				non-urgent messages. Both the urgent and non-urgent messages are
+				played in the order of how they were received. - newest messages
+				first: to direct the system to play messages in the reverse order of
+				how they were received.
+			-->
+			<xs:element name="tuiMessageOrder" maxOccurs="1"
+				minOccurs="0"> <!-- MM field -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="urgent first then newest" />
+						<xs:enumeration value="oldest messages first" />
+						<xs:enumeration value="newest messages first" />
+						<xs:enumeration value="urgent first then oldest" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+
+			<xs:element name="tuiMessageOrderAdmin" maxOccurs="1"
+				minOccurs="0"> <!-- MM field -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="urgent first then newest" />
+						<xs:enumeration value="oldest messages first" />
+						<xs:enumeration value="newest messages first" />
+						<xs:enumeration value="urgent first then oldest" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			
+			
+			<xs:element name="tuiMessageOrderDeleted" maxOccurs="1"
+				minOccurs="0"> <!-- MM field -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="urgent first then newest" />
+						<xs:enumeration value="oldest messages first" />
+						<xs:enumeration value="newest messages first" />
+						<xs:enumeration value="urgent first then oldest" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			
+			
+			<xs:element name="tuiMessageOrderNew" maxOccurs="1"
+				minOccurs="0"> <!-- MM field -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="urgent first then newest" />
+						<xs:enumeration value="oldest messages first" />
+						<xs:enumeration value="newest messages first" />
+						<xs:enumeration value="urgent first then oldest" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			
+			
+			<xs:element name="tuiMessageOrderSaved" maxOccurs="1"
+				minOccurs="0"> <!-- MM field -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="urgent first then newest" />
+						<xs:enumeration value="oldest messages first" />
+						<xs:enumeration value="newest messages first" />
+						<xs:enumeration value="urgent first then oldest" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<!--
+				Specifies the intercom paging settings for a subscriber. You can
+				choose one of the following: - paging is off: to disable intercom
+				paging for this subscriber. - paging is manual: if the subscriber
+				can modify, with Subscriber Options or the TUI, the setting that
+				allows callers to page the subscriber. - paging is automatic: if the
+				TUI automatically allows callers to page the subscriber.
+			-->
+			<xs:element name="intercomPaging" maxOccurs="1" minOccurs="0"> <!-- MM field -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="paging is off" />
+						<xs:enumeration value="paging is manual" />
+						<xs:enumeration value="paging is automatic" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<!--
+				Specifies whether a subscriber can receive messages, e-mail messages
+				and call-answer messages from other subscribers. You can choose one
+				of the following: - yes: to allow the subscriber to create, forward,
+				and receive messages. - no: to prevent the subscriber from receiving
+				call-answer messages and to hide the subscriber from the telephone
+				user interface (TUI). The subscriber cannot use the TUI to access
+				the mailbox, and other TUI users cannot address messages to the
+				subscriber.
+			-->
+			<xs:element name="voiceMailEnabled" type="csm:xmlTrueFalseType"
+				maxOccurs="1" minOccurs="0" />
+
+			<!--
+				Specifies additional, useful information about a subscriber. Entries
+				in this field are for convenience and are not used by the messaging
+				system.
+			-->
+			<xs:element name="miscellaneous1" type="csm:xmlLength51Type"
+				maxOccurs="1" minOccurs="0" />
+
+			<!--
+				Specifies additional, useful information about a subscriber. Entries
+				in this field are for convenience and are not used by the messaging
+				system.
+			-->
+			<xs:element name="miscellaneous2" type="csm:xmlLength51Type"
+				maxOccurs="1" minOccurs="0" />
+
+			<!--
+				Specifies additional, useful information about a subscriber. Entries
+				in this field are for convenience and are not used by the messaging
+				system.
+			-->
+			<xs:element name="miscellaneous3" type="csm:xmlLength51Type"
+				maxOccurs="1" minOccurs="0" />
+
+			<!--
+				Specifies additional, useful information about a subscriber. Entries
+				in this field are for convenience and are not used by the messaging
+				system.
+			-->
+			<xs:element name="miscellaneous4" type="csm:xmlLength51Type"
+				maxOccurs="1" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="xmlCMMSpecific">
+		<xs:sequence>
+
+			<!--
+				Specifies the number of the switch on which this subscriber's
+				extension is administered. You can enter "0" through "99", or leave
+				this field blank. - Leave this field blank if the host switch number
+				should be used. - Enter a "0" if no message waiting indicators
+				should be sent for this subscriber. You should enter 0 when the
+				subscriber does not have a phone on any switch in the network.
+			-->
+			<xs:element name="switchNumber" maxOccurs="1" minOccurs="0"> <!-- CMM field -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[0-9]|[0-9][0-9]" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<!--
+				Specifies the Subscriber Account Code. The Subscriber Account Code
+				is used to create Call Detail Records on the switch for calls placed
+				by the voice ports. The value you enter in this field can contain
+				any combination of digits from 0 to 9. If an account code is not
+				specified, the system will use the subscriber's mailbox extension as
+				the account code.
+			-->
+			<xs:element name="accountCode" maxOccurs="1" minOccurs="0"> <!-- CMM field -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="([0-9])*" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<!--
+				Specifies the number to be used as the default destination for the
+				Transfer Out of Messaging feature. You can enter 3 to 10 digits in
+				this field depending on the length of the system's extension, or
+				leave this field blank.
+			-->
+			<xs:element name="coveringExtension" maxOccurs="1"
+				minOccurs="0"> <!-- CMM field -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[0-9]{0}|[0-9]{3,10}" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<!--
+				Specifies additional, useful information about a subscriber. Entries
+				in this field are for convenience and are not used by the messaging
+				system.
+			-->
+			<xs:element name="miscellaneous1" type="csm:xmlLength11Type"
+				maxOccurs="1" minOccurs="0" />
+
+			<!--
+				Specifies additional, useful information about a subscriber. Entries
+				in this field are for convenience and are not used by the messaging
+				system.
+			-->
+			<xs:element name="miscellaneous2" type="csm:xmlLength11Type"
+				maxOccurs="1" minOccurs="0" />
+
+			<!--
+				Specifies additional, useful information about a subscriber. Entries
+				in this field are for convenience and are not used by the messaging
+				system.
+			-->
+			<xs:element name="miscellaneous3" type="csm:xmlLength11Type"
+				maxOccurs="1" minOccurs="0" />
+
+			<!--
+				Specifies additional, useful information about a subscriber. Entries
+				in this field are for convenience and are not used by the messaging
+				system.
+			-->
+			<xs:element name="miscellaneous4" type="csm:xmlLength11Type"
+				maxOccurs="1" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="xmlyesNoType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Yes" />
+			<xs:enumeration value="No" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="xmlTrueFalseType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TRUE" />
+			<xs:enumeration value="FALSE" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="xmlLength11Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="11" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="xmlLength51Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="51" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

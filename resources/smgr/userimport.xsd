@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema xmlns:tns="http://xml.avaya.com/schema/import" xmlns:ext="http://xml.avaya.com/schema/import" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xml.avaya.com/schema/import" version="2.0">
+	<xs:element name="secureStore" type="tns:xmlSecureStore"/>
+	<xs:element name="user" type="tns:xmlUser"/>
+	<xs:element name="users">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="secureStore" type="tns:xmlSecureStore" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="user" type="tns:xmlUser" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="xmlUser">
+		<xs:sequence>
+			<xs:element name="UserOrganizationDetails"  type="tns:UserOrganizationDetailsType"
+				maxOccurs="1" minOccurs="0" />
+			<xs:element name="UserProvisionRules" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="UserProvisionRuleName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>	
+			<xs:element name="authenticationType" type="xs:string"
+				minOccurs="1" maxOccurs="1" />
+			<xs:element name="description" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="displayName" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="displayNameAscii" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dn" type="xs:string" minOccurs="0" />
+			<xs:element name="isDuplicatedLoginAllowed"
+				type="xs:boolean" minOccurs="0" />
+			<xs:element name="isEnabled" type="xs:boolean" minOccurs="0"
+				maxOccurs="1" />
+			<xs:element name="isVirtualUser" type="xs:boolean"
+				minOccurs="0" />
+			<xs:element name="givenName" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="givenNameAscii" type="xs:string" minOccurs="0"
+				maxOccurs="1" />
+			<xs:element name="honorific" type="xs:string" minOccurs="0" />
+			<xs:element name="loginName" minOccurs="1" maxOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="newLoginName" minOccurs="0" maxOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="employeeNo" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+			</xs:element>
+			<xs:element name="department" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+			</xs:element>
+			<xs:element name="organization" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+			</xs:element>
+			<xs:element name="middleName" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="managerName" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="preferredGivenName" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="preferredLanguage" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="source" type="xs:string" minOccurs="0"
+				maxOccurs="1" />
+			<xs:element name="sourceUserKey" type="xs:string"
+				minOccurs="0" maxOccurs="1" />
+			<xs:element name="status" type="xs:string" minOccurs="0" />
+			<xs:element name="suffix" type="xs:string" minOccurs="0" />
+			<xs:element name="surname" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="surnameAscii" type="xs:string" minOccurs="0" 
+				maxOccurs="1" />				
+			<xs:element name="timeZone" type="xs:string" minOccurs="0" />
+			<xs:element name="title" type="xs:string" minOccurs="0" />
+			<xs:element name="userName" type="xs:string" minOccurs="0"
+				maxOccurs="1" />
+			<xs:element name="userPassword" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="commPassword" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="userType" type="xs:string" minOccurs="0"
+				maxOccurs="unbounded" />
+			<xs:element name="roles" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="role" type="xs:string"
+							minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="localizedNames" type="tns:xmLocalizedNames" minOccurs="0" maxOccurs="1"></xs:element>
+			<xs:element name="address" type="tns:xmlAddress"
+				minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="securityIdentity"
+				type="tns:xmlSecurityIdentity" minOccurs="0" maxOccurs="unbounded" />
+			<!-- Contact list Entries -->
+			<xs:element name="ownedContactLists" minOccurs="0"
+				maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="contactList"
+							type="tns:xmlContactList" maxOccurs="1" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ownedContacts" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="contact" type="tns:xmlContact"
+							maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<!-- Presence ACL User Entries -->
+			<xs:element name="presenceUserDefault"
+				type="tns:xmlPresUserDefaultType" minOccurs="0" />
+			<xs:element name="presenceUserACL"
+				type="tns:xmlPresUserACLEntryType" minOccurs="0"
+				maxOccurs="unbounded" />
+			<xs:element name="presenceUserCLDefault"
+				type="tns:xmlPresUserCLDefaultType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="commProfileSet"
+				type="tns:xmlCommProfileSetType" minOccurs="0"
+				maxOccurs="unbounded" />
+
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xmlSecurityIdentity">
+		<xs:sequence>
+			<xs:element name="identity" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="realm" type="xs:string" minOccurs="0"/>
+			<xs:element name="type" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xmlPresInfoTypeAccessType">
+		<xs:sequence>
+			<xs:element name="infoType" type="tns:xmlPresInfoTypeType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="access" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xmlPresACRuleType">
+		<xs:sequence>
+			<xs:element name="infoTypeAccess" type="tns:xmlPresInfoTypeAccessType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xmlPresUserDefaultType">
+		<xs:complexContent>
+			<xs:extension base="tns:xmlPresACRuleType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="xmlPresUserCLDefaultType">
+		<xs:complexContent>
+			<xs:extension base="tns:xmlPresACRuleType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="xmlPresUserACLEntryType">
+		<xs:complexContent>
+			<xs:extension base="tns:xmlPresACRuleType">
+				<xs:sequence>
+					<xs:choice>
+						<xs:element name="watcherLoginName" type="xs:string" minOccurs="0"/>
+						<xs:element name="watcherDisplayName" type="xs:string" minOccurs="0"/>
+					</xs:choice>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="xmlPresInfoTypeType">
+		<xs:sequence>
+			<xs:element name="label" type="xs:string" maxOccurs="1"/>
+			<xs:element name="filter" type="xs:string" maxOccurs="1"/>
+			<xs:element name="specFlags" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Contact List entries -->
+	<xs:complexType name="xmlContactList">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="description" type="xs:string" minOccurs="0"/>
+			<xs:element name="isPublic" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="members" type="tns:xmlContactListMember" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="contactListType" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xmlContactListMember">
+		<xs:sequence>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element name="memberContact" type="xs:string" minOccurs="0"/>
+					<xs:element name="speedDialContactAddress" type="tns:xmlContactAddress" minOccurs="0"/>
+				</xs:sequence>
+				<xs:sequence>
+					<xs:element name="memberUser" type="xs:string" minOccurs="0"/>
+					<xs:element name="speedDialHandle" type="tns:xmlHandle" minOccurs="0"/>
+				</xs:sequence>
+			</xs:choice>
+			<xs:element name="isFavorite" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="isSpeedDial" type="xs:boolean" minOccurs="1"/>
+			<xs:element name="speedDialEntry" type="xs:int" minOccurs="0"/>
+			<xs:element name="isPresenceBuddy" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="label" type="xs:string" minOccurs="0"/>
+			<xs:element name="altLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="description" type="xs:string" minOccurs="0"/>
+			<xs:element name="priorityLevel" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xmlContactAddress">
+		<xs:sequence>
+			<xs:element name="address" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="altLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="contactCategory" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="contactType" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="label" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xmlAddress">
+		<xs:sequence>
+			<xs:element name="addressType" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="building" type="xs:string" minOccurs="0"/>
+			<xs:element name="localityName" type="xs:string" minOccurs="0"/>
+			<xs:element name="postalCode" type="xs:string" minOccurs="0"/>
+			<!-- Additional Attribute Support - The attribute room will be mapped to cubical.-->
+			<xs:element name="room" type="xs:string" minOccurs="0"/>
+			<xs:element name="stateOrProvince" type="xs:string" minOccurs="0"/>
+			<xs:element name="country" type="xs:string" minOccurs="0"/>
+			<xs:element name="street" type="xs:string" minOccurs="0"/>
+			<!-- Additional Attribute Support -->
+			<xs:element name="businessphone" type="xs:string" minOccurs="0"/>
+			<xs:element name="otherbusinessphone" type="xs:string" minOccurs="0"/>
+			<xs:element name="fax" type="xs:string" minOccurs="0"/>
+			<xs:element name="homephone" type="xs:string" minOccurs="0"/>
+			<xs:element name="otherhomephone" type="xs:string" minOccurs="0"/>
+			<xs:element name="mobilephone" type="xs:string" minOccurs="0"/>
+			<xs:element name="othermobilephone" type="xs:string" minOccurs="0"/>
+			<xs:element name="pager" type="xs:string" minOccurs="0"/>
+			<xs:element name="pager2" type="xs:string" minOccurs="0"/>
+			<!-- Additional Attribute Support - End -->
+			<xs:element name="postalAddress" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="isPrivate" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xmlContact">
+		<xs:sequence>
+			<xs:element name="company" type="xs:string" minOccurs="0"/>
+			<xs:element name="description" type="xs:string" minOccurs="0"/>
+			<xs:element name="displayName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="displayNameAscii" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="dn" type="xs:string" minOccurs="0"/>
+			<xs:element name="givenName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="givenNameAscii" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="initials" type="xs:string" minOccurs="0"/>
+			<xs:element name="middleName" type="xs:string" minOccurs="0"/>
+			<xs:element name="preferredGivenName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="preferredLanguage" type="xs:string" minOccurs="0"/>
+			<xs:element name="isPublic" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="source" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="sourceUserKey" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="suffix" type="xs:string" minOccurs="0"/>
+			<xs:element name="surname" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="surnameAscii" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="title" type="xs:string" minOccurs="0"/>
+			<xs:element name="ContactAddress" type="tns:xmlContactAddress" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="addresses" type="tns:xmlAddress" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xmlHandle">
+		<xs:sequence>
+			<xs:element name="handleName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="handleType" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="handleSubType" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="domainName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xmlCommProfileType">
+		<xs:sequence>
+			<xs:element name="commProfileType" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="commProfileSubType" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="jobId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xmlCommProfileSetType">
+		<xs:sequence>
+			<xs:element name="commProfileSetName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="isPrimary" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="handleList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="handle" type="tns:xmlHandle" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="commProfileList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="commProfile" type="tns:xmlCommProfileType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ForgeinCommProfileType">
+		<xs:complexContent>
+			<xs:extension base="ext:xmlCommProfileType">
+				<xs:sequence>
+					<xs:element name="csEncryptionKeyId" type="xs:long" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="servicePassword" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="serviceData" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="xmlSecureStore">
+		<xs:sequence>
+			<xs:element name="secureStoreData" type="xs:base64Binary" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="passwordEncrypted" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="xmlLocalizedName">
+		<xs:sequence>
+			<xs:element name="locale" type="xs:string" minOccurs="1"
+				maxOccurs="1">
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="xmLocalizedNames">
+		<xs:sequence>
+			<xs:element name="localizedName" type="tns:xmlLocalizedName" minOccurs="0" maxOccurs="7"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UserOrganizationDetailsType">
+			<xs:sequence>
+			<xs:element name="tenant" maxOccurs="1" minOccurs="1">
+					<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+	       			<xs:attribute name="createTenantIfNotAlreadyPresent"
+	               						type="xs:boolean"
+	              							 use="required"/>
+	    			</xs:complexType> 
+				</xs:element>
+				<xs:element name="organizationUnitLevelOne" type="xs:string"
+					maxOccurs="1" minOccurs="0">
+				</xs:element>
+				<xs:element name="organizationUnitLevelTwo" type="xs:string"
+					maxOccurs="1" minOccurs="0">
+				</xs:element>
+				<xs:element name="organizationUnitLevelThree" type="xs:string"
+					maxOccurs="1" minOccurs="0">
+				</xs:element>
+			</xs:sequence>
+	</xs:complexType>
+	
+</xs:schema>

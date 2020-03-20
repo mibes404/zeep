@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:smgr="http://xml.avaya.com/schema/import" elementFormDefault="qualified"
+	targetNamespace="http://xml.avaya.com/schema/import_mem_officelinx">
+
+	<xs:import namespace="http://xml.avaya.com/schema/import"
+		schemaLocation="userimport.xsd" />
+
+	<xs:complexType name="xmlOfficelinxProfile">
+		<xs:complexContent>
+			<xs:extension base="smgr:xmlCommProfileType">
+				<xs:sequence>
+					<xs:element type="xs:string" name="officelinxName" maxOccurs="1" />
+					<xs:element type="xs:long" name="mailBoxNumber" maxOccurs="1" />
+					<xs:element type="xs:string" name="numericPassword" maxOccurs="1" minOccurs="0" />
+					<xs:element type="xs:string" name="applicationUserPassword" maxOccurs="1" minOccurs="0" />
+					<xs:element type="xs:string" name="company" maxOccurs="1" minOccurs="0" />
+					<xs:element type="xs:string" name="department" maxOccurs="1" minOccurs="0" />
+					<xs:element type="xs:string" name="featureGroup" maxOccurs="1" minOccurs="0" />
+					<xs:element type="xs:string" name="capability" maxOccurs="1" minOccurs="0" />
+					<xs:element type="xs:string" name="domainAccountName" maxOccurs="1" minOccurs="0" />
+					<xs:element type="xs:string" name="synchronizationUserName" maxOccurs="1" minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+</xs:schema>

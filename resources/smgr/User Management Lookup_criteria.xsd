@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.avaya.com/mgmt-web-criteria/"
+	targetNamespace="http://www.avaya.com/mgmt-web-criteria/">
+	<element name="management-webservice-criteria">
+		<complexType>
+			<sequence>
+				<element name="criterialist" type="tns:criterialist"
+					minOccurs="0" maxOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<complexType name="criteria">
+		<sequence>
+			<element name="propertyname" type="string" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="operator" type="string" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="value" type="string" maxOccurs="1"
+				minOccurs="1">
+			</element>
+
+			<element name="restriction" maxOccurs="1" minOccurs="0">
+				<simpleType>
+					<restriction base="string">
+						<enumeration value="and"></enumeration>
+						<enumeration value="or"></enumeration>
+					</restriction>
+				</simpleType>
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="criterialist">
+		<sequence>
+			<element name="criteria" type="tns:criteria" maxOccurs="unbounded"
+				minOccurs="1"></element>
+		</sequence>
+	</complexType>
+</schema>

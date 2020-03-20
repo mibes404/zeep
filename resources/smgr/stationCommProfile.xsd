@@ -1,0 +1,1604 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:one="http://xml.avaya.com/schema/import" elementFormDefault="qualified"
+targetNamespace="http://xml.avaya.com/schema/import_csm_cm" xmlns:csm="http://xml.avaya.com/schema/import_csm_cm">
+<xs:import namespace="http://xml.avaya.com/schema/import" schemaLocation="userimport.xsd"/>
+
+<!--Changes in xsd file need to generate jaxb src using this xsd-->
+<xs:complexType name="xmlStationProfile">
+	<xs:complexContent>
+       	<xs:extension base="one:xmlCommProfileType" >
+			<xs:sequence>	
+				
+				<!-- CM Name as it appears under 'Applications/Application Management/Entities -->
+				<xs:element name="cmName" type="xs:string" maxOccurs="1" minOccurs="1"/>
+				<xs:element name="prefHandleId" type="xs:string" maxOccurs="1" minOccurs="0"/>
+				<!-- 'true' if already created extension is to be used.  'false' if available extension is to be used. -->
+				<xs:element name="useExistingExtension" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+				
+				<!-- Extension Range which will be used to create Station using available extension within given range -->
+				<xs:element name="extensionRange" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="([0-9]+([\.\-][0-9]+)*)|([0-9]+([\.\-][0-9]+)*:[0-9]+([\.\-][0-9]+)*)"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<!-- Station extension number that need to be assigned to the user. -->
+				<xs:element name="extension" maxOccurs="1" minOccurs="1">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="([0-9]+([\.\-][0-9]+)*)|[nN][eE][xX][tT]"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<!-- Template name to be used to create station. Values defined in Template will be used if not provided. -->
+				<xs:element name="template" type="xs:string" maxOccurs="1" minOccurs="0"/>
+				
+				<!-- Specifies the set type of the station  -->
+				<xs:element name="setType" type="xs:string" maxOccurs="1" minOccurs="0"/>
+				
+				<!-- Security code for station. Value can be digit only.  -->
+				<xs:element name="securityCode" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-9]*"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>		
+				
+				
+				<!-- Valid values for port   -->	
+				<!--01 to 64  First and second numbers are the cabinet number  -->
+				<!--A to E  Third character is the carrier  -->
+				<!--01 to 20  Fourth and fifth characters are the slot number  -->
+				<!--01 to 32  Sixth and seventh characters are the circuit number  -->
+				<!--x or X  Indicates that there is no hardware associated with the port assignment since the switch was set up, and the administrator expects that the extension would have a non-IP set. Or, the extension had a non-IP set, and it dissociated. Use x for Administered WithOut Hardware (AWOH) and Computer Telephony (CTI) stations, as well as for SBS Extensions.  -->
+				<!--IP  Indicates that there is no hardware associated with the port assignment since the switch was set up, and the administrator expects that the extension would have an IP set. This is automatically entered for certain IP station set types, but you can enter for a DCP set with softphone permissions. This changes to the s00000 type when the set registers.  -->
+				<xs:element name="port" type="xs:string" maxOccurs="1" minOccurs="0" />
+				
+				<!-- Whether the station should be deleted if it unassigned from the user. -->
+				<xs:element name="deleteOnUnassign" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+				
+				<!-- Whether the endpoint name on CM should be overridden with the value in User. -->
+				<xs:element name="overRideEndpointName" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+				
+				<!-- true/false for dualRegistration. -->
+				<xs:element name="dualRegistration" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+				
+				<!-- true/false for Enhanced Callr-Info display for 1-line phones -->
+				<xs:element name="enhCallrInfodisplay" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+				
+				<!-- true/false to enable/disable lock messages feature. -->
+				<xs:element name="lockMessages" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!-- A coverage path is a prioritized sequence of extensions to which your voice system will route an unanswered call. -->
+				<!-- Valid values: CM 5.2 - Path Number between 1-2000, time of day table, t1-t999, or blank. -->
+				<!-- Valid values: CM 6.0 - Path Number between 1-9999, time of day table, t1-t999, or blank. -->
+				<xs:element name="coveragePath1" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="([1-9]{0})|(t[1-9][0-9]{0,2})|([1-9][0-9]{0,3})"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<!-- A coverage path is a prioritized sequence of extensions to which your voice system will route an unanswered call. -->
+				<!-- Valid values: CM 5.2 - Path Number between 1-2000, time of day table, t1-t999, or blank. -->
+				<!-- Valid values: CM 6.0 - Path Number between 1-9999, time of day table, t1-t999, or blank. -->
+				<xs:element name="coveragePath2" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="([1-9]{0})|(t[1-9][0-9]{0,2})|([1-9][0-9]{0,3})"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<!-- The extension the system should hunt to for this telephone when the telephone is busy. A station hunting chain can be created by assigning a hunt-to station to a series of telephones.  -->
+				<xs:element name="huntToStation" type="xs:string" maxOccurs="1" minOccurs="0" />
+				
+				<!-- Provides for partitioning of attendant groups and/or stations and trunk groups. -->
+				<!-- Typically this is used for multiple tenants in a building or multiple departments within a company or organization. -->
+				<!-- Valid values: 1 to 250 when TN is ON in special application and 1 to 100 o.w. -->
+				<xs:element name="tn" maxOccurs="1" minOccurs="0">
+				<xs:simpleType>
+						<xs:restriction base="xs:int">
+							<xs:minInclusive value="1" />
+							<xs:maxInclusive value="250" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<!-- Typically this is used for multiple tenants in a building or multiple departments within a company or organization. -->
+				<!-- Typically this is used for multiple tenants in a building or multiple departments within a company or organization. -->
+				<!-- Valid values: 0 to 995 -->
+				<xs:element name="cor" maxOccurs="1" minOccurs="0">
+  					<xs:simpleType>
+    					<xs:restriction base="xs:int">
+      						<xs:minInclusive value="0"/>
+      						<xs:maxInclusive value="995"/>
+    					</xs:restriction>
+  					</xs:simpleType>
+				</xs:element>
+
+				<!-- Class of Service lets you define groups of users and control those groups' access to features -->
+				<!-- Valid values: 1 to 15 -->
+				<xs:element name="cos" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:int">
+							<xs:minInclusive value="0" />
+							<xs:maxInclusive value="15" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="xmobileType" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="EC500"/>
+    						<xs:enumeration value="DECT"/>
+    						<xs:enumeration value="IPDECT"/>
+    						<xs:enumeration value="PHS"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="mappingMode" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="termination"/>
+    						<xs:enumeration value="origination"/>
+    						<xs:enumeration value="both"/>
+    						<xs:enumeration value="none"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="configurationSet" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+  							<xs:pattern value="|[1-9]|[0-9][1-9]"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="mobilityTrunkGroup" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+  							<xs:pattern value="aar|ars|[1-9]|[1-9][0-9]|[1-9]([0-9]){2}|[1]([0-9]){3}|2000"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="dialPrefix" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+  							<xs:pattern value="[0-9/*#]{0,4}"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="cellPhoneNumber" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+  							<xs:pattern value="[0-9]{0,15}"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="musicSource" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:int">
+							<xs:minInclusive value="1" />
+							<xs:maxInclusive value="250" />
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="tests" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<xs:element name="dataModule" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!-- Controls the behavior of speakerphones. -->
+				<xs:element name="speakerphone" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:enumeration value="none"/>
+							<xs:enumeration value="1-way"/>
+							<xs:enumeration value="2-way"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<!-- The language that displays on stations -->
+				<!-- Time of day is displayed in 24-hour format (00:00 - 23:59) for all languages except English, which is displayed in 12-hour format (12:00 a.m. to 11:59 p.m.). -->
+				<!-- unicode: Displays English messages in a 24-hour format . If no Unicode file is installed, displays messages in English by default. -->
+				<xs:element name="displayLanguage" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:enumeration value="english"/>
+							<xs:enumeration value="french"/>
+							<xs:enumeration value="italian"/>
+							<xs:enumeration value="spanish"/>
+							<xs:enumeration value="unicode"/>
+							<xs:enumeration value="unicode2"/>
+							<xs:enumeration value="unicode3"/>
+							<xs:enumeration value="unicode4"/>
+							<xs:enumeration value="user-defined"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<!-- Defines the personalized ringing pattern for the station. 
+					Personalized Ringing allows users of some telephones to have one of 8 ringing patterns for incoming calls. 
+					For virtual stations, this field dictates the ringing pattern on its mapped-to physical telephone. 
+				-->
+				<!-- L = 530 Hz, M = 750 Hz, and H = 1060 Hz -->
+				<!-- Valid Entries  Usage  
+					1  MMM (standard ringing)  
+					2  HHH  
+					3  LLL  
+					4  LHH  
+					5  HHL  
+					6  HLL  
+					7  HLH  
+					8  LHL  
+				 -->
+				<xs:element name="personalizedRingingPattern" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:int">
+							<xs:minInclusive value="1" />
+							<xs:maxInclusive value="8" />
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				
+				<!-- The Message Lamp Extension associated with the current extension -->
+				<xs:element name="messageLampExt" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-9]+([\.\-][0-9]+)*"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<!-- Enables or disables the mute button on the station. -->
+				<xs:element name="muteButtonEnabled" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+
+				<!--
+					When used with Multi-media Call Handling, indicates which extension is
+					assigned to the data module of the multimedia complex. Users can dial
+					this extension to place either a voice or a data call, and voice
+					conversion, coverage, and forwarding apply as if the call were made to
+					the 1-number.
+				-->
+				<!--
+					Valid Entry Usage A valid BRI data extension For MMCH, enter the
+					extension of the data module that is part of this multimedia complex.
+					H.323 station extension For 4600 series IP Telephones, enter the
+					corresponding H.323 station. For IP Softphone, enter the corresponding
+					H.323 station. If you enter a value in this field, you can register
+					this station for either a road-warrior or telecommuter/Avaya IP Agent
+					application. blank Leave this field blank for single-connect IP
+					applications.
+				-->
+				<xs:element name="mediaComplexExt" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="([1-9]{0})|[0-9]+([\.\-][0-9]+)*"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<!-- Whether this is IP soft phone. -->
+				<xs:element name="ipSoftphone" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+
+				<!--
+					Survivable GK Node Name Identifies the existence of other H.323
+					gatekeepers located within gateway products that offer survivable call
+					features. For example, the MultiTech MVPxxx-AV H.323 gateway family
+					and the SLS function within the H.248 gateways. When a valid IP node
+					name is entered into this field, Communication Manager adds the IP
+					address of this gateway to the bottom of the Alternate Gatekeeper List
+					for this IP network region. As H.323 IP stations register with
+					Communication Manager, this list is sent down in the registration
+					confirm message. This allows the IP station to use the IP address of
+					this Survivable Gatekeeper as the call controller of last resort to
+					register with. Available only if the station type is an H.323 station
+					(46xxor 96xx models). 
+					Valid Entry 			Usage 
+					Valid IP node name 		Any valid previously-administered IP node name. 
+					blank 					There are no external gatekeeper nodes within a customer's network. This is the default value.
+				-->
+				<xs:element name="survivableGkNodeName" type="xs:string" maxOccurs="1" minOccurs="0" />
+
+				<!--
+					Sets a level of restriction for stations to be used with the
+					survivable dial plan to limit certain users to only to certain types
+					of calls. You can list the restriction levels in order from the most
+					restrictive to least restrictive. Each level assumes the calling
+					ability of the ones above it. This field is used by PIM module of the
+					Integrated Management to communicate with the Communication Manager
+					administration tables and obtain the class of service information. PIM
+					module builds a managed database to send for Standard Local
+					Survivability (SLS) on the H.248 gateways. Available for all analog
+					and IP station types.
+					
+					Valid Entries 		Usage 
+					emergency 			This station can only be used to place emergency calls. 
+					internal 			This station can only make intra-switch calls. This is the default. 
+					local 				This station can only make calls that are defined as locl, op, svc, or hnpa in the Survivable Gateway Call Controller's routing tables. 
+					toll 				This station can place any national toll calls that are defined as fnpa or natl on the Survivable Gateway Call Controller's routing tables. 
+					unrestricted 		This station can place a call to any number defined in the Survivable Gateway Call Controller's routing tables. Those strings marked as deny are also denied to these users. 
+				-->
+				<xs:element name="survivableCOR" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:enumeration value="emergency"/>
+							<xs:enumeration value="internal"/>
+							<xs:enumeration value="local"/>
+							<xs:enumeration value="toll"/>
+							<xs:enumeration value="unrestricted"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<!--
+					Designates certain telephones as not being allowed to receive incoming
+					trunk calls when the Media Gateway is in survivable mode. This field
+					is used by the PIM module of the Integrated Management to successfully
+					interrogate the Communication Manager administration tables and obtain
+					the class of service information. PIM module builds a managed database
+					to send for SLS on the H.248 gateways. Available for all analog and IP
+					station types.
+					
+					Valid Entry 		Usage 
+						true 			Allows this station to be an incoming trunk destination while the Media Gateway is running in survivability mode. This is the default. 
+						false 			Prevents this station from receiving incoming trunk calls when in survivable mode. 
+					
+				-->	
+				<xs:element name="survivableTrunkDest" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+
+				<!-- Enter the complete Voice Mail Dial Up number. -->
+				<xs:element name="voiceMailNumber" maxOccurs="1" minOccurs="0" >
+
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[(0-9)(*)(#)(~mwWps)]{0,24}"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			
+				<!-- Analog telephones only. -->
+				<!--
+				Valid entries 		Usage
+						true 		Enter true if this telephone is not located in the same building with the system. If you enter true, you must complete R Balance Network.
+						false 		Enter false if the telephone is located in the same building with the system.
+				 -->
+				<xs:element name="offPremisesStation" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+
+				<!-- If a second line on the telephone is administered on the I-2 channel, enter analog. Otherwise, enter data module if applicable or none. -->
+				<xs:element name="dataOption" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:enumeration value="analog"/>
+							<xs:enumeration value="data-module"/>
+							<xs:enumeration value="none"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>				
+				
+				
+				<xs:element name="displayModule" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!-- if led or neon then messageLampExt should be enable otherwise its blank -->
+				<xs:element name="messageWaitingIndicator" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:enumeration value="led"/>       
+							<xs:enumeration value="neon"/>
+							<xs:enumeration value="none"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>				
+				
+				<!-- Enter true to use this station as an endpoint in a remote office configuration. -->
+				<xs:element name="remoteOfficePhone" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!-- Defines the source for Leave Word Calling (LWC) messages. -->
+				<!-- 
+				Valid entries 			Usage
+					audix 				If LWC is attempted, the messages are stored in AUDIX.
+					spe 				If LWC is attempted, the messages are stored in the system processing element (spe).
+					none 				If LWC is attempted, the messages are not stored.
+				
+				 -->
+				<xs:element name="lwcReception" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:enumeration value="audix"/>
+							<xs:enumeration value="msa"/>
+							<xs:enumeration value="spe"/>
+							<xs:enumeration value="none"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<!--
+					Enter true to allow internal telephone users to leave short LWC messages
+					for this extension. If the system has hospitality, enter true for
+					guest-room telephones if the extension designated to receive failed
+					wakeup messages should receive LWC messages that indicate the wakeup
+					calls failed. Enter true if LWC Reception is audix.
+				-->
+				<xs:element name="lwcActivation" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+
+				<xs:element name="lwcLogExternalCalls" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="cdrPrivacy" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="redirectNotification" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="perButtonRingControl" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="bridgedCallAlerting" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="bridgedIdleLinePreference" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="confTransOnPrimaryAppearance" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="customizableLabels" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="expansionModule" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="ipVideoSoftphone" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<xs:element name="activeStationRinging" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="single"/>
+    						<xs:enumeration value="continuous"/>
+    						<xs:enumeration value="if-busy-single"/>
+    						<xs:enumeration value="silent"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>				
+				
+				<!-- Defines how call rings to the telephone when it is on-hook. -->
+				<!--
+					Valid entries 			Usage 
+					continuous 				Enter continuous to cause all calls to this telephone to ring continuously. 
+					if-busy-single 			Enter if-busy-single to cause calls to this telephone to ring continuously when the telephone is off-hook and idle and calls to this telephone to
+											receive one ring cycle and then ring silently when the telephone is off-hook and active. 
+					silent-if-busy 			Enter silent-if-busy to cause calls to ring silently when this station is busy. 
+					single 					Enter single to cause calls to this telephone to receive one ring cycle and then ring silently.
+				-->
+				<xs:element name="idleActiveRinging" type="xs:string" maxOccurs="1" minOccurs="0" /> <!-- not found in xhtml -->
+				
+				<!-- Must be set to true when the Type field is set to H.323. -->
+				<xs:element name="switchhookFlash" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!-- If this field is true, the short switch-hook flash (50 to 150) from a 2500-type set is ignored. -->
+				<xs:element name="ignoreRotaryDigits" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+
+				<!--
+					H.320 Conversion - Valid entries are true and false (default). This field is
+					optional for non-multimedia complex voice stations and for Basic
+					multimedia complex voice stations. It is mandatory for Enhanced
+					multimedia complex voice stations. Because the system can only handle
+					a limited number of conversion calls, you might need to limit the
+					number of telephones with H.320 conversion. Enhanced multimedia
+					complexes must have this flag set to true.
+				-->
+							<xs:element name="h320Conversion" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+			
+				<!--
+					The service link is the combined hardware and software multimedia
+					connection between an Enhanced mode complex's H.320 DVC system and the
+					Avaya DEFINITY Server which terminates the H.320 protocol. A service
+					link is never used by a Basic mode complex H.320 DVC system.
+					Connecting a service link will take several seconds. When the service
+					link is connected, it uses MMI, VC and system timeslot resources. When
+					the service link is disconnected it does not tie up any resources. 
+					The
+					Service Link Mode can be administered as either 'as-needed' or
+					'permanent' as described below: - As-Needed - Most non-call center
+					multimedia users will be administered with this service link mode. The
+					as-needed mode provides the Enhanced multimedia complex with a
+					connected service link whenever a multimedia call is answered by the
+					station and for a period of 10 seconds after the last multimedia call
+					on the station has been disconnected. Having the service link stay
+					connected for 10 seconds allows a user to disconnect a multimedia call
+					and then make another multimedia call without having to wait for the
+					service link to disconnect and re-establish. - Permanent - Multimedia
+					call center agents and other users who are constantly making or
+					receiving multimedia calls might want to be administered with this
+					service link mode. The permanent mode service link will be connected
+					during the station's first multimedia call and will remain in a
+					connected state until the user disconnects from their PC's multimedia
+					application or the Avaya DEFINITY Server restarts. This provides a
+					multimedia user with a much quicker video cut-through when answering a
+					multimedia call from another permanent mode station or a multimedia
+call that has been early answered. ● Multimedia Mode - There are two
+					multimedia modes, Basic and Enhanced, as
+				-->
+				<xs:element name="serviceLinkMode" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="as-needed"/>
+    						<xs:enumeration value="permanent"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<!--
+					There are two multimedia modes, Basic and Enhanced, as described
+					below: 
+					Basic - A Basic multimedia complex consists of a
+					BRI-connected multimedia-equipped PC and a non-BRI-connected
+					multifunction telephone set. When in Basic mode, users place voice
+					calls at the multifunction telephone and multimedia calls from the
+					multimedia equipped PC. Voice calls will be answered at the
+					multifunction telephone and multimedia calls will alert first at the
+					PC and if unanswered will next alert at the voice station if it is
+					administered with H.320 enabled. A Basic mode complex has limited
+					multimedia feature capability.
+					Enhanced - An Enhanced multimedia complex consists of a
+					BRI-connected multimedia-equipped PC and a non-BRI-connected
+					multifunction telephone. The Enhanced mode station acts as though the
+					PC were directly connected to the multifunction telephone; the service
+					link provides the actual connection between the Avaya DEFINITY Server
+					and the PC. Thus, voice and multimedia calls are originated and
+					received at the telephone set. Voice and multimedia call status are
+					also displayed at the telephone set. An Enhanced mode station allows
+					multimedia calls to take full advantage of most call control features
+				-->
+				<xs:element name="multimediaMode" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="basic"/>
+    						<xs:enumeration value="enhanced"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>				
+				
+				<!-- Controls the auditing or interrogation of a served user's message waiting indicator (MWI).
+				Valid entries 			Usage
+					fp-mwi 				Use if the station is a served user of an fp-mwi message center.
+					qsig-mwi 			Use if the station is a served user of a qsig-mwi message center. 
+					blank 				Leave blank if you do not want to audit the served user's MWI or 
+										if the user is not a served user of either an fp-mwi or qsig-mwi message center.
+				 -->
+				<xs:element name="mwiServedUserType" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="fp-mwi"/>
+    						<xs:enumeration value="qsig-mwi"/>
+    						<xs:enumeration value="sip-adjunct"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>				
+				
+				<!-- The AUDIX associated with the station.
+					Must contain a user-defined adjunct name that was previously administered. 
+				-->
+							<xs:element name="audixName" type="xs:string" maxOccurs="1" minOccurs="0" />
+			
+				<!--
+					Automatic Moves allows a DCP telephone to be unplugged from one
+					location and moved to a new location without additional Communication
+					Manager administration. Communication Manager automatically associates
+					the extension to the new port.
+				
+					**********CAUTION**********
+					When a DCP telephone is unplugged and
+					moved to another physical location, the Emergency Location Extension
+					field must be changed for that extension or the USA Automatic Location
+					Identification data base must be manually updated. If the Emergency
+					Location Extension field is not changed or if the USA Automatic
+					Location Identification data base is not updated, the DID number sent
+					to the Public Safety Network could send emergency response personnel
+					to the wrong location.
+				Valid entries 			Usage
+					always 			Enter always and the DCP telephone can be moved anytime without
+									additional administration by unplugging from one location and plugging
+									into a new location.
+					once 			Enter once and the DCP telephone can be unplugged and plugged into a
+									new location once. After a move, the field is set to done the next time that
+									routine maintenance runs on the DCP telephone.
+									Use once when moving a large number of DCP telephones so each
+									extension is removed from the move list. Use once to prevent automatic
+									maintenance replacement.
+					no 				Enter no to require administration in order to move the DCP telephone.
+					done 			Done is a display-only value. Communication Manager sets the field to
+									done after the telephone is moved and routine maintenance runs on the
+									DCP telephone.
+					error 			Error is a display-only value. Communication Manager sets the field to
+									error, after routine maintenance runs on the DCP telephone, when a
+									non-serialized telephone is set as a movable telephone.
+				-->
+				<xs:element name="automaticMoves" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="always"/>
+    						<xs:enumeration value="no"/>
+    						<xs:enumeration value="once"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+
+				<!--
+					Tells Communication Manager how to handle emergency calls from the IP
+					telephone. 
+									**********CAUTION********** 
+															An Avaya IP endpoint can dial
+					emergency calls (for example, 911 calls in the U.S.). It only reaches
+					the local emergency service in the Public Safety Answering Point area
+					where the telephone system has local trunks. Please be advised that an
+					Avaya IP endpoint cannot dial to and connect with local emergency
+					service when dialing from remote locations that do not have local
+					trunks. Do not use an Avaya IP endpoint to dial emergency numbers for
+					emergency services when dialing from remote locations. Avaya Inc. is
+					not responsible or liable for any damages resulting from misplaced
+					emergency calls made from an Avaya endpoint. Your use of this product
+					indicates that you have read this advisory and agree to use an
+					alternative telephone to dial all emergency calls from remote
+					locations. Please contact your Avaya representative if you have
+					questions about emergency calls from IP telephones. Available only if
+					the station is an IP Softphone or a remote office station.
+					
+					Valid entries 				Usage
+					as-on-local				Type as-on-local to achieve the following results:
+											If the administrator chooses to leave the Emergency Location
+											Extension fields (that correspond to this station's IP address) on
+											the IP Address Mapping screen blank, the value as-on-local
+											sends the extension entered in the Emergency Location
+											Extension field in the Station screen to the Public Safety
+											Answering Point (PSAP).
+											If the administrator populates the IP Address Mapping screen with
+											emergency numbers, the value as-on-local functions as follows:
+											- If the Emergency Location Extension field in the Station screen
+											is the same as the Emergency Location Extension field in the
+											IP Address Mapping screen, the value as-on-local sends the
+											extension to the Public Safety Answering Point (PSAP).
+											- If the Emergency Location Extension field in the Station screen
+											is different from the Emergency Location Extension field in the
+											IP Address Mapping screen, the value as-on-local sends the
+											extension in the IP Address Mapping screen to the Public Safety
+											Answering Point (PSAP).
+											
+					block					Enter block to prevent the completion of emergency calls. Use this entry
+											for users who move around but always have a circuit-switched telephone
+											nearby, and for users who are farther away from the Avaya S8XXX Server
+											than an adjacent area code served by the same 911 Tandem office.
+											When users attempt to dial an emergency call from an IP Telephone and
+											the call is blocked, they can dial 911 from a nearby circuit-switched
+											telephone instead.
+													
+					cesid					Enter cesid to allow Communication Manager to send the CESID
+											information supplied by the IP Softphone to the PSAP. The end user
+											enters the emergency information into the IP Softphone.
+											Use this entry for IP Softphones with road warrior service that are near
+											enough to the Avaya S8XXX Server that an emergency call routed over
+											the it's trunk reaches the PSAP that covers the server or switch.
+											If the server uses ISDN trunks for emergency calls, the digit string is the
+											telephone number, provided that the number is a local direct-dial number
+											with the local area code, at the physical location of the IP Softphone. If the
+											server uses CAMA trunks for emergency calls, the end user enters a
+											specific digit string for each IP Softphone location, based on advice from
+											the local emergency response personnel.	
+											
+					option					Enter option to allow the user to select the option (extension, block, or
+											cesid) that the user selected during registration and the IP Softphone
+											reported. Use this entry for extensions that can be swapped back and
+											forth between IP Softphones and a telephone with a fixed location.
+											The user chooses between block and cesid on the softphone. A DCP or
+											IP telephone in the office automatically selects extension.										
+				-->
+				<xs:element name="remoteSoftphoneEmergencyCalls" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="as-on-local"/>
+    						<xs:enumeration value="block"/>
+    						<xs:enumeration value="cesid"/>
+    						<xs:enumeration value="option"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+
+				<!--
+					This field allows the system to properly identify the location of a
+					caller who dials a 911 emergency call from this station. An entry in
+					this field must be of an extension type included in the dial plan, but
+					does not have to be an extension on the local system. It can be a UDP
+					extension. The entry defaults to blank. A blank entry typically would
+					be used for an IP softphone dialing in through PPP from somewhere
+					outside your network. If you populate the IP Address Mapping screen
+					with emergency numbers, the feature functions as follows: If the
+					Emergency Location Extension field in the Station screen is the same
+					as the Emergency Location Extension field in the IP Address Mapping
+					screen, the feature sends the extension to the Public Safety Answering
+					Point (PSAP). If the Emergency Location Extension field in the Station
+					screen is different from the Emergency Location Extension field in the
+					IP Address Mapping screen, the feature sends the extension in the IP
+					Address Mapping screen to the Public Safety Answering Point (PSAP).
+				-->
+				<xs:element name="emergencyLocationExt" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-9]+([\.\-][0-9]+)*"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<!--
+					A softphone can register no matter what emergency call handling settings
+					the user has entered into the softphone. If a softphone dials 911, the
+					administered Emergency Location Extension is used. The softphone's
+					user-entered settings are ignored. If an IP telephone dials 911, the
+					administered Emergency Location Extension is used. If a call center
+					agent dials 911, the physical station extension is displayed,
+					overriding the administered LoginID for ISDN Display . Does not apply
+					to SCCAN wireless telephones, or to extensions administered as type
+					h.323.
+				-->				
+				<xs:element name="alwaysUse" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!-- Activates or deactivates Precedence Call Waiting for this station -->
+				<xs:element name="precedenceCallWaiting" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+
+				<!--
+					Enables or disables automatic selection of any idle appearance for
+					transferred or conferenced calls. Communication Manager first attempts
+					to find an idle appearance that has the same extension number as the
+					call being transferred or conferenced has. If that attempt fails,
+					Communication Manager selects the first idle appearance.
+				-->
+							<xs:element name="autoSelectAnyIdleAppearance" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+			
+				<!--
+					Allows or denies users in the telephone's Coverage Path to retrieve
+					Leave Word Calling (LWC) messages for this telephone. Applies only if
+					the telephone is enabled for LWC Reception.
+				-->
+							
+				<xs:element name="coverageMsgRetrieval" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<!--
+					In EAS environments, the auto answer setting for the Agent LoginID can
+					override a station's setting when an agent logs in.
+					Valid Entry			Usage 
+					all 				All ACD and non-ACD calls terminated to an idle station cut through immediately. 
+										Does not allow automatic hands-free answer for intercom calls. With non-ACD calls, 
+										the set is also rung while the call is cut through. The ring can be prevented by activating 
+										the ringer-off feature button when the Allow Ringer-off with Auto-Answer is enabled for the system.   
+					acd 				Only ACD split /skill calls and direct agent calls to auto answer. Non-ACD calls terminated to a station ring audibly. 
+										For analog stations, the station is off-hook and idle, only the ACD split/skill calls and direct agent calls 
+										auto answer; non-ACD calls receive busy treatment. If the station is active on an ACD call and 
+										a non-ACD call arrives, the Agent receives call-waiting tone.
+					none 				All calls terminated to this station receive an audible ringing treatment. 
+					icom 				Allows a telephone user to answer an intercom call from the same intercom group without pressing the intercom button.					
+				-->
+				<xs:element name="autoAnswer" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="acd"/>
+    						<xs:enumeration value="all"/>
+    						<xs:enumeration value="icom"/>
+    						<xs:enumeration value="none"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<!-- 
+					Enables or disables data restriction that is used to prevent tones, such as call-waiting tones, from interrupting data calls. 
+					Data restriction provides permanent protection and cannot be changed by the telephone user. Cannot be assigned if Auto Answer 
+					is administered as all or acd. If enabled, whisper page to this station is denied.
+				 -->
+				<xs:element name="dataRestriction" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!--
+					Indicates which call appearance is selected when the user lifts the handset and there is an incoming call.
+					Valid Entry  				Usage    
+					true						The user connects to an idle call appearance instead of the ringing call. 
+					false						The Alerting Appearance Preference is set and the user connects to the ringing call appearance.
+				 -->
+				<xs:element name="idleAppearancePreference" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+		
+				<!-- 
+					enable/disable call waiting for this station
+				-->
+				<xs:element name="callWaitingIndication" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!-- 
+					 Attendant call waiting allows attendant-originated or attendant-extended calls to a busy
+					 single-line telephone to wait and sends distinctive call-waiting tone to the single-line user.
+					 Enable/disable attendant call waiting
+				 -->
+				<xs:element name="attCallWaitingIndication" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!-- 
+					Enter true so the telephone can receive the 3 different types of ringing patterns which identify the type of incoming calls.
+					 Distinctive ringing might not work properly for off-premises telephones. -->
+				<xs:element name="distinctiveAudibleAlert" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!-- 
+					Valid Entries 			Usage 
+					true					Restricts the last idle call appearance used for incoming priority calls and outgoing call originations only.
+					false					Last idle call appearance is used for incoming priority calls and outgoing call originations. 
+				 -->
+				<xs:element name="restrictLastAppearance" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!-- 
+					Valid entries			Usage
+					true					Analog disconnect signal is sent automatically to the port after a call terminates. Analog devices 
+											(such as answering machines and speakerphones) use this signal to turn the devices off after a call terminates.
+					false					Hunt group agents are alerted to incoming calls. In a hunt group environment, the disconnect 
+											signal blocks the reception of zip tone and incoming call notification by an auto-answer station when a call
+											is queued for the station.
+				 -->
+				<xs:element name="adjunctSupervision" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!--
+						Send Calling Number. 
+						Valid Entries 		Usage 
+						y					All outgoing calls from the station will deliver the Calling Party Number
+											(CPN) information as "Presentation Allowed."
+						n					No CPN information is sent for the call	
+						r					Outgoing non-DCS network calls from the station will deliver the Calling
+											Party Number information as "Presentation Restricted."
+				 -->
+				<xs:element name="perStationCpnSendCallingNumber" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="r"/>
+    						<xs:enumeration value="n"/>
+    						<xs:enumeration value="y"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<!--
+					Appears on the Station screen for analog telephones, only if the Without Flash field in the
+					ANALOG BUSY AUTO CALLBACK section of the Feature-Related System Parameters
+					screen is set to true. The Busy Auto Callback without Flash field then defaults to true for all analog
+					telephones that allow Analog Automatic Callback.
+					Set true to provide automatic callback for a calling analog station without flashing the hook. 
+				 -->
+				<xs:element name="busyAutoCallbackWithoutFlash" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!-- Provides audible message waiting. -->
+				<xs:element name="audibleMessageWaiting" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+
+				<!-- Provides extended local calls / imsFeatureSequencing
+				Extended Local Calls (ELC) /imsFeatureSequencing allows DCP and H.323 stations to use SIP sequenced applications.  The feature works by routing calls 
+				involving those stations over SIP IMS trunks.  In other words, CM is applying the half-call model to those stations.  
+				That also has the side effect that features which work differently under the half-call model than under the usual (full-call) model 
+				also work differently for ELC stations. 
+				The Extended Local Calls feature is administrable per station.  We're allowing stations that always use SIP IMS trunks to coexist on 
+				the same server with stations that dont always use SIP IMS trunks.  In other words, ELC is changing a previous marketing rule that 
+				the full-call model (CM-ES) and the half-call model (CM-FS) functions can't co-exist on the same server.  As noted above, that also 
+				has the side effect that features which work differently under the half-call model than under the full-call model now also can work 
+				differently for two different SIP stations on the same CM server. 				
+				 -->
+				<xs:element name="extendedLocalCalls" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="imsFeatureSequencing" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+
+				<!--
+					Only administrable if Hospitality is enabled on the System Parameters
+					Customer-Options (Optional Features) screen. This field affects the
+					telephone display on calls that originated from a station with Client
+					Room Class of Service. Note: For stations with an audix station
+					type, AUDIX Voice Power ports, or ports for any other type of
+					messaging that needs display information, Display Client Redirection
+					must be enabled.
+					Set true to redirect information for a call originating from a Client Room and terminating to this station displays.				
+				-->
+				<xs:element name="displayClientRedirection" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!-- 
+					Valid Entries 		Usage 
+						true			Indicates that a station's line selection is not to be moved from the currently selected line button 
+										to a different, non-alerting line button. If you enter true, the line selection on an on-hook station only moves from the last
+										used line button to a line button with an audibly alerting call. If there are no alerting calls, the line selection 
+										remains on the button last used for a call.
+						false			The line selection on an on-hook station with no alerting calls can be moved to a different line button, which might be serving a different
+										extension.
+				 -->
+				<xs:element name="selectLastUsedAppearance" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!-- Whether an unanswered forwarded call is provided coverage treatment. -->
+				<xs:element name="coverageAfterForwarding" type="xs:string" maxOccurs="1" minOccurs="0" />
+				
+				<!-- Allow/disallow direct audio connections between IP endpoints. -->
+				<xs:element name="directIpIpAudioConnections" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<!-- Allows IP endpoints to be connected through the server's IP circuit pack. -->
+				<xs:element name="ipAudioHairpinning" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				
+				<xs:element name="primeAppearancePreference" type="xs:string" maxOccurs="1" minOccurs="0" />
+				
+				<!-- Elements with complex data type. Please refer the appropriate elements for more details. -->
+				<xs:element name="stationSiteData" type="csm:xmlStationSiteData" maxOccurs="1" minOccurs="0" />
+				<xs:element name="abbrList" type="csm:xmlStationAbbreviatedDialingData" maxOccurs="unbounded" minOccurs="0" />
+				<xs:element name="buttons" type="csm:xmlButtonData" maxOccurs="24" minOccurs="0" />
+				<xs:element name="featureButtons" type="csm:xmlButtonData" maxOccurs="24" minOccurs="0" />
+				<xs:element name="expansionModuleButtons" type="csm:xmlButtonData" maxOccurs="72" minOccurs="0" />
+				<xs:element name="softKeys" type="csm:xmlButtonData" maxOccurs="15" minOccurs="0" />
+				<xs:element name="displayButtons" type="csm:xmlButtonData" maxOccurs="unbounded" minOccurs="0" />
+				<xs:element name="stationDataModule" type="csm:xmlStationDataModule" maxOccurs="1" minOccurs="0" />
+				<xs:element name="hotLineData" type="csm:xmlStationHotLineData" maxOccurs="1" minOccurs="0" />
+				<xs:element  name="nativeName" type="csm:xmlNativeNameData" maxOccurs="1" minOccurs="0"/>
+				
+				<!-- Number of button modules 0-3-->
+				<xs:element name="buttonModules" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:int">
+							<xs:minInclusive value="0" />
+							<xs:maxInclusive value="3" />
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				
+				<xs:element name="unconditionalInternalDest" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[*][0-9]{1,16}[#]|[0123456789]{1,17}[#]|[*][0-9]{1,17}|[0-9]{1,18}|[*][#]|"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				
+				<xs:element name="unconditionalInternalActive" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<xs:element name="unconditionalExternalDest" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[*][0-9]{1,16}[#]|[0123456789]{1,17}[#]|[*][0-9]{1,17}|[0-9]{1,18}|[*][#]|"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				
+				<xs:element name="unconditionalExternalActive" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<xs:element name="busyInternalDest" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[*][0-9]{1,16}[#]|[0123456789]{1,17}[#]|[*][0-9]{1,17}|[0-9]{1,18}|[*][#]|"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="busyInternalActive" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<xs:element name="busyExternalDest" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[*][0-9]{1,16}[#]|[0123456789]{1,17}[#]|[*][0-9]{1,17}|[0-9]{1,18}|[*][#]|"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="busyExternalActive" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<xs:element name="noReplyInternalDest" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[*][0-9]{1,16}[#]|[0123456789]{1,17}[#]|[*][0-9]{1,17}|[0-9]{1,18}|[*][#]|"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="noReplyInternalActive" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+
+				<xs:element name="noReplyExternalDest" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[*][0-9]{1,16}[#]|[0123456789]{1,17}[#]|[*][0-9]{1,17}|[0-9]{1,18}|[*][#]|"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="noReplyExternalActive" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<xs:element name="sacCfOverride" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="a"/>
+    						<xs:enumeration value="n"/>
+    						<xs:enumeration value="y"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="lossGroup" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:int">
+							<xs:minInclusive value="1" />
+							<xs:maxInclusive value="19" />
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="timeOfDayLockTable" maxOccurs="1" minOccurs="0">								
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="[1-5]|[0-9]{0}"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="emuLoginAllowed" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<xs:element name="ec500State" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="enabled"/>
+    						<xs:enumeration value="disabled"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<!-- true/false to enable/disable Mute on Off Hook in Shared Control Mode feature. -->
+				<xs:element name="muteOnOffHookInSCMode" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<xs:element name="type3pccEnabled" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="None"/>
+    						<xs:enumeration value="Avaya"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<!-- true/false for calculate route pattern. -->
+				<xs:element name="calculateRoutePattern" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+				
+				<xs:element name="sipTrunk" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="aar|ars|[1-9]|[1-9][0-9]|[1-9]([0-9]){2}|[1]([0-9]){3}|2000|tg[1-9]|tg[1-9][0-9]|tg[1-9]([0-9]){2}|tg[1]([0-9]){3}|tg2000|rp[1-9]|rp[1-9][0-9]|rp[1-9]([0-9]){2}|rp[1]([0-9]){3}|rp2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="enableReachStaDomainControl" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="system"/>
+    						<xs:enumeration value="s"/>
+    						<xs:enumeration value="y"/>
+    						<xs:enumeration value="n"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="multimediaEarlyAnswer" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="bridgedApprOrigRestr" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<xs:element name="callApprDispFormat" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="inter-location"/>
+    						<xs:enumeration value="intra-location"/>
+    						<xs:enumeration value="disp-param-default"/>
+    					</xs:restriction>    						
+					</xs:simpleType>
+				</xs:element>
+				
+				<!-- Enter a Group ID between 0-999, or blank -->
+				<xs:element name="ipPhoneGroupId" maxOccurs="1" minOccurs="0">
+				<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-9]|[0-9][0-9]|[0-9][0-9][0-9]|[0-9]{0}"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="xoipEndPointType" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="auto"/>
+    						<xs:enumeration value="fax"/>
+    						<xs:enumeration value="modem"/>
+    						<xs:enumeration value="tty"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+							
+				<xs:element name="xid" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="stepClearing" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="fixedTei" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<xs:element name="tei" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+  							<xs:pattern value="[0-6][0-3]"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="countryProtocol" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="1"/>
+    						<xs:enumeration value="2"/>
+    						<xs:enumeration value="3"/>
+    						<xs:enumeration value="6"/>
+    						<xs:enumeration value="etsi"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="endptInit" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<xs:element name="spid" maxOccurs="1" minOccurs="0"  >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+  							<xs:pattern value="[0-9]{1,10}"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				
+				<xs:element name="endptId" maxOccurs="1" minOccurs="0" > <!-- 00 to 62 -->
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-6][0-2]"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="isMCTSignalling" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="isShortCallingPartyDisplay" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="passageWay" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="dtmfOverIp" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+    						<xs:enumeration value="in-band"/>
+    						<xs:enumeration value="in-band-g711"/>
+    						<xs:enumeration value="out-of-band"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>				
+				<xs:element name="location" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="[1-9]{0}|[1-9]|[1-9][0-9]|[1-9]([0-9]){2}|[1]([0-9]){3}|2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="displayCallerId" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="callerIdMsgWaitingIndication" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="recallRotaryDigit" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="profileSettingsData" type="csm:xmlProfileSettings" maxOccurs="1" minOccurs="0" />
+			</xs:sequence>
+		</xs:extension>
+   </xs:complexContent>
+</xs:complexType>
+
+
+<xs:complexType name="xmlStationSiteData">
+	<xs:sequence>
+		<xs:element name="room" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:maxLength value="10"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<xs:element name="jack" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:maxLength value="5"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		<xs:element name="cable" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:maxLength value="5"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<xs:element name="floor" type="xs:string" maxOccurs="1" minOccurs="0" />
+		<xs:element name="building" type="xs:string" maxOccurs="1" minOccurs="0" />
+		<xs:element name="headset" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+		<xs:element name="speaker" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+
+		<xs:element name="mounting" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+    				<xs:enumeration value="d"/>
+    				<xs:enumeration value="w"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<!-- Enter numeric cord length (0-99) -->	
+		<xs:element name="cordLength" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:int">
+					<xs:minInclusive value="0" />
+					<xs:maxInclusive value="99" />
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<xs:element name="setColor" type="xs:string" maxOccurs="1" minOccurs="0" />
+	</xs:sequence>
+</xs:complexType>
+
+
+<xs:complexType name="xmlStationAbbreviatedDialingData">
+	<xs:sequence>
+		<xs:element name="listType" maxOccurs="1" minOccurs="1" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+    				<xs:enumeration value="enhanced"/>
+    				<xs:enumeration value="group"/>
+    				<xs:enumeration value="personal"/>
+    				<xs:enumeration value="system"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<xs:element name="number" type="xs:int" maxOccurs="1" minOccurs="1" />
+		<xs:element name="listId" type="xs:int" maxOccurs="1" minOccurs="0" />
+	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="xmlButtonData">
+	<xs:sequence>
+		<xs:element name="number" type="xs:int" maxOccurs="1" minOccurs="1" /><!--  *******Must present******  -->
+		<xs:element name="type" type="xs:string" maxOccurs="1" minOccurs="1" /><!--  *******Must present******  -->
+		<xs:element name="data1" type="xs:string" maxOccurs="1" minOccurs="0" />
+		<xs:element name="data2" type="xs:string" maxOccurs="1" minOccurs="0" />
+		<xs:element name="data3" type="xs:string" maxOccurs="1" minOccurs="0" />
+		<xs:element name="data4" type="xs:string" maxOccurs="1" minOccurs="0" />
+		<xs:element name="data5" type="xs:string" maxOccurs="1" minOccurs="0" />
+		<xs:element name="data6" type="xs:string" maxOccurs="1" minOccurs="0" />
+		<xs:element name="isFavorite" type="xs:boolean" maxOccurs="1" minOccurs="0"/> <!-- To mark Button Favorite (for 96x1SIP and 96X1SIPCC only) -->
+		<xs:element name="buttonLabel" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- To set personalized Button Label (for 96x1SIP and 96X1SIPCC only) -->
+	</xs:sequence>
+</xs:complexType>
+<xs:complexType name="xmlStationDataModule">
+	<xs:sequence>
+		<xs:element name="dataExtension" maxOccurs="1" minOccurs="1" ><!--  *******Must present******  -->
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:pattern value="[0-9]+([.-][0-9]+)*"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<xs:element name="name" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:maxLength value="29"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		<xs:element name="cor" maxOccurs="1" minOccurs="1" ><!--  *******Must present******  -->
+			<xs:simpleType>
+  				<xs:restriction base="xs:int">
+					<xs:minInclusive value="0" />
+					<xs:maxInclusive value="995" />
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		<xs:element name="cos" maxOccurs="1" minOccurs="1" ><!--  *******Must present******  -->
+			<xs:simpleType>
+  				<xs:restriction base="xs:int">
+					<xs:minInclusive value="0" />
+					<xs:maxInclusive value="15" />
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<xs:element name="itc" maxOccurs="1" minOccurs="1" ><!--  *******Must present******  -->
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+    				<xs:enumeration value="restricted"/>
+    				<xs:enumeration value="unrestricted"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		<!-- CM dependant field - 100 or 250 depends on system params -->
+		<xs:element name="tn" maxOccurs="1" minOccurs="1" ><!--  *******Must present******  -->
+			<xs:simpleType>
+  				<xs:restriction base="xs:int">
+					<xs:minInclusive value="1" />
+					<xs:maxInclusive value="250" />
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		<xs:element name="listType" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+    				<xs:enumeration value="enhanced"/>
+    				<xs:enumeration value="group"/>
+    				<xs:enumeration value="personal"/>
+    				<xs:enumeration value="system"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<xs:element name="listId" type="xs:int" maxOccurs="1" minOccurs="0" />
+			
+		<xs:element name="specialDialingOption" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+    				<xs:enumeration value="default"/>
+    				<xs:enumeration value="hot-line"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		<xs:element name="specialDialingAbbrDialCode" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:maxLength value="4"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+	</xs:sequence>
+</xs:complexType>
+<xs:complexType name="xmlStationHotLineData">
+	<xs:sequence>
+		<xs:element name="hotLineDestAbbrevList" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:int">
+					<xs:minInclusive value="1" />
+					<xs:maxInclusive value="3" />
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		<xs:element name="hotLineAbbrevDialCode" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-9]*"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+	</xs:sequence>
+</xs:complexType>
+
+<!-- If displayName,givenName or surname contains characters of multiple scripts then locale tag should be present. 
+  	 If displayName tag is present then it overwrites native name.
+  	 If displayname is not present then combination of givenName and surname gets copied in native name.
+  	 Please find below locale for multiscript language
+  	 Language               Locale
+  	 Japanese				 ja, ja-jp
+  	 Simplified Chinese		 zh-cn
+  	 Traditional Chinese	 zh-tw -->  
+<xs:complexType name="xmlNativeNameData">
+	<xs:sequence>
+		<xs:element name="locale" maxOccurs="1" minOccurs="0">
+		   <xs:simpleType>
+  				<xs:restriction base="xs:string">
+    				<xs:enumeration value="ja-jp"/>
+    				<xs:enumeration value="ja"/>
+    				<xs:enumeration value="zh-cn"/>
+    				<xs:enumeration value="zh-tw"/>    				  				
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		<xs:element name="name" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:maxLength value="27"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+	</xs:sequence>
+</xs:complexType> 
+
+<!-- Profile Settings for 96X1SIP & 96X1SIPCC Phones only -->
+<xs:complexType name="xmlProfileSettings">
+	<xs:sequence>
+		<!-- Call Settings Options -->
+		<!-- Phone Screen on Calling -->
+		<xs:element name="phoneScreenCalling" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:enumeration value="No"/>
+    				<xs:enumeration value="Yes"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<!-- Redial -->
+		<xs:element name="profileRedial" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:enumeration value="List"/>
+    				<xs:enumeration value="One Number"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<!-- Dialing Option -->
+		<xs:element name="dialingOption" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:enumeration value="Editable"/>
+    				<xs:enumeration value="On-hook"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<!-- Headset Signaling -->
+		<xs:element name="headsetSignaling" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:enumeration value="Disabled"/>
+    				<xs:enumeration value="Switchhook and Alerts"/>
+    				<xs:enumeration value="Switchhook only"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<!-- Audio Path -->
+		<xs:element name="audioPath" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:enumeration value="Speaker"/>
+    				<xs:enumeration value="Headset"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<!-- Screen & Sound Options Section -->
+		<!-- Button Clicks -->
+		<xs:element name="buttonClicks" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:enumeration value="On"/>
+    				<xs:enumeration value="Off"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<!-- Phone Screen -->
+		<xs:element name="phoneScreen" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:enumeration value="Half"/>
+    				<xs:enumeration value="Full"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<!-- Background Logo -->
+		<xs:element name="backgroundLogo" type="xs:string" maxOccurs="1" minOccurs="0" />
+		
+		<!-- Personalized Ringing -->
+		<xs:element name="personalizedRinging" type="xs:string" maxOccurs="1" minOccurs="0" />
+		
+		<!-- Call Pickup Indication -->
+		<xs:element name="callPickUpIndication" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:enumeration value="None"/>
+    				<xs:enumeration value="Audible"/>
+    				<xs:enumeration value="Visual"/>
+    				<xs:enumeration value="Both"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<!-- Show Quick Touch Panel -->
+		<xs:element name="touchPanel" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:enumeration value="0"/>
+    				<xs:enumeration value="1"/>
+    				<xs:enumeration value="2"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		
+		<!-- Language & Region Section -->
+		<!-- Language -->
+		<xs:element name="language" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:enumeration value="English"/>
+    				<xs:enumeration value="Hebrew"/>
+    				<xs:enumeration value="Brazilian Portuguese"/>
+    				<xs:enumeration value="Canadian French"/>
+    				<xs:enumeration value="German"/>
+    				<xs:enumeration value="Parisian French"/>
+    				<xs:enumeration value="Latin American Spanish"/>
+    				<xs:enumeration value="Castilian Spanish"/>
+    				<xs:enumeration value="Italian"/>
+    				<xs:enumeration value="Dutch"/>
+    				<xs:enumeration value="Russian"/>
+    				<xs:enumeration value="Simplified Chinese"/>
+    				<xs:enumeration value="Japanese"/>
+    				<xs:enumeration value="Korean"/>
+    				<xs:enumeration value="Arabic"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<!-- User Preferred Language -->
+		<xs:element name="userPreferredLanguage" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:enumeration value="English"/>
+    				<xs:enumeration value="Hebrew"/>
+    				<xs:enumeration value="Brazilian Portuguese"/>
+    				<xs:enumeration value="Canadian French"/>
+    				<xs:enumeration value="German"/>
+    				<xs:enumeration value="Parisian French"/>
+    				<xs:enumeration value="Latin American Spanish"/>
+    				<xs:enumeration value="Castilian Spanish"/>
+    				<xs:enumeration value="Italian"/>
+    				<xs:enumeration value="Dutch"/>
+    				<xs:enumeration value="Russian"/>
+    				<xs:enumeration value="Simplified Chinese"/>
+    				<xs:enumeration value="Japanese"/>
+    				<xs:enumeration value="Korean"/>
+    				<xs:enumeration value="Arabic"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<!-- Language File In Use -->
+		<xs:element name="languageFileInUse" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:enumeration value="Mlf_English.xml"/>
+    				<xs:enumeration value="Mlf_Hebrew.xml"/>
+    				<xs:enumeration value="Mlf_BrazilianPortuguese.xml"/>
+    				<xs:enumeration value="Mlf_CanadianFrench.xml"/>
+    				<xs:enumeration value="Mlf_German.xml"/>
+    				<xs:enumeration value="Mlf_ParisianFrench.xml"/>
+    				<xs:enumeration value="Mlf_LatinAmericanSpanish.xml"/>
+    				<xs:enumeration value="Mlf_CastilianSpanish.xml"/>
+    				<xs:enumeration value="Mlf_Italian.xml"/>
+    				<xs:enumeration value="Mlf_Dutch.xml"/>
+    				<xs:enumeration value="Mlf_Russian.xml"/>
+    				<xs:enumeration value="Mlf_Chinese.xml"/>
+    				<xs:enumeration value="Mlf_Japanese.xml"/>
+    				<xs:enumeration value="Mlf_Korean.xml"/>
+    				<xs:enumeration value="Mlf_Arabic.xml"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<!-- Time Format -->
+		<xs:element name="timeFormat" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:enumeration value="12 Hour"/>
+    				<xs:enumeration value="24 Hour"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<!-- Advanced Options - Presence Integration Section -->
+		<!-- Away Timer -->
+		<xs:element name="awayTimer" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:enumeration value="On"/>
+    				<xs:enumeration value="Off"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<!-- Away Timer Value -->
+		<xs:element name="awayTimerValue" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:int">
+					<xs:minInclusive value="5" />
+					<xs:maxInclusive value="480" />
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+	</xs:sequence>
+</xs:complexType>
+
+</xs:schema>

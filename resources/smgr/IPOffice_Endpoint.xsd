@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:one="http://xml.avaya.com/schema/import" elementFormDefault="qualified"
+	targetNamespace="http://xml.avaya.com/schema/import_csm_b5800" xmlns:csm="http://xml.avaya.com/schema/import_csm_b5800">
+
+	<xs:import namespace="http://xml.avaya.com/schema/import"
+		schemaLocation="userimport.xsd" />
+
+	<!--Changes in xsd file need to generate jaxb src using this xsd-->
+	<xs:complexType name="xmlB5800UserProfile">
+		<xs:complexContent>
+			<xs:extension base="one:xmlCommProfileType">
+				<xs:sequence>
+					<!--
+						IPOffice/B5800/B5800L Device Name as it appears under 'Applications/Application
+						Management/Entities
+					-->
+					<xs:element name="deviceName" type="xs:string" maxOccurs="1"
+						minOccurs="1" />
+
+					<!--
+						Template name to be used to create station. Values defined in
+						Template will be used if not provided.
+					-->
+					<xs:element name="userTemplate" type="xs:string"
+						maxOccurs="1" minOccurs="0" />
+
+					<xs:element name="useExistingExt" type="xs:boolean"
+						maxOccurs="1" minOccurs="0" />
+
+					<!-- extension number that need to be assigned to the user. -->
+					<xs:element name="extension" maxOccurs="1" minOccurs="1">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="[0-9]+([\.\-][0-9]+)*" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					
+					<xs:element name="modulePort" type="xs:string"
+						maxOccurs="1" minOccurs="0" />
+
+					<!-- Specifies the type of the extn  -->
+					<xs:element name="extensionType" maxOccurs="1"
+						minOccurs="1">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="Analog" />
+								<xs:enumeration value="IPDECT" />
+								<xs:enumeration value="SIPDECT" />
+								<xs:enumeration value="Sip" />
+								<xs:enumeration value="Digital" />
+								<xs:enumeration value="H323" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+
+					<xs:element name="deleteExtOnUserDelete" type="xs:boolean"
+						maxOccurs="1" minOccurs="0" />
+												
+					<xs:element name="data" type="csm:xmlB5800UserProfileData"
+						maxOccurs="1" minOccurs="0" />
+				</xs:sequence>
+
+			</xs:extension>
+
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="xmlB5800UserProfileData">
+		<xs:sequence>
+			<xs:element name="ws_object" type="csm:xmlB5800UserConfig">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="xmlB5800UserConfig">
+		<xs:sequence>
+			<xs:element name="Extension" type="csm:xmlB5800ExtensionInfo">
+			</xs:element>
+			<xs:element name="User" type="csm:xmlB5800UserInfo">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="xmlB5800ExtensionInfo">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:int" minOccurs="0" />
+			<xs:element name="Extension" type="xs:string" minOccurs="0" />
+			<xs:element name="TypeInfo" type="xs:int" minOccurs="0" />
+			<xs:element name="CallerDisplayType" type="xs:int" minOccurs="0" />
+			<xs:element name="MessageLampType" type="xs:int" minOccurs="0" />
+			<xs:element name="ExtnClassification" type="xs:int" minOccurs="0" />
+			<xs:element name="LineType" type="xs:int" minOccurs="0" />
+			<xs:element name="MinFlashPulseWidth" type="xs:int" minOccurs="0" />
+			<xs:element name="MaxFlashPulseWidth" type="xs:int" minOccurs="0" />
+			<xs:element name="UseSystemFlashHook" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ResetVolumeAfterCalls" type="xs:boolean" minOccurs="0" />
+			<xs:element name="DisconnectPulseWidth" type="xs:int" minOccurs="0" />
+			<xs:element name="HookPersistency" type="xs:int" minOccurs="0" />
+			<xs:element name="Mac" type="xs:string" minOccurs="0" />
+			<xs:element name="SilenceSuppression" type="xs:boolean" minOccurs="0" />
+			<xs:element name="VoicePktSize" type="xs:int" minOccurs="0" />
+			<xs:element name="VoiceCompression" type="xs:int" minOccurs="0" />
+			<xs:element name="voip" type="csm:xmlVoip" minOccurs="0" />
+			<xs:element name="RenegotiationSupported" type="xs:boolean" minOccurs="0" />
+			<xs:element name="RenegotiateBeforeConnect" type="xs:boolean" minOccurs="0" />
+			<xs:element name="UseVocoder" type="xs:boolean" minOccurs="0" />
+			<xs:element name="EarlyH245Supported" type="xs:boolean" minOccurs="0" />
+			<xs:element name="RFC2833" type="xs:boolean" minOccurs="0" />
+			<xs:element name="MediaWait" type="xs:boolean" minOccurs="0" />
+			<xs:element name="MediaOnOverlap" type="xs:boolean" minOccurs="0" />
+			<xs:element name="PauseRequired" type="xs:boolean" minOccurs="0" />
+			<xs:element name="PauseOnEndRequired" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ParallelH245" type="xs:boolean" minOccurs="0" />
+			<xs:element name="AnnexFSupported" type="xs:boolean" minOccurs="0" />
+			<xs:element name="PhoneType" type="xs:int" minOccurs="0" />
+			<xs:element name="ExtnAPIAudio_setting" type="xs:int" minOccurs="0" />
+			<xs:element name="ExtnAPIHeadset_setting" type="xs:int" minOccurs="0" />
+			<xs:element name="ExtnAPIContrast" type="xs:int" minOccurs="0" />
+			<xs:element name="ExtnAPIRedial_time" type="xs:int" minOccurs="0" />
+			<xs:element name="ExtnAPISpeaker_volume" type="xs:int" minOccurs="0" />
+			<xs:element name="ExtnAPIHandsfree_settings" type="xs:int" minOccurs="0" />
+			<xs:element name="ExtnAPIRingtone_volume" type="xs:int" minOccurs="0" />
+			<xs:element name="ExtnAPIDoor_phone" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ExtnAPIHandset_volume" type="xs:int" minOccurs="0" />
+			<xs:element name="ExtnAPIRingtone_speed" type="xs:int" minOccurs="0" />
+			<xs:element name="ExtnAPIHeadset_volume" type="xs:int" minOccurs="0" />
+			<xs:element name="ExtnAPIHeadset_config" type="xs:int" minOccurs="0" />
+			<xs:element name="ExtnAPIAlpha_keypad_layout" type="xs:int" minOccurs="0" />
+			<xs:element name="ExtnAPIDirect_dial_enabled" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ExtnAPIHandsfree_enabled" type="xs:boolean" minOccurs="0" />
+			<xs:element name="T38Fax" type="csm:xmlT38Fax" minOccurs="0" />
+			<xs:element name="SipExtn" type="csm:xmlSipExtn" minOccurs="0" />
+			<xs:element name="DisableSpeaker" type="xs:boolean" minOccurs="0" />
+			<xs:element name="VPNExtn" type="xs:boolean" minOccurs="0" />
+			<xs:element name="IPAvayaLicenseReserved" type="xs:boolean" minOccurs="0" />
+			<xs:element name="IPEndpointsLicenseReserved" type="xs:boolean" minOccurs="0" />
+			<xs:element name="IsExtnCentralized" type="xs:boolean" minOccurs="0" />
+			<xs:element name="CentralizedDDINumber" type="xs:string" minOccurs="0" />
+			<xs:element name="ExtnDS" type="csm:xmlExtnDS" minOccurs="0" />
+			<xs:element name="SpecificBstType" type="xs:int" minOccurs="0" />
+			<xs:element name="Location" type="xs:string" minOccurs="0" />
+			<xs:element name="PhonePassword" type="xs:string" minOccurs="0" />
+			<xs:element name="Module" type="xs:string" minOccurs="0" />
+			<xs:element name="Port" type="xs:string" minOccurs="0" />
+			<xs:element name="D100Extn" type="csm:xmlD100Extn" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="GUID" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="xmlB5800UserInfo">
+		<xs:sequence>
+			<xs:element name="UserRightsView" type="xs:string" minOccurs="0" />
+			<xs:element name="UsingView" type="xs:boolean" minOccurs="0" />
+			<xs:element name="UserRightsTimeProfile" type="xs:string" minOccurs="0" />
+			<xs:element name="OutOfHoursUserRights" type="xs:string" minOccurs="0" />
+			<xs:element name="Name" type="xs:string" minOccurs="0" />
+			<xs:element name="KName" type="xs:string" minOccurs="0" />
+			<xs:element name="Password" type="xs:string" minOccurs="0" />
+			<xs:element name="FullName" type="xs:string" minOccurs="0" />
+			<xs:element name="Extension" type="xs:string" minOccurs="0" />
+			<xs:element name="Priority" type="xs:int" minOccurs="0" />
+			<xs:element name="OutsideCallSeq" type="xs:int" minOccurs="0" />
+			<xs:element name="InsideCallSeq" type="xs:int" minOccurs="0" />
+			<xs:element name="RingbackCallSeq" type="xs:int" minOccurs="0" />
+			<xs:element name="NoAnswerTime" type="xs:int" minOccurs="0" />
+			<xs:element name="ForwardOnBusy" type="xs:boolean" minOccurs="0" />
+			<xs:element name="BookConferenceWithPM" type="xs:boolean" minOccurs="0" />
+			<xs:element name="DisableForwardOnInt" type="xs:boolean" minOccurs="0" />
+			<xs:element name="DisableForwardUncondOnInt" type="xs:boolean" minOccurs="0" />
+			<xs:element name="DisableForwardBusyNoAnsOnInt" type="xs:boolean" minOccurs="0" />
+			<xs:element name="VoicemailReception2" type="xs:string" minOccurs="0" />
+			<xs:element name="VoicemailReception3" type="xs:string" minOccurs="0" />
+			<xs:element name="DSSKeys" type="csm:xmlDSSKeys" minOccurs="0" />
+			<xs:element name="InhibitOffSwitchForwarding" type="xs:boolean" minOccurs="0" />
+			<xs:element name="IsNoUser" type="xs:boolean" minOccurs="0" />
+			<xs:element name="IsRealUser" type="xs:boolean" minOccurs="0" />
+			<xs:element name="IsRemoteManager" type="xs:boolean" minOccurs="0" />
+			<xs:element name="IsVoiceEmailModeAlert" type="xs:boolean" minOccurs="0" />
+			<xs:element name="IsVoiceEmailModeCopy" type="xs:boolean" minOccurs="0" />
+			<xs:element name="IsVoiceEmailModeForward" type="xs:boolean" minOccurs="0" />
+			<xs:element name="IsVoiceEmailModeOff" type="xs:boolean" minOccurs="0" />
+			<xs:element name="MaxTwinnedCalls" type="xs:int" minOccurs="0" />
+			<xs:element name="PhoneManagerCallStatusOptions" type="xs:long" minOccurs="0" />
+			<xs:element name="PhoneManagerCloseOptions" type="xs:int" minOccurs="0" />
+			<xs:element name="PhoneManagerCanChange" type="xs:boolean" minOccurs="0" />
+			<xs:element name="PhoneManagerConfigureOptions" type="xs:int" minOccurs="0" />
+			<xs:element name="PhoneManagerOptions" type="xs:int" minOccurs="0" />
+			<xs:element name="PhoneManagerOptionsOriginal" type="xs:int" minOccurs="0" />
+			<xs:element name="PhoneType" type="xs:int" minOccurs="0" />
+			<xs:element name="PhoneTypeIndex" type="xs:int" minOccurs="0" />
+			<xs:element name="PopupAnswering" type="xs:boolean" minOccurs="0" />
+			<xs:element name="PopupExternal" type="xs:boolean" minOccurs="0" />
+			<xs:element name="PopupInternal" type="xs:boolean" minOccurs="0" />
+			<xs:element name="PopupOutlook" type="xs:boolean" minOccurs="0" />
+			<xs:element name="PopupRinging" type="xs:boolean" minOccurs="0" />
+			<xs:element name="PopupOptions" type="xs:int" minOccurs="0" />
+			<xs:element name="RingDelay" type="xs:int" minOccurs="0" />
+			<xs:element name="ShowAccountCodes" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ShowAllCalls" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ShowCallStatus" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ShowCostOfCall" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ShowIncoming" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ShowMessages" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ShowMissed" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ShowOutgoing" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ShowSpeedDials" type="xs:boolean" minOccurs="0" />
+			<xs:element name="StartInCompactMode" type="xs:boolean" minOccurs="0" />
+			<xs:element name="StayInCompactModeOnIncommingCall" type="xs:boolean" minOccurs="0" />
+			<xs:element name="StayInCompaceModeOnOutgoingCall" type="xs:boolean" minOccurs="0" />
+			<xs:element name="T3AllowThirdPartyFwd" type="xs:boolean" minOccurs="0" />
+			<xs:element name="T3ProtectFromThirdPartyFwd" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TwinnedDialDelay" type="xs:int" minOccurs="0" />
+			<xs:element name="TwinnedEligibleForForwarded" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TwinnedEligibleForGroup" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TwinnedMobileNumber" type="xs:string" minOccurs="0" />
+			<xs:element name="TwinnedTimeProfile" type="xs:string" minOccurs="0" />
+			<xs:element name="TwinningNumber" type="xs:string" minOccurs="0" />
+			<xs:element name="TwinningType" type="xs:int" minOccurs="0" />
+			<xs:element name="ForwardOnNoAnswer" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ForwardUnconditional" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ForwardHuntGroupCalls" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ForwardNumber" type="xs:string" minOccurs="0" />
+			<xs:element name="ForwardBusyNumber" type="xs:string" minOccurs="0" />
+			<xs:element name="DoNotDisturb" type="xs:boolean" minOccurs="0" />
+			<xs:element name="DNDExceptions" type="xs:string" minOccurs="0" />
+			<xs:element name="OutgoingCallBar" type="xs:boolean" minOccurs="0" />
+			<xs:element name="IncomingCallBar" type="xs:boolean" minOccurs="0" /> 
+			<xs:element name="OffHookStation" type="xs:boolean" minOccurs="0" /> 
+			<xs:element name="BusyOnHeld" type="xs:boolean" minOccurs="0" />
+			<xs:element name="FollowMeNumber" type="xs:string" minOccurs="0" />
+			<xs:element name="CallWaitingOn" type="xs:boolean" minOccurs="0" />
+			<xs:element name="VoicemailOn" type="xs:boolean" minOccurs="0" />
+			<xs:element name="VoicemailHelp" type="xs:boolean" minOccurs="0" />
+			<xs:element name="VoicemailCode" type="xs:string" minOccurs="0" />
+			<xs:element name="VoicemailEmail" type="xs:string" minOccurs="0" />
+			<xs:element name="VoicemailEmailReading" type="xs:boolean" minOccurs="0" />
+			<xs:element name="VoicemailReception" type="xs:string" minOccurs="0" />
+			<xs:element name="VoicemailEmailMode" type="xs:int" minOccurs="0" />
+			<xs:element name="VoicemailRingback" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ShortCodes" type="csm:xmlShortCodes" minOccurs="0" />
+			<xs:element name="DialInOn" type="xs:boolean" minOccurs="0" />
+			<xs:element name="DialInTimeProfile" type="xs:string" minOccurs="0" />
+			<xs:element name="DialInFirewallProfile" type="xs:string" minOccurs="0" />
+			<xs:element name="SourceNumbers" type="xs:string" minOccurs="0" />
+			<xs:element name="DialInQuotaTime" type="xs:int" minOccurs="0" />
+			<xs:element name="LoginCode" type="xs:string" minOccurs="0" />
+			<xs:element name="LoginIdleTime" type="xs:string" minOccurs="0" />
+			<xs:element name="WrapUpTime" type="xs:int" minOccurs="0" />
+			<xs:element name="TwinMaster" type="xs:string" minOccurs="0" />
+			<xs:element name="SecTwinCallEnabled" type="xs:boolean" minOccurs="0" />
+			<xs:element name="CanIntrude" type="xs:boolean" minOccurs="0" />
+			<xs:element name="CannotBeIntruded" type="xs:boolean" minOccurs="0" />
+			<xs:element name="XDirectory" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ForceLogin" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ForceAuthCode" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ForceAccountCode" type="xs:boolean" minOccurs="0" />
+			<xs:element name="SystemPhone" type="xs:int" minOccurs="0" />
+			<xs:element name="AbsentMsg" type="xs:int" minOccurs="0" />
+			<xs:element name="AbsentSet" type="xs:int" minOccurs="0" />
+			<xs:element name="AbsentText" type="xs:string" minOccurs="0" />
+			<xs:element name="T3HuntGroupMembershipStatus" type="xs:string" minOccurs="0" />
+			<xs:element name="T3HuntGroupServiceStatus" type="xs:string" minOccurs="0" />
+			<xs:element name="T3DirectoryEntries" type="xs:string" minOccurs="0" />
+			<xs:element name="MonitorGroup" type="xs:string" minOccurs="0" />
+			<xs:element name="DisplayLocale" type="xs:string" minOccurs="0" />
+			<xs:element name="Locale" type="xs:string" minOccurs="0" />
+			<xs:element name="PMType" type="xs:int" minOccurs="0" />
+			<xs:element name="InboundAutoRecord" type="xs:int" minOccurs="0" />
+			<xs:element name="OutboundAutoRecord" type="xs:int" minOccurs="0" />
+			<xs:element name="AutoRecordTimeProfile" type="xs:string" minOccurs="0" />
+			<xs:element name="RemoteWorker" type="xs:boolean" minOccurs="0" />
+			<xs:element name="CanAcceptCollectCalls" type="xs:boolean" minOccurs="0" />
+			<xs:element name="UserRights" type="xs:string" minOccurs="0" />
+			<xs:element name="Secretaries" type="xs:string" minOccurs="0" />
+			<xs:element name="TransferReturnTime" type="xs:string" minOccurs="0" />
+			<xs:element name="AnswerCallWaiting" type="xs:boolean" minOccurs="0" />
+			<xs:element name="RingingLinePreference" type="xs:boolean" minOccurs="0" />
+			<xs:element name="IdleLinePreference" type="xs:boolean" minOccurs="0" />
+			<xs:element name="CoverageTime" type="xs:int" minOccurs="0" />
+			<xs:element name="AutoVRL" type="xs:int" minOccurs="0" />
+			<xs:element name="ManualVRL" type="xs:int" minOccurs="0" />
+			<xs:element name="DelayedRingPreference" type="xs:boolean" minOccurs="0" />
+			<xs:element name="AnswerPreSelect" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ReserveLastCA" type="xs:boolean" minOccurs="0" />
+			<xs:element name="CallTracingOn" type="xs:boolean" minOccurs="0" />
+			<xs:element name="DisplayCharges" type="xs:boolean" minOccurs="0" />
+			<xs:element name="MarkUpFactor" type="xs:int" minOccurs="0" />
+			<xs:element name="reset_longest_idle_info" type="xs:int" minOccurs="0" />
+			<xs:element name="NoAnswerStatus" type="xs:int" minOccurs="0" />
+			<xs:element name="PBXAddress" type="xs:string" minOccurs="0" />
+			<xs:element name="SIPName" type="xs:string" minOccurs="0" />
+			<xs:element name="SIPDisplayName" type="xs:string" minOccurs="0" />
+			<xs:element name="SIPContact" type="xs:string" minOccurs="0" />
+			<xs:element name="SIPAnonymous" type="xs:boolean" minOccurs="0" />
+			<xs:element name="AbbreviatedRing" type="xs:boolean" minOccurs="0" />
+			<xs:element name="CustomerServiceRep" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ACWTime" type="xs:int" minOccurs="0" />
+			<xs:element name="AutoACW" type="xs:boolean" minOccurs="0" />
+			<xs:element name="UMSWebServices" type="xs:boolean" minOccurs="0" />
+			<xs:element name="DisableVMOnFU" type="xs:boolean" minOccurs="0" />
+			<xs:element name="DTMFCallCtrl" type="xs:boolean" minOccurs="0" />
+			<xs:element name="LoggedOutTwinning" type="xs:int" minOccurs="0" />
+			<xs:element name="OneXClient" type="xs:boolean" minOccurs="0" />
+			<xs:element name="MobilityFeatures" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TwinnedBridgeAppearances" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TwinnedCoverageAppearances" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TwinnedLineAppearances" type="xs:boolean" minOccurs="0" />
+			<xs:element name="PersonalDirectory" type="xs:string" minOccurs="0" />
+			<xs:element name="ForwardToVoicemail" type="xs:boolean" minOccurs="0" />
+			<xs:element name="CoverageGroup" type="xs:string" minOccurs="0" />
+			<xs:element name="CanChangeHGOOSGroup" type="xs:string" minOccurs="0" />
+			<xs:element name="CanChangeHGONGroup" type="xs:string" minOccurs="0" />
+			<xs:element name="IncludeForwardInMenu" type="xs:boolean" minOccurs="0" />
+			<xs:element name="CallLoggingCentralised" type="xs:string" minOccurs="0" />
+			<xs:element name="AttentionRing" type="xs:string" minOccurs="0" />
+			<xs:element name="CoverageRing" type="xs:string" minOccurs="0" />
+			<xs:element name="LogMissedCallsForHG" type="xs:string" minOccurs="0" />
+			<xs:element name="DisableForwardToVoicemail" type="xs:int" minOccurs="0" />
+			<xs:element name="AnnouncementsOn" type="xs:boolean" minOccurs="0" />
+			<xs:element name="FollowAnnouncementsOn" type="xs:boolean" minOccurs="0" />
+			<xs:element name="LoopAnnouncementsOn" type="xs:boolean" minOccurs="0" />
+			<xs:element name="SyncAnnouncementsOn" type="xs:boolean" minOccurs="0" />
+			<xs:element name="FirstAnnTime" type="xs:int" minOccurs="0" />
+			<xs:element name="SecondAnnTime" type="xs:int" minOccurs="0" />
+			<xs:element name="BetweenAnnTime" type="xs:int" minOccurs="0" />
+			<xs:element name="PostAnnTone" type="xs:int" minOccurs="0" />
+			<xs:element name="PortalServices" type="xs:int" minOccurs="0" />
+			<xs:element name="WorkingHoursUserRightsGroup" type="xs:string" minOccurs="0" />
+			<xs:element name="T3SelfAdmin" type="xs:string" minOccurs="0" />
+			<xs:element name="MobileCallback" type="xs:boolean" minOccurs="0" />
+			<xs:element name="Receptionist" type="xs:boolean" minOccurs="0" />
+			<xs:element name="SoftPhone" type="xs:boolean" minOccurs="0" />
+			<xs:element name="OneXTelecommuter" type="xs:boolean" minOccurs="0" />
+			<xs:element name="AssignedPackage" type="xs:int" minOccurs="0" />
+			<xs:element name="AutoRecMode" type="xs:int" minOccurs="0" />
+			<xs:element name="CallLogTimeout" type="xs:string" minOccurs="0" />
+			<xs:element name="UserCLI" type="xs:string" minOccurs="0" />
+			<xs:element name="FlareEnabled" type="xs:boolean" minOccurs="0" />
+			<xs:element name="FlareMode" type="xs:int" minOccurs="0" />
+			<xs:element name="AutoIntDeny" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TUIUser" type="csm:xmlTUIUser" minOccurs="0" />  
+			<xs:element name="UserPasswordStatus" type="xs:int" minOccurs="0" />
+			<xs:element name="MobileVoIPClientEnabled" type="xs:boolean" minOccurs="0" />
+			<xs:element name="SendMobilityEmail" type="xs:boolean" minOccurs="0" />
+		</xs:sequence>		
+		<xs:attribute name="GUID" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="xmlDSSKeys">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="DSSKey"
+				type="csm:xmlDSSKey"/>
+
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="xmlDSSKey">
+		<xs:sequence>
+			<xs:element name="KeyType" type="xs:int" minOccurs="0"/>    
+			<xs:element name="Label" type="xs:string" minOccurs="0" />
+			<xs:element name="ActionObject" type="xs:string" minOccurs="0" />
+			<xs:element name="Data" type="xs:string" minOccurs="0" />
+			<xs:element name="RingDelay" type="xs:int" minOccurs="0" />
+			<xs:element name="IdlePos" type="xs:string" minOccurs="0"/> 
+		</xs:sequence>
+		<xs:attribute name="Key" type="xs:int" />
+	</xs:complexType>
+
+
+	<xs:complexType name="xmlShortCodes">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ShortCode"
+				type="csm:xmlShortCode"  />
+
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="xmlShortCode">
+		<xs:sequence>
+			<xs:element name="Code" type="xs:string" minOccurs="0" />
+			<xs:element name="TelephoneNumber" type="xs:string" minOccurs="0" />
+			<xs:element name="LineGroupId" type="xs:int" minOccurs="0" />
+			<xs:element name="Feature" type="xs:string" minOccurs="0" />
+			<xs:element name="Locale" type="xs:string" minOccurs="0" />
+			<xs:element name="ForceAccountCode" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ForceAuthCode" type="xs:boolean" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="GUID" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="xmlVoip">
+		<xs:sequence>
+			<xs:element name="GatekeeperPrimaryIPAddress" type="xs:string" minOccurs="0" />
+			<xs:element name="GatekeeperSecondaryIPAddress" type="xs:string" minOccurs="0" />
+			<xs:element name="IPAddress" type="xs:string" minOccurs="0" />
+			<xs:element name="EnableFaststart" type="xs:boolean" minOccurs="0" />
+			<xs:element name="FaxTransportSupport" type="xs:boolean" minOccurs="0" />
+			<xs:element name="FaxTransportMethod" type="xs:int" minOccurs="0" />
+			<xs:element name="CodecLockdown" type="xs:boolean" minOccurs="0" />
+			<xs:element name="LocalHoldMusic" type="xs:boolean" minOccurs="0" />
+			<xs:element name="LocalTones" type="xs:boolean" minOccurs="0" />
+			<xs:element name="RSVPEnabled" type="xs:boolean" minOccurs="0" />
+			<xs:element name="OOB_DTMF" type="xs:boolean" minOccurs="0" />
+			<xs:element name="AllowDirectMedia" type="xs:boolean" minOccurs="0" />
+			<xs:element name="H450Support" type="xs:int" minOccurs="0" />
+			<xs:element name="AnnexlSupport" type="xs:boolean" minOccurs="0" />
+			<xs:element name="InputGain" type="xs:int" minOccurs="0" />
+			<xs:element name="OutputGain" type="xs:int" minOccurs="0" />
+			<xs:element name="MediaSecurity" type="xs:int" minOccurs="0" />
+			<xs:element name="RTP_Authentication" type="xs:boolean" minOccurs="0" />
+			<xs:element name="RTP_Encryption" type="xs:boolean" minOccurs="0" />
+			<xs:element name="RTCP_Authentication" type="xs:boolean" minOccurs="0" />
+			<xs:element name="RTCP_Encryption" type="xs:boolean" minOccurs="0" />
+			<xs:element name="SRTP_Window_Size" type="xs:string" minOccurs="0" />
+			<xs:element name="Crypto_Suite_SHA_80" type="xs:boolean" minOccurs="0" />
+			<xs:element name="Crypto_Suite_SHA_32" type="xs:boolean" minOccurs="0" />
+			<xs:element name="UseAdvancedCodecPrefs" type="xs:boolean" minOccurs="0" />
+			<xs:element name="AdvancedCodecPrefs" type="csm:xmlAdvancedCodecPrefs" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="xmlSipExtn">
+		<xs:sequence>
+			<xs:element name="ForceAuthentication" type="xs:boolean" minOccurs="0" />
+			<xs:element name="Rel100Supported" type="xs:string" minOccurs="0" />
+			<xs:element name="T38Fax" type="csm:xmlT38Fax" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="xmlExtnDS">
+		<xs:sequence>
+			<xs:element name="AdmmUseHandsetConfig" type="xs:boolean" minOccurs="0" />
+			<xs:element name="AdmmType" type="xs:int" minOccurs="0" />
+			<xs:element name="AdmmIpei" type="xs:int" minOccurs="0" />
+			<xs:element name="AdmmAnonymous" type="xs:boolean" minOccurs="0" />
+
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="xmlT38Fax">
+		<xs:sequence>
+			<xs:element name="Defaulted" type="xs:string" minOccurs="0" />
+			<xs:element name="T38FaxVersion" type="xs:string" minOccurs="0" />
+			<xs:element name="RedundancyLowSpeed" type="xs:string" minOccurs="0" />
+			<xs:element name="RedundancyHighSpeed" type="xs:string" minOccurs="0" />
+			<xs:element name="NSFOveride" type="xs:string" minOccurs="0" />
+			<xs:element name="NSFCountryCode" type="xs:string" minOccurs="0" />
+			<xs:element name="NSFVendorCode" type="xs:string" minOccurs="0" />
+			<xs:element name="TxNetworkTimeout" type="xs:string" minOccurs="0" />
+			<xs:element name="ScanLineFixup" type="xs:string" minOccurs="0" />
+			<xs:element name="TopEnhancement" type="xs:string" minOccurs="0" />
+			<xs:element name="DisableT30ECM" type="xs:string" minOccurs="0" />
+			<xs:element name="DisableT30MR" type="xs:string" minOccurs="0" />
+			<xs:element name="DisableEFlagsForFirstDis" type="xs:string" minOccurs="0" />
+			<xs:element name="EflagStartTimer" type="xs:string" minOccurs="0" />
+			<xs:element name="EflagStopTimer" type="xs:string" minOccurs="0" />
+			<xs:element name="FaxTransport" type="xs:string" minOccurs="0" />
+			<xs:element name="TCFMethod" type="xs:int" minOccurs="0" />
+			<xs:element name="MaxFaxRate" type="xs:int" minOccurs="0" />
+
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="xmlD100Extn">
+		<xs:sequence>
+			<xs:element name="ForceAuthentication" type="xs:boolean" minOccurs="0" />
+			<xs:element name="RemoteLineNumber" type="xs:int" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="xmlTUIUser">
+		<xs:sequence>
+			<xs:element name="TUIFeaturesMenuControls" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TUIFeaturesMenu" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TUIBasicCallFunctions" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TUIAdvancedCallFunctions" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TUIHotDeskFunctions" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TUIPasscodeChange" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TUIPhoneLock" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TUISelfAdmin" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TUIVoiceMailControls" type="xs:boolean" minOccurs="0" />
+			<xs:element name="TUIForwarding" type="xs:boolean" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="xmlAdvancedCodecPrefs">
+		<xs:sequence>
+			<xs:element name="codecPref" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

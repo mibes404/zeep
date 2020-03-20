@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			xmlns:smgr="http://xml.avaya.com/schema/import" 
+			targetNamespace="http://xml.avaya.com/schema/import_ce" 
+			elementFormDefault="qualified">
+
+<!-- This is the XML schema for the "CE Profile".  It 
+     defines this profile inside of an XML document that defines 
+     a user record (see userimport.xsd) -->
+
+<xsd:import namespace="http://xml.avaya.com/schema/import"
+            schemaLocation="userimport.xsd"/>
+                        
+<xsd:complexType name="CeCommProfXML">
+    <xsd:complexContent>
+        <xsd:extension base="smgr:xmlCommProfileType">
+            
+	<xsd:sequence>
+	  <!-- 
+	   The following attributes are the names of objects that must
+	   already be administered in System Manager before performing
+  	   the user import.
+		 	  	   
+  	   The relative order here cannot be changed because it would
+  	   break backwards compatibility with existing XML documents
+  	   that could be used for an import.
+	  -->		
+
+	  <!--  Name of the secondary Session Manager (optional) -->
+          <xsd:element name="serviceProfile" type="xsd:string" minOccurs="1" />
+                
+	</xsd:sequence>
+  		
+        </xsd:extension>
+    </xsd:complexContent>   
+ </xsd:complexType>
+
+
+</xsd:schema>

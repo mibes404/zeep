@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:one="http://xml.avaya.com/schema/import" elementFormDefault="qualified"
+targetNamespace="http://xml.avaya.com/schema/import_csm_agent" xmlns:csm="http://xml.avaya.com/schema/import_csm_agent">
+<xs:import namespace="http://xml.avaya.com/schema/import" schemaLocation="userimport.xsd"/>
+
+<!--Changes in xsd file need to generate jaxb src using this xsd-->
+<xs:complexType name="xmlAgentProfile">
+	<xs:complexContent>
+       	<xs:extension base="one:xmlCommProfileType" >
+			<xs:sequence>	
+				<!-- CM Name as it appears under 'Applications/Application Management/Entities -->
+				<xs:element name="cmName" type="xs:string" maxOccurs="1" minOccurs="1"/>
+				
+				<!-- 'true' if already created extension is to be used.  'false' if available extension is to be used. -->
+				<xs:element name="useExistingAgent" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+				
+				<!-- Agent Login ID extension number that need to be assigned to the user. -->
+				<xs:element name="loginIdExtension" maxOccurs="1" minOccurs="1">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-9]+([\.\-][0-9]+)*"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<!-- Template name to be used to create agent. Values defined in Template will be used if not provided. -->
+				<xs:element name="template" type="xs:string" maxOccurs="1" minOccurs="0"/>
+				
+				<!-- Security code for station. Value can be digit only.  -->
+				<xs:element name="securityCode" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-9]{0,4}"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>		
+
+				<xs:element name="aas" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+				<xs:element name="audix" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+				
+				<xs:element name="password" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-9]{0,9}" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="portExtension" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-9]+([\.\-][0-9]+)*"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			
+				<!-- Whether the agent should be deleted if it unassigned from the user. -->
+				<xs:element name="deleteOnUnassign" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+
+				<xs:element name="tn" maxOccurs="1" minOccurs="0">
+				<xs:simpleType>
+						<xs:restriction base="xs:int">
+							<xs:minInclusive value="0" />
+							<xs:maxInclusive value="100" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="cor" maxOccurs="1" minOccurs="0">
+  					<xs:simpleType>
+    					<xs:restriction base="xs:int">
+      						<xs:minInclusive value="0"/>
+      						<xs:maxInclusive value="995"/>
+    					</xs:restriction>
+  					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="coveragePath" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="(t[1-9][0-9]{0,2})|([1-9][0-9]{0,2}|1[0-9]{3}|2000)"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="lwcReception" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:enumeration value="audix"/>
+							<xs:enumeration value="msa"/>
+							<xs:enumeration value="spe"/>
+							<xs:enumeration value="none"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="lwcLogExternalCalls" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="audixNameforMessaging" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="hearsServiceObservingTone" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="loginIDforISDNSIPDisplay" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+
+				<xs:element name="autoAnswer" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:enumeration value="acd"/>
+							<xs:enumeration value="all"/>
+							<xs:enumeration value="none"/>
+							<xs:enumeration value="station"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="miaAcrossSkills" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:enumeration value="n"/>
+							<xs:enumeration value="y"/>
+							<xs:enumeration value="system"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="acwAgentConsideredIdle" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:enumeration value="n"/>
+							<xs:enumeration value="y"/>
+							<xs:enumeration value="system"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="auxWorkReasonCodeType" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:enumeration value="forced"/>
+							<xs:enumeration value="requested"/>
+							<xs:enumeration value="system"/>
+							<xs:enumeration value="none"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="logoutReasonCodeType" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:enumeration value="forced"/>
+							<xs:enumeration value="requested"/>
+							<xs:enumeration value="system"/>
+							<xs:enumeration value="none"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="maximumTimeAgentInAcwBeforeLogoutSec" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+  							<xs:pattern value="|[3-9][0-9]{1}|[1-9][0-9]{1,3}|(none)|(system)"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="forcedAgentLogoutTimeHr" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="|[0-9]|[1][0-9]{1}|[2][0-3]{1}"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="forcedAgentLogoutTimeSec" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+  							<xs:pattern value="|(00)|(15)|(30)|(45)"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="directAgentSkill" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:pattern value="|[1-9]|[1-9][0-9]{1}"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
+				<xs:element name="callHandlingPreference" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+  						<xs:restriction base="xs:string">
+							<xs:enumeration value="greatest-need"/>
+							<xs:enumeration value="percent-allocation"/>
+							<xs:enumeration value="skill-level"/>
+  						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				
+				<xs:element name="serviceObjective" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="directAgentCallsFirst" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				<xs:element name="localCallPreference" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+				
+				<xs:element name="skills" type="csm:xmlAgentLoginIdSkillsData" maxOccurs="unbounded" minOccurs="0" />
+				
+				<!-- 
+			
+				private String NativeNameScripts;
+				
+				 -->
+			</xs:sequence>
+		</xs:extension>
+   </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="xmlAgentLoginIdSkillsData">
+	<xs:sequence>
+	<!-- 
+		private AgentLoginIdData agentLoginId;
+	
+	 -->
+		<xs:element name="number" type="xs:string" maxOccurs="1" minOccurs="1" />
+		<xs:element name="skillNumber" maxOccurs="1" minOccurs="1">
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:pattern value="|[1-9]|[1-9][0-9]{1}"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<xs:element name="reserveLevel" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:pattern value="|[1-2]"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<xs:element name="skillLevel" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:pattern value="|[1-9]|[1-9][0-6]{1}"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+		<xs:element name="percentAllocation" maxOccurs="1" minOccurs="0" >
+			<xs:simpleType>
+  				<xs:restriction base="xs:string">
+					<xs:pattern value="|[1-9]|[1-9][0-9]{1}|100"/>
+  				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		
+
+	</xs:sequence>
+</xs:complexType> 
+
+
+</xs:schema>
