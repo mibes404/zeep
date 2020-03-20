@@ -136,8 +136,7 @@ impl NodeWriter {
 
         let maybe_complex = node
             .children()
-            .find(|child| child.tag_name().name() == "complexType")
-            .take();
+            .find(|child| child.tag_name().name() == "complexType");
 
         // fields
         if let Some(complex) = maybe_complex {
@@ -178,12 +177,7 @@ impl NodeWriter {
     }
 
     fn get_some_attribute<'a>(&self, node: &'a Node, attr_name: &str) -> Option<&'a str> {
-        match node
-            .attributes()
-            .iter()
-            .find(|a| a.name() == attr_name)
-            .take()
-        {
+        match node.attributes().iter().find(|a| a.name() == attr_name) {
             None => None,
             Some(a) => Some(a.value()),
         }
@@ -220,16 +214,57 @@ impl NodeWriter {
 
         let maybe_sequence = node
             .children()
-            .find(|child| child.tag_name().name() == "sequence")
-            .take();
+            .find(|child| child.tag_name().name() == "sequence");
+
+        let maybe_complex = node
+            .children()
+            .find(|child| child.tag_name().name() == "complexContent");
 
         if let Some(sequence) = maybe_sequence {
-            sequence
-                .children()
-                .for_each(|child| self.print_element(&child));
+            self.print_sequence(&sequence);
+        }
+
+        if let Some(complex) = maybe_complex {
+            self.print_complex_content(&complex);
         }
 
         self.write("}\n\n".to_string());
         self.dec_level();
+    }
+
+    fn print_sequence(&mut self, node: &Node) {
+        node.children().for_each(|child| self.print_element(&child));
+    }
+
+    fn print_complex_content(&mut self, node: &Node) {
+        node.children()
+            .find(|child| child.tag_name().name() == "extension")
+            .map(|extension| {
+                self.write("\t#[serde(flatten)]\n".to_string());
+                self.print_extension(&extension);
+
+                let maybe_sequence = extension
+                    .children()
+                    .find(|ext_child| ext_child.tag_name().name() == "sequence");
+
+                if let Some(sequence) = maybe_sequence {
+                    self.print_sequence(&sequence);
+                }
+            });
+
+        self.print_sequence(node);
+    }
+
+    fn print_extension(&mut self, node: &Node) {
+        let base = match self.get_some_attribute(node, "base") {
+            None => return,
+            Some(n) => n,
+        };
+
+        self.write(format!(
+            "\tpub {}: {},\n",
+            to_snake_case(&self.fetch_type(base)),
+            self.fetch_type(base)
+        ));
     }
 }
