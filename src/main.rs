@@ -1,4 +1,4 @@
-use crate::writer::NodeWriter;
+use crate::writer::FileWriter;
 use clap::{App, Arg};
 use log::warn;
 use std::fs::File;
@@ -45,14 +45,14 @@ fn main() {
 
     if let Some(output_file) = to_file_name {
         let file = File::create(output_file).expect("can not create file");
-        let mut writer = NodeWriter::new_file(file);
+        let mut writer = FileWriter::new_file(file);
         println!(
             "parsing {}/{} --> {}",
             base_path, from_file_name, output_file
         );
         writer.process_file(base_path, from_file_name);
     } else {
-        let mut writer = NodeWriter::default();
+        let mut writer = FileWriter::default();
         writer.process_file(base_path, from_file_name);
     }
 }

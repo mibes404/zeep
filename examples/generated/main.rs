@@ -1,4 +1,4 @@
-use crate::aic::{Agent, AgentChatChannel, Create};
+use crate::aic::types::{Agent, AgentChatChannel, Create};
 use crate::smgr::{XmlAgentProfile, XmlUser};
 
 mod aic;
