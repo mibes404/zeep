@@ -8,7 +8,10 @@ use std::fs::File;
 use std::io;
 use std::io::{stdout, Cursor, Read, Write};
 use std::mem::discriminant;
-use std::rc::Rc;
+
+const MESSAGES_MOD: &str = "messages";
+const TYPES_MOD: &str = "types";
+const PORTS_MOD: &str = "ports";
 
 pub struct FileWriter {
     base_path: String,
@@ -30,6 +33,7 @@ enum Section {
     Root,
     Types,
     Messages,
+    PortTypes,
 }
 
 impl Default for FileWriter {
@@ -60,6 +64,7 @@ impl FileWriter {
         mod_writers.insert(Section::Root, ModWriter::new(Section::Root));
         mod_writers.insert(Section::Messages, ModWriter::new(Section::Messages));
         mod_writers.insert(Section::Types, ModWriter::new(Section::Types));
+        mod_writers.insert(Section::PortTypes, ModWriter::new(Section::PortTypes));
         mod_writers
     }
 
@@ -76,7 +81,7 @@ impl FileWriter {
         doc.descendants().for_each(|n| self.print(&n));
 
         // once all elements are processed, write them to output
-        for (_section, mut mw) in self.mod_writers.iter_mut() {
+        for (_section, mw) in self.mod_writers.iter_mut() {
             let reader_ref = mw.read_for_output();
             let mut reader = reader_ref.into_inner();
 
@@ -133,6 +138,7 @@ impl FileWriter {
             .for_each(|child| match child.tag_name().name() {
                 "types" => self.print_xsd(&child),
                 "message" => self.print_message(&child),
+                "portType" => self.print_port_type(&child),
                 _ => {}
             })
     }
@@ -173,7 +179,7 @@ impl FileWriter {
 
         let maybe_complex = node
             .children()
-            .find(|child| child.tag_name().name() == "complexType");
+            .find(|child| child.has_tag_name("complexType"));
 
         // fields
         if let Some(complex) = maybe_complex {
@@ -220,6 +226,13 @@ impl FileWriter {
         }
     }
 
+    fn get_some_attribute_as_string(&self, node: &Node, attr_name: &str) -> Option<String> {
+        match node.attributes().iter().find(|a| a.name() == attr_name) {
+            None => None,
+            Some(a) => Some(a.value().to_string()),
+        }
+    }
+
     fn fetch_type(&self, node_type: &str) -> String {
         match self.split_type(node_type) {
             "string" | "base64Binary" => "String".to_string(),
@@ -249,13 +262,11 @@ impl FileWriter {
             to_pascal_case(name)
         ));
 
-        let maybe_sequence = node
-            .children()
-            .find(|child| child.tag_name().name() == "sequence");
+        let maybe_sequence = node.children().find(|child| child.has_tag_name("sequence"));
 
         let maybe_complex = node
             .children()
-            .find(|child| child.tag_name().name() == "complexContent");
+            .find(|child| child.has_tag_name("complexContent"));
 
         if let Some(sequence) = maybe_sequence {
             self.print_sequence(&sequence);
@@ -276,14 +287,14 @@ impl FileWriter {
     fn print_complex_content(&mut self, node: &Node) {
         if let Some(extension) = node
             .children()
-            .find(|child| child.tag_name().name() == "extension")
+            .find(|child| child.has_tag_name("extension"))
         {
             self.write("\t#[serde(flatten)]\n".to_string());
             self.print_extension(&extension);
 
             let maybe_sequence = extension
                 .children()
-                .find(|ext_child| ext_child.tag_name().name() == "sequence");
+                .find(|ext_child| ext_child.has_tag_name("sequence"));
 
             if let Some(sequence) = maybe_sequence {
                 self.print_sequence(&sequence);
@@ -333,9 +344,7 @@ impl FileWriter {
                 to_pascal_case(name)
             ));
 
-            let maybe_part = node
-                .children()
-                .find(|child| child.tag_name().name() == "part");
+            let maybe_part = node.children().find(|child| child.has_tag_name("part"));
 
             if let Some(part) = maybe_part {
                 self.print_part(&part);
@@ -358,11 +367,98 @@ impl FileWriter {
             ));
 
             self.write(format!(
-                "\tpub {}: types::{},\n",
+                "\tpub {}: {}::{},\n",
                 self.shield_reserved_names(&to_snake_case(element_name)),
+                TYPES_MOD,
                 self.fetch_type(type_name)
             ));
         }
+    }
+
+    // WSDL Port Types
+    fn print_port_type(&mut self, node: &Node) {
+        self.check_section(Section::PortTypes);
+        let element_name = match self.get_some_attribute(node, "name") {
+            None => return,
+            Some(n) => n,
+        };
+
+        let struct_name = to_pascal_case(element_name);
+        self.write(format!("pub struct {0} {{}}\n\nimpl {0} {{", struct_name));
+        node.children()
+            .for_each(|child| self.print_operation(&child));
+        self.write("}\n\n".to_string());
+        self.print_default_constructor(struct_name);
+    }
+
+    fn print_default_constructor(&mut self, struct_name: String) {
+        self.write(format!(
+            "impl Default for {0} {{\n\tfn default() -> Self {{\n\t\t{0}{{}}\n\t}}\n\t}}\n",
+            struct_name
+        ));
+    }
+
+    fn map_name_message(&self, node: &Node) -> (Option<String>, Option<String>) {
+        (
+            self.get_some_attribute_as_string(node, "name"),
+            self.get_some_attribute_as_string(node, "message"),
+        )
+    }
+
+    fn print_operation(&mut self, node: &Node) {
+        let element_name = match self.get_some_attribute(node, "name") {
+            None => return,
+            Some(n) => n,
+        };
+
+        let func_name = to_snake_case(element_name);
+        let some_input = node
+            .children()
+            .find(|c| c.has_tag_name("input"))
+            .map(|c| self.map_name_message(&c));
+
+        let some_output = node
+            .children()
+            .find(|c| c.has_tag_name("output"))
+            .map(|c| self.map_name_message(&c));
+
+        let some_fault = node
+            .children()
+            .find(|c| c.has_tag_name("fault"))
+            .map(|c| self.map_name_message(&c));
+
+        let input_template = match some_input {
+            Some((Some(name), Some(msg))) => format!(
+                "{}: {}::{}",
+                to_snake_case(name.as_str()),
+                MESSAGES_MOD,
+                self.fetch_type(msg.as_str())
+            ),
+            _ => "".to_string(),
+        };
+
+        let output_template = match some_output {
+            Some((Some(_name), Some(msg))) => {
+                if let Some((Some(_fault_name), Some(fault_type))) = some_fault {
+                    format!(
+                        "-> Result<{0}::{1}, {0}::{2}>",
+                        MESSAGES_MOD,
+                        self.fetch_type(msg.as_str()),
+                        self.fetch_type(fault_type.as_str())
+                    )
+                } else {
+                    format!("-> {}::{}", MESSAGES_MOD, self.fetch_type(msg.as_str()))
+                }
+            }
+            _ => "".to_string(),
+        };
+
+        self.write(format!(
+            "\tpub fn {} (&self, {}) {} {{\n",
+            func_name, input_template, output_template
+        ));
+        self.write("\t\tunimplemented!()\n".to_string());
+        self.write("}\n".to_string());
     }
 }
 
@@ -377,8 +473,9 @@ impl ModWriter {
 
         match &mw.section {
             Section::Root => {}
-            Section::Types => mw.print_mod_header("types"),
-            Section::Messages => mw.print_mod_header("messages"),
+            Section::Types => mw.print_mod_header(TYPES_MOD),
+            Section::Messages => mw.print_mod_header(MESSAGES_MOD),
+            Section::PortTypes => mw.print_mod_header(PORTS_MOD),
         }
 
         mw

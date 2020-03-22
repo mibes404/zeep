@@ -1,5 +1,3 @@
-use serde::{Deserialize, Serialize};
-
 pub mod messages {
     use serde::{Deserialize, Serialize};
 
@@ -164,6 +162,89 @@ pub mod messages {
     pub struct LookupWorkgroupsRequest {
         #[serde(rename = "parameters", default)]
         pub parameters: types::LookupWorkgroups,
+    }
+}
+
+pub mod ports {
+    use serde::{Deserialize, Serialize};
+
+    use super::*;
+
+    pub struct AicAgentAdmin {}
+
+    impl AicAgentAdmin {
+        pub fn get(
+            &self,
+            get_request: messages::GetRequest,
+        ) -> Result<messages::GetResponse, messages::AicServiceFault> {
+            unimplemented!()
+        }
+        pub fn update(
+            &self,
+            update_request: messages::UpdateRequest,
+        ) -> Result<messages::UpdateResponse, messages::AicServiceFault> {
+            unimplemented!()
+        }
+        pub fn delete(
+            &self,
+            delete_request: messages::DeleteRequest,
+        ) -> Result<messages::DeleteResponse, messages::AicServiceFault> {
+            unimplemented!()
+        }
+        pub fn lookup_agent_ids(
+            &self,
+            lookup_agent_ids_request: messages::LookupAgentIdsRequest,
+        ) -> Result<messages::LookupAgentIdsResponse, messages::AicServiceFault> {
+            unimplemented!()
+        }
+        pub fn lookup_lrm_ids(
+            &self,
+            lookup_lrm_ids_request: messages::LookupLRMIdsRequest,
+        ) -> Result<messages::LookupLRMIdsResponse, messages::AicServiceFault> {
+            unimplemented!()
+        }
+        pub fn lookup_workgroups(
+            &self,
+            lookup_workgroups_request: messages::LookupWorkgroupsRequest,
+        ) -> Result<messages::LookupWorkgroupsResponse, messages::AicServiceFault> {
+            unimplemented!()
+        }
+        pub fn lookup_domains(
+            &self,
+            lookup_domains_request: messages::LookupDomainsRequest,
+        ) -> Result<messages::LookupDomainsResponse, messages::AicServiceFault> {
+            unimplemented!()
+        }
+        pub fn lookup_link_groups(
+            &self,
+            lookup_link_groups_request: messages::LookupLinkGroupsRequest,
+        ) -> Result<messages::LookupLinkGroupsResponse, messages::AicServiceFault> {
+            unimplemented!()
+        }
+        pub fn lookup_phone_types(
+            &self,
+            lookup_phone_types_request: messages::LookupPhoneTypesRequest,
+        ) -> Result<messages::LookupPhoneTypesResponse, messages::AicServiceFault> {
+            unimplemented!()
+        }
+        pub fn lookup_sites(
+            &self,
+            lookup_sites_request: messages::LookupSitesRequest,
+        ) -> Result<messages::LookupSitesResponse, messages::AicServiceFault> {
+            unimplemented!()
+        }
+        pub fn create(
+            &self,
+            create_request: messages::CreateRequest,
+        ) -> Result<messages::CreateResponse, messages::AicServiceFault> {
+            unimplemented!()
+        }
+    }
+
+    impl Default for AicAgentAdmin {
+        fn default() -> Self {
+            AicAgentAdmin {}
+        }
     }
 }
 
@@ -552,3 +633,5 @@ pub mod types {
         pub create_return: bool,
     }
 }
+
+use serde::{Deserialize, Serialize};
