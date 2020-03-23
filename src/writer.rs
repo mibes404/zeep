@@ -12,6 +12,7 @@ use std::mem::discriminant;
 const MESSAGES_MOD: &str = "messages";
 const TYPES_MOD: &str = "types";
 const PORTS_MOD: &str = "ports";
+const BINDINGS_MOD: &str = "bindings";
 
 pub struct FileWriter {
     base_path: String,
@@ -25,7 +26,9 @@ struct ModWriter {
     level: usize,
     section: Section,
     buffers: Vec<Cursor<Vec<u8>>>,
+    delayed_buffer: Cursor<Vec<u8>>,
     final_stage: Cursor<Vec<u8>>,
+    defined_types: Vec<String>,
 }
 
 #[derive(Debug, PartialEq, Eq, Hash)]
@@ -34,6 +37,7 @@ enum Section {
     Types,
     Messages,
     PortTypes,
+    Bindings,
 }
 
 impl Default for FileWriter {
@@ -65,6 +69,7 @@ impl FileWriter {
         mod_writers.insert(Section::Messages, ModWriter::new(Section::Messages));
         mod_writers.insert(Section::Types, ModWriter::new(Section::Types));
         mod_writers.insert(Section::PortTypes, ModWriter::new(Section::PortTypes));
+        mod_writers.insert(Section::Bindings, ModWriter::new(Section::Bindings));
         mod_writers
     }
 
@@ -99,6 +104,38 @@ impl FileWriter {
     fn write(&mut self, buf: String) {
         if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
             mw.write(buf, self.level)
+        }
+    }
+
+    fn delayed_write(&mut self, buf: String) {
+        if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
+            mw.delayed_write(buf)
+        }
+    }
+
+    fn flush_delayed_buffer(&mut self) {
+        if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
+            mw.flush_delayed_buffer()
+        }
+    }
+
+    pub fn seen_type(&mut self, type_def: String) {
+        if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
+            mw.seen_type(type_def);
+        }
+    }
+
+    pub fn reset_defined_types(&mut self) {
+        if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
+            mw.reset_defined_types();
+        }
+    }
+
+    pub fn have_seen_type(&mut self, type_def: String) -> bool {
+        if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
+            mw.have_seen_type(type_def)
+        } else {
+            false
         }
     }
 
@@ -139,6 +176,7 @@ impl FileWriter {
                 "types" => self.print_xsd(&child),
                 "message" => self.print_message(&child),
                 "portType" => self.print_port_type(&child),
+                "binding" => self.print_binding(&child),
                 _ => {}
             })
     }
@@ -384,9 +422,38 @@ impl FileWriter {
         };
 
         let struct_name = to_pascal_case(element_name);
-        self.write(format!("pub struct {0} {{}}\n\nimpl {0} {{", struct_name));
+        self.write(format!("pub trait {0} {{\n", struct_name));
         node.children()
             .for_each(|child| self.print_operation(&child));
+        self.write("}\n\n".to_string());
+        self.flush_delayed_buffer();
+        self.reset_defined_types();
+    }
+
+    // WSDL bindings
+
+    fn print_binding(&mut self, node: &Node) {
+        self.check_section(Section::Bindings);
+        let element_name = match self.get_some_attribute(node, "name") {
+            None => return,
+            Some(n) => n,
+        };
+
+        let type_name = match self.get_some_attribute(node, "type") {
+            None => return,
+            Some(n) => n,
+        };
+
+        let struct_name = to_pascal_case(element_name);
+        let trait_name = self.fetch_type(type_name);
+
+        self.write(format!(
+            "pub struct {0} {{}}\n\nimpl {2}::{1} for {0} {{\n",
+            struct_name, trait_name, PORTS_MOD,
+        ));
+
+        node.children()
+            .for_each(|child| self.print_binding_operation(&child));
         self.write("}\n\n".to_string());
         self.print_default_constructor(struct_name);
     }
@@ -427,37 +494,147 @@ impl FileWriter {
             .find(|c| c.has_tag_name("fault"))
             .map(|c| self.map_name_message(&c));
 
+        let (input_type_template, input_template) = match some_input {
+            Some((Some(name), Some(msg))) => (
+                format!(
+                    "pub type {} = {}::{};\n",
+                    to_pascal_case(name.as_str()),
+                    MESSAGES_MOD,
+                    self.fetch_type(msg.as_str())
+                ),
+                format!(
+                    "{}: {}",
+                    to_snake_case(name.as_str()),
+                    to_pascal_case(name.as_str())
+                ),
+            ),
+            _ => ("".to_string(), "".to_string()),
+        };
+
+        let (output_type_template, fault_type_template, output_template) = match some_output {
+            Some((Some(name), Some(msg))) => {
+                if let Some((Some(fault_name), Some(fault_type))) = some_fault {
+                    (
+                        format!(
+                            "pub type {} = {}::{};\n",
+                            to_pascal_case(name.as_str()),
+                            MESSAGES_MOD,
+                            self.fetch_type(msg.as_str())
+                        ),
+                        Option::Some(format!(
+                            "pub type {} = {}::{};\n",
+                            to_pascal_case(fault_name.as_str()),
+                            MESSAGES_MOD,
+                            self.fetch_type(fault_type.as_str())
+                        )),
+                        format!(
+                            "-> Result<{0}, {1}>",
+                            to_pascal_case(name.as_str()),
+                            to_pascal_case(fault_name.as_str())
+                        ),
+                    )
+                } else {
+                    (
+                        format!(
+                            "pub type {} = {}::{};\n",
+                            to_pascal_case(name.as_str()),
+                            MESSAGES_MOD,
+                            self.fetch_type(msg.as_str())
+                        ),
+                        Option::None,
+                        format!("-> {}", to_pascal_case(name.as_str())),
+                    )
+                }
+            }
+            _ => ("".to_string(), Option::None, "".to_string()),
+        };
+
+        self.queue_port_types(
+            &input_type_template,
+            &output_type_template,
+            fault_type_template,
+        );
+
+        self.write(format!(
+            "\tfn {} (&self, {}) {};\n",
+            func_name, input_template, output_template,
+        ));
+    }
+
+    fn queue_port_types(&mut self, input: &str, output: &str, fault: Option<String>) {
+        // make sure these messages get written at the end of the module
+
+        if !self.have_seen_type(input.to_string()) {
+            self.delayed_write(input.to_string());
+            self.seen_type(input.to_string());
+        }
+
+        if !self.have_seen_type(output.to_string()) {
+            self.delayed_write(output.to_string());
+            self.seen_type(output.to_string());
+        }
+
+        if let Some(f) = fault {
+            if !self.have_seen_type(f.to_string()) {
+                self.seen_type(f.to_string());
+                self.delayed_write(f);
+            }
+        }
+    }
+
+    fn print_binding_operation(&mut self, node: &Node) {
+        let element_name = match self.get_some_attribute(node, "name") {
+            None => return,
+            Some(n) => n,
+        };
+
+        let func_name = to_snake_case(element_name);
+        let some_input = node
+            .children()
+            .find(|c| c.has_tag_name("input"))
+            .map(|c| self.get_some_attribute_as_string(&c, "name"));
+
+        let some_output = node
+            .children()
+            .find(|c| c.has_tag_name("output"))
+            .map(|c| self.get_some_attribute_as_string(&c, "name"));
+
+        let some_fault = node
+            .children()
+            .find(|c| c.has_tag_name("fault"))
+            .map(|c| self.get_some_attribute_as_string(&c, "name"));
+
         let input_template = match some_input {
-            Some((Some(name), Some(msg))) => format!(
+            Some(Some(name)) => format!(
                 "{}: {}::{}",
                 to_snake_case(name.as_str()),
-                MESSAGES_MOD,
-                self.fetch_type(msg.as_str())
+                PORTS_MOD,
+                to_pascal_case(name.as_str())
             ),
             _ => "".to_string(),
         };
 
         let output_template = match some_output {
-            Some((Some(_name), Some(msg))) => {
-                if let Some((Some(_fault_name), Some(fault_type))) = some_fault {
+            Some(Some(name)) => {
+                if let Some(Some(fault_name)) = some_fault {
                     format!(
-                        "-> Result<{0}::{1}, {0}::{2}>",
-                        MESSAGES_MOD,
-                        self.fetch_type(msg.as_str()),
-                        self.fetch_type(fault_type.as_str())
+                        "-> Result<{2}::{0}, {2}::{1}>",
+                        to_pascal_case(name.as_str()),
+                        to_pascal_case(fault_name.as_str()),
+                        PORTS_MOD,
                     )
                 } else {
-                    format!("-> {}::{}", MESSAGES_MOD, self.fetch_type(msg.as_str()))
+                    format!("-> {}::{}", PORTS_MOD, to_pascal_case(name.as_str()))
                 }
             }
             _ => "".to_string(),
         };
 
         self.write(format!(
-            "\tpub fn {} (&self, {}) {} {{\n",
-            func_name, input_template, output_template
+            "\tfn {} (&self, {}) {} {{\n",
+            func_name, input_template, output_template,
         ));
-        self.write("\t\tunimplemented!()\n".to_string());
+        self.write("\tunimplemented!();\n".to_string());
         self.write("}\n".to_string());
     }
 }
@@ -467,8 +644,10 @@ impl ModWriter {
         let mut mw = ModWriter {
             section,
             buffers: vec![],
+            delayed_buffer: Cursor::new(vec![]),
             final_stage: Cursor::new(vec![]),
             level: 0,
+            defined_types: vec![],
         };
 
         match &mw.section {
@@ -476,6 +655,7 @@ impl ModWriter {
             Section::Types => mw.print_mod_header(TYPES_MOD),
             Section::Messages => mw.print_mod_header(MESSAGES_MOD),
             Section::PortTypes => mw.print_mod_header(PORTS_MOD),
+            Section::Bindings => mw.print_mod_header(BINDINGS_MOD),
         }
 
         mw
@@ -502,6 +682,19 @@ impl ModWriter {
         while let Some(mut cursor) = self.buffers.pop() {
             cursor.set_position(0);
             if let Err(err) = io::copy(&mut cursor, &mut self.final_stage) {
+                warn!("Failed to flush buffer: {:?}", err);
+            }
+        }
+    }
+
+    fn flush_delayed_buffer(&mut self) {
+        self.delayed_buffer.set_position(0);
+        if self.level == 0 {
+            if let Err(err) = io::copy(&mut self.delayed_buffer, &mut self.final_stage) {
+                warn!("Failed to flush buffer: {:?}", err);
+            }
+        } else if let Some(mut buffer) = self.buffers.get_mut(self.level - 1) {
+            if let Err(err) = io::copy(&mut self.delayed_buffer, &mut buffer) {
                 warn!("Failed to flush buffer: {:?}", err);
             }
         }
@@ -534,9 +727,27 @@ impl ModWriter {
         }
     }
 
+    pub fn delayed_write(&mut self, buf: String) {
+        self.delayed_buffer
+            .write_all(buf.as_bytes())
+            .expect("can not write to delayed buffer");
+    }
+
     pub fn read_for_output(&mut self) -> RefCell<impl Read> {
         self.print_footer();
         self.final_stage.set_position(0);
         RefCell::new(self.final_stage.clone())
+    }
+
+    pub fn seen_type(&mut self, type_def: String) {
+        self.defined_types.push(type_def);
+    }
+
+    pub fn reset_defined_types(&mut self) {
+        self.defined_types.clear();
+    }
+
+    pub fn have_seen_type(&self, type_def: String) -> bool {
+        self.defined_types.contains(&type_def)
     }
 }

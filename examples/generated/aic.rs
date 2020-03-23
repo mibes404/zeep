@@ -1,3 +1,88 @@
+pub mod bindings {
+    use serde::{Deserialize, Serialize};
+
+    use super::*;
+
+    pub struct AicAgentAdminSoapBinding {}
+
+    impl ports::AicAgentAdmin for AicAgentAdminSoapBinding {
+        fn get(
+            &self,
+            get_request: ports::GetRequest,
+        ) -> Result<ports::GetResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn update(
+            &self,
+            update_request: ports::UpdateRequest,
+        ) -> Result<ports::UpdateResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn delete(
+            &self,
+            delete_request: ports::DeleteRequest,
+        ) -> Result<ports::DeleteResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn lookup_agent_ids(
+            &self,
+            lookup_agent_ids_request: ports::LookupAgentIdsRequest,
+        ) -> Result<ports::LookupAgentIdsResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn lookup_lrm_ids(
+            &self,
+            lookup_lrm_ids_request: ports::LookupLRMIdsRequest,
+        ) -> Result<ports::LookupLRMIdsResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn lookup_workgroups(
+            &self,
+            lookup_workgroups_request: ports::LookupWorkgroupsRequest,
+        ) -> Result<ports::LookupWorkgroupsResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn lookup_domains(
+            &self,
+            lookup_domains_request: ports::LookupDomainsRequest,
+        ) -> Result<ports::LookupDomainsResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn lookup_link_groups(
+            &self,
+            lookup_link_groups_request: ports::LookupLinkGroupsRequest,
+        ) -> Result<ports::LookupLinkGroupsResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn lookup_phone_types(
+            &self,
+            lookup_phone_types_request: ports::LookupPhoneTypesRequest,
+        ) -> Result<ports::LookupPhoneTypesResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn lookup_sites(
+            &self,
+            lookup_sites_request: ports::LookupSitesRequest,
+        ) -> Result<ports::LookupSitesResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn create(
+            &self,
+            create_request: ports::CreateRequest,
+        ) -> Result<ports::CreateResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+    }
+
+    impl Default for AicAgentAdminSoapBinding {
+        fn default() -> Self {
+            AicAgentAdminSoapBinding {}
+        }
+    }
+}
+
+use serde::{Deserialize, Serialize};
+
 pub mod messages {
     use serde::{Deserialize, Serialize};
 
@@ -170,82 +255,64 @@ pub mod ports {
 
     use super::*;
 
-    pub struct AicAgentAdmin {}
-
-    impl AicAgentAdmin {
-        pub fn get(
+    pub trait AicAgentAdmin {
+        fn get(&self, get_request: GetRequest) -> Result<GetResponse, AicServiceFault>;
+        fn update(&self, update_request: UpdateRequest) -> Result<UpdateResponse, AicServiceFault>;
+        fn delete(&self, delete_request: DeleteRequest) -> Result<DeleteResponse, AicServiceFault>;
+        fn lookup_agent_ids(
             &self,
-            get_request: messages::GetRequest,
-        ) -> Result<messages::GetResponse, messages::AicServiceFault> {
-            unimplemented!()
-        }
-        pub fn update(
+            lookup_agent_ids_request: LookupAgentIdsRequest,
+        ) -> Result<LookupAgentIdsResponse, AicServiceFault>;
+        fn lookup_lrm_ids(
             &self,
-            update_request: messages::UpdateRequest,
-        ) -> Result<messages::UpdateResponse, messages::AicServiceFault> {
-            unimplemented!()
-        }
-        pub fn delete(
+            lookup_lrm_ids_request: LookupLRMIdsRequest,
+        ) -> Result<LookupLRMIdsResponse, AicServiceFault>;
+        fn lookup_workgroups(
             &self,
-            delete_request: messages::DeleteRequest,
-        ) -> Result<messages::DeleteResponse, messages::AicServiceFault> {
-            unimplemented!()
-        }
-        pub fn lookup_agent_ids(
+            lookup_workgroups_request: LookupWorkgroupsRequest,
+        ) -> Result<LookupWorkgroupsResponse, AicServiceFault>;
+        fn lookup_domains(
             &self,
-            lookup_agent_ids_request: messages::LookupAgentIdsRequest,
-        ) -> Result<messages::LookupAgentIdsResponse, messages::AicServiceFault> {
-            unimplemented!()
-        }
-        pub fn lookup_lrm_ids(
+            lookup_domains_request: LookupDomainsRequest,
+        ) -> Result<LookupDomainsResponse, AicServiceFault>;
+        fn lookup_link_groups(
             &self,
-            lookup_lrm_ids_request: messages::LookupLRMIdsRequest,
-        ) -> Result<messages::LookupLRMIdsResponse, messages::AicServiceFault> {
-            unimplemented!()
-        }
-        pub fn lookup_workgroups(
+            lookup_link_groups_request: LookupLinkGroupsRequest,
+        ) -> Result<LookupLinkGroupsResponse, AicServiceFault>;
+        fn lookup_phone_types(
             &self,
-            lookup_workgroups_request: messages::LookupWorkgroupsRequest,
-        ) -> Result<messages::LookupWorkgroupsResponse, messages::AicServiceFault> {
-            unimplemented!()
-        }
-        pub fn lookup_domains(
+            lookup_phone_types_request: LookupPhoneTypesRequest,
+        ) -> Result<LookupPhoneTypesResponse, AicServiceFault>;
+        fn lookup_sites(
             &self,
-            lookup_domains_request: messages::LookupDomainsRequest,
-        ) -> Result<messages::LookupDomainsResponse, messages::AicServiceFault> {
-            unimplemented!()
-        }
-        pub fn lookup_link_groups(
-            &self,
-            lookup_link_groups_request: messages::LookupLinkGroupsRequest,
-        ) -> Result<messages::LookupLinkGroupsResponse, messages::AicServiceFault> {
-            unimplemented!()
-        }
-        pub fn lookup_phone_types(
-            &self,
-            lookup_phone_types_request: messages::LookupPhoneTypesRequest,
-        ) -> Result<messages::LookupPhoneTypesResponse, messages::AicServiceFault> {
-            unimplemented!()
-        }
-        pub fn lookup_sites(
-            &self,
-            lookup_sites_request: messages::LookupSitesRequest,
-        ) -> Result<messages::LookupSitesResponse, messages::AicServiceFault> {
-            unimplemented!()
-        }
-        pub fn create(
-            &self,
-            create_request: messages::CreateRequest,
-        ) -> Result<messages::CreateResponse, messages::AicServiceFault> {
-            unimplemented!()
-        }
+            lookup_sites_request: LookupSitesRequest,
+        ) -> Result<LookupSitesResponse, AicServiceFault>;
+        fn create(&self, create_request: CreateRequest) -> Result<CreateResponse, AicServiceFault>;
     }
 
-    impl Default for AicAgentAdmin {
-        fn default() -> Self {
-            AicAgentAdmin {}
-        }
-    }
+    pub type GetRequest = messages::GetRequest;
+    pub type GetResponse = messages::GetResponse;
+    pub type AicServiceFault = messages::AicServiceFault;
+    pub type UpdateRequest = messages::UpdateRequest;
+    pub type UpdateResponse = messages::UpdateResponse;
+    pub type DeleteRequest = messages::DeleteRequest;
+    pub type DeleteResponse = messages::DeleteResponse;
+    pub type LookupAgentIdsRequest = messages::LookupAgentIdsRequest;
+    pub type LookupAgentIdsResponse = messages::LookupAgentIdsResponse;
+    pub type LookupLRMIdsRequest = messages::LookupLRMIdsRequest;
+    pub type LookupLRMIdsResponse = messages::LookupLRMIdsResponse;
+    pub type LookupWorkgroupsRequest = messages::LookupWorkgroupsRequest;
+    pub type LookupWorkgroupsResponse = messages::LookupWorkgroupsResponse;
+    pub type LookupDomainsRequest = messages::LookupDomainsRequest;
+    pub type LookupDomainsResponse = messages::LookupDomainsResponse;
+    pub type LookupLinkGroupsRequest = messages::LookupLinkGroupsRequest;
+    pub type LookupLinkGroupsResponse = messages::LookupLinkGroupsResponse;
+    pub type LookupPhoneTypesRequest = messages::LookupPhoneTypesRequest;
+    pub type LookupPhoneTypesResponse = messages::LookupPhoneTypesResponse;
+    pub type LookupSitesRequest = messages::LookupSitesRequest;
+    pub type LookupSitesResponse = messages::LookupSitesResponse;
+    pub type CreateRequest = messages::CreateRequest;
+    pub type CreateResponse = messages::CreateResponse;
 }
 
 pub mod types {
@@ -633,5 +700,3 @@ pub mod types {
         pub create_return: bool,
     }
 }
-
-use serde::{Deserialize, Serialize};

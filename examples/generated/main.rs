@@ -1,3 +1,4 @@
+use crate::aic::bindings::AicAgentAdminSoapBinding;
 use crate::aic::ports::AicAgentAdmin;
 use crate::aic::types::{Agent, AgentChatChannel, Create};
 use crate::smgr::{XmlAgentProfile, XmlUser};
@@ -94,5 +95,5 @@ fn main() {
     let xml = quick_xml::se::to_string(&xma).expect("can not convert to XML");
     println!("{}", xml);
 
-    let aaa = AicAgentAdmin::default();
+    let aaa = AicAgentAdminSoapBinding::default();
 }
