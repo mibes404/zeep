@@ -76,14 +76,18 @@ impl FileWriter {
     pub fn process_file(&mut self, base_path: &str, file_name: &str) {
         self.base_path = base_path.to_string();
         self.print_header();
-        self.process_file_in_path(file_name);
+        self.process_file_in_path(file_name, true);
     }
 
-    fn process_file_in_path(&mut self, file_name: &str) {
+    fn process_file_in_path(&mut self, file_name: &str, print_when_done: bool) {
         let f_in = format!("{}/{}", self.base_path, file_name);
         let xml = std::fs::read_to_string(f_in).expect("can not read file");
         let doc = roxmltree::Document::parse(&xml).unwrap();
         doc.descendants().for_each(|n| self.print(&n));
+
+        if !print_when_done {
+            return;
+        }
 
         // once all elements are processed, write them to output
         for (_section, mw) in self.mod_writers.iter_mut() {
@@ -206,7 +210,7 @@ impl FileWriter {
             Some(n) => n,
         };
 
-        self.process_file_in_path(name);
+        self.process_file_in_path(name, false);
     }
 
     fn print_element(&mut self, node: &Node) {
