@@ -155,7 +155,10 @@ impl FileWriter {
     }
 
     fn print_header(&mut self) {
-        self.write("use serde::{{Serialize, Deserialize}};\n\n".to_string());
+        self.write(
+            "use yaserde::{{YaSerialize, YaDeserialize}};\nuse std::io::{Read, Write};\n\n"
+                .to_string(),
+        );
     }
 
     fn print(&mut self, node: &Node) {
@@ -235,7 +238,7 @@ impl FileWriter {
                 }
 
                 self.write(format!(
-                    "\t#[serde(rename = \"{}\", default)]\n",
+                    "\t#[yaserde(rename = \"{}\", default)]\n",
                     element_name,
                 ));
 
@@ -292,10 +295,10 @@ impl FileWriter {
 
     fn print_complex_element(&mut self, node: &Node, name: &str) {
         self.inc_level();
-        self.write("#[derive(Debug, Default, Serialize, Deserialize)]\n".to_string());
+        self.write("#[derive(Debug, Default, YaSerialize, YaDeserialize)]\n".to_string());
 
         self.write(format!(
-            "#[serde(rename = \"{}\", default)]\npub struct {} {{\n",
+            "#[yaserde(rename = \"{}\", default)]\npub struct {} {{\n",
             name,
             to_pascal_case(name)
         ));
@@ -327,7 +330,7 @@ impl FileWriter {
             .children()
             .find(|child| child.has_tag_name("extension"))
         {
-            self.write("\t#[serde(flatten)]\n".to_string());
+            self.write("\t#[yaserde(flatten)]\n".to_string());
             self.print_extension(&extension);
 
             let maybe_sequence = extension
@@ -374,10 +377,10 @@ impl FileWriter {
         self.check_section(Section::Messages);
 
         if let Some(name) = self.get_some_attribute(node, "name") {
-            self.write("#[derive(Debug, Default, Serialize, Deserialize)]\n".to_string());
+            self.write("#[derive(Debug, Default, YaSerialize, YaDeserialize)]\n".to_string());
 
             self.write(format!(
-                "#[serde(rename = \"{}\", default)]\npub struct {} {{\n",
+                "#[yaserde(rename = \"{}\", default)]\npub struct {} {{\n",
                 name,
                 to_pascal_case(name)
             ));
@@ -400,7 +403,7 @@ impl FileWriter {
 
         if let Some(type_name) = self.get_some_attribute(node, "element") {
             self.write(format!(
-                "\t#[serde(rename = \"{}\", default)]\n",
+                "\t#[yaserde(rename = \"{}\", default)]\n",
                 element_name,
             ));
 
@@ -668,7 +671,10 @@ impl ModWriter {
     }
 
     fn print_header(&mut self) {
-        self.write("use serde::{{Serialize, Deserialize}};\n\n".to_string(), 0);
+        self.write(
+            "use yaserde::{{YaSerialize, YaDeserialize}};\n\n".to_string(),
+            0,
+        );
     }
 
     fn print_footer(&mut self) {
