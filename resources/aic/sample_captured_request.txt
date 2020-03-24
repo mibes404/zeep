@@ -1,0 +1,10 @@
+POST webservicesservicesAicAgentAdmin HTTP
+Host aiccoreavayacloudcom
+UserAgent Gohttpclient
+ContentLength 
+Authorization Basic QWRtaWQXZheWExMjMk
+ContentType textxml
+Soapaction httpxmlavayacomwsAgentAdminInteractionCenterLookupAgentIds
+AcceptEncoding gzip
+
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" xmlns:tns="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
