@@ -1,8 +1,8 @@
-use crate::aic::bindings::AicAgentAdminSoapBinding;
-use crate::aic::ports::{
-    AicAgentAdmin, CreateRequest, CreateRequestSoapEnvelope, LookupAgentIdsRequest,
-    LookupAgentIdsRequestSoapEnvelope,
+use crate::aic::bindings::{
+    AicAgentAdminSoapBinding, CreateRequestSoapEnvelope, LookupAgentIdsRequestSoapEnvelope,
+    SoapCreateRequest, SoapLookupAgentIdsRequest,
 };
+use crate::aic::ports::{AicAgentAdmin, CreateRequest, LookupAgentIdsRequest};
 use crate::aic::types::{Agent, AgentChatChannel, Create, LookupAgentIds};
 use crate::smgr::types::XmlUser;
 use soap_client::envelop;
@@ -92,19 +92,24 @@ async fn main() {
     // test SOAP
     let create_request = CreateRequestSoapEnvelope {
         encoding_style: SOAP_ENCODING.to_string(),
+        tnsattr: "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
+        urnattr: Option::None,
+        xsiattr: "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
         header: None,
-        body: CreateRequest {
-            parameters: Create {
-                agent: Agent {
-                    advocate_info: None,
-                    basic_profile: None,
-                    chat_channel: None,
-                    email_channel: None,
-                    extended_profile: None,
-                    login_id: Option::from("mibes".to_string()),
-                    security: None,
-                    task_load: None,
-                    voice_channel: None,
+        body: SoapCreateRequest {
+            body: CreateRequest {
+                parameters: Create {
+                    agent: Agent {
+                        advocate_info: None,
+                        basic_profile: None,
+                        chat_channel: None,
+                        email_channel: None,
+                        extended_profile: None,
+                        login_id: Option::from("mibes".to_string()),
+                        security: None,
+                        task_load: None,
+                        voice_channel: None,
+                    },
                 },
             },
         },
@@ -118,22 +123,37 @@ async fn main() {
 
     let list_request = LookupAgentIdsRequestSoapEnvelope {
         encoding_style: SOAP_ENCODING.to_string(),
+        tnsattr: "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
+        urnattr: Option::None,
+        xsiattr: "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
         header: None,
-        body: LookupAgentIdsRequest {
-            parameters: LookupAgentIds {},
+        body: SoapLookupAgentIdsRequest {
+            body: LookupAgentIdsRequest {
+                parameters: LookupAgentIds {},
+            },
         },
     };
 
     let body = to_string(&list_request).expect("failed to generate xml");
+    println!("-------");
+    println!("{}", body);
 
     let client = reqwest::Client::new();
     let res = client
         .post("http://localhost:9800/webservices/services/AicAgentAdmin")
         .body(body)
-        .header("Content-Type", "application/soap+xml; charset=utf-8")
+        .header("Content-Type", "text/xml")
+        .header(
+            "Soapaction",
+            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
+        )
+        .basic_auth("Admin", Option::from("Avaya123$"))
         .send()
         .await
         .expect("failed to POST to AIC");
 
-    println!("{}", res.status());
+    let status = res.status();
+    let txt = res.text().await.unwrap_or_default();
+
+    println!("{}: {}", status, txt);
 }

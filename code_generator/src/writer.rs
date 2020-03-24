@@ -411,10 +411,7 @@ impl FileWriter {
         };
 
         if let Some(type_name) = self.get_some_attribute(node, "element") {
-            self.write(format!(
-                "\t#[yaserde(rename = \"{}\", default)]\n",
-                element_name,
-            ));
+            self.write("\t#[yaserde(flatten)]\n".to_string());
 
             self.write(format!(
                 "\tpub {}: {}::{},\n",
@@ -468,6 +465,7 @@ impl FileWriter {
             .for_each(|child| self.print_binding_operation(&child));
         self.write("}\n\n".to_string());
         self.print_default_constructor(struct_name);
+        self.flush_delayed_buffer();
     }
 
     fn print_default_constructor(&mut self, struct_name: String) {
@@ -509,7 +507,7 @@ impl FileWriter {
         let (input_type_template, input_template) = match some_input {
             Some((Some(name), Some(msg))) => (
                 format!(
-                    "pub type {0} = {1}::{2};\nenvelop!({0}SoapEnvelope, {0});\n\n",
+                    "pub type {0} = {1}::{2};\n",
                     to_pascal_case(name.as_str()),
                     MESSAGES_MOD,
                     self.fetch_type(msg.as_str())
@@ -616,14 +614,23 @@ impl FileWriter {
             .find(|c| c.has_tag_name("fault"))
             .map(|c| self.get_some_attribute_as_string(&c, "name"));
 
-        let input_template = match some_input {
-            Some(Some(name)) => format!(
-                "{}: {}::{}",
-                to_snake_case(name.as_str()),
-                PORTS_MOD,
-                to_pascal_case(name.as_str())
+        let (input_template, soap_wrapper) = match some_input {
+            Some(Some(name)) => (
+                format!(
+                    "{}: {}::{}",
+                    to_snake_case(name.as_str()),
+                    PORTS_MOD,
+                    to_pascal_case(name.as_str())
+                ),
+                format!(
+                    "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\nenvelop!({1}SoapEnvelope, {0});\n",
+                    format!("Soap{}", to_pascal_case(name.as_str())),
+                    to_pascal_case(name.as_str()),
+                    PORTS_MOD,
+                    element_name
+                ),
             ),
-            _ => "".to_string(),
+            _ => ("".to_string(), "".to_string()),
         };
 
         let output_template = match some_output {
@@ -648,6 +655,7 @@ impl FileWriter {
         ));
         self.write("\tunimplemented!();\n".to_string());
         self.write("}\n".to_string());
+        self.delayed_write(soap_wrapper);
     }
 }
 
