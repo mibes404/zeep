@@ -1,67 +1,7 @@
-pub mod ports {
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    use super::*;
-
-    pub trait AicAgentAdmin {
-        fn get(&self, get_request: GetRequest) -> Result<GetResponse, AicServiceFault>;
-        fn update(&self, update_request: UpdateRequest) -> Result<UpdateResponse, AicServiceFault>;
-        fn delete(&self, delete_request: DeleteRequest) -> Result<DeleteResponse, AicServiceFault>;
-        fn lookup_agent_ids(
-            &self,
-            lookup_agent_ids_request: LookupAgentIdsRequest,
-        ) -> Result<LookupAgentIdsResponse, AicServiceFault>;
-        fn lookup_lrm_ids(
-            &self,
-            lookup_lrm_ids_request: LookupLRMIdsRequest,
-        ) -> Result<LookupLRMIdsResponse, AicServiceFault>;
-        fn lookup_workgroups(
-            &self,
-            lookup_workgroups_request: LookupWorkgroupsRequest,
-        ) -> Result<LookupWorkgroupsResponse, AicServiceFault>;
-        fn lookup_domains(
-            &self,
-            lookup_domains_request: LookupDomainsRequest,
-        ) -> Result<LookupDomainsResponse, AicServiceFault>;
-        fn lookup_link_groups(
-            &self,
-            lookup_link_groups_request: LookupLinkGroupsRequest,
-        ) -> Result<LookupLinkGroupsResponse, AicServiceFault>;
-        fn lookup_phone_types(
-            &self,
-            lookup_phone_types_request: LookupPhoneTypesRequest,
-        ) -> Result<LookupPhoneTypesResponse, AicServiceFault>;
-        fn lookup_sites(
-            &self,
-            lookup_sites_request: LookupSitesRequest,
-        ) -> Result<LookupSitesResponse, AicServiceFault>;
-        fn create(&self, create_request: CreateRequest) -> Result<CreateResponse, AicServiceFault>;
-    }
-
-    pub type GetRequest = messages::GetRequest;
-    pub type GetResponse = messages::GetResponse;
-    pub type AicServiceFault = messages::AicServiceFault;
-    pub type UpdateRequest = messages::UpdateRequest;
-    pub type UpdateResponse = messages::UpdateResponse;
-    pub type DeleteRequest = messages::DeleteRequest;
-    pub type DeleteResponse = messages::DeleteResponse;
-    pub type LookupAgentIdsRequest = messages::LookupAgentIdsRequest;
-    pub type LookupAgentIdsResponse = messages::LookupAgentIdsResponse;
-    pub type LookupLRMIdsRequest = messages::LookupLRMIdsRequest;
-    pub type LookupLRMIdsResponse = messages::LookupLRMIdsResponse;
-    pub type LookupWorkgroupsRequest = messages::LookupWorkgroupsRequest;
-    pub type LookupWorkgroupsResponse = messages::LookupWorkgroupsResponse;
-    pub type LookupDomainsRequest = messages::LookupDomainsRequest;
-    pub type LookupDomainsResponse = messages::LookupDomainsResponse;
-    pub type LookupLinkGroupsRequest = messages::LookupLinkGroupsRequest;
-    pub type LookupLinkGroupsResponse = messages::LookupLinkGroupsResponse;
-    pub type LookupPhoneTypesRequest = messages::LookupPhoneTypesRequest;
-    pub type LookupPhoneTypesResponse = messages::LookupPhoneTypesResponse;
-    pub type LookupSitesRequest = messages::LookupSitesRequest;
-    pub type LookupSitesResponse = messages::LookupSitesResponse;
-    pub type CreateRequest = messages::CreateRequest;
-    pub type CreateResponse = messages::CreateResponse;
-}
+use soap_client::envelop;
+use soap_client::soap::Header;
+use std::io::{Read, Write};
+use yaserde::{YaDeserialize, YaSerialize};
 
 pub mod messages {
     use yaserde::{YaDeserialize, YaSerialize};
@@ -312,9 +252,6 @@ pub mod bindings {
         }
     }
 }
-
-use std::io::{Read, Write};
-use yaserde::{YaDeserialize, YaSerialize};
 
 pub mod types {
     use yaserde::{YaDeserialize, YaSerialize};
@@ -700,4 +637,91 @@ pub mod types {
         #[yaserde(rename = "CreateReturn", default)]
         pub create_return: bool,
     }
+}
+
+pub mod ports {
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    use super::*;
+
+    pub trait AicAgentAdmin {
+        fn get(&self, get_request: GetRequest) -> Result<GetResponse, AicServiceFault>;
+        fn update(&self, update_request: UpdateRequest) -> Result<UpdateResponse, AicServiceFault>;
+        fn delete(&self, delete_request: DeleteRequest) -> Result<DeleteResponse, AicServiceFault>;
+        fn lookup_agent_ids(
+            &self,
+            lookup_agent_ids_request: LookupAgentIdsRequest,
+        ) -> Result<LookupAgentIdsResponse, AicServiceFault>;
+        fn lookup_lrm_ids(
+            &self,
+            lookup_lrm_ids_request: LookupLRMIdsRequest,
+        ) -> Result<LookupLRMIdsResponse, AicServiceFault>;
+        fn lookup_workgroups(
+            &self,
+            lookup_workgroups_request: LookupWorkgroupsRequest,
+        ) -> Result<LookupWorkgroupsResponse, AicServiceFault>;
+        fn lookup_domains(
+            &self,
+            lookup_domains_request: LookupDomainsRequest,
+        ) -> Result<LookupDomainsResponse, AicServiceFault>;
+        fn lookup_link_groups(
+            &self,
+            lookup_link_groups_request: LookupLinkGroupsRequest,
+        ) -> Result<LookupLinkGroupsResponse, AicServiceFault>;
+        fn lookup_phone_types(
+            &self,
+            lookup_phone_types_request: LookupPhoneTypesRequest,
+        ) -> Result<LookupPhoneTypesResponse, AicServiceFault>;
+        fn lookup_sites(
+            &self,
+            lookup_sites_request: LookupSitesRequest,
+        ) -> Result<LookupSitesResponse, AicServiceFault>;
+        fn create(&self, create_request: CreateRequest) -> Result<CreateResponse, AicServiceFault>;
+    }
+
+    pub type GetRequest = messages::GetRequest;
+    envelop!(GetRequestSoapEnvelope, GetRequest);
+
+    pub type GetResponse = messages::GetResponse;
+    pub type AicServiceFault = messages::AicServiceFault;
+    pub type UpdateRequest = messages::UpdateRequest;
+    envelop!(UpdateRequestSoapEnvelope, UpdateRequest);
+
+    pub type UpdateResponse = messages::UpdateResponse;
+    pub type DeleteRequest = messages::DeleteRequest;
+    envelop!(DeleteRequestSoapEnvelope, DeleteRequest);
+
+    pub type DeleteResponse = messages::DeleteResponse;
+    pub type LookupAgentIdsRequest = messages::LookupAgentIdsRequest;
+    envelop!(LookupAgentIdsRequestSoapEnvelope, LookupAgentIdsRequest);
+
+    pub type LookupAgentIdsResponse = messages::LookupAgentIdsResponse;
+    pub type LookupLRMIdsRequest = messages::LookupLRMIdsRequest;
+    envelop!(LookupLRMIdsRequestSoapEnvelope, LookupLRMIdsRequest);
+
+    pub type LookupLRMIdsResponse = messages::LookupLRMIdsResponse;
+    pub type LookupWorkgroupsRequest = messages::LookupWorkgroupsRequest;
+    envelop!(LookupWorkgroupsRequestSoapEnvelope, LookupWorkgroupsRequest);
+
+    pub type LookupWorkgroupsResponse = messages::LookupWorkgroupsResponse;
+    pub type LookupDomainsRequest = messages::LookupDomainsRequest;
+    envelop!(LookupDomainsRequestSoapEnvelope, LookupDomainsRequest);
+
+    pub type LookupDomainsResponse = messages::LookupDomainsResponse;
+    pub type LookupLinkGroupsRequest = messages::LookupLinkGroupsRequest;
+    envelop!(LookupLinkGroupsRequestSoapEnvelope, LookupLinkGroupsRequest);
+
+    pub type LookupLinkGroupsResponse = messages::LookupLinkGroupsResponse;
+    pub type LookupPhoneTypesRequest = messages::LookupPhoneTypesRequest;
+    envelop!(LookupPhoneTypesRequestSoapEnvelope, LookupPhoneTypesRequest);
+
+    pub type LookupPhoneTypesResponse = messages::LookupPhoneTypesResponse;
+    pub type LookupSitesRequest = messages::LookupSitesRequest;
+    envelop!(LookupSitesRequestSoapEnvelope, LookupSitesRequest);
+
+    pub type LookupSitesResponse = messages::LookupSitesResponse;
+    pub type CreateRequest = messages::CreateRequest;
+    envelop!(CreateRequestSoapEnvelope, CreateRequest);
+
+    pub type CreateResponse = messages::CreateResponse;
 }

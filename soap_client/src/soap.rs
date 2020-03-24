@@ -4,31 +4,33 @@ use yaserde::{YaDeserialize, YaSerialize};
 
 const SOAP_ENVELOPE: &str = "http://www.w3.org/2003/05/soap-envelope/";
 
+#[macro_export]
 macro_rules! envelop {
-    ($type: ty) => {
+    ($id: ident, $type: ty) => {
         #[derive(Debug, Default, YaSerialize, YaDeserialize)]
         #[yaserde(
-            rename = "Envelope",
-            namespace = "soap: http://www.w3.org/2003/05/soap-envelope/"
+            root = "Envelope",
+            namespace = "soap: http://www.w3.org/2003/05/soap-envelope/",
+            prefix = "soap"
         )]
-        struct Envelope {
+        pub struct $id {
             #[yaserde(rename = "encodingStyle", prefix = "soap", attribute)]
-            encoding_style: String,
+            pub encoding_style: String,
             #[yaserde(rename = "Header", prefix = "soap")]
-            header: Header,
+            pub header: Option<Header>,
             #[yaserde(rename = "Body", prefix = "soap")]
-            body: $type,
+            pub body: $type,
         }
     };
 }
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-struct Message {}
+pub struct Message {}
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-struct Header {}
+pub struct Header {}
 
-envelop!(Message);
+envelop!(MessageEnvelope, Message);
 
 #[cfg(test)]
 mod tests {
@@ -36,9 +38,9 @@ mod tests {
 
     #[test]
     fn test_envelope() {
-        let e = Envelope {
+        let e = MessageEnvelope {
             encoding_style: "http://www.w3.org/2003/05/soap-encoding".to_string(),
-            header: Header {},
+            header: Option::None,
             body: Message {},
         };
 

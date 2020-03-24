@@ -160,8 +160,13 @@ impl FileWriter {
 
     fn print_header(&mut self) {
         self.write(
-            "use yaserde::{{YaSerialize, YaDeserialize}};\nuse std::io::{Read, Write};\n\n"
-                .to_string(),
+            r#"use yaserde::{{YaSerialize, YaDeserialize}};
+            use std::io::{Read, Write};
+            use soap_client::soap::Header;
+            use soap_client::envelop;
+            
+            "#
+            .to_string(),
         );
     }
 
@@ -504,7 +509,7 @@ impl FileWriter {
         let (input_type_template, input_template) = match some_input {
             Some((Some(name), Some(msg))) => (
                 format!(
-                    "pub type {} = {}::{};\n",
+                    "pub type {0} = {1}::{2};\nenvelop!({0}SoapEnvelope, {0});\n\n",
                     to_pascal_case(name.as_str()),
                     MESSAGES_MOD,
                     self.fetch_type(msg.as_str())

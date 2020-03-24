@@ -1,7 +1,11 @@
 use crate::aic::bindings::AicAgentAdminSoapBinding;
-use crate::aic::ports::AicAgentAdmin;
-use crate::aic::types::{Agent, AgentChatChannel, Create};
+use crate::aic::ports::{
+    AicAgentAdmin, CreateRequest, CreateRequestSoapEnvelope, LookupAgentIdsRequest,
+    LookupAgentIdsRequestSoapEnvelope,
+};
+use crate::aic::types::{Agent, AgentChatChannel, Create, LookupAgentIds};
 use crate::smgr::types::XmlUser;
+use soap_client::envelop;
 use yaserde::ser::to_string;
 
 #[macro_use]
@@ -82,4 +86,28 @@ fn main() {
 
     println!("-------");
     println!("{}", to_string(&xml_user).expect("failed to generate xml"));
+
+    // test SOAP
+    let lookup = CreateRequestSoapEnvelope {
+        encoding_style: "".to_string(),
+        header: None,
+        body: CreateRequest {
+            parameters: Create {
+                agent: Agent {
+                    advocate_info: None,
+                    basic_profile: None,
+                    chat_channel: None,
+                    email_channel: None,
+                    extended_profile: None,
+                    login_id: Option::from("mibes".to_string()),
+                    security: None,
+                    task_load: None,
+                    voice_channel: None,
+                },
+            },
+        },
+    };
+
+    println!("-------");
+    println!("{}", to_string(&lookup).expect("failed to generate xml"));
 }
