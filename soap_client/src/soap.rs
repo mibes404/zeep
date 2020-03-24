@@ -3,6 +3,7 @@ use yaserde::ser::to_string;
 use yaserde::{YaDeserialize, YaSerialize};
 
 const SOAP_ENVELOPE: &str = "http://www.w3.org/2003/05/soap-envelope/";
+pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 
 #[macro_export]
 macro_rules! envelop {
@@ -39,7 +40,7 @@ mod tests {
     #[test]
     fn test_envelope() {
         let e = MessageEnvelope {
-            encoding_style: "http://www.w3.org/2003/05/soap-encoding".to_string(),
+            encoding_style: SOAP_ENCODING.to_string(),
             header: Option::None,
             body: Message {},
         };

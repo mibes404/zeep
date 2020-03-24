@@ -6,6 +6,7 @@ use crate::aic::ports::{
 use crate::aic::types::{Agent, AgentChatChannel, Create, LookupAgentIds};
 use crate::smgr::types::XmlUser;
 use soap_client::envelop;
+use soap_client::soap::SOAP_ENCODING;
 use yaserde::ser::to_string;
 
 #[macro_use]
@@ -18,7 +19,8 @@ extern crate yaserde_derive;
 mod aic;
 mod smgr;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let c = Create {
         agent: Agent {
             advocate_info: None,
@@ -88,8 +90,8 @@ fn main() {
     println!("{}", to_string(&xml_user).expect("failed to generate xml"));
 
     // test SOAP
-    let lookup = CreateRequestSoapEnvelope {
-        encoding_style: "".to_string(),
+    let create_request = CreateRequestSoapEnvelope {
+        encoding_style: SOAP_ENCODING.to_string(),
         header: None,
         body: CreateRequest {
             parameters: Create {
@@ -109,5 +111,29 @@ fn main() {
     };
 
     println!("-------");
-    println!("{}", to_string(&lookup).expect("failed to generate xml"));
+    println!(
+        "{}",
+        to_string(&create_request).expect("failed to generate xml")
+    );
+
+    let list_request = LookupAgentIdsRequestSoapEnvelope {
+        encoding_style: SOAP_ENCODING.to_string(),
+        header: None,
+        body: LookupAgentIdsRequest {
+            parameters: LookupAgentIds {},
+        },
+    };
+
+    let body = to_string(&list_request).expect("failed to generate xml");
+
+    let client = reqwest::Client::new();
+    let res = client
+        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .body(body)
+        .header("Content-Type", "application/soap+xml; charset=utf-8")
+        .send()
+        .await
+        .expect("failed to POST to AIC");
+
+    println!("{}", res.status());
 }
