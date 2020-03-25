@@ -706,12 +706,12 @@ impl FileWriter {
     }
 
     fn print_binding_operation(&mut self, node: &Node) {
-        let element_name = match self.get_some_attribute(node, "name") {
+        let operation_name = match self.get_some_attribute(node, "name") {
             None => return,
             Some(n) => n,
         };
 
-        let func_name = to_snake_case(element_name);
+        let func_name = to_snake_case(operation_name);
         let some_input = node
             .children()
             .find(|c| c.has_tag_name("input"))
@@ -750,7 +750,7 @@ impl FileWriter {
                 input_soap_name,
                 input_type,
                 PORTS_MOD,
-                element_name,
+                operation_name,
                 self.construct_soap_wrapper(input_type.as_str(), input_soap_name.as_str())
             ))
         } else {
@@ -807,6 +807,7 @@ impl FileWriter {
                 input_name.as_str(),
                 input_type.as_str(),
                 output_type.as_str(),
+                operation_name,
             )
         }
 
@@ -821,7 +822,13 @@ impl FileWriter {
         }
     }
 
-    fn print_reqwest_body(&mut self, input_variable: &str, input_type: &str, output_type: &str) {
+    fn print_reqwest_body(
+        &mut self,
+        input_variable: &str,
+        input_type: &str,
+        output_type: &str,
+        operation_name: &str,
+    ) {
         self.write(format!(
             r#"
         let __request = {1}SoapEnvelope::new(Soap{1} {{
@@ -836,7 +843,7 @@ impl FileWriter {
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
+            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/{3}",
         );
         
         if let Some(credentials) = &self.credentials {{
@@ -853,7 +860,7 @@ impl FileWriter {
         
         Ok(r.body.body)
         "#,
-            input_variable, input_type, output_type
+            input_variable, input_type, output_type, operation_name
         ));
     }
 }
