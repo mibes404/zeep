@@ -80,6 +80,7 @@ impl FileWriter {
     pub fn process_file(&mut self, base_path: &str, file_name: &str) {
         self.base_path = base_path.to_string();
         self.print_header();
+        self.print_common_structs();
         self.process_file_in_path(file_name, true);
     }
 
@@ -166,11 +167,19 @@ impl FileWriter {
         self.write(
             r#"use yaserde::{{YaSerialize, YaDeserialize}};
             use std::io::{Read, Write};
-            use soap_client::soap::Header;
-            use soap_client::envelop;
             
             pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
             "#
+            .to_string(),
+        );
+    }
+
+    fn print_common_structs(&mut self) {
+        self.write(
+            r#"
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct Header {}
+    "#
             .to_string(),
         );
     }
