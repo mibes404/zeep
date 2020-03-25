@@ -94,30 +94,23 @@ async fn main() {
     println!("{}", to_string(&xml_user).expect("failed to generate xml"));
 
     // test SOAP
-    let create_request = CreateRequestSoapEnvelope {
-        encoding_style: SOAP_ENCODING.to_string(),
-        tnsattr: "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-        urnattr: Option::None,
-        xsiattr: "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-        header: None,
-        body: SoapCreateRequest {
-            body: CreateRequest {
-                parameters: Create {
-                    agent: Agent {
-                        advocate_info: None,
-                        basic_profile: None,
-                        chat_channel: None,
-                        email_channel: None,
-                        extended_profile: None,
-                        login_id: Option::from("mibes".to_string()),
-                        security: None,
-                        task_load: None,
-                        voice_channel: None,
-                    },
+    let create_request = CreateRequestSoapEnvelope::new(SoapCreateRequest {
+        body: CreateRequest {
+            parameters: Create {
+                agent: Agent {
+                    advocate_info: None,
+                    basic_profile: None,
+                    chat_channel: None,
+                    email_channel: None,
+                    extended_profile: None,
+                    login_id: Option::from("mibes".to_string()),
+                    security: None,
+                    task_load: None,
+                    voice_channel: None,
                 },
             },
         },
-    };
+    });
 
     println!("-------");
     println!(
@@ -125,18 +118,11 @@ async fn main() {
         to_string(&create_request).expect("failed to generate xml")
     );
 
-    let list_request = LookupAgentIdsRequestSoapEnvelope {
-        encoding_style: SOAP_ENCODING.to_string(),
-        tnsattr: "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-        urnattr: Option::None,
-        xsiattr: "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-        header: None,
-        body: SoapLookupAgentIdsRequest {
-            body: LookupAgentIdsRequest {
-                parameters: LookupAgentIds {},
-            },
+    let list_request = LookupAgentIdsRequestSoapEnvelope::new(SoapLookupAgentIdsRequest {
+        body: LookupAgentIdsRequest {
+            parameters: LookupAgentIds {},
         },
-    };
+    });
 
     let body = to_string(&list_request).expect("failed to generate xml");
     println!("-------");
@@ -206,14 +192,7 @@ mod tests {
         let b2 = to_string(&t).expect("failed to generate xml");
         println!("{:?}", b2);
 
-        let t2 = LookupAgentIdsResponseSoapEnvelope {
-            encoding_style: "".to_string(),
-            tnsattr: "".to_string(),
-            urnattr: None,
-            xsiattr: "".to_string(),
-            header: None,
-            body: SoapLookupAgentIdsResponse { body: t },
-        };
+        let t2 = LookupAgentIdsResponseSoapEnvelope::new(SoapLookupAgentIdsResponse { body: t });
 
         let b3 = to_string(&t2).expect("failed to generate xml");
         println!("{:?}", b3);

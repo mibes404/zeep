@@ -169,6 +169,7 @@ impl FileWriter {
             use soap_client::soap::Header;
             use soap_client::envelop;
             
+            pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
             "#
             .to_string(),
         );
@@ -617,6 +618,11 @@ impl FileWriter {
     }
 
     fn construct_soap_wrapper(&self, soap_name: &str, body_type: &str) -> String {
+        let tns = match &self.target_name_space {
+            None => "Option::None".to_string(),
+            Some(t) => t.to_string(),
+        };
+
         format!(
             r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
         #[yaserde(
@@ -628,18 +634,31 @@ impl FileWriter {
             #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
             pub encoding_style: String,
             #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-            pub tnsattr: String,
+            pub tnsattr: Option<String>,
             #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
             pub urnattr: Option<String>,
             #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-            pub xsiattr: String,
+            pub xsiattr: Option<String>,
             #[yaserde(rename = "Header", prefix = "soapenv")]
             pub header: Option<Header>,
             #[yaserde(rename = "Body", prefix = "soapenv")]
             pub body: {1},
         }}
+        
+        impl {0}SoapEnvelope {{
+            pub fn new(body: {1}) -> Self {{
+                {0}SoapEnvelope {{
+                    encoding_style: SOAP_ENCODING.to_string(),
+                    tnsattr: {2},
+                    body,
+                    urnattr: None,
+                    xsiattr: None,
+                    header: None,
+                }}
+            }}
+        }}        
         "#,
-            soap_name, body_type
+            soap_name, body_type, tns
         )
     }
 

@@ -230,665 +230,12 @@ pub mod ports {
     pub type CreateResponse = messages::CreateResponse;
 }
 
-pub mod bindings {
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    use super::*;
-
-    pub struct AicAgentAdminSoapBinding {}
-
-    impl ports::AicAgentAdmin for AicAgentAdminSoapBinding {
-        fn get(
-            &self,
-            get_request: ports::GetRequest,
-        ) -> Result<ports::GetResponse, ports::AicServiceFault> {
-            unimplemented!();
-        }
-        fn update(
-            &self,
-            update_request: ports::UpdateRequest,
-        ) -> Result<ports::UpdateResponse, ports::AicServiceFault> {
-            unimplemented!();
-        }
-        fn delete(
-            &self,
-            delete_request: ports::DeleteRequest,
-        ) -> Result<ports::DeleteResponse, ports::AicServiceFault> {
-            unimplemented!();
-        }
-        fn lookup_agent_ids(
-            &self,
-            lookup_agent_ids_request: ports::LookupAgentIdsRequest,
-        ) -> Result<ports::LookupAgentIdsResponse, ports::AicServiceFault> {
-            unimplemented!();
-        }
-        fn lookup_lrm_ids(
-            &self,
-            lookup_lrm_ids_request: ports::LookupLRMIdsRequest,
-        ) -> Result<ports::LookupLRMIdsResponse, ports::AicServiceFault> {
-            unimplemented!();
-        }
-        fn lookup_workgroups(
-            &self,
-            lookup_workgroups_request: ports::LookupWorkgroupsRequest,
-        ) -> Result<ports::LookupWorkgroupsResponse, ports::AicServiceFault> {
-            unimplemented!();
-        }
-        fn lookup_domains(
-            &self,
-            lookup_domains_request: ports::LookupDomainsRequest,
-        ) -> Result<ports::LookupDomainsResponse, ports::AicServiceFault> {
-            unimplemented!();
-        }
-        fn lookup_link_groups(
-            &self,
-            lookup_link_groups_request: ports::LookupLinkGroupsRequest,
-        ) -> Result<ports::LookupLinkGroupsResponse, ports::AicServiceFault> {
-            unimplemented!();
-        }
-        fn lookup_phone_types(
-            &self,
-            lookup_phone_types_request: ports::LookupPhoneTypesRequest,
-        ) -> Result<ports::LookupPhoneTypesResponse, ports::AicServiceFault> {
-            unimplemented!();
-        }
-        fn lookup_sites(
-            &self,
-            lookup_sites_request: ports::LookupSitesRequest,
-        ) -> Result<ports::LookupSitesResponse, ports::AicServiceFault> {
-            unimplemented!();
-        }
-        fn create(
-            &self,
-            create_request: ports::CreateRequest,
-        ) -> Result<ports::CreateResponse, ports::AicServiceFault> {
-            unimplemented!();
-        }
-    }
-
-    impl Default for AicAgentAdminSoapBinding {
-        fn default() -> Self {
-            AicAgentAdminSoapBinding {}
-        }
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetRequest {
-        #[yaserde(rename = "Get", default)]
-        pub body: ports::GetRequest,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetRequestSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetResponse {
-        #[yaserde(rename = "GetResponse", default)]
-        pub body: ports::GetResponse,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetResponseSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapUpdateRequest {
-        #[yaserde(rename = "Update", default)]
-        pub body: ports::UpdateRequest,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct UpdateRequestSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapUpdateRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapUpdateResponse {
-        #[yaserde(rename = "UpdateResponse", default)]
-        pub body: ports::UpdateResponse,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct UpdateResponseSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapUpdateResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapDeleteRequest {
-        #[yaserde(rename = "Delete", default)]
-        pub body: ports::DeleteRequest,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct DeleteRequestSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapDeleteRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapDeleteResponse {
-        #[yaserde(rename = "DeleteResponse", default)]
-        pub body: ports::DeleteResponse,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct DeleteResponseSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapDeleteResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapLookupAgentIdsRequest {
-        #[yaserde(rename = "LookupAgentIds", default)]
-        pub body: ports::LookupAgentIdsRequest,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct LookupAgentIdsRequestSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapLookupAgentIdsRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapLookupAgentIdsResponse {
-        #[yaserde(rename = "LookupAgentIdsResponse", default)]
-        pub body: ports::LookupAgentIdsResponse,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct LookupAgentIdsResponseSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapLookupAgentIdsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapLookupLRMIdsRequest {
-        #[yaserde(rename = "LookupLRMIds", default)]
-        pub body: ports::LookupLRMIdsRequest,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct LookupLRMIdsRequestSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapLookupLRMIdsRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapLookupLRMIdsResponse {
-        #[yaserde(rename = "LookupLRMIdsResponse", default)]
-        pub body: ports::LookupLRMIdsResponse,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct LookupLRMIdsResponseSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapLookupLRMIdsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapLookupWorkgroupsRequest {
-        #[yaserde(rename = "LookupWorkgroups", default)]
-        pub body: ports::LookupWorkgroupsRequest,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct LookupWorkgroupsRequestSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapLookupWorkgroupsRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapLookupWorkgroupsResponse {
-        #[yaserde(rename = "LookupWorkgroupsResponse", default)]
-        pub body: ports::LookupWorkgroupsResponse,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct LookupWorkgroupsResponseSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapLookupWorkgroupsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapLookupDomainsRequest {
-        #[yaserde(rename = "LookupDomains", default)]
-        pub body: ports::LookupDomainsRequest,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct LookupDomainsRequestSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapLookupDomainsRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapLookupDomainsResponse {
-        #[yaserde(rename = "LookupDomainsResponse", default)]
-        pub body: ports::LookupDomainsResponse,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct LookupDomainsResponseSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapLookupDomainsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapLookupLinkGroupsRequest {
-        #[yaserde(rename = "LookupLinkGroups", default)]
-        pub body: ports::LookupLinkGroupsRequest,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct LookupLinkGroupsRequestSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapLookupLinkGroupsRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapLookupLinkGroupsResponse {
-        #[yaserde(rename = "LookupLinkGroupsResponse", default)]
-        pub body: ports::LookupLinkGroupsResponse,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct LookupLinkGroupsResponseSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapLookupLinkGroupsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapLookupPhoneTypesRequest {
-        #[yaserde(rename = "LookupPhoneTypes", default)]
-        pub body: ports::LookupPhoneTypesRequest,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct LookupPhoneTypesRequestSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapLookupPhoneTypesRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapLookupPhoneTypesResponse {
-        #[yaserde(rename = "LookupPhoneTypesResponse", default)]
-        pub body: ports::LookupPhoneTypesResponse,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct LookupPhoneTypesResponseSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapLookupPhoneTypesResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapLookupSitesRequest {
-        #[yaserde(rename = "LookupSites", default)]
-        pub body: ports::LookupSitesRequest,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct LookupSitesRequestSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapLookupSitesRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapLookupSitesResponse {
-        #[yaserde(rename = "LookupSitesResponse", default)]
-        pub body: ports::LookupSitesResponse,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct LookupSitesResponseSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapLookupSitesResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapCreateRequest {
-        #[yaserde(rename = "Create", default)]
-        pub body: ports::CreateRequest,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct CreateRequestSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapCreateRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapCreateResponse {
-        #[yaserde(rename = "CreateResponse", default)]
-        pub body: ports::CreateResponse,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct CreateResponseSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: String,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: String,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapCreateResponse,
-    }
-}
-
 use soap_client::envelop;
 use soap_client::soap::Header;
 use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
+pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub mod types {
     use yaserde::{YaDeserialize, YaSerialize};
 
@@ -1462,5 +809,945 @@ pub mod types {
     pub struct CreateResponse {
         #[yaserde(prefix = "ns", rename = "CreateReturn", default)]
         pub create_return: bool,
+    }
+}
+
+pub mod bindings {
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    use super::*;
+
+    pub struct AicAgentAdminSoapBinding {}
+
+    impl ports::AicAgentAdmin for AicAgentAdminSoapBinding {
+        fn get(
+            &self,
+            get_request: ports::GetRequest,
+        ) -> Result<ports::GetResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn update(
+            &self,
+            update_request: ports::UpdateRequest,
+        ) -> Result<ports::UpdateResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn delete(
+            &self,
+            delete_request: ports::DeleteRequest,
+        ) -> Result<ports::DeleteResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn lookup_agent_ids(
+            &self,
+            lookup_agent_ids_request: ports::LookupAgentIdsRequest,
+        ) -> Result<ports::LookupAgentIdsResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn lookup_lrm_ids(
+            &self,
+            lookup_lrm_ids_request: ports::LookupLRMIdsRequest,
+        ) -> Result<ports::LookupLRMIdsResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn lookup_workgroups(
+            &self,
+            lookup_workgroups_request: ports::LookupWorkgroupsRequest,
+        ) -> Result<ports::LookupWorkgroupsResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn lookup_domains(
+            &self,
+            lookup_domains_request: ports::LookupDomainsRequest,
+        ) -> Result<ports::LookupDomainsResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn lookup_link_groups(
+            &self,
+            lookup_link_groups_request: ports::LookupLinkGroupsRequest,
+        ) -> Result<ports::LookupLinkGroupsResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn lookup_phone_types(
+            &self,
+            lookup_phone_types_request: ports::LookupPhoneTypesRequest,
+        ) -> Result<ports::LookupPhoneTypesResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn lookup_sites(
+            &self,
+            lookup_sites_request: ports::LookupSitesRequest,
+        ) -> Result<ports::LookupSitesResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+        fn create(
+            &self,
+            create_request: ports::CreateRequest,
+        ) -> Result<ports::CreateResponse, ports::AicServiceFault> {
+            unimplemented!();
+        }
+    }
+
+    impl Default for AicAgentAdminSoapBinding {
+        fn default() -> Self {
+            AicAgentAdminSoapBinding {}
+        }
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetRequest {
+        #[yaserde(rename = "Get", default)]
+        pub body: ports::GetRequest,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetRequest,
+    }
+
+    impl GetRequestSoapEnvelope {
+        pub fn new(body: SoapGetRequest) -> Self {
+            GetRequestSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetResponse {
+        #[yaserde(rename = "GetResponse", default)]
+        pub body: ports::GetResponse,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetResponse,
+    }
+
+    impl GetResponseSoapEnvelope {
+        pub fn new(body: SoapGetResponse) -> Self {
+            GetResponseSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapUpdateRequest {
+        #[yaserde(rename = "Update", default)]
+        pub body: ports::UpdateRequest,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct UpdateRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapUpdateRequest,
+    }
+
+    impl UpdateRequestSoapEnvelope {
+        pub fn new(body: SoapUpdateRequest) -> Self {
+            UpdateRequestSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapUpdateResponse {
+        #[yaserde(rename = "UpdateResponse", default)]
+        pub body: ports::UpdateResponse,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct UpdateResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapUpdateResponse,
+    }
+
+    impl UpdateResponseSoapEnvelope {
+        pub fn new(body: SoapUpdateResponse) -> Self {
+            UpdateResponseSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapDeleteRequest {
+        #[yaserde(rename = "Delete", default)]
+        pub body: ports::DeleteRequest,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct DeleteRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapDeleteRequest,
+    }
+
+    impl DeleteRequestSoapEnvelope {
+        pub fn new(body: SoapDeleteRequest) -> Self {
+            DeleteRequestSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapDeleteResponse {
+        #[yaserde(rename = "DeleteResponse", default)]
+        pub body: ports::DeleteResponse,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct DeleteResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapDeleteResponse,
+    }
+
+    impl DeleteResponseSoapEnvelope {
+        pub fn new(body: SoapDeleteResponse) -> Self {
+            DeleteResponseSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupAgentIdsRequest {
+        #[yaserde(rename = "LookupAgentIds", default)]
+        pub body: ports::LookupAgentIdsRequest,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupAgentIdsRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupAgentIdsRequest,
+    }
+
+    impl LookupAgentIdsRequestSoapEnvelope {
+        pub fn new(body: SoapLookupAgentIdsRequest) -> Self {
+            LookupAgentIdsRequestSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupAgentIdsResponse {
+        #[yaserde(rename = "LookupAgentIdsResponse", default)]
+        pub body: ports::LookupAgentIdsResponse,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupAgentIdsResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupAgentIdsResponse,
+    }
+
+    impl LookupAgentIdsResponseSoapEnvelope {
+        pub fn new(body: SoapLookupAgentIdsResponse) -> Self {
+            LookupAgentIdsResponseSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupLRMIdsRequest {
+        #[yaserde(rename = "LookupLRMIds", default)]
+        pub body: ports::LookupLRMIdsRequest,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupLRMIdsRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupLRMIdsRequest,
+    }
+
+    impl LookupLRMIdsRequestSoapEnvelope {
+        pub fn new(body: SoapLookupLRMIdsRequest) -> Self {
+            LookupLRMIdsRequestSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupLRMIdsResponse {
+        #[yaserde(rename = "LookupLRMIdsResponse", default)]
+        pub body: ports::LookupLRMIdsResponse,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupLRMIdsResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupLRMIdsResponse,
+    }
+
+    impl LookupLRMIdsResponseSoapEnvelope {
+        pub fn new(body: SoapLookupLRMIdsResponse) -> Self {
+            LookupLRMIdsResponseSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupWorkgroupsRequest {
+        #[yaserde(rename = "LookupWorkgroups", default)]
+        pub body: ports::LookupWorkgroupsRequest,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupWorkgroupsRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupWorkgroupsRequest,
+    }
+
+    impl LookupWorkgroupsRequestSoapEnvelope {
+        pub fn new(body: SoapLookupWorkgroupsRequest) -> Self {
+            LookupWorkgroupsRequestSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupWorkgroupsResponse {
+        #[yaserde(rename = "LookupWorkgroupsResponse", default)]
+        pub body: ports::LookupWorkgroupsResponse,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupWorkgroupsResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupWorkgroupsResponse,
+    }
+
+    impl LookupWorkgroupsResponseSoapEnvelope {
+        pub fn new(body: SoapLookupWorkgroupsResponse) -> Self {
+            LookupWorkgroupsResponseSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupDomainsRequest {
+        #[yaserde(rename = "LookupDomains", default)]
+        pub body: ports::LookupDomainsRequest,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupDomainsRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupDomainsRequest,
+    }
+
+    impl LookupDomainsRequestSoapEnvelope {
+        pub fn new(body: SoapLookupDomainsRequest) -> Self {
+            LookupDomainsRequestSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupDomainsResponse {
+        #[yaserde(rename = "LookupDomainsResponse", default)]
+        pub body: ports::LookupDomainsResponse,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupDomainsResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupDomainsResponse,
+    }
+
+    impl LookupDomainsResponseSoapEnvelope {
+        pub fn new(body: SoapLookupDomainsResponse) -> Self {
+            LookupDomainsResponseSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupLinkGroupsRequest {
+        #[yaserde(rename = "LookupLinkGroups", default)]
+        pub body: ports::LookupLinkGroupsRequest,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupLinkGroupsRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupLinkGroupsRequest,
+    }
+
+    impl LookupLinkGroupsRequestSoapEnvelope {
+        pub fn new(body: SoapLookupLinkGroupsRequest) -> Self {
+            LookupLinkGroupsRequestSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupLinkGroupsResponse {
+        #[yaserde(rename = "LookupLinkGroupsResponse", default)]
+        pub body: ports::LookupLinkGroupsResponse,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupLinkGroupsResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupLinkGroupsResponse,
+    }
+
+    impl LookupLinkGroupsResponseSoapEnvelope {
+        pub fn new(body: SoapLookupLinkGroupsResponse) -> Self {
+            LookupLinkGroupsResponseSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupPhoneTypesRequest {
+        #[yaserde(rename = "LookupPhoneTypes", default)]
+        pub body: ports::LookupPhoneTypesRequest,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupPhoneTypesRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupPhoneTypesRequest,
+    }
+
+    impl LookupPhoneTypesRequestSoapEnvelope {
+        pub fn new(body: SoapLookupPhoneTypesRequest) -> Self {
+            LookupPhoneTypesRequestSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupPhoneTypesResponse {
+        #[yaserde(rename = "LookupPhoneTypesResponse", default)]
+        pub body: ports::LookupPhoneTypesResponse,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupPhoneTypesResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupPhoneTypesResponse,
+    }
+
+    impl LookupPhoneTypesResponseSoapEnvelope {
+        pub fn new(body: SoapLookupPhoneTypesResponse) -> Self {
+            LookupPhoneTypesResponseSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupSitesRequest {
+        #[yaserde(rename = "LookupSites", default)]
+        pub body: ports::LookupSitesRequest,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupSitesRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupSitesRequest,
+    }
+
+    impl LookupSitesRequestSoapEnvelope {
+        pub fn new(body: SoapLookupSitesRequest) -> Self {
+            LookupSitesRequestSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupSitesResponse {
+        #[yaserde(rename = "LookupSitesResponse", default)]
+        pub body: ports::LookupSitesResponse,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupSitesResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupSitesResponse,
+    }
+
+    impl LookupSitesResponseSoapEnvelope {
+        pub fn new(body: SoapLookupSitesResponse) -> Self {
+            LookupSitesResponseSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapCreateRequest {
+        #[yaserde(rename = "Create", default)]
+        pub body: ports::CreateRequest,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct CreateRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapCreateRequest,
+    }
+
+    impl CreateRequestSoapEnvelope {
+        pub fn new(body: SoapCreateRequest) -> Self {
+            CreateRequestSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapCreateResponse {
+        #[yaserde(rename = "CreateResponse", default)]
+        pub body: ports::CreateResponse,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct CreateResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapCreateResponse,
+    }
+
+    impl CreateResponseSoapEnvelope {
+        pub fn new(body: SoapCreateResponse) -> Self {
+            CreateResponseSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::None,
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
     }
 }
