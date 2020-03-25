@@ -8,6 +8,8 @@ use crate::aic::ports::{
 };
 use crate::aic::types::{Agent, AgentChatChannel, Create, LookupAgentIds};
 use crate::smgr::types::XmlUser;
+use crate::weather::bindings::WeatherSoap;
+use crate::weather::ports::WeatherSoap as p_ws;
 use soap_client::envelop;
 use soap_client::soap::SOAP_ENCODING;
 use yaserde::de::from_str;
@@ -22,6 +24,7 @@ extern crate yaserde_derive;
 
 mod aic;
 mod smgr;
+mod weather;
 
 #[tokio::main]
 async fn main() {
@@ -139,6 +142,13 @@ async fn main() {
         .expect("can not lookup agents");
 
     println!("{:?}", r);
+
+    let mut w = WeatherSoap::new("http://ws.cdyne.com/WeatherWS/", Option::None);
+    let w_info = w
+        .get_weather_information()
+        .await
+        .expect("can not lookup weather");
+    println!("{:?}", w_info);
 }
 
 #[cfg(test)]

@@ -256,11 +256,13 @@ impl FileWriter {
             if let Some(type_name) = self.get_some_attribute(node, "type") {
                 if self.level == 0 {
                     // top-level == type alias
-                    self.write(format!(
-                        "pub type {} = {};\n\n",
-                        to_pascal_case(element_name),
-                        self.fetch_type(type_name)
-                    ));
+                    let top_level = to_pascal_case(element_name);
+                    let alias = self.fetch_type(type_name);
+
+                    if top_level != alias {
+                        self.write(format!("pub type {} = {};\n\n", top_level, alias));
+                    }
+
                     return;
                 }
 
@@ -315,7 +317,7 @@ impl FileWriter {
             "integer" | "int" | "long" => "u64".to_string(),
             "short" => "u8".to_string(),
             "boolean" => "bool".to_string(),
-            "date" | "xs:time" => "SystemTime".to_string(),
+            "date" | "dateTime" | "xs:time" => "SystemTime".to_string(),
             v => to_pascal_case(v),
         }
     }
@@ -513,18 +515,23 @@ impl FileWriter {
     }
 
     fn print_default_constructor(&mut self, struct_name: &str) {
+        let url = match &self.target_name_space {
+            None => "String::new()".to_string(),
+            Some(tns) => tns.to_string(),
+        };
+
         self.write(format!(
             r#"impl Default for {0} {{
                 fn default() -> Self {{
                     {0} {{
                         client: reqwest::Client::new(),
-                        url: String::default(),
+                        url: {1},
                         credentials: Option::None,
                      }}
                 }}
             }}
             "#,
-            struct_name
+            struct_name, url
         ));
     }
 
@@ -572,21 +579,26 @@ impl FileWriter {
             .find(|c| c.has_tag_name("fault"))
             .map(|c| self.map_name_message(&c));
 
-        let (input_type_template, input_template) = match some_input {
-            Some((Some(name), Some(msg))) => (
+        let input_type_template = match &some_input {
+            Some((Some(name), Some(msg))) => {
+                let type_name = to_pascal_case(name.as_str());
+                let message_type_name = self.fetch_type(msg.as_str());
+
                 format!(
                     "pub type {0} = {1}::{2};\n",
-                    to_pascal_case(name.as_str()),
-                    MESSAGES_MOD,
-                    self.fetch_type(msg.as_str())
-                ),
-                format!(
-                    "{}: {}",
-                    to_snake_case(name.as_str()),
-                    to_pascal_case(name.as_str())
-                ),
+                    type_name, MESSAGES_MOD, message_type_name,
+                )
+            }
+            _ => "".to_string(),
+        };
+
+        let input_template = match &some_input {
+            Some((Some(name), Some(msg))) => format!(
+                "{}: {}",
+                to_snake_case(name.as_str()),
+                to_pascal_case(name.as_str())
             ),
-            _ => ("".to_string(), "".to_string()),
+            _ => ("".to_string()),
         };
 
         let (output_type_template, fault_type_template, output_template) = match some_output {
@@ -899,6 +911,7 @@ impl ModWriter {
             use yaserde::de::from_str;
             use async_trait::async_trait;
             use yaserde::ser::to_string;
+            use std::time::SystemTime;
             "#
             .to_string(),
             0,
