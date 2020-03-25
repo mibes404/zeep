@@ -1,12 +1,16 @@
 use crate::aic::bindings::{
     AicAgentAdminSoapBinding, CreateRequestSoapEnvelope, LookupAgentIdsRequestSoapEnvelope,
-    SoapCreateRequest, SoapLookupAgentIdsRequest,
+    LookupAgentIdsResponseSoapEnvelope, SoapCreateRequest, SoapLookupAgentIdsRequest,
+    SoapLookupAgentIdsResponse,
 };
-use crate::aic::ports::{AicAgentAdmin, CreateRequest, LookupAgentIdsRequest};
+use crate::aic::ports::{
+    AicAgentAdmin, CreateRequest, LookupAgentIdsRequest, LookupAgentIdsResponse,
+};
 use crate::aic::types::{Agent, AgentChatChannel, Create, LookupAgentIds};
 use crate::smgr::types::XmlUser;
 use soap_client::envelop;
 use soap_client::soap::SOAP_ENCODING;
+use yaserde::de::from_str;
 use yaserde::ser::to_string;
 
 #[macro_use]
@@ -155,5 +159,6 @@ async fn main() {
     let status = res.status();
     let txt = res.text().await.unwrap_or_default();
 
-    println!("{}: {}", status, txt);
+    let r: LookupAgentIdsResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
+    println!("{}: {:?}", status, r);
 }

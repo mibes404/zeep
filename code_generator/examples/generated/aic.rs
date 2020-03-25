@@ -551,11 +551,6 @@ pub mod types {
     }
 }
 
-use soap_client::envelop;
-use soap_client::soap::Header;
-use std::io::{Read, Write};
-use yaserde::{YaDeserialize, YaSerialize};
-
 pub mod ports {
     use yaserde::{YaDeserialize, YaSerialize};
 
@@ -620,6 +615,11 @@ pub mod ports {
     pub type CreateRequest = messages::CreateRequest;
     pub type CreateResponse = messages::CreateResponse;
 }
+
+use soap_client::envelop;
+use soap_client::soap::Header;
+use std::io::{Read, Write};
+use yaserde::{YaDeserialize, YaSerialize};
 
 pub mod bindings {
     use yaserde::{YaDeserialize, YaSerialize};
@@ -709,11 +709,23 @@ pub mod bindings {
     }
     envelop!(GetRequestSoapEnvelope, SoapGetRequest);
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetResponse {
+        #[yaserde(rename = "Get", default)]
+        pub body: ports::GetResponse,
+    }
+    envelop!(GetResponseSoapEnvelope, SoapGetResponse);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateRequest {
         #[yaserde(rename = "Update", default)]
         pub body: ports::UpdateRequest,
     }
     envelop!(UpdateRequestSoapEnvelope, SoapUpdateRequest);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapUpdateResponse {
+        #[yaserde(rename = "Update", default)]
+        pub body: ports::UpdateResponse,
+    }
+    envelop!(UpdateResponseSoapEnvelope, SoapUpdateResponse);
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapDeleteRequest {
         #[yaserde(rename = "Delete", default)]
@@ -721,17 +733,38 @@ pub mod bindings {
     }
     envelop!(DeleteRequestSoapEnvelope, SoapDeleteRequest);
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapDeleteResponse {
+        #[yaserde(rename = "Delete", default)]
+        pub body: ports::DeleteResponse,
+    }
+    envelop!(DeleteResponseSoapEnvelope, SoapDeleteResponse);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupAgentIdsRequest {
         #[yaserde(rename = "LookupAgentIds", default)]
         pub body: ports::LookupAgentIdsRequest,
     }
     envelop!(LookupAgentIdsRequestSoapEnvelope, SoapLookupAgentIdsRequest);
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupAgentIdsResponse {
+        #[yaserde(rename = "LookupAgentIds", default)]
+        pub body: ports::LookupAgentIdsResponse,
+    }
+    envelop!(
+        LookupAgentIdsResponseSoapEnvelope,
+        SoapLookupAgentIdsResponse
+    );
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupLRMIdsRequest {
         #[yaserde(rename = "LookupLRMIds", default)]
         pub body: ports::LookupLRMIdsRequest,
     }
     envelop!(LookupLRMIdsRequestSoapEnvelope, SoapLookupLRMIdsRequest);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupLRMIdsResponse {
+        #[yaserde(rename = "LookupLRMIds", default)]
+        pub body: ports::LookupLRMIdsResponse,
+    }
+    envelop!(LookupLRMIdsResponseSoapEnvelope, SoapLookupLRMIdsResponse);
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupWorkgroupsRequest {
         #[yaserde(rename = "LookupWorkgroups", default)]
@@ -742,11 +775,26 @@ pub mod bindings {
         SoapLookupWorkgroupsRequest
     );
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupWorkgroupsResponse {
+        #[yaserde(rename = "LookupWorkgroups", default)]
+        pub body: ports::LookupWorkgroupsResponse,
+    }
+    envelop!(
+        LookupWorkgroupsResponseSoapEnvelope,
+        SoapLookupWorkgroupsResponse
+    );
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupDomainsRequest {
         #[yaserde(rename = "LookupDomains", default)]
         pub body: ports::LookupDomainsRequest,
     }
     envelop!(LookupDomainsRequestSoapEnvelope, SoapLookupDomainsRequest);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupDomainsResponse {
+        #[yaserde(rename = "LookupDomains", default)]
+        pub body: ports::LookupDomainsResponse,
+    }
+    envelop!(LookupDomainsResponseSoapEnvelope, SoapLookupDomainsResponse);
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupLinkGroupsRequest {
         #[yaserde(rename = "LookupLinkGroups", default)]
@@ -755,6 +803,15 @@ pub mod bindings {
     envelop!(
         LookupLinkGroupsRequestSoapEnvelope,
         SoapLookupLinkGroupsRequest
+    );
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupLinkGroupsResponse {
+        #[yaserde(rename = "LookupLinkGroups", default)]
+        pub body: ports::LookupLinkGroupsResponse,
+    }
+    envelop!(
+        LookupLinkGroupsResponseSoapEnvelope,
+        SoapLookupLinkGroupsResponse
     );
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupPhoneTypesRequest {
@@ -766,15 +823,36 @@ pub mod bindings {
         SoapLookupPhoneTypesRequest
     );
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupPhoneTypesResponse {
+        #[yaserde(rename = "LookupPhoneTypes", default)]
+        pub body: ports::LookupPhoneTypesResponse,
+    }
+    envelop!(
+        LookupPhoneTypesResponseSoapEnvelope,
+        SoapLookupPhoneTypesResponse
+    );
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupSitesRequest {
         #[yaserde(rename = "LookupSites", default)]
         pub body: ports::LookupSitesRequest,
     }
     envelop!(LookupSitesRequestSoapEnvelope, SoapLookupSitesRequest);
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapLookupSitesResponse {
+        #[yaserde(rename = "LookupSites", default)]
+        pub body: ports::LookupSitesResponse,
+    }
+    envelop!(LookupSitesResponseSoapEnvelope, SoapLookupSitesResponse);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCreateRequest {
         #[yaserde(rename = "Create", default)]
         pub body: ports::CreateRequest,
     }
     envelop!(CreateRequestSoapEnvelope, SoapCreateRequest);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapCreateResponse {
+        #[yaserde(rename = "Create", default)]
+        pub body: ports::CreateResponse,
+    }
+    envelop!(CreateResponseSoapEnvelope, SoapCreateResponse);
 }

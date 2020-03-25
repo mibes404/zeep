@@ -614,7 +614,7 @@ impl FileWriter {
             .find(|c| c.has_tag_name("fault"))
             .map(|c| self.get_some_attribute_as_string(&c, "name"));
 
-        let (input_template, soap_wrapper) = match some_input {
+        let (input_template, soap_wrapper_in) = match some_input {
             Some(Some(name)) => (
                 format!(
                     "{}: {}::{}",
@@ -633,20 +633,34 @@ impl FileWriter {
             _ => ("".to_string(), "".to_string()),
         };
 
-        let output_template = match some_output {
+        let (output_template, soap_wrapper_out) = match some_output {
             Some(Some(name)) => {
                 if let Some(Some(fault_name)) = some_fault {
-                    format!(
+                    (format!(
                         "-> Result<{2}::{0}, {2}::{1}>",
                         to_pascal_case(name.as_str()),
                         to_pascal_case(fault_name.as_str()),
                         PORTS_MOD,
-                    )
+                    ),
+                    format!(
+                        "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\nenvelop!({1}SoapEnvelope, {0});\n",
+                        format!("Soap{}", to_pascal_case(name.as_str())),
+                        to_pascal_case(name.as_str()),
+                        PORTS_MOD,
+                        element_name
+                    ))
                 } else {
-                    format!("-> {}::{}", PORTS_MOD, to_pascal_case(name.as_str()))
+                    (format!("-> {}::{}", PORTS_MOD, to_pascal_case(name.as_str())),
+                    format!(
+                        "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\nenvelop!({1}SoapEnvelope, {0});\n",
+                        format!("Soap{}", to_pascal_case(name.as_str())),
+                        to_pascal_case(name.as_str()),
+                        PORTS_MOD,
+                        element_name
+                    ))
                 }
             }
-            _ => "".to_string(),
+            _ => ("".to_string(), "".to_string()),
         };
 
         self.write(format!(
@@ -655,7 +669,8 @@ impl FileWriter {
         ));
         self.write("\tunimplemented!();\n".to_string());
         self.write("}\n".to_string());
-        self.delayed_write(soap_wrapper);
+        self.delayed_write(soap_wrapper_in);
+        self.delayed_write(soap_wrapper_out);
     }
 }
 
