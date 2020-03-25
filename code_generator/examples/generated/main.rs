@@ -45,8 +45,6 @@ async fn main() {
 
     println!("{}", to_string(&c).expect("failed to generate xml"));
 
-    let aaa = AicAgentAdminSoapBinding::default();
-
     // smgr
 
     let xml_user = XmlUser {
@@ -128,25 +126,17 @@ async fn main() {
     println!("-------");
     println!("{}", body);
 
-    let client = reqwest::Client::new();
-    let res = client
-        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
-        .body(body)
-        .header("Content-Type", "text/xml")
-        .header(
-            "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
-        )
-        .basic_auth("Admin", Option::from("Avaya123$"))
-        .send()
+    let mut aic =
+        AicAgentAdminSoapBinding::new("http://localhost:9800/webservices/services/AicAgentAdmin");
+
+    let r = aic
+        .lookup_agent_ids(LookupAgentIdsRequest {
+            parameters: Default::default(),
+        })
         .await
-        .expect("failed to POST to AIC");
+        .expect("can not lookup agents");
 
-    let status = res.status();
-    let txt = res.text().await.unwrap_or_default();
-
-    let r: LookupAgentIdsResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
-    println!("{}: {:?}", status, r);
+    println!("{:?}", r);
 }
 
 #[cfg(test)]

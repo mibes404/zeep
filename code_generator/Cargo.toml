@@ -18,3 +18,4 @@ xml-rs = "0.8.0"
 reqwest = "0.10.4"
 tokio = { version = "0.2.13", features = ["full"] }
 soap_client = { path =  "../soap_client" }
+async-trait = "0.1.26"

@@ -465,7 +465,7 @@ impl FileWriter {
         };
 
         let struct_name = to_pascal_case(element_name);
-        self.write(format!("pub trait {0} {{\n", struct_name));
+        self.write(format!("#[async_trait]\npub trait {0} {{\n", struct_name));
         node.children()
             .for_each(|child| self.print_operation(&child));
         self.write("}\n\n".to_string());
@@ -491,20 +491,51 @@ impl FileWriter {
         let trait_name = self.fetch_type(type_name);
 
         self.write(format!(
-            "pub struct {0} {{}}\n\nimpl {2}::{1} for {0} {{\n",
+            r#"pub struct {0} {{
+                client: reqwest::Client,
+                url: String,
+                }}
+                
+                #[async_trait]
+                impl {2}::{1} for {0} {{
+                "#,
             struct_name, trait_name, PORTS_MOD,
         ));
 
         node.children()
             .for_each(|child| self.print_binding_operation(&child));
+
         self.write("}\n\n".to_string());
-        self.print_default_constructor(struct_name);
+        self.print_default_constructor(struct_name.as_str());
+        self.print_constructor(struct_name.as_str());
         self.flush_delayed_buffer();
     }
 
-    fn print_default_constructor(&mut self, struct_name: String) {
+    fn print_default_constructor(&mut self, struct_name: &str) {
         self.write(format!(
-            "impl Default for {0} {{\n\tfn default() -> Self {{\n\t\t{0}{{}}\n\t}}\n\t}}\n",
+            r#"impl Default for {0} {{
+                fn default() -> Self {{
+                    {0} {{
+                        client: reqwest::Client::new(),
+                        url: String::default(),
+                     }}
+                }}
+            }}
+            "#,
+            struct_name
+        ));
+    }
+
+    fn print_constructor(&mut self, struct_name: &str) {
+        self.write(format!(
+            r#"impl {0} {{
+                pub fn new(url: &str) -> Self {{
+                    {0} {{
+                        client: reqwest::Client::new(),
+                        url: url.to_string(),
+                    }}
+                }}
+        }}"#,
             struct_name
         ));
     }
@@ -600,7 +631,7 @@ impl FileWriter {
         );
 
         self.write(format!(
-            "\tfn {} (&self, {}) {};\n",
+            "\tasync fn {} (&mut self, {}) {};\n",
             func_name, input_template, output_template,
         ));
     }
@@ -693,14 +724,15 @@ impl FileWriter {
             .find(|c| c.has_tag_name("fault"))
             .map(|c| self.get_some_attribute_as_string(&c, "name"));
 
-        let (input_template, soap_wrapper_in) = match some_input {
+        let (input_template, soap_wrapper_in, input_variables) = match some_input {
             Some(Some(name)) => {
                 let pascal_name = to_pascal_case(name.as_str());
                 let soap_name = format!("Soap{}", pascal_name);
+                let variable_name = to_snake_case(name.as_str());
 
                 (format!(
                     "{}: {}::{}",
-                    to_snake_case(name.as_str()),
+                    variable_name,
                     PORTS_MOD,
                     pascal_name
                 ),
@@ -711,9 +743,9 @@ impl FileWriter {
                     PORTS_MOD,
                     element_name,
                     self.construct_soap_wrapper(pascal_name.as_str(), soap_name.as_str())
-                ))
+                ), Option::from((variable_name, pascal_name)))
             }
-            _ => ("".to_string(), "".to_string()),
+            _ => ("".to_string(), "".to_string(), Option::None),
         };
 
         let (output_template, soap_wrapper_out) = match some_output {
@@ -755,13 +787,48 @@ impl FileWriter {
         };
 
         self.write(format!(
-            "\tfn {} (&self, {}) {} {{\n",
+            "\tasync fn {} (&mut self, {}) {} {{\n",
             func_name, input_template, output_template,
         ));
-        self.write("\tunimplemented!();\n".to_string());
+
+        if let Some((input_variable, input_type)) = input_variables {
+            self.print_reqwest_body(input_variable.as_str(), input_type.as_str())
+        }
+
         self.write("}\n".to_string());
         self.delayed_write(soap_wrapper_in);
         self.delayed_write(soap_wrapper_out);
+    }
+
+    fn print_reqwest_body(&mut self, input_variable: &str, input_type: &str) {
+        self.write(format!(
+            r#"
+            
+        let __request = {1}SoapEnvelope::new(Soap{1} {{
+            body: {0},
+        }});            
+        
+        let body = to_string(&__request).expect("failed to generate xml");
+        
+        let res = self.client
+        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .body(body)
+        .header("Content-Type", "text/xml")
+        .header(
+            "Soapaction",
+            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
+        )
+        .basic_auth("Admin", Option::from("Avaya123$"))
+        .send()
+        .await
+        .expect("can not send request");
+        
+        let txt = res.text().await.unwrap_or_default();
+        let result = from_str(&txt).expect("can not unmarshal");
+        Ok(result)
+        "#,
+            input_variable, input_type
+        ));
     }
 }
 
@@ -795,7 +862,12 @@ impl ModWriter {
 
     fn print_header(&mut self) {
         self.write(
-            "use yaserde::{{YaSerialize, YaDeserialize}};\n\n".to_string(),
+            r#"use yaserde::{{YaSerialize, YaDeserialize}};
+            use yaserde::de::from_str;
+            use async_trait::async_trait;
+            use yaserde::ser::to_string;
+            "#
+            .to_string(),
             0,
         );
     }
