@@ -1,169 +1,72 @@
-pub mod messages {
+pub mod ports {
     use yaserde::{YaDeserialize, YaSerialize};
 
     use super::*;
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupPhoneTypesRequest", default)]
-    pub struct LookupPhoneTypesRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupPhoneTypes,
+    pub trait AicAgentAdmin {
+        fn get(&self, get_request: GetRequest) -> Result<GetResponse, AicServiceFault>;
+        fn update(&self, update_request: UpdateRequest) -> Result<UpdateResponse, AicServiceFault>;
+        fn delete(&self, delete_request: DeleteRequest) -> Result<DeleteResponse, AicServiceFault>;
+        fn lookup_agent_ids(
+            &self,
+            lookup_agent_ids_request: LookupAgentIdsRequest,
+        ) -> Result<LookupAgentIdsResponse, AicServiceFault>;
+        fn lookup_lrm_ids(
+            &self,
+            lookup_lrm_ids_request: LookupLRMIdsRequest,
+        ) -> Result<LookupLRMIdsResponse, AicServiceFault>;
+        fn lookup_workgroups(
+            &self,
+            lookup_workgroups_request: LookupWorkgroupsRequest,
+        ) -> Result<LookupWorkgroupsResponse, AicServiceFault>;
+        fn lookup_domains(
+            &self,
+            lookup_domains_request: LookupDomainsRequest,
+        ) -> Result<LookupDomainsResponse, AicServiceFault>;
+        fn lookup_link_groups(
+            &self,
+            lookup_link_groups_request: LookupLinkGroupsRequest,
+        ) -> Result<LookupLinkGroupsResponse, AicServiceFault>;
+        fn lookup_phone_types(
+            &self,
+            lookup_phone_types_request: LookupPhoneTypesRequest,
+        ) -> Result<LookupPhoneTypesResponse, AicServiceFault>;
+        fn lookup_sites(
+            &self,
+            lookup_sites_request: LookupSitesRequest,
+        ) -> Result<LookupSitesResponse, AicServiceFault>;
+        fn create(&self, create_request: CreateRequest) -> Result<CreateResponse, AicServiceFault>;
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupLinkGroupsRequest", default)]
-    pub struct LookupLinkGroupsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLinkGroups,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupLRMIdsResponse", default)]
-    pub struct LookupLRMIdsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLRMIdsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "CreateRequest", default)]
-    pub struct CreateRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Create,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "CreateResponse", default)]
-    pub struct CreateResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::CreateResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "UpdateRequest", default)]
-    pub struct UpdateRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Update,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupSitesRequest", default)]
-    pub struct LookupSitesRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupSites,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupDomainsRequest", default)]
-    pub struct LookupDomainsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupDomains,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupDomainsResponse", default)]
-    pub struct LookupDomainsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupDomainsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetResponse", default)]
-    pub struct GetResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::GetResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "DeleteResponse", default)]
-    pub struct DeleteResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::DeleteResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupLRMIdsRequest", default)]
-    pub struct LookupLRMIdsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLRMIds,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupLinkGroupsResponse", default)]
-    pub struct LookupLinkGroupsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLinkGroupsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "UpdateResponse", default)]
-    pub struct UpdateResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::UpdateResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetRequest", default)]
-    pub struct GetRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Get,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupAgentIdsResponse", default)]
-    pub struct LookupAgentIdsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupAgentIdsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupPhoneTypesResponse", default)]
-    pub struct LookupPhoneTypesResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupPhoneTypesResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupAgentIdsRequest", default)]
-    pub struct LookupAgentIdsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupAgentIds,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupSitesResponse", default)]
-    pub struct LookupSitesResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupSitesResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupWorkgroupsResponse", default)]
-    pub struct LookupWorkgroupsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupWorkgroupsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "AicServiceFault", default)]
-    pub struct AicServiceFault {
-        #[yaserde(flatten)]
-        pub fault: types::Fault,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "DeleteRequest", default)]
-    pub struct DeleteRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Delete,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupWorkgroupsRequest", default)]
-    pub struct LookupWorkgroupsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupWorkgroups,
-    }
+    pub type GetRequest = messages::GetRequest;
+    pub type GetResponse = messages::GetResponse;
+    pub type AicServiceFault = messages::AicServiceFault;
+    pub type UpdateRequest = messages::UpdateRequest;
+    pub type UpdateResponse = messages::UpdateResponse;
+    pub type DeleteRequest = messages::DeleteRequest;
+    pub type DeleteResponse = messages::DeleteResponse;
+    pub type LookupAgentIdsRequest = messages::LookupAgentIdsRequest;
+    pub type LookupAgentIdsResponse = messages::LookupAgentIdsResponse;
+    pub type LookupLRMIdsRequest = messages::LookupLRMIdsRequest;
+    pub type LookupLRMIdsResponse = messages::LookupLRMIdsResponse;
+    pub type LookupWorkgroupsRequest = messages::LookupWorkgroupsRequest;
+    pub type LookupWorkgroupsResponse = messages::LookupWorkgroupsResponse;
+    pub type LookupDomainsRequest = messages::LookupDomainsRequest;
+    pub type LookupDomainsResponse = messages::LookupDomainsResponse;
+    pub type LookupLinkGroupsRequest = messages::LookupLinkGroupsRequest;
+    pub type LookupLinkGroupsResponse = messages::LookupLinkGroupsResponse;
+    pub type LookupPhoneTypesRequest = messages::LookupPhoneTypesRequest;
+    pub type LookupPhoneTypesResponse = messages::LookupPhoneTypesResponse;
+    pub type LookupSitesRequest = messages::LookupSitesRequest;
+    pub type LookupSitesResponse = messages::LookupSitesResponse;
+    pub type CreateRequest = messages::CreateRequest;
+    pub type CreateResponse = messages::CreateResponse;
 }
+
+use soap_client::envelop;
+use soap_client::soap::Header;
+use std::io::{Read, Write};
+use yaserde::{YaDeserialize, YaSerialize};
 
 pub mod types {
     use yaserde::{YaDeserialize, YaSerialize};
@@ -551,75 +454,172 @@ pub mod types {
     }
 }
 
-pub mod ports {
+pub mod messages {
     use yaserde::{YaDeserialize, YaSerialize};
 
     use super::*;
 
-    pub trait AicAgentAdmin {
-        fn get(&self, get_request: GetRequest) -> Result<GetResponse, AicServiceFault>;
-        fn update(&self, update_request: UpdateRequest) -> Result<UpdateResponse, AicServiceFault>;
-        fn delete(&self, delete_request: DeleteRequest) -> Result<DeleteResponse, AicServiceFault>;
-        fn lookup_agent_ids(
-            &self,
-            lookup_agent_ids_request: LookupAgentIdsRequest,
-        ) -> Result<LookupAgentIdsResponse, AicServiceFault>;
-        fn lookup_lrm_ids(
-            &self,
-            lookup_lrm_ids_request: LookupLRMIdsRequest,
-        ) -> Result<LookupLRMIdsResponse, AicServiceFault>;
-        fn lookup_workgroups(
-            &self,
-            lookup_workgroups_request: LookupWorkgroupsRequest,
-        ) -> Result<LookupWorkgroupsResponse, AicServiceFault>;
-        fn lookup_domains(
-            &self,
-            lookup_domains_request: LookupDomainsRequest,
-        ) -> Result<LookupDomainsResponse, AicServiceFault>;
-        fn lookup_link_groups(
-            &self,
-            lookup_link_groups_request: LookupLinkGroupsRequest,
-        ) -> Result<LookupLinkGroupsResponse, AicServiceFault>;
-        fn lookup_phone_types(
-            &self,
-            lookup_phone_types_request: LookupPhoneTypesRequest,
-        ) -> Result<LookupPhoneTypesResponse, AicServiceFault>;
-        fn lookup_sites(
-            &self,
-            lookup_sites_request: LookupSitesRequest,
-        ) -> Result<LookupSitesResponse, AicServiceFault>;
-        fn create(&self, create_request: CreateRequest) -> Result<CreateResponse, AicServiceFault>;
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupPhoneTypesRequest", default)]
+    pub struct LookupPhoneTypesRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupPhoneTypes,
     }
 
-    pub type GetRequest = messages::GetRequest;
-    pub type GetResponse = messages::GetResponse;
-    pub type AicServiceFault = messages::AicServiceFault;
-    pub type UpdateRequest = messages::UpdateRequest;
-    pub type UpdateResponse = messages::UpdateResponse;
-    pub type DeleteRequest = messages::DeleteRequest;
-    pub type DeleteResponse = messages::DeleteResponse;
-    pub type LookupAgentIdsRequest = messages::LookupAgentIdsRequest;
-    pub type LookupAgentIdsResponse = messages::LookupAgentIdsResponse;
-    pub type LookupLRMIdsRequest = messages::LookupLRMIdsRequest;
-    pub type LookupLRMIdsResponse = messages::LookupLRMIdsResponse;
-    pub type LookupWorkgroupsRequest = messages::LookupWorkgroupsRequest;
-    pub type LookupWorkgroupsResponse = messages::LookupWorkgroupsResponse;
-    pub type LookupDomainsRequest = messages::LookupDomainsRequest;
-    pub type LookupDomainsResponse = messages::LookupDomainsResponse;
-    pub type LookupLinkGroupsRequest = messages::LookupLinkGroupsRequest;
-    pub type LookupLinkGroupsResponse = messages::LookupLinkGroupsResponse;
-    pub type LookupPhoneTypesRequest = messages::LookupPhoneTypesRequest;
-    pub type LookupPhoneTypesResponse = messages::LookupPhoneTypesResponse;
-    pub type LookupSitesRequest = messages::LookupSitesRequest;
-    pub type LookupSitesResponse = messages::LookupSitesResponse;
-    pub type CreateRequest = messages::CreateRequest;
-    pub type CreateResponse = messages::CreateResponse;
-}
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupLinkGroupsRequest", default)]
+    pub struct LookupLinkGroupsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupLinkGroups,
+    }
 
-use soap_client::envelop;
-use soap_client::soap::Header;
-use std::io::{Read, Write};
-use yaserde::{YaDeserialize, YaSerialize};
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupLRMIdsResponse", default)]
+    pub struct LookupLRMIdsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupLRMIdsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "CreateRequest", default)]
+    pub struct CreateRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::Create,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "CreateResponse", default)]
+    pub struct CreateResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::CreateResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "UpdateRequest", default)]
+    pub struct UpdateRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::Update,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupSitesRequest", default)]
+    pub struct LookupSitesRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupSites,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupDomainsRequest", default)]
+    pub struct LookupDomainsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupDomains,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupDomainsResponse", default)]
+    pub struct LookupDomainsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupDomainsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetResponse", default)]
+    pub struct GetResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::GetResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "DeleteResponse", default)]
+    pub struct DeleteResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::DeleteResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupLRMIdsRequest", default)]
+    pub struct LookupLRMIdsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupLRMIds,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupLinkGroupsResponse", default)]
+    pub struct LookupLinkGroupsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupLinkGroupsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "UpdateResponse", default)]
+    pub struct UpdateResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::UpdateResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetRequest", default)]
+    pub struct GetRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::Get,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupAgentIdsResponse", default)]
+    pub struct LookupAgentIdsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupAgentIdsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupPhoneTypesResponse", default)]
+    pub struct LookupPhoneTypesResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupPhoneTypesResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupAgentIdsRequest", default)]
+    pub struct LookupAgentIdsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupAgentIds,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupSitesResponse", default)]
+    pub struct LookupSitesResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupSitesResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupWorkgroupsResponse", default)]
+    pub struct LookupWorkgroupsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupWorkgroupsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "AicServiceFault", default)]
+    pub struct AicServiceFault {
+        #[yaserde(flatten)]
+        pub fault: types::Fault,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "DeleteRequest", default)]
+    pub struct DeleteRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::Delete,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupWorkgroupsRequest", default)]
+    pub struct LookupWorkgroupsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupWorkgroups,
+    }
+}
 
 pub mod bindings {
     use yaserde::{YaDeserialize, YaSerialize};
@@ -707,152 +707,570 @@ pub mod bindings {
         #[yaserde(rename = "Get", default)]
         pub body: ports::GetRequest,
     }
-    envelop!(GetRequestSoapEnvelope, SoapGetRequest);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetRequest,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetResponse {
         #[yaserde(rename = "Get", default)]
         pub body: ports::GetResponse,
     }
-    envelop!(GetResponseSoapEnvelope, SoapGetResponse);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetResponse,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateRequest {
         #[yaserde(rename = "Update", default)]
         pub body: ports::UpdateRequest,
     }
-    envelop!(UpdateRequestSoapEnvelope, SoapUpdateRequest);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct UpdateRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapUpdateRequest,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateResponse {
         #[yaserde(rename = "Update", default)]
         pub body: ports::UpdateResponse,
     }
-    envelop!(UpdateResponseSoapEnvelope, SoapUpdateResponse);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct UpdateResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapUpdateResponse,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapDeleteRequest {
         #[yaserde(rename = "Delete", default)]
         pub body: ports::DeleteRequest,
     }
-    envelop!(DeleteRequestSoapEnvelope, SoapDeleteRequest);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct DeleteRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapDeleteRequest,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapDeleteResponse {
         #[yaserde(rename = "Delete", default)]
         pub body: ports::DeleteResponse,
     }
-    envelop!(DeleteResponseSoapEnvelope, SoapDeleteResponse);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct DeleteResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapDeleteResponse,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupAgentIdsRequest {
         #[yaserde(rename = "LookupAgentIds", default)]
         pub body: ports::LookupAgentIdsRequest,
     }
-    envelop!(LookupAgentIdsRequestSoapEnvelope, SoapLookupAgentIdsRequest);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupAgentIdsRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupAgentIdsRequest,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupAgentIdsResponse {
         #[yaserde(rename = "LookupAgentIds", default)]
         pub body: ports::LookupAgentIdsResponse,
     }
-    envelop!(
-        LookupAgentIdsResponseSoapEnvelope,
-        SoapLookupAgentIdsResponse
-    );
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupAgentIdsResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupAgentIdsResponse,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupLRMIdsRequest {
         #[yaserde(rename = "LookupLRMIds", default)]
         pub body: ports::LookupLRMIdsRequest,
     }
-    envelop!(LookupLRMIdsRequestSoapEnvelope, SoapLookupLRMIdsRequest);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupLRMIdsRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupLRMIdsRequest,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupLRMIdsResponse {
         #[yaserde(rename = "LookupLRMIds", default)]
         pub body: ports::LookupLRMIdsResponse,
     }
-    envelop!(LookupLRMIdsResponseSoapEnvelope, SoapLookupLRMIdsResponse);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupLRMIdsResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupLRMIdsResponse,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupWorkgroupsRequest {
         #[yaserde(rename = "LookupWorkgroups", default)]
         pub body: ports::LookupWorkgroupsRequest,
     }
-    envelop!(
-        LookupWorkgroupsRequestSoapEnvelope,
-        SoapLookupWorkgroupsRequest
-    );
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupWorkgroupsRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupWorkgroupsRequest,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupWorkgroupsResponse {
         #[yaserde(rename = "LookupWorkgroups", default)]
         pub body: ports::LookupWorkgroupsResponse,
     }
-    envelop!(
-        LookupWorkgroupsResponseSoapEnvelope,
-        SoapLookupWorkgroupsResponse
-    );
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupWorkgroupsResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupWorkgroupsResponse,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupDomainsRequest {
         #[yaserde(rename = "LookupDomains", default)]
         pub body: ports::LookupDomainsRequest,
     }
-    envelop!(LookupDomainsRequestSoapEnvelope, SoapLookupDomainsRequest);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupDomainsRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupDomainsRequest,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupDomainsResponse {
         #[yaserde(rename = "LookupDomains", default)]
         pub body: ports::LookupDomainsResponse,
     }
-    envelop!(LookupDomainsResponseSoapEnvelope, SoapLookupDomainsResponse);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupDomainsResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupDomainsResponse,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupLinkGroupsRequest {
         #[yaserde(rename = "LookupLinkGroups", default)]
         pub body: ports::LookupLinkGroupsRequest,
     }
-    envelop!(
-        LookupLinkGroupsRequestSoapEnvelope,
-        SoapLookupLinkGroupsRequest
-    );
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupLinkGroupsRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupLinkGroupsRequest,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupLinkGroupsResponse {
         #[yaserde(rename = "LookupLinkGroups", default)]
         pub body: ports::LookupLinkGroupsResponse,
     }
-    envelop!(
-        LookupLinkGroupsResponseSoapEnvelope,
-        SoapLookupLinkGroupsResponse
-    );
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupLinkGroupsResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupLinkGroupsResponse,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupPhoneTypesRequest {
         #[yaserde(rename = "LookupPhoneTypes", default)]
         pub body: ports::LookupPhoneTypesRequest,
     }
-    envelop!(
-        LookupPhoneTypesRequestSoapEnvelope,
-        SoapLookupPhoneTypesRequest
-    );
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupPhoneTypesRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupPhoneTypesRequest,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupPhoneTypesResponse {
         #[yaserde(rename = "LookupPhoneTypes", default)]
         pub body: ports::LookupPhoneTypesResponse,
     }
-    envelop!(
-        LookupPhoneTypesResponseSoapEnvelope,
-        SoapLookupPhoneTypesResponse
-    );
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupPhoneTypesResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupPhoneTypesResponse,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupSitesRequest {
         #[yaserde(rename = "LookupSites", default)]
         pub body: ports::LookupSitesRequest,
     }
-    envelop!(LookupSitesRequestSoapEnvelope, SoapLookupSitesRequest);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupSitesRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupSitesRequest,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupSitesResponse {
         #[yaserde(rename = "LookupSites", default)]
         pub body: ports::LookupSitesResponse,
     }
-    envelop!(LookupSitesResponseSoapEnvelope, SoapLookupSitesResponse);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct LookupSitesResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapLookupSitesResponse,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCreateRequest {
         #[yaserde(rename = "Create", default)]
         pub body: ports::CreateRequest,
     }
-    envelop!(CreateRequestSoapEnvelope, SoapCreateRequest);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct CreateRequestSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapCreateRequest,
+    }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCreateResponse {
         #[yaserde(rename = "Create", default)]
         pub body: ports::CreateResponse,
     }
-    envelop!(CreateResponseSoapEnvelope, SoapCreateResponse);
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct CreateResponseSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: String,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: String,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapCreateResponse,
+    }
 }

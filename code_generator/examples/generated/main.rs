@@ -162,3 +162,53 @@ async fn main() {
     let r: LookupAgentIdsResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
     println!("{}: {:?}", status, r);
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::aic::types;
+
+    #[test]
+    fn test_unmarshal() {
+        let xml = r#"<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <soapenv:Body>
+        <LookupAgentIdsResponse xmlns="">
+            <ns1:LookupAgentIdsReturn xmlns:ns1="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71">Admin</ns1:LookupAgentIdsReturn>
+            <ns2:LookupAgentIdsReturn xmlns:ns2="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71">website</ns2:LookupAgentIdsReturn>
+            <ns3:LookupAgentIdsReturn xmlns:ns3="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71">icmbridge</ns3:LookupAgentIdsReturn>
+            <ns4:LookupAgentIdsReturn xmlns:ns4="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71">dcobridge1</ns4:LookupAgentIdsReturn>
+            <ns5:LookupAgentIdsReturn xmlns:ns5="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71">alice</ns5:LookupAgentIdsReturn>
+            <ns6:LookupAgentIdsReturn xmlns:ns6="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71">bob</ns6:LookupAgentIdsReturn>
+            <ns7:LookupAgentIdsReturn xmlns:ns7="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71">claire</ns7:LookupAgentIdsReturn>
+        </LookupAgentIdsResponse>
+    </soapenv:Body>
+</soapenv:Envelope>"#;
+
+        let body = r#"<LookupAgentIdsResponse xmlns="">
+            <ns1:LookupAgentIdsReturn xmlns:ns1="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71">Admin</ns1:LookupAgentIdsReturn>
+            <ns2:LookupAgentIdsReturn xmlns:ns2="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71">website</ns2:LookupAgentIdsReturn>
+            <ns3:LookupAgentIdsReturn xmlns:ns3="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71">icmbridge</ns3:LookupAgentIdsReturn>
+            <ns4:LookupAgentIdsReturn xmlns:ns4="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71">dcobridge1</ns4:LookupAgentIdsReturn>
+            <ns5:LookupAgentIdsReturn xmlns:ns5="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71">alice</ns5:LookupAgentIdsReturn>
+            <ns6:LookupAgentIdsReturn xmlns:ns6="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71">bob</ns6:LookupAgentIdsReturn>
+            <ns7:LookupAgentIdsReturn xmlns:ns7="http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71">claire</ns7:LookupAgentIdsReturn>
+        </LookupAgentIdsResponse>"#;
+
+        let t = LookupAgentIdsResponse {
+            parameters: types::LookupAgentIdsResponse {
+                lookup_agent_ids_return: vec!["mibes".to_string()],
+            },
+        };
+
+        let b2 = to_string(&t).expect("failed to generate xml");
+        println!("{:?}", b2);
+
+        let b: LookupAgentIdsResponse = from_str(&body).expect("can not unmarshal");
+        let r: LookupAgentIdsResponseSoapEnvelope = from_str(&xml).expect("can not unmarshal");
+
+        println!("{:?}", b);
+    }
+}

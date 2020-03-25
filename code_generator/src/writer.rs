@@ -13,6 +13,7 @@ const MESSAGES_MOD: &str = "messages";
 const TYPES_MOD: &str = "types";
 const PORTS_MOD: &str = "ports";
 const BINDINGS_MOD: &str = "bindings";
+const SOAP_ENV: &str = "soapenv";
 
 pub struct FileWriter {
     base_path: String,
@@ -592,6 +593,33 @@ impl FileWriter {
         }
     }
 
+    fn construct_soap_wrapper(&self, soap_name: &str, body_type: &str) -> String {
+        format!(
+            r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+        #[yaserde(
+            root = "Envelope",
+            namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+            prefix = "soapenv"
+        )]
+        pub struct {0}SoapEnvelope {{
+            #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+            pub encoding_style: String,
+            #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+            pub tnsattr: String,
+            #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+            pub urnattr: Option<String>,
+            #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+            pub xsiattr: String,
+            #[yaserde(rename = "Header", prefix = "soapenv")]
+            pub header: Option<Header>,
+            #[yaserde(rename = "Body", prefix = "soapenv")]
+            pub body: {1},
+        }}
+        "#,
+            soap_name, body_type
+        )
+    }
+
     fn print_binding_operation(&mut self, node: &Node) {
         let element_name = match self.get_some_attribute(node, "name") {
             None => return,
@@ -615,48 +643,60 @@ impl FileWriter {
             .map(|c| self.get_some_attribute_as_string(&c, "name"));
 
         let (input_template, soap_wrapper_in) = match some_input {
-            Some(Some(name)) => (
-                format!(
+            Some(Some(name)) => {
+                let pascal_name = to_pascal_case(name.as_str());
+                let soap_name = format!("Soap{}", pascal_name);
+
+                (format!(
                     "{}: {}::{}",
                     to_snake_case(name.as_str()),
                     PORTS_MOD,
-                    to_pascal_case(name.as_str())
+                    pascal_name
                 ),
                 format!(
-                    "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\nenvelop!({1}SoapEnvelope, {0});\n",
-                    format!("Soap{}", to_pascal_case(name.as_str())),
+                    "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\n{4}\n",
+                    soap_name,
                     to_pascal_case(name.as_str()),
                     PORTS_MOD,
-                    element_name
-                ),
-            ),
+                    element_name,
+                    self.construct_soap_wrapper(pascal_name.as_str(), soap_name.as_str())
+                ))
+            }
             _ => ("".to_string(), "".to_string()),
         };
 
         let (output_template, soap_wrapper_out) = match some_output {
             Some(Some(name)) => {
                 if let Some(Some(fault_name)) = some_fault {
+                    let pascal_name = to_pascal_case(name.as_str());
+                    let pascal_fault_name = to_pascal_case(fault_name.as_str());
+                    let soap_name = format!("Soap{}", pascal_name);
+
                     (format!(
                         "-> Result<{2}::{0}, {2}::{1}>",
-                        to_pascal_case(name.as_str()),
-                        to_pascal_case(fault_name.as_str()),
+                        pascal_name,
+                        pascal_fault_name,
                         PORTS_MOD,
                     ),
                     format!(
-                        "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\nenvelop!({1}SoapEnvelope, {0});\n",
-                        format!("Soap{}", to_pascal_case(name.as_str())),
-                        to_pascal_case(name.as_str()),
+                        "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\n{4}\n",
+                        soap_name,
+                        pascal_name,
                         PORTS_MOD,
-                        element_name
+                        element_name,
+                        self.construct_soap_wrapper(pascal_name.as_str(), soap_name.as_str())
                     ))
                 } else {
-                    (format!("-> {}::{}", PORTS_MOD, to_pascal_case(name.as_str())),
+                    let pascal_name = to_pascal_case(name.as_str());
+                    let soap_name = format!("Soap{}", pascal_name);
+                    (format!("-> {}::{}", PORTS_MOD, pascal_name),
                     format!(
-                        "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\nenvelop!({1}SoapEnvelope, {0});\n",
-                        format!("Soap{}", to_pascal_case(name.as_str())),
-                        to_pascal_case(name.as_str()),
+                        "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\n{4}\n",
+                        soap_name,
+                        pascal_name,
                         PORTS_MOD,
-                        element_name
+                        element_name,
+                        self.construct_soap_wrapper(pascal_name.as_str(), soap_name.as_str())
                     ))
                 }
             }
