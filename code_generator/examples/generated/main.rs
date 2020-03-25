@@ -199,7 +199,7 @@ mod tests {
 
         let t = LookupAgentIdsResponse {
             parameters: types::LookupAgentIdsResponse {
-                lookup_agent_ids_return: vec!["mibes".to_string()],
+                lookup_agent_ids_return: vec!["mibes".to_string(), "hmacias".to_string()],
             },
         };
 
