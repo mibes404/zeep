@@ -1,11 +1,4 @@
-use yaserde::{{YaSerialize, YaDeserialize}};
-            use std::io::{Read, Write};
-            
-            pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-            
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct Header {}
-    pub mod ports {
+pub mod ports {
 use yaserde::{{YaSerialize, YaDeserialize}};
             use yaserde::de::from_str;
             use async_trait::async_trait;
@@ -62,31 +55,35 @@ use yaserde::{{YaSerialize, YaDeserialize}};
 pub struct AicAgentAdminSoapBinding {
                 client: reqwest::Client,
                 url: String,
+                credentials: Option<(String,String)>
                 }
                 
                 #[async_trait]
                 impl ports::AicAgentAdmin for AicAgentAdminSoapBinding {
                 	async fn get (&mut self, get_request: ports::GetRequest) -> Result<ports::GetResponse, ports::AicServiceFault> {
 
-            
         let __request = GetRequestSoapEnvelope::new(SoapGetRequest {
             body: get_request,
         });            
         
         let body = to_string(&__request).expect("failed to generate xml");
         
-        let res = self.client
+        let mut req = self.client
         .post("http://localhost:9800/webservices/services/AicAgentAdmin")
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
             "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
-        )
-        .basic_auth("Admin", Option::from("Avaya123$"))
-        .send()
-        .await
-        .expect("can not send request");
+        );
+        
+        if let Some(credentials) = &self.credentials {
+            req = req.basic_auth(credentials.0.to_string(), Option::from(credentials.1.to_string()));    
+        }
+        
+        let res = req.send()
+            .await
+            .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
         
@@ -96,25 +93,28 @@ pub struct AicAgentAdminSoapBinding {
         }
 	async fn update (&mut self, update_request: ports::UpdateRequest) -> Result<ports::UpdateResponse, ports::AicServiceFault> {
 
-            
         let __request = UpdateRequestSoapEnvelope::new(SoapUpdateRequest {
             body: update_request,
         });            
         
         let body = to_string(&__request).expect("failed to generate xml");
         
-        let res = self.client
+        let mut req = self.client
         .post("http://localhost:9800/webservices/services/AicAgentAdmin")
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
             "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
-        )
-        .basic_auth("Admin", Option::from("Avaya123$"))
-        .send()
-        .await
-        .expect("can not send request");
+        );
+        
+        if let Some(credentials) = &self.credentials {
+            req = req.basic_auth(credentials.0.to_string(), Option::from(credentials.1.to_string()));    
+        }
+        
+        let res = req.send()
+            .await
+            .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
         
@@ -124,25 +124,28 @@ pub struct AicAgentAdminSoapBinding {
         }
 	async fn delete (&mut self, delete_request: ports::DeleteRequest) -> Result<ports::DeleteResponse, ports::AicServiceFault> {
 
-            
         let __request = DeleteRequestSoapEnvelope::new(SoapDeleteRequest {
             body: delete_request,
         });            
         
         let body = to_string(&__request).expect("failed to generate xml");
         
-        let res = self.client
+        let mut req = self.client
         .post("http://localhost:9800/webservices/services/AicAgentAdmin")
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
             "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
-        )
-        .basic_auth("Admin", Option::from("Avaya123$"))
-        .send()
-        .await
-        .expect("can not send request");
+        );
+        
+        if let Some(credentials) = &self.credentials {
+            req = req.basic_auth(credentials.0.to_string(), Option::from(credentials.1.to_string()));    
+        }
+        
+        let res = req.send()
+            .await
+            .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
         
@@ -152,25 +155,28 @@ pub struct AicAgentAdminSoapBinding {
         }
 	async fn lookup_agent_ids (&mut self, lookup_agent_ids_request: ports::LookupAgentIdsRequest) -> Result<ports::LookupAgentIdsResponse, ports::AicServiceFault> {
 
-            
         let __request = LookupAgentIdsRequestSoapEnvelope::new(SoapLookupAgentIdsRequest {
             body: lookup_agent_ids_request,
         });            
         
         let body = to_string(&__request).expect("failed to generate xml");
         
-        let res = self.client
+        let mut req = self.client
         .post("http://localhost:9800/webservices/services/AicAgentAdmin")
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
             "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
-        )
-        .basic_auth("Admin", Option::from("Avaya123$"))
-        .send()
-        .await
-        .expect("can not send request");
+        );
+        
+        if let Some(credentials) = &self.credentials {
+            req = req.basic_auth(credentials.0.to_string(), Option::from(credentials.1.to_string()));    
+        }
+        
+        let res = req.send()
+            .await
+            .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
         
@@ -180,25 +186,28 @@ pub struct AicAgentAdminSoapBinding {
         }
 	async fn lookup_lrm_ids (&mut self, lookup_lrm_ids_request: ports::LookupLRMIdsRequest) -> Result<ports::LookupLRMIdsResponse, ports::AicServiceFault> {
 
-            
         let __request = LookupLRMIdsRequestSoapEnvelope::new(SoapLookupLRMIdsRequest {
             body: lookup_lrm_ids_request,
         });            
         
         let body = to_string(&__request).expect("failed to generate xml");
         
-        let res = self.client
+        let mut req = self.client
         .post("http://localhost:9800/webservices/services/AicAgentAdmin")
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
             "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
-        )
-        .basic_auth("Admin", Option::from("Avaya123$"))
-        .send()
-        .await
-        .expect("can not send request");
+        );
+        
+        if let Some(credentials) = &self.credentials {
+            req = req.basic_auth(credentials.0.to_string(), Option::from(credentials.1.to_string()));    
+        }
+        
+        let res = req.send()
+            .await
+            .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
         
@@ -208,25 +217,28 @@ pub struct AicAgentAdminSoapBinding {
         }
 	async fn lookup_workgroups (&mut self, lookup_workgroups_request: ports::LookupWorkgroupsRequest) -> Result<ports::LookupWorkgroupsResponse, ports::AicServiceFault> {
 
-            
         let __request = LookupWorkgroupsRequestSoapEnvelope::new(SoapLookupWorkgroupsRequest {
             body: lookup_workgroups_request,
         });            
         
         let body = to_string(&__request).expect("failed to generate xml");
         
-        let res = self.client
+        let mut req = self.client
         .post("http://localhost:9800/webservices/services/AicAgentAdmin")
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
             "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
-        )
-        .basic_auth("Admin", Option::from("Avaya123$"))
-        .send()
-        .await
-        .expect("can not send request");
+        );
+        
+        if let Some(credentials) = &self.credentials {
+            req = req.basic_auth(credentials.0.to_string(), Option::from(credentials.1.to_string()));    
+        }
+        
+        let res = req.send()
+            .await
+            .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
         
@@ -236,25 +248,28 @@ pub struct AicAgentAdminSoapBinding {
         }
 	async fn lookup_domains (&mut self, lookup_domains_request: ports::LookupDomainsRequest) -> Result<ports::LookupDomainsResponse, ports::AicServiceFault> {
 
-            
         let __request = LookupDomainsRequestSoapEnvelope::new(SoapLookupDomainsRequest {
             body: lookup_domains_request,
         });            
         
         let body = to_string(&__request).expect("failed to generate xml");
         
-        let res = self.client
+        let mut req = self.client
         .post("http://localhost:9800/webservices/services/AicAgentAdmin")
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
             "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
-        )
-        .basic_auth("Admin", Option::from("Avaya123$"))
-        .send()
-        .await
-        .expect("can not send request");
+        );
+        
+        if let Some(credentials) = &self.credentials {
+            req = req.basic_auth(credentials.0.to_string(), Option::from(credentials.1.to_string()));    
+        }
+        
+        let res = req.send()
+            .await
+            .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
         
@@ -264,25 +279,28 @@ pub struct AicAgentAdminSoapBinding {
         }
 	async fn lookup_link_groups (&mut self, lookup_link_groups_request: ports::LookupLinkGroupsRequest) -> Result<ports::LookupLinkGroupsResponse, ports::AicServiceFault> {
 
-            
         let __request = LookupLinkGroupsRequestSoapEnvelope::new(SoapLookupLinkGroupsRequest {
             body: lookup_link_groups_request,
         });            
         
         let body = to_string(&__request).expect("failed to generate xml");
         
-        let res = self.client
+        let mut req = self.client
         .post("http://localhost:9800/webservices/services/AicAgentAdmin")
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
             "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
-        )
-        .basic_auth("Admin", Option::from("Avaya123$"))
-        .send()
-        .await
-        .expect("can not send request");
+        );
+        
+        if let Some(credentials) = &self.credentials {
+            req = req.basic_auth(credentials.0.to_string(), Option::from(credentials.1.to_string()));    
+        }
+        
+        let res = req.send()
+            .await
+            .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
         
@@ -292,25 +310,28 @@ pub struct AicAgentAdminSoapBinding {
         }
 	async fn lookup_phone_types (&mut self, lookup_phone_types_request: ports::LookupPhoneTypesRequest) -> Result<ports::LookupPhoneTypesResponse, ports::AicServiceFault> {
 
-            
         let __request = LookupPhoneTypesRequestSoapEnvelope::new(SoapLookupPhoneTypesRequest {
             body: lookup_phone_types_request,
         });            
         
         let body = to_string(&__request).expect("failed to generate xml");
         
-        let res = self.client
+        let mut req = self.client
         .post("http://localhost:9800/webservices/services/AicAgentAdmin")
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
             "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
-        )
-        .basic_auth("Admin", Option::from("Avaya123$"))
-        .send()
-        .await
-        .expect("can not send request");
+        );
+        
+        if let Some(credentials) = &self.credentials {
+            req = req.basic_auth(credentials.0.to_string(), Option::from(credentials.1.to_string()));    
+        }
+        
+        let res = req.send()
+            .await
+            .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
         
@@ -320,25 +341,28 @@ pub struct AicAgentAdminSoapBinding {
         }
 	async fn lookup_sites (&mut self, lookup_sites_request: ports::LookupSitesRequest) -> Result<ports::LookupSitesResponse, ports::AicServiceFault> {
 
-            
         let __request = LookupSitesRequestSoapEnvelope::new(SoapLookupSitesRequest {
             body: lookup_sites_request,
         });            
         
         let body = to_string(&__request).expect("failed to generate xml");
         
-        let res = self.client
+        let mut req = self.client
         .post("http://localhost:9800/webservices/services/AicAgentAdmin")
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
             "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
-        )
-        .basic_auth("Admin", Option::from("Avaya123$"))
-        .send()
-        .await
-        .expect("can not send request");
+        );
+        
+        if let Some(credentials) = &self.credentials {
+            req = req.basic_auth(credentials.0.to_string(), Option::from(credentials.1.to_string()));    
+        }
+        
+        let res = req.send()
+            .await
+            .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
         
@@ -348,25 +372,28 @@ pub struct AicAgentAdminSoapBinding {
         }
 	async fn create (&mut self, create_request: ports::CreateRequest) -> Result<ports::CreateResponse, ports::AicServiceFault> {
 
-            
         let __request = CreateRequestSoapEnvelope::new(SoapCreateRequest {
             body: create_request,
         });            
         
         let body = to_string(&__request).expect("failed to generate xml");
         
-        let res = self.client
+        let mut req = self.client
         .post("http://localhost:9800/webservices/services/AicAgentAdmin")
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
             "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
-        )
-        .basic_auth("Admin", Option::from("Avaya123$"))
-        .send()
-        .await
-        .expect("can not send request");
+        );
+        
+        if let Some(credentials) = &self.credentials {
+            req = req.basic_auth(credentials.0.to_string(), Option::from(credentials.1.to_string()));    
+        }
+        
+        let res = req.send()
+            .await
+            .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
         
@@ -381,14 +408,16 @@ impl Default for AicAgentAdminSoapBinding {
                     AicAgentAdminSoapBinding {
                         client: reqwest::Client::new(),
                         url: String::default(),
+                        credentials: Option::None,
                      }
                 }
             }
             impl AicAgentAdminSoapBinding {
-                pub fn new(url: &str) -> Self {
+                pub fn new(url: &str, credentials: Option<(String,String)>) -> Self {
                     AicAgentAdminSoapBinding {
                         client: reqwest::Client::new(),
                         url: url.to_string(),
+                        credentials,
                     }
                 }
         }#[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -1251,7 +1280,14 @@ pub struct SoapCreateResponse {
         
 }
 
-pub mod types {
+use yaserde::{{YaSerialize, YaDeserialize}};
+            use std::io::{Read, Write};
+            
+            pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+            
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct Header {}
+    pub mod types {
 use yaserde::{{YaSerialize, YaDeserialize}};
             use yaserde::de::from_str;
             use async_trait::async_trait;

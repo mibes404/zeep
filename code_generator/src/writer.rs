@@ -494,6 +494,7 @@ impl FileWriter {
             r#"pub struct {0} {{
                 client: reqwest::Client,
                 url: String,
+                credentials: Option<(String,String)>
                 }}
                 
                 #[async_trait]
@@ -518,6 +519,7 @@ impl FileWriter {
                     {0} {{
                         client: reqwest::Client::new(),
                         url: String::default(),
+                        credentials: Option::None,
                      }}
                 }}
             }}
@@ -529,10 +531,11 @@ impl FileWriter {
     fn print_constructor(&mut self, struct_name: &str) {
         self.write(format!(
             r#"impl {0} {{
-                pub fn new(url: &str) -> Self {{
+                pub fn new(url: &str, credentials: Option<(String,String)>) -> Self {{
                     {0} {{
                         client: reqwest::Client::new(),
                         url: url.to_string(),
+                        credentials,
                     }}
                 }}
         }}"#,
@@ -821,25 +824,28 @@ impl FileWriter {
     fn print_reqwest_body(&mut self, input_variable: &str, input_type: &str, output_type: &str) {
         self.write(format!(
             r#"
-            
         let __request = {1}SoapEnvelope::new(Soap{1} {{
             body: {0},
         }});            
         
         let body = to_string(&__request).expect("failed to generate xml");
         
-        let res = self.client
+        let mut req = self.client
         .post("http://localhost:9800/webservices/services/AicAgentAdmin")
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
             "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/LookupAgentIds",
-        )
-        .basic_auth("Admin", Option::from("Avaya123$"))
-        .send()
-        .await
-        .expect("can not send request");
+        );
+        
+        if let Some(credentials) = &self.credentials {{
+            req = req.basic_auth(credentials.0.to_string(), Option::from(credentials.1.to_string()));    
+        }}
+        
+        let res = req.send()
+            .await
+            .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
         

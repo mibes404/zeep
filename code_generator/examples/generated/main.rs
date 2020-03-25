@@ -126,8 +126,10 @@ async fn main() {
     println!("-------");
     println!("{}", body);
 
-    let mut aic =
-        AicAgentAdminSoapBinding::new("http://localhost:9800/webservices/services/AicAgentAdmin");
+    let mut aic = AicAgentAdminSoapBinding::new(
+        "http://localhost:9800/webservices/services/AicAgentAdmin",
+        Option::from(("Admin".to_string(), "Avaya123$".to_string())),
+    );
 
     let r = aic
         .lookup_agent_ids(LookupAgentIdsRequest {
