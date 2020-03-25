@@ -21,6 +21,7 @@ pub struct FileWriter {
     mod_writers: HashMap<Section, ModWriter>,
     level: usize,
     writer: Option<Box<dyn std::io::Write>>,
+    target_name_space: Option<String>,
 }
 
 struct ModWriter {
@@ -49,6 +50,7 @@ impl Default for FileWriter {
             mod_writers: FileWriter::init_mod_writers(),
             level: 0,
             writer: Option::Some(Box::new(stdout())),
+            target_name_space: Option::None,
         }
     }
 }
@@ -61,6 +63,7 @@ impl FileWriter {
             mod_writers: FileWriter::init_mod_writers(),
             level: 0,
             writer: Option::Some(Box::new(dest_file_name)),
+            target_name_space: Option::None,
         }
     }
 
@@ -197,6 +200,10 @@ impl FileWriter {
     fn print_xsd(&mut self, node: &Node) {
         self.check_section(Section::Types);
 
+        self.target_name_space = self
+            .get_some_attribute(node, "targetNamespace")
+            .map(|s| s.to_string());
+
         node.children()
             .for_each(|child| match child.tag_name().name() {
                 "import" => self.import_file(&child),
@@ -247,10 +254,17 @@ impl FileWriter {
                     return;
                 }
 
-                self.write(format!(
-                    "\t#[yaserde(rename = \"{}\", default)]\n",
-                    element_name,
-                ));
+                if let Some(tns) = &self.target_name_space {
+                    self.write(format!(
+                        "\t#[yaserde(prefix = \"ns\", rename = \"{}\", default)]\n",
+                        element_name,
+                    ));
+                } else {
+                    self.write(format!(
+                        "\t#[yaserde(rename = \"{}\", default)]\n",
+                        element_name,
+                    ));
+                }
 
                 if as_vec || as_option {
                     self.write(format!(
@@ -307,11 +321,20 @@ impl FileWriter {
         self.inc_level();
         self.write("#[derive(Debug, Default, YaSerialize, YaDeserialize)]\n".to_string());
 
-        self.write(format!(
-            "#[yaserde(rename = \"{}\", default)]\npub struct {} {{\n",
-            name,
-            to_pascal_case(name)
-        ));
+        if let Some(tns) = &self.target_name_space {
+            self.write(format!(
+                "#[yaserde(prefix = \"ns\", namespace = \"ns: {}\", rename = \"{}\", default)]\npub struct {} {{\n",
+                tns,
+                name,
+                to_pascal_case(name)
+            ));
+        } else {
+            self.write(format!(
+                "#[yaserde(rename = \"{}\", default)]\npub struct {} {{\n",
+                name,
+                to_pascal_case(name)
+            ));
+        }
 
         let maybe_sequence = node.children().find(|child| child.has_tag_name("sequence"));
 
