@@ -206,9 +206,21 @@ mod tests {
         let b2 = to_string(&t).expect("failed to generate xml");
         println!("{:?}", b2);
 
+        let t2 = LookupAgentIdsResponseSoapEnvelope {
+            encoding_style: "".to_string(),
+            tnsattr: "".to_string(),
+            urnattr: None,
+            xsiattr: "".to_string(),
+            header: None,
+            body: SoapLookupAgentIdsResponse { body: t },
+        };
+
+        let b3 = to_string(&t2).expect("failed to generate xml");
+        println!("{:?}", b3);
+
         let b: LookupAgentIdsResponse = from_str(&body).expect("can not unmarshal");
         let r: LookupAgentIdsResponseSoapEnvelope = from_str(&xml).expect("can not unmarshal");
 
-        println!("{:?}", b);
+        println!("{:?}", r);
     }
 }

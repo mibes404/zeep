@@ -254,7 +254,7 @@ impl FileWriter {
                     return;
                 }
 
-                if let Some(tns) = &self.target_name_space {
+                if let Some(_tns) = &self.target_name_space {
                     self.write(format!(
                         "\t#[yaserde(prefix = \"ns\", rename = \"{}\", default)]\n",
                         element_name,
@@ -706,7 +706,7 @@ impl FileWriter {
                         soap_name,
                         pascal_name,
                         PORTS_MOD,
-                        element_name,
+                        name,
                         self.construct_soap_wrapper(pascal_name.as_str(), soap_name.as_str())
                     ))
                 } else {
@@ -718,7 +718,7 @@ impl FileWriter {
                         soap_name,
                         pascal_name,
                         PORTS_MOD,
-                        element_name,
+                        name,
                         self.construct_soap_wrapper(pascal_name.as_str(), soap_name.as_str())
                     ))
                 }
