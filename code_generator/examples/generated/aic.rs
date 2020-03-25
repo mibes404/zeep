@@ -367,9 +367,14 @@ pub mod types {
     pub struct LookupAgentIds {}
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupAgentIdsResponse", default)]
+    #[yaserde(
+        default,
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupAgentIdsResponse"
+    )]
     pub struct LookupAgentIdsResponse {
-        #[yaserde(rename = "LookupAgentIdsReturn", default)]
+        #[yaserde(prefix = "ns1", rename = "LookupAgentIdsReturn", default)]
         pub lookup_agent_ids_return: Vec<String>,
     }
 
