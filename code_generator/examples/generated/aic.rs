@@ -1,171 +1,55 @@
-pub mod messages {
+use yaserde::{{YaSerialize, YaDeserialize}};
+            use std::io::{Read, Write};
+            
+            pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+            
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct Header {}
+    pub mod ports {
 use yaserde::{{YaSerialize, YaDeserialize}};
             use yaserde::de::from_str;
             use async_trait::async_trait;
             use yaserde::ser::to_string;
             use super::*;
 
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "LookupPhoneTypesRequest", default)]
-pub struct LookupPhoneTypesRequest {
-	#[yaserde(flatten)]
-	pub parameters: types::LookupPhoneTypes,
+#[async_trait]
+pub trait AicAgentAdmin {
+	async fn get (&mut self, get_request: GetRequest) -> Result<GetResponse, AicServiceFault>;
+	async fn update (&mut self, update_request: UpdateRequest) -> Result<UpdateResponse, AicServiceFault>;
+	async fn delete (&mut self, delete_request: DeleteRequest) -> Result<DeleteResponse, AicServiceFault>;
+	async fn lookup_agent_ids (&mut self, lookup_agent_ids_request: LookupAgentIdsRequest) -> Result<LookupAgentIdsResponse, AicServiceFault>;
+	async fn lookup_lrm_ids (&mut self, lookup_lrm_ids_request: LookupLRMIdsRequest) -> Result<LookupLRMIdsResponse, AicServiceFault>;
+	async fn lookup_workgroups (&mut self, lookup_workgroups_request: LookupWorkgroupsRequest) -> Result<LookupWorkgroupsResponse, AicServiceFault>;
+	async fn lookup_domains (&mut self, lookup_domains_request: LookupDomainsRequest) -> Result<LookupDomainsResponse, AicServiceFault>;
+	async fn lookup_link_groups (&mut self, lookup_link_groups_request: LookupLinkGroupsRequest) -> Result<LookupLinkGroupsResponse, AicServiceFault>;
+	async fn lookup_phone_types (&mut self, lookup_phone_types_request: LookupPhoneTypesRequest) -> Result<LookupPhoneTypesResponse, AicServiceFault>;
+	async fn lookup_sites (&mut self, lookup_sites_request: LookupSitesRequest) -> Result<LookupSitesResponse, AicServiceFault>;
+	async fn create (&mut self, create_request: CreateRequest) -> Result<CreateResponse, AicServiceFault>;
 }
 
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "LookupLinkGroupsRequest", default)]
-pub struct LookupLinkGroupsRequest {
-	#[yaserde(flatten)]
-	pub parameters: types::LookupLinkGroups,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "LookupLRMIdsResponse", default)]
-pub struct LookupLRMIdsResponse {
-	#[yaserde(flatten)]
-	pub parameters: types::LookupLRMIdsResponse,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "CreateRequest", default)]
-pub struct CreateRequest {
-	#[yaserde(flatten)]
-	pub parameters: types::Create,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "CreateResponse", default)]
-pub struct CreateResponse {
-	#[yaserde(flatten)]
-	pub parameters: types::CreateResponse,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "UpdateRequest", default)]
-pub struct UpdateRequest {
-	#[yaserde(flatten)]
-	pub parameters: types::Update,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "LookupSitesRequest", default)]
-pub struct LookupSitesRequest {
-	#[yaserde(flatten)]
-	pub parameters: types::LookupSites,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "LookupDomainsRequest", default)]
-pub struct LookupDomainsRequest {
-	#[yaserde(flatten)]
-	pub parameters: types::LookupDomains,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "LookupDomainsResponse", default)]
-pub struct LookupDomainsResponse {
-	#[yaserde(flatten)]
-	pub parameters: types::LookupDomainsResponse,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "GetResponse", default)]
-pub struct GetResponse {
-	#[yaserde(flatten)]
-	pub parameters: types::GetResponse,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "DeleteResponse", default)]
-pub struct DeleteResponse {
-	#[yaserde(flatten)]
-	pub parameters: types::DeleteResponse,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "LookupLRMIdsRequest", default)]
-pub struct LookupLRMIdsRequest {
-	#[yaserde(flatten)]
-	pub parameters: types::LookupLRMIds,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "LookupLinkGroupsResponse", default)]
-pub struct LookupLinkGroupsResponse {
-	#[yaserde(flatten)]
-	pub parameters: types::LookupLinkGroupsResponse,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "UpdateResponse", default)]
-pub struct UpdateResponse {
-	#[yaserde(flatten)]
-	pub parameters: types::UpdateResponse,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "GetRequest", default)]
-pub struct GetRequest {
-	#[yaserde(flatten)]
-	pub parameters: types::Get,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "LookupAgentIdsResponse", default)]
-pub struct LookupAgentIdsResponse {
-	#[yaserde(flatten)]
-	pub parameters: types::LookupAgentIdsResponse,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "LookupPhoneTypesResponse", default)]
-pub struct LookupPhoneTypesResponse {
-	#[yaserde(flatten)]
-	pub parameters: types::LookupPhoneTypesResponse,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "LookupAgentIdsRequest", default)]
-pub struct LookupAgentIdsRequest {
-	#[yaserde(flatten)]
-	pub parameters: types::LookupAgentIds,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "LookupSitesResponse", default)]
-pub struct LookupSitesResponse {
-	#[yaserde(flatten)]
-	pub parameters: types::LookupSitesResponse,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "LookupWorkgroupsResponse", default)]
-pub struct LookupWorkgroupsResponse {
-	#[yaserde(flatten)]
-	pub parameters: types::LookupWorkgroupsResponse,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "AicServiceFault", default)]
-pub struct AicServiceFault {
-	#[yaserde(flatten)]
-	pub fault: types::Fault,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "DeleteRequest", default)]
-pub struct DeleteRequest {
-	#[yaserde(flatten)]
-	pub parameters: types::Delete,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(rename = "LookupWorkgroupsRequest", default)]
-pub struct LookupWorkgroupsRequest {
-	#[yaserde(flatten)]
-	pub parameters: types::LookupWorkgroups,
-}
-
+pub type GetRequest = messages::GetRequest;
+pub type GetResponse = messages::GetResponse;
+pub type AicServiceFault = messages::AicServiceFault;
+pub type UpdateRequest = messages::UpdateRequest;
+pub type UpdateResponse = messages::UpdateResponse;
+pub type DeleteRequest = messages::DeleteRequest;
+pub type DeleteResponse = messages::DeleteResponse;
+pub type LookupAgentIdsRequest = messages::LookupAgentIdsRequest;
+pub type LookupAgentIdsResponse = messages::LookupAgentIdsResponse;
+pub type LookupLRMIdsRequest = messages::LookupLRMIdsRequest;
+pub type LookupLRMIdsResponse = messages::LookupLRMIdsResponse;
+pub type LookupWorkgroupsRequest = messages::LookupWorkgroupsRequest;
+pub type LookupWorkgroupsResponse = messages::LookupWorkgroupsResponse;
+pub type LookupDomainsRequest = messages::LookupDomainsRequest;
+pub type LookupDomainsResponse = messages::LookupDomainsResponse;
+pub type LookupLinkGroupsRequest = messages::LookupLinkGroupsRequest;
+pub type LookupLinkGroupsResponse = messages::LookupLinkGroupsResponse;
+pub type LookupPhoneTypesRequest = messages::LookupPhoneTypesRequest;
+pub type LookupPhoneTypesResponse = messages::LookupPhoneTypesResponse;
+pub type LookupSitesRequest = messages::LookupSitesRequest;
+pub type LookupSitesResponse = messages::LookupSitesResponse;
+pub type CreateRequest = messages::CreateRequest;
+pub type CreateResponse = messages::CreateResponse;
 }
 
 pub mod bindings {
@@ -205,8 +89,10 @@ pub struct AicAgentAdminSoapBinding {
         .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
-        let result = from_str(&txt).expect("can not unmarshal");
-        Ok(result)
+        
+        let r: GetResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
+        
+        Ok(r.body.body)
         }
 	async fn update (&mut self, update_request: ports::UpdateRequest) -> Result<ports::UpdateResponse, ports::AicServiceFault> {
 
@@ -231,8 +117,10 @@ pub struct AicAgentAdminSoapBinding {
         .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
-        let result = from_str(&txt).expect("can not unmarshal");
-        Ok(result)
+        
+        let r: UpdateResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
+        
+        Ok(r.body.body)
         }
 	async fn delete (&mut self, delete_request: ports::DeleteRequest) -> Result<ports::DeleteResponse, ports::AicServiceFault> {
 
@@ -257,8 +145,10 @@ pub struct AicAgentAdminSoapBinding {
         .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
-        let result = from_str(&txt).expect("can not unmarshal");
-        Ok(result)
+        
+        let r: DeleteResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
+        
+        Ok(r.body.body)
         }
 	async fn lookup_agent_ids (&mut self, lookup_agent_ids_request: ports::LookupAgentIdsRequest) -> Result<ports::LookupAgentIdsResponse, ports::AicServiceFault> {
 
@@ -283,8 +173,10 @@ pub struct AicAgentAdminSoapBinding {
         .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
-        let result = from_str(&txt).expect("can not unmarshal");
-        Ok(result)
+        
+        let r: LookupAgentIdsResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
+        
+        Ok(r.body.body)
         }
 	async fn lookup_lrm_ids (&mut self, lookup_lrm_ids_request: ports::LookupLRMIdsRequest) -> Result<ports::LookupLRMIdsResponse, ports::AicServiceFault> {
 
@@ -309,8 +201,10 @@ pub struct AicAgentAdminSoapBinding {
         .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
-        let result = from_str(&txt).expect("can not unmarshal");
-        Ok(result)
+        
+        let r: LookupLRMIdsResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
+        
+        Ok(r.body.body)
         }
 	async fn lookup_workgroups (&mut self, lookup_workgroups_request: ports::LookupWorkgroupsRequest) -> Result<ports::LookupWorkgroupsResponse, ports::AicServiceFault> {
 
@@ -335,8 +229,10 @@ pub struct AicAgentAdminSoapBinding {
         .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
-        let result = from_str(&txt).expect("can not unmarshal");
-        Ok(result)
+        
+        let r: LookupWorkgroupsResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
+        
+        Ok(r.body.body)
         }
 	async fn lookup_domains (&mut self, lookup_domains_request: ports::LookupDomainsRequest) -> Result<ports::LookupDomainsResponse, ports::AicServiceFault> {
 
@@ -361,8 +257,10 @@ pub struct AicAgentAdminSoapBinding {
         .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
-        let result = from_str(&txt).expect("can not unmarshal");
-        Ok(result)
+        
+        let r: LookupDomainsResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
+        
+        Ok(r.body.body)
         }
 	async fn lookup_link_groups (&mut self, lookup_link_groups_request: ports::LookupLinkGroupsRequest) -> Result<ports::LookupLinkGroupsResponse, ports::AicServiceFault> {
 
@@ -387,8 +285,10 @@ pub struct AicAgentAdminSoapBinding {
         .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
-        let result = from_str(&txt).expect("can not unmarshal");
-        Ok(result)
+        
+        let r: LookupLinkGroupsResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
+        
+        Ok(r.body.body)
         }
 	async fn lookup_phone_types (&mut self, lookup_phone_types_request: ports::LookupPhoneTypesRequest) -> Result<ports::LookupPhoneTypesResponse, ports::AicServiceFault> {
 
@@ -413,8 +313,10 @@ pub struct AicAgentAdminSoapBinding {
         .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
-        let result = from_str(&txt).expect("can not unmarshal");
-        Ok(result)
+        
+        let r: LookupPhoneTypesResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
+        
+        Ok(r.body.body)
         }
 	async fn lookup_sites (&mut self, lookup_sites_request: ports::LookupSitesRequest) -> Result<ports::LookupSitesResponse, ports::AicServiceFault> {
 
@@ -439,8 +341,10 @@ pub struct AicAgentAdminSoapBinding {
         .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
-        let result = from_str(&txt).expect("can not unmarshal");
-        Ok(result)
+        
+        let r: LookupSitesResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
+        
+        Ok(r.body.body)
         }
 	async fn create (&mut self, create_request: ports::CreateRequest) -> Result<ports::CreateResponse, ports::AicServiceFault> {
 
@@ -465,8 +369,10 @@ pub struct AicAgentAdminSoapBinding {
         .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
-        let result = from_str(&txt).expect("can not unmarshal");
-        Ok(result)
+        
+        let r: CreateResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
+        
+        Ok(r.body.body)
         }
 }
 
@@ -1742,57 +1648,173 @@ pub struct CreateResponse {
 
 }
 
-use yaserde::{{YaSerialize, YaDeserialize}};
-            use std::io::{Read, Write};
-            
-            pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-            
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct Header {}
-    pub mod ports {
+pub mod messages {
 use yaserde::{{YaSerialize, YaDeserialize}};
             use yaserde::de::from_str;
             use async_trait::async_trait;
             use yaserde::ser::to_string;
             use super::*;
 
-#[async_trait]
-pub trait AicAgentAdmin {
-	async fn get (&mut self, get_request: GetRequest) -> Result<GetResponse, AicServiceFault>;
-	async fn update (&mut self, update_request: UpdateRequest) -> Result<UpdateResponse, AicServiceFault>;
-	async fn delete (&mut self, delete_request: DeleteRequest) -> Result<DeleteResponse, AicServiceFault>;
-	async fn lookup_agent_ids (&mut self, lookup_agent_ids_request: LookupAgentIdsRequest) -> Result<LookupAgentIdsResponse, AicServiceFault>;
-	async fn lookup_lrm_ids (&mut self, lookup_lrm_ids_request: LookupLRMIdsRequest) -> Result<LookupLRMIdsResponse, AicServiceFault>;
-	async fn lookup_workgroups (&mut self, lookup_workgroups_request: LookupWorkgroupsRequest) -> Result<LookupWorkgroupsResponse, AicServiceFault>;
-	async fn lookup_domains (&mut self, lookup_domains_request: LookupDomainsRequest) -> Result<LookupDomainsResponse, AicServiceFault>;
-	async fn lookup_link_groups (&mut self, lookup_link_groups_request: LookupLinkGroupsRequest) -> Result<LookupLinkGroupsResponse, AicServiceFault>;
-	async fn lookup_phone_types (&mut self, lookup_phone_types_request: LookupPhoneTypesRequest) -> Result<LookupPhoneTypesResponse, AicServiceFault>;
-	async fn lookup_sites (&mut self, lookup_sites_request: LookupSitesRequest) -> Result<LookupSitesResponse, AicServiceFault>;
-	async fn create (&mut self, create_request: CreateRequest) -> Result<CreateResponse, AicServiceFault>;
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "LookupPhoneTypesRequest", default)]
+pub struct LookupPhoneTypesRequest {
+	#[yaserde(flatten)]
+	pub parameters: types::LookupPhoneTypes,
 }
 
-pub type GetRequest = messages::GetRequest;
-pub type GetResponse = messages::GetResponse;
-pub type AicServiceFault = messages::AicServiceFault;
-pub type UpdateRequest = messages::UpdateRequest;
-pub type UpdateResponse = messages::UpdateResponse;
-pub type DeleteRequest = messages::DeleteRequest;
-pub type DeleteResponse = messages::DeleteResponse;
-pub type LookupAgentIdsRequest = messages::LookupAgentIdsRequest;
-pub type LookupAgentIdsResponse = messages::LookupAgentIdsResponse;
-pub type LookupLRMIdsRequest = messages::LookupLRMIdsRequest;
-pub type LookupLRMIdsResponse = messages::LookupLRMIdsResponse;
-pub type LookupWorkgroupsRequest = messages::LookupWorkgroupsRequest;
-pub type LookupWorkgroupsResponse = messages::LookupWorkgroupsResponse;
-pub type LookupDomainsRequest = messages::LookupDomainsRequest;
-pub type LookupDomainsResponse = messages::LookupDomainsResponse;
-pub type LookupLinkGroupsRequest = messages::LookupLinkGroupsRequest;
-pub type LookupLinkGroupsResponse = messages::LookupLinkGroupsResponse;
-pub type LookupPhoneTypesRequest = messages::LookupPhoneTypesRequest;
-pub type LookupPhoneTypesResponse = messages::LookupPhoneTypesResponse;
-pub type LookupSitesRequest = messages::LookupSitesRequest;
-pub type LookupSitesResponse = messages::LookupSitesResponse;
-pub type CreateRequest = messages::CreateRequest;
-pub type CreateResponse = messages::CreateResponse;
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "LookupLinkGroupsRequest", default)]
+pub struct LookupLinkGroupsRequest {
+	#[yaserde(flatten)]
+	pub parameters: types::LookupLinkGroups,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "LookupLRMIdsResponse", default)]
+pub struct LookupLRMIdsResponse {
+	#[yaserde(flatten)]
+	pub parameters: types::LookupLRMIdsResponse,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "CreateRequest", default)]
+pub struct CreateRequest {
+	#[yaserde(flatten)]
+	pub parameters: types::Create,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "CreateResponse", default)]
+pub struct CreateResponse {
+	#[yaserde(flatten)]
+	pub parameters: types::CreateResponse,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "UpdateRequest", default)]
+pub struct UpdateRequest {
+	#[yaserde(flatten)]
+	pub parameters: types::Update,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "LookupSitesRequest", default)]
+pub struct LookupSitesRequest {
+	#[yaserde(flatten)]
+	pub parameters: types::LookupSites,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "LookupDomainsRequest", default)]
+pub struct LookupDomainsRequest {
+	#[yaserde(flatten)]
+	pub parameters: types::LookupDomains,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "LookupDomainsResponse", default)]
+pub struct LookupDomainsResponse {
+	#[yaserde(flatten)]
+	pub parameters: types::LookupDomainsResponse,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "GetResponse", default)]
+pub struct GetResponse {
+	#[yaserde(flatten)]
+	pub parameters: types::GetResponse,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "DeleteResponse", default)]
+pub struct DeleteResponse {
+	#[yaserde(flatten)]
+	pub parameters: types::DeleteResponse,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "LookupLRMIdsRequest", default)]
+pub struct LookupLRMIdsRequest {
+	#[yaserde(flatten)]
+	pub parameters: types::LookupLRMIds,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "LookupLinkGroupsResponse", default)]
+pub struct LookupLinkGroupsResponse {
+	#[yaserde(flatten)]
+	pub parameters: types::LookupLinkGroupsResponse,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "UpdateResponse", default)]
+pub struct UpdateResponse {
+	#[yaserde(flatten)]
+	pub parameters: types::UpdateResponse,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "GetRequest", default)]
+pub struct GetRequest {
+	#[yaserde(flatten)]
+	pub parameters: types::Get,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "LookupAgentIdsResponse", default)]
+pub struct LookupAgentIdsResponse {
+	#[yaserde(flatten)]
+	pub parameters: types::LookupAgentIdsResponse,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "LookupPhoneTypesResponse", default)]
+pub struct LookupPhoneTypesResponse {
+	#[yaserde(flatten)]
+	pub parameters: types::LookupPhoneTypesResponse,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "LookupAgentIdsRequest", default)]
+pub struct LookupAgentIdsRequest {
+	#[yaserde(flatten)]
+	pub parameters: types::LookupAgentIds,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "LookupSitesResponse", default)]
+pub struct LookupSitesResponse {
+	#[yaserde(flatten)]
+	pub parameters: types::LookupSitesResponse,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "LookupWorkgroupsResponse", default)]
+pub struct LookupWorkgroupsResponse {
+	#[yaserde(flatten)]
+	pub parameters: types::LookupWorkgroupsResponse,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "AicServiceFault", default)]
+pub struct AicServiceFault {
+	#[yaserde(flatten)]
+	pub fault: types::Fault,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "DeleteRequest", default)]
+pub struct DeleteRequest {
+	#[yaserde(flatten)]
+	pub parameters: types::Delete,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(rename = "LookupWorkgroupsRequest", default)]
+pub struct LookupWorkgroupsRequest {
+	#[yaserde(flatten)]
+	pub parameters: types::LookupWorkgroups,
+}
+
 }
 

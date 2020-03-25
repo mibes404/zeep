@@ -724,66 +724,74 @@ impl FileWriter {
             .find(|c| c.has_tag_name("fault"))
             .map(|c| self.get_some_attribute_as_string(&c, "name"));
 
-        let (input_template, soap_wrapper_in, input_variables) = match some_input {
+        let (input_name, input_type, input_soap_name, has_input) = match some_input {
             Some(Some(name)) => {
                 let pascal_name = to_pascal_case(name.as_str());
                 let soap_name = format!("Soap{}", pascal_name);
                 let variable_name = to_snake_case(name.as_str());
 
-                (format!(
-                    "{}: {}::{}",
-                    variable_name,
-                    PORTS_MOD,
-                    pascal_name
-                ),
-                format!(
-                    "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\n{4}\n",
-                    soap_name,
-                    to_pascal_case(name.as_str()),
-                    PORTS_MOD,
-                    element_name,
-                    self.construct_soap_wrapper(pascal_name.as_str(), soap_name.as_str())
-                ), Option::from((variable_name, pascal_name)))
+                (variable_name, pascal_name, soap_name, true)
             }
-            _ => ("".to_string(), "".to_string(), Option::None),
+            _ => (String::new(), String::new(), String::new(), false),
         };
 
-        let (output_template, soap_wrapper_out) = match some_output {
-            Some(Some(name)) => {
-                if let Some(Some(fault_name)) = some_fault {
-                    let pascal_name = to_pascal_case(name.as_str());
-                    let pascal_fault_name = to_pascal_case(fault_name.as_str());
-                    let soap_name = format!("Soap{}", pascal_name);
+        let input_template = if has_input {
+            format!("{}: {}::{}", input_name, PORTS_MOD, input_type)
+        } else {
+            String::new()
+        };
 
-                    (format!(
-                        "-> Result<{2}::{0}, {2}::{1}>",
-                        pascal_name,
-                        pascal_fault_name,
-                        PORTS_MOD,
-                    ),
-                    format!(
-                        "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\n{4}\n",
-                        soap_name,
-                        pascal_name,
-                        PORTS_MOD,
-                        name,
-                        self.construct_soap_wrapper(pascal_name.as_str(), soap_name.as_str())
-                    ))
-                } else {
-                    let pascal_name = to_pascal_case(name.as_str());
-                    let soap_name = format!("Soap{}", pascal_name);
-                    (format!("-> {}::{}", PORTS_MOD, pascal_name),
-                    format!(
-                        "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\n{4}\n",
-                        soap_name,
-                        pascal_name,
-                        PORTS_MOD,
-                        name,
-                        self.construct_soap_wrapper(pascal_name.as_str(), soap_name.as_str())
-                    ))
-                }
+        let soap_wrapper_in = if has_input {
+            Option::from(format!(
+                "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\n{4}\n",
+                input_soap_name,
+                input_type,
+                PORTS_MOD,
+                element_name,
+                self.construct_soap_wrapper(input_type.as_str(), input_soap_name.as_str())
+            ))
+        } else {
+            Option::None
+        };
+
+        let (output_type, output_soap_name, output_xml_type, has_output) = match some_output {
+            Some(Some(name)) => {
+                let pascal_name = to_pascal_case(name.as_str());
+                let soap_name = format!("Soap{}", pascal_name);
+                (pascal_name, soap_name, name, true)
             }
-            _ => ("".to_string(), "".to_string()),
+            _ => (String::new(), String::new(), String::new(), false),
+        };
+
+        let fault_name = match some_fault {
+            Some(Some(fault_name)) => Option::from(to_pascal_case(fault_name.as_str())),
+            _ => Option::None,
+        };
+
+        let soap_wrapper_out = if has_output {
+            Option::from(format!(
+                "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\n{4}\n",
+                output_soap_name,
+                output_type,
+                PORTS_MOD,
+                output_xml_type,
+                self.construct_soap_wrapper(output_type.as_str(), output_soap_name.as_str())
+            ))
+        } else {
+            Option::None
+        };
+
+        let output_template = if has_output {
+            if let Some(fault_name) = fault_name {
+                format!(
+                    "-> Result<{2}::{0}, {2}::{1}>",
+                    output_type, fault_name, PORTS_MOD,
+                )
+            } else {
+                format!("-> {}::{}", PORTS_MOD, output_type)
+            }
+        } else {
+            String::new()
         };
 
         self.write(format!(
@@ -791,16 +799,26 @@ impl FileWriter {
             func_name, input_template, output_template,
         ));
 
-        if let Some((input_variable, input_type)) = input_variables {
-            self.print_reqwest_body(input_variable.as_str(), input_type.as_str())
+        if has_input && has_output {
+            self.print_reqwest_body(
+                input_name.as_str(),
+                input_type.as_str(),
+                output_type.as_str(),
+            )
         }
 
         self.write("}\n".to_string());
-        self.delayed_write(soap_wrapper_in);
-        self.delayed_write(soap_wrapper_out);
+
+        if let Some(soap_wrapper_in) = soap_wrapper_in {
+            self.delayed_write(soap_wrapper_in);
+        }
+
+        if let Some(soap_wrapper_out) = soap_wrapper_out {
+            self.delayed_write(soap_wrapper_out);
+        }
     }
 
-    fn print_reqwest_body(&mut self, input_variable: &str, input_type: &str) {
+    fn print_reqwest_body(&mut self, input_variable: &str, input_type: &str, output_type: &str) {
         self.write(format!(
             r#"
             
@@ -824,10 +842,12 @@ impl FileWriter {
         .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
-        let result = from_str(&txt).expect("can not unmarshal");
-        Ok(result)
+        
+        let r: {2}SoapEnvelope = from_str(&txt).expect("can not unmarshal");
+        
+        Ok(r.body.body)
         "#,
-            input_variable, input_type
+            input_variable, input_type, output_type
         ));
     }
 }
