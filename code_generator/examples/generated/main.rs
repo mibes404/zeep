@@ -144,7 +144,8 @@ async fn main() {
 
     println!("{:?}", r);
 
-    let mut w = bindings::WeatherSoap::new("http://ws.cdyne.com/WeatherWS/", Option::None);
+    let mut w =
+        bindings::WeatherSoap::new("http://wsf.cdyne.com/WeatherWS/Weather.asmx", Option::None);
     let w_info = w
         .get_weather_information(GetWeatherInformationSoapIn::default())
         .await;
