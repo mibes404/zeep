@@ -173,13 +173,13 @@ async fn main() {
     println!("{:?}", claire);
 
     /*
-
     let mut w =
         bindings::WeatherSoap::new("http://wsf.cdyne.com/WeatherWS/Weather.asmx", Option::None);
     let w_info = w
         .get_weather_information(GetWeatherInformationSoapIn::default())
         .await;
     println!("{:?}", w_info);
+    */
 
     let mut tc = TempConverterEndpointServiceSoapBinding::new(
         "http://www.learnwebservices.com/services/tempconverter",
@@ -199,7 +199,6 @@ async fn main() {
             .celsius_to_fahrenheit_response
             .temperature_in_fahrenheit
     );
-    */
 
     let mut h = HelloEndpointServiceSoapBinding::new(
         "http://www.learnwebservices.com/services/hello",
