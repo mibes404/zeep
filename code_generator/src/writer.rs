@@ -34,6 +34,7 @@ struct ModWriter {
     defined_types: Vec<String>,
 }
 
+#[derive(Clone)]
 struct PortType {
     name: String,
     input_type: Option<(String, Option<String>)>,
@@ -207,33 +208,21 @@ impl FileWriter {
     }
 
     fn print_definitions(&mut self, node: &Node) {
-        if let Some(node) = node
-            .children()
-            .find(|child| child.tag_name().name() == "types")
-        {
-            self.print_xsd(&node)
-        }
+        node.children()
+            .filter(|child| child.tag_name().name() == "types")
+            .for_each(|node| self.print_xsd(&node));
 
-        if let Some(node) = node
-            .children()
-            .find(|child| child.tag_name().name() == "message")
-        {
-            self.print_message(&node)
-        };
+        node.children()
+            .filter(|child| child.tag_name().name() == "message")
+            .for_each(|node| self.print_message(&node));
 
-        if let Some(node) = node
-            .children()
-            .find(|child| child.tag_name().name() == "portType")
-        {
-            self.print_port_type(&node)
-        }
+        node.children()
+            .filter(|child| child.tag_name().name() == "portType")
+            .for_each(|node| self.print_port_type(&node));
 
-        if let Some(node) = node
-            .children()
-            .find(|child| child.tag_name().name() == "binding")
-        {
-            self.print_binding(&node)
-        }
+        node.children()
+            .filter(|child| child.tag_name().name() == "binding")
+            .for_each(|node| self.print_binding(&node));
     }
 
     fn print_xsd(&mut self, node: &Node) {
@@ -592,7 +581,8 @@ impl FileWriter {
                         credentials,
                     }}
                 }}
-        }}"#,
+        }}
+        "#,
             struct_name
         ));
     }
@@ -811,33 +801,21 @@ impl FileWriter {
                 );
                 return;
             }
-            Some(pt) => pt,
+            Some(pt) => pt.clone(),
         };
 
         let func_name = to_snake_case(operation_name);
-
-        /*
-        let some_input = node
-            .children()
-            .find(|c| c.has_tag_name("input"))
-            .map(|c| self.get_some_attribute_as_string(&c, "name"));
-
-        let some_output = node
-            .children()
-            .find(|c| c.has_tag_name("output"))
-            .map(|c| self.get_some_attribute_as_string(&c, "name"));
-
-        let some_fault = node
-            .children()
-            .find(|c| c.has_tag_name("fault"))
-            .map(|c| self.get_some_attribute_as_string(&c, "name"));
-        */
 
         let (input_name, input_type, input_soap_name, has_input) = match &port_type.input_type {
             Some((input_name, Some(input_type))) => {
                 let soap_name = format!("Soap{}", input_type);
 
-                (input_name.clone(), input_type.clone(), soap_name, true)
+                (
+                    to_snake_case(input_name),
+                    input_type.clone(),
+                    soap_name,
+                    true,
+                )
             }
             _ => (String::new(), String::new(), String::new(), false),
         };
@@ -849,14 +827,19 @@ impl FileWriter {
         };
 
         let soap_wrapper_in = if has_input {
-            Option::from(format!(
-                "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\n{4}\n",
-                input_soap_name,
-                input_type,
-                PORTS_MOD,
-                operation_name,
-                self.construct_soap_wrapper(input_type.as_str(), input_soap_name.as_str())
-            ))
+            if !self.have_seen_type(input_soap_name.clone()) {
+                self.seen_type(input_soap_name.clone());
+                Option::from(format!(
+                    "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\n{4}\n",
+                    input_soap_name,
+                    input_type,
+                    PORTS_MOD,
+                    operation_name,
+                    self.construct_soap_wrapper(input_type.as_str(), input_soap_name.as_str())
+                ))
+            } else {
+                Option::None
+            }
         } else {
             Option::None
         };
@@ -870,13 +853,15 @@ impl FileWriter {
                 _ => (String::new(), String::new(), String::new(), false),
             };
 
-        let fault_name = match &port_type.fault_type {
+        let fault_type = match &port_type.fault_type {
             Some((fault_name, Some(fault_type))) => Option::from(fault_type),
             _ => Option::None,
         };
 
         let soap_wrapper_out = if has_output {
-            Option::from(format!(
+            if !self.have_seen_type(output_soap_name.clone()) {
+                self.seen_type(output_soap_name.clone());
+                Option::from(format!(
                 "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\n{4}\n",
                 output_soap_name,
                 output_type,
@@ -884,15 +869,18 @@ impl FileWriter {
                 output_xml_type,
                 self.construct_soap_wrapper(output_type.as_str(), output_soap_name.as_str())
             ))
+            } else {
+                Option::None
+            }
         } else {
             Option::None
         };
 
         let output_template = if has_output {
-            if let Some(fault_name) = fault_name {
+            if let Some(fault_type) = fault_type {
                 format!(
                     "-> Result<{2}::{0}, {2}::{1}>",
-                    output_type, fault_name, PORTS_MOD,
+                    output_type, fault_type, PORTS_MOD,
                 )
             } else {
                 format!("-> {}::{}", PORTS_MOD, output_type)
@@ -911,6 +899,7 @@ impl FileWriter {
                 input_name.as_str(),
                 input_type.as_str(),
                 output_type.as_str(),
+                fault_type,
                 operation_name,
             )
         }
@@ -931,6 +920,7 @@ impl FileWriter {
         input_variable: &str,
         input_type: &str,
         output_type: &str,
+        fault_type: Option<&String>,
         operation_name: &str,
     ) {
         self.write(format!(
@@ -961,11 +951,15 @@ impl FileWriter {
         let txt = res.text().await.unwrap_or_default();
         
         let r: {2}SoapEnvelope = from_str(&txt).expect("can not unmarshal");
-        
-        Ok(r.body.body)
         "#,
             input_variable, input_type, output_type, operation_name
         ));
+
+        if fault_type.is_some() {
+            self.write("Ok(r.body.body)".to_string())
+        } else {
+            self.write("r.body.body".to_string())
+        }
     }
 }
 
