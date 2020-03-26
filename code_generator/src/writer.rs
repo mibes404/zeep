@@ -99,7 +99,7 @@ impl FileWriter {
         let f_in = format!("{}/{}", self.base_path, file_name);
         let xml = std::fs::read_to_string(f_in).expect("can not read file");
         let doc = roxmltree::Document::parse(&xml).unwrap();
-        doc.descendants().for_each(|n| self.print(&n));
+        doc.root().children().for_each(|n| self.print(&n));
 
         if !print_when_done {
             return;
@@ -210,7 +210,7 @@ impl FileWriter {
     fn print_definitions(&mut self, node: &Node) {
         node.children()
             .filter(|child| child.tag_name().name() == "types")
-            .for_each(|node| self.print_xsd(&node));
+            .for_each(|node| self.print_types(&node));
 
         node.children()
             .filter(|child| child.tag_name().name() == "message")
@@ -223,6 +223,12 @@ impl FileWriter {
         node.children()
             .filter(|child| child.tag_name().name() == "binding")
             .for_each(|node| self.print_binding(&node));
+    }
+
+    fn print_types(&mut self, node: &Node) {
+        node.children()
+            .filter(|c| c.has_tag_name("schema"))
+            .for_each(|c| self.print_xsd(&c));
     }
 
     fn print_xsd(&mut self, node: &Node) {
@@ -562,7 +568,7 @@ impl FileWriter {
                 fn default() -> Self {{
                     {0} {{
                         client: reqwest::Client::new(),
-                        url: {1},
+                        url: "{1}".to_string(),
                         credentials: Option::None,
                      }}
                 }}
@@ -733,7 +739,7 @@ impl FileWriter {
     fn construct_soap_wrapper(&self, soap_name: &str, body_type: &str) -> String {
         let tns = match &self.target_name_space {
             None => "Option::None".to_string(),
-            Some(t) => t.to_string(),
+            Some(t) => format!("Option::from(\"{}\".to_string())", t),
         };
 
         format!(
@@ -879,6 +885,13 @@ impl FileWriter {
             String::new()
         };
 
+        let some_soap_action = node
+            .children()
+            .find(|c| c.has_tag_name("operation"))
+            .map(|opp| opp.attribute("soapAction"))
+            .unwrap_or_default()
+            .unwrap_or_default();
+
         self.write(format!(
             "\tasync fn {} (&mut self, {}) {} {{\n",
             func_name, input_template, output_template,
@@ -891,6 +904,7 @@ impl FileWriter {
                 output_type.as_str(),
                 fault_type,
                 operation_name,
+                some_soap_action,
             )
         }
 
@@ -912,7 +926,17 @@ impl FileWriter {
         output_type: &str,
         fault_type: Option<&String>,
         operation_name: &str,
+        soap_action: &str,
     ) {
+        let action = if soap_action.is_empty() {
+            match &self.target_name_space {
+                None => "undefined".to_string(),
+                Some(tns) => format!("{}/{}", tns, operation_name),
+            }
+        } else {
+            soap_action.to_string()
+        };
+
         self.write(format!(
             r#"
         let __request = {1}SoapEnvelope::new(Soap{1} {{
@@ -922,12 +946,12 @@ impl FileWriter {
         let body = to_string(&__request).expect("failed to generate xml");
         
         let mut req = self.client
-        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .post(&self.url)
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/{3}",
+            "{3}",
         );
         
         if let Some(credentials) = &self.credentials {{
@@ -942,7 +966,7 @@ impl FileWriter {
         
         let r: {2}SoapEnvelope = from_str(&txt).expect("can not unmarshal");
         "#,
-            input_variable, input_type, output_type, operation_name
+            input_variable, input_type, output_type, action
         ));
 
         if fault_type.is_some() {

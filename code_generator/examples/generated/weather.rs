@@ -3,7 +3,6 @@ use yaserde::{{YaSerialize, YaDeserialize}};
             use yaserde::de::from_str;
             use async_trait::async_trait;
             use yaserde::ser::to_string;
-            use std::time::SystemTime;
             use super::*;
 
 #[async_trait]
@@ -61,7 +60,6 @@ use yaserde::{{YaSerialize, YaDeserialize}};
             use yaserde::de::from_str;
             use async_trait::async_trait;
             use yaserde::ser::to_string;
-            use std::time::SystemTime;
             use super::*;
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -180,19 +178,11 @@ pub struct GetCityWeatherByZIPHttpPostOut {
 
 }
 
-use yaserde::{{YaSerialize, YaDeserialize}};
-            use std::io::{Read, Write};
-            
-            pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-            
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct Header {}
-    pub mod types {
+pub mod types {
 use yaserde::{{YaSerialize, YaDeserialize}};
             use yaserde::de::from_str;
             use async_trait::async_trait;
             use yaserde::ser::to_string;
-            use std::time::SystemTime;
             use super::*;
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -345,12 +335,18 @@ pub struct WeatherReturn {
 
 }
 
-pub mod bindings {
+use yaserde::{{YaSerialize, YaDeserialize}};
+            use std::io::{Read, Write};
+            
+            pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+            
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct Header {}
+    pub mod bindings {
 use yaserde::{{YaSerialize, YaDeserialize}};
             use yaserde::de::from_str;
             use async_trait::async_trait;
             use yaserde::ser::to_string;
-            use std::time::SystemTime;
             use super::*;
 
 pub struct WeatherSoap {
@@ -370,12 +366,12 @@ pub struct WeatherSoap {
         let body = to_string(&__request).expect("failed to generate xml");
         
         let mut req = self.client
-        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .post(&self.url)
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/GetWeatherInformation",
+            "http://ws.cdyne.com/WeatherWS/GetWeatherInformation",
         );
         
         if let Some(credentials) = &self.credentials {
@@ -399,12 +395,12 @@ pub struct WeatherSoap {
         let body = to_string(&__request).expect("failed to generate xml");
         
         let mut req = self.client
-        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .post(&self.url)
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/GetCityForecastByZIP",
+            "http://ws.cdyne.com/WeatherWS/GetCityForecastByZIP",
         );
         
         if let Some(credentials) = &self.credentials {
@@ -428,12 +424,12 @@ pub struct WeatherSoap {
         let body = to_string(&__request).expect("failed to generate xml");
         
         let mut req = self.client
-        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .post(&self.url)
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/GetCityWeatherByZIP",
+            "http://ws.cdyne.com/WeatherWS/GetCityWeatherByZIP",
         );
         
         if let Some(credentials) = &self.credentials {
@@ -454,7 +450,7 @@ impl Default for WeatherSoap {
                 fn default() -> Self {
                     WeatherSoap {
                         client: reqwest::Client::new(),
-                        url: String::new(),
+                        url: "http://ws.cdyne.com/WeatherWS/".to_string(),
                         credentials: Option::None,
                      }
                 }
@@ -498,7 +494,7 @@ pub struct SoapGetWeatherInformationSoapIn {
             pub fn new(body: SoapGetWeatherInformationSoapIn) -> Self {
                 GetWeatherInformationSoapInSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -537,7 +533,7 @@ pub struct SoapGetWeatherInformationSoapOut {
             pub fn new(body: SoapGetWeatherInformationSoapOut) -> Self {
                 GetWeatherInformationSoapOutSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -576,7 +572,7 @@ pub struct SoapGetCityForecastByZIPSoapIn {
             pub fn new(body: SoapGetCityForecastByZIPSoapIn) -> Self {
                 GetCityForecastByZIPSoapInSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -615,7 +611,7 @@ pub struct SoapGetCityForecastByZIPSoapOut {
             pub fn new(body: SoapGetCityForecastByZIPSoapOut) -> Self {
                 GetCityForecastByZIPSoapOutSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -654,7 +650,7 @@ pub struct SoapGetCityWeatherByZIPSoapIn {
             pub fn new(body: SoapGetCityWeatherByZIPSoapIn) -> Self {
                 GetCityWeatherByZIPSoapInSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -693,7 +689,7 @@ pub struct SoapGetCityWeatherByZIPSoapOut {
             pub fn new(body: SoapGetCityWeatherByZIPSoapOut) -> Self {
                 GetCityWeatherByZIPSoapOutSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -719,12 +715,12 @@ pub struct WeatherSoap12 {
         let body = to_string(&__request).expect("failed to generate xml");
         
         let mut req = self.client
-        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .post(&self.url)
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/GetWeatherInformation",
+            "http://ws.cdyne.com/WeatherWS/GetWeatherInformation",
         );
         
         if let Some(credentials) = &self.credentials {
@@ -748,12 +744,12 @@ pub struct WeatherSoap12 {
         let body = to_string(&__request).expect("failed to generate xml");
         
         let mut req = self.client
-        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .post(&self.url)
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/GetCityForecastByZIP",
+            "http://ws.cdyne.com/WeatherWS/GetCityForecastByZIP",
         );
         
         if let Some(credentials) = &self.credentials {
@@ -777,12 +773,12 @@ pub struct WeatherSoap12 {
         let body = to_string(&__request).expect("failed to generate xml");
         
         let mut req = self.client
-        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .post(&self.url)
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/GetCityWeatherByZIP",
+            "http://ws.cdyne.com/WeatherWS/GetCityWeatherByZIP",
         );
         
         if let Some(credentials) = &self.credentials {
@@ -803,7 +799,7 @@ impl Default for WeatherSoap12 {
                 fn default() -> Self {
                     WeatherSoap12 {
                         client: reqwest::Client::new(),
-                        url: String::new(),
+                        url: "http://ws.cdyne.com/WeatherWS/".to_string(),
                         credentials: Option::None,
                      }
                 }
@@ -834,12 +830,12 @@ impl Default for WeatherSoap12 {
         let body = to_string(&__request).expect("failed to generate xml");
         
         let mut req = self.client
-        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .post(&self.url)
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/GetWeatherInformation",
+            "http://ws.cdyne.com/WeatherWS//GetWeatherInformation",
         );
         
         if let Some(credentials) = &self.credentials {
@@ -863,12 +859,12 @@ impl Default for WeatherSoap12 {
         let body = to_string(&__request).expect("failed to generate xml");
         
         let mut req = self.client
-        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .post(&self.url)
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/GetCityForecastByZIP",
+            "http://ws.cdyne.com/WeatherWS//GetCityForecastByZIP",
         );
         
         if let Some(credentials) = &self.credentials {
@@ -892,12 +888,12 @@ impl Default for WeatherSoap12 {
         let body = to_string(&__request).expect("failed to generate xml");
         
         let mut req = self.client
-        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .post(&self.url)
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/GetCityWeatherByZIP",
+            "http://ws.cdyne.com/WeatherWS//GetCityWeatherByZIP",
         );
         
         if let Some(credentials) = &self.credentials {
@@ -918,7 +914,7 @@ impl Default for WeatherHttpGet {
                 fn default() -> Self {
                     WeatherHttpGet {
                         client: reqwest::Client::new(),
-                        url: String::new(),
+                        url: "http://ws.cdyne.com/WeatherWS/".to_string(),
                         credentials: Option::None,
                      }
                 }
@@ -962,7 +958,7 @@ pub struct SoapGetWeatherInformationHttpGetIn {
             pub fn new(body: SoapGetWeatherInformationHttpGetIn) -> Self {
                 GetWeatherInformationHttpGetInSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -1001,7 +997,7 @@ pub struct SoapGetWeatherInformationHttpGetOut {
             pub fn new(body: SoapGetWeatherInformationHttpGetOut) -> Self {
                 GetWeatherInformationHttpGetOutSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -1040,7 +1036,7 @@ pub struct SoapGetCityForecastByZIPHttpGetIn {
             pub fn new(body: SoapGetCityForecastByZIPHttpGetIn) -> Self {
                 GetCityForecastByZIPHttpGetInSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -1079,7 +1075,7 @@ pub struct SoapGetCityForecastByZIPHttpGetOut {
             pub fn new(body: SoapGetCityForecastByZIPHttpGetOut) -> Self {
                 GetCityForecastByZIPHttpGetOutSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -1118,7 +1114,7 @@ pub struct SoapGetCityWeatherByZIPHttpGetIn {
             pub fn new(body: SoapGetCityWeatherByZIPHttpGetIn) -> Self {
                 GetCityWeatherByZIPHttpGetInSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -1157,7 +1153,7 @@ pub struct SoapGetCityWeatherByZIPHttpGetOut {
             pub fn new(body: SoapGetCityWeatherByZIPHttpGetOut) -> Self {
                 GetCityWeatherByZIPHttpGetOutSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -1183,12 +1179,12 @@ pub struct WeatherHttpPost {
         let body = to_string(&__request).expect("failed to generate xml");
         
         let mut req = self.client
-        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .post(&self.url)
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/GetWeatherInformation",
+            "http://ws.cdyne.com/WeatherWS//GetWeatherInformation",
         );
         
         if let Some(credentials) = &self.credentials {
@@ -1212,12 +1208,12 @@ pub struct WeatherHttpPost {
         let body = to_string(&__request).expect("failed to generate xml");
         
         let mut req = self.client
-        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .post(&self.url)
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/GetCityForecastByZIP",
+            "http://ws.cdyne.com/WeatherWS//GetCityForecastByZIP",
         );
         
         if let Some(credentials) = &self.credentials {
@@ -1241,12 +1237,12 @@ pub struct WeatherHttpPost {
         let body = to_string(&__request).expect("failed to generate xml");
         
         let mut req = self.client
-        .post("http://localhost:9800/webservices/services/AicAgentAdmin")
+        .post(&self.url)
         .body(body)
         .header("Content-Type", "text/xml")
         .header(
             "Soapaction",
-            "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71/GetCityWeatherByZIP",
+            "http://ws.cdyne.com/WeatherWS//GetCityWeatherByZIP",
         );
         
         if let Some(credentials) = &self.credentials {
@@ -1267,7 +1263,7 @@ impl Default for WeatherHttpPost {
                 fn default() -> Self {
                     WeatherHttpPost {
                         client: reqwest::Client::new(),
-                        url: String::new(),
+                        url: "http://ws.cdyne.com/WeatherWS/".to_string(),
                         credentials: Option::None,
                      }
                 }
@@ -1311,7 +1307,7 @@ pub struct SoapGetWeatherInformationHttpPostIn {
             pub fn new(body: SoapGetWeatherInformationHttpPostIn) -> Self {
                 GetWeatherInformationHttpPostInSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -1350,7 +1346,7 @@ pub struct SoapGetWeatherInformationHttpPostOut {
             pub fn new(body: SoapGetWeatherInformationHttpPostOut) -> Self {
                 GetWeatherInformationHttpPostOutSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -1389,7 +1385,7 @@ pub struct SoapGetCityForecastByZIPHttpPostIn {
             pub fn new(body: SoapGetCityForecastByZIPHttpPostIn) -> Self {
                 GetCityForecastByZIPHttpPostInSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -1428,7 +1424,7 @@ pub struct SoapGetCityForecastByZIPHttpPostOut {
             pub fn new(body: SoapGetCityForecastByZIPHttpPostOut) -> Self {
                 GetCityForecastByZIPHttpPostOutSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -1467,7 +1463,7 @@ pub struct SoapGetCityWeatherByZIPHttpPostIn {
             pub fn new(body: SoapGetCityWeatherByZIPHttpPostIn) -> Self {
                 GetCityWeatherByZIPHttpPostInSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
@@ -1506,7 +1502,7 @@ pub struct SoapGetCityWeatherByZIPHttpPostOut {
             pub fn new(body: SoapGetCityWeatherByZIPHttpPostOut) -> Self {
                 GetCityWeatherByZIPHttpPostOutSoapEnvelope {
                     encoding_style: SOAP_ENCODING.to_string(),
-                    tnsattr: Option::None,
+                    tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
                     body,
                     urnattr: None,
                     xsiattr: None,
