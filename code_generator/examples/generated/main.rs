@@ -127,6 +127,7 @@ async fn main() {
                 },
             },
         },
+        xmlns: None,
     });
 
     println!("-------");
@@ -139,6 +140,7 @@ async fn main() {
         body: LookupAgentIdsRequest {
             parameters: LookupAgentIds {},
         },
+        xmlns: None,
     });
 
     let body = to_string(&list_request).expect("failed to generate xml");
@@ -171,6 +173,7 @@ async fn main() {
     println!("{:?}", claire);
 
     /*
+
     let mut w =
         bindings::WeatherSoap::new("http://wsf.cdyne.com/WeatherWS/Weather.asmx", Option::None);
     let w_info = w
