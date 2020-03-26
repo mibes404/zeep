@@ -826,7 +826,15 @@ impl FileWriter {
             if !self.have_seen_type(input_soap_name.clone()) {
                 self.seen_type(input_soap_name.clone());
                 Option::from(format!(
-                    "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\n{4}\n",
+                    r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+                    pub struct {0} {{
+                        #[yaserde(rename = "{3}", default)]
+                        pub body: {2}::{1},
+                        #[yaserde(attribute)]
+                        pub xmlns: Option<String>,
+                    }}
+                    {4}
+                    "#,
                     input_soap_name,
                     input_type,
                     PORTS_MOD,
@@ -889,7 +897,6 @@ impl FileWriter {
             .children()
             .find(|c| c.has_tag_name("operation"))
             .map(|opp| opp.attribute("soapAction"))
-            .unwrap_or_default()
             .unwrap_or_default();
 
         self.write(format!(
@@ -926,21 +933,26 @@ impl FileWriter {
         output_type: &str,
         fault_type: Option<&String>,
         operation_name: &str,
-        soap_action: &str,
+        soap_action: Option<&str>,
     ) {
-        let action = if soap_action.is_empty() {
-            match &self.target_name_space {
+        let action = match soap_action {
+            None => match &self.target_name_space {
                 None => "undefined".to_string(),
                 Some(tns) => format!("{}/{}", tns, operation_name),
-            }
-        } else {
-            soap_action.to_string()
+            },
+            Some(sa) => sa.to_string(),
+        };
+
+        let xmlns = match &self.target_name_space {
+            None => "Option::None".to_string(),
+            Some(tns) => format!("Option::from(\"{}\".to_string())", tns),
         };
 
         self.write(format!(
             r#"
         let __request = {1}SoapEnvelope::new(Soap{1} {{
             body: {0},
+            xmlns: {4},
         }});            
         
         let body = to_string(&__request).expect("failed to generate xml");
@@ -966,7 +978,7 @@ impl FileWriter {
         
         let r: {2}SoapEnvelope = from_str(&txt).expect("can not unmarshal");
         "#,
-            input_variable, input_type, output_type, action
+            input_variable, input_type, output_type, action, xmlns
         ));
 
         if fault_type.is_some() {

@@ -189,13 +189,14 @@ async fn main() {
             },
         })
         .await;
+
     println!(
         "{:?}",
         fahrenheit
             .celsius_to_fahrenheit_response
             .temperature_in_fahrenheit
     );
-        */
+    */
 
     let mut h = HelloEndpointServiceSoapBinding::new(
         "http://www.learnwebservices.com/services/hello",
@@ -205,7 +206,7 @@ async fn main() {
         .say_hello(SayHello {
             parameters: types::SayHello {
                 hello_request: HelloRequest {
-                    name: "Skippy".to_string(),
+                    name: "Claire".to_string(),
                 },
             },
         })
