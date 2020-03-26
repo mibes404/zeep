@@ -22,6 +22,7 @@ pub struct FileWriter {
     level: usize,
     writer: Option<Box<dyn std::io::Write>>,
     target_name_space: Option<String>,
+    port_types: HashMap<String, PortType>,
 }
 
 struct ModWriter {
@@ -31,6 +32,13 @@ struct ModWriter {
     delayed_buffer: Cursor<Vec<u8>>,
     final_stage: Cursor<Vec<u8>>,
     defined_types: Vec<String>,
+}
+
+struct PortType {
+    name: String,
+    input_type: Option<(String, Option<String>)>,
+    output_type: Option<(String, Option<String>)>,
+    fault_type: Option<(String, Option<String>)>,
 }
 
 #[derive(Debug, PartialEq, Eq, Hash)]
@@ -51,6 +59,7 @@ impl Default for FileWriter {
             level: 0,
             writer: Option::Some(Box::new(stdout())),
             target_name_space: Option::None,
+            port_types: HashMap::new(),
         }
     }
 }
@@ -64,6 +73,7 @@ impl FileWriter {
             level: 0,
             writer: Option::Some(Box::new(dest_file_name)),
             target_name_space: Option::None,
+            port_types: HashMap::new(),
         }
     }
 
@@ -197,14 +207,33 @@ impl FileWriter {
     }
 
     fn print_definitions(&mut self, node: &Node) {
-        node.children()
-            .for_each(|child| match child.tag_name().name() {
-                "types" => self.print_xsd(&child),
-                "message" => self.print_message(&child),
-                "portType" => self.print_port_type(&child),
-                "binding" => self.print_binding(&child),
-                _ => {}
-            })
+        if let Some(node) = node
+            .children()
+            .find(|child| child.tag_name().name() == "types")
+        {
+            self.print_xsd(&node)
+        }
+
+        if let Some(node) = node
+            .children()
+            .find(|child| child.tag_name().name() == "message")
+        {
+            self.print_message(&node)
+        };
+
+        if let Some(node) = node
+            .children()
+            .find(|child| child.tag_name().name() == "portType")
+        {
+            self.print_port_type(&node)
+        }
+
+        if let Some(node) = node
+            .children()
+            .find(|child| child.tag_name().name() == "binding")
+        {
+            self.print_binding(&node)
+        }
     }
 
     fn print_xsd(&mut self, node: &Node) {
@@ -236,6 +265,22 @@ impl FileWriter {
         self.process_file_in_path(name, false);
     }
 
+    fn format_type(&mut self, id: &str, definition: String) -> String {
+        if !self.have_seen_type(id.to_string()) {
+            self.seen_type(id.to_string());
+            definition
+        } else {
+            String::new()
+        }
+    }
+
+    fn print_type(&mut self, id: &str, definition: String) {
+        let out = self.format_type(id, definition);
+        if !out.is_empty() {
+            self.write(out);
+        }
+    }
+
     fn print_element(&mut self, node: &Node) {
         let name = match self.get_some_attribute(node, "name") {
             None => return,
@@ -260,7 +305,10 @@ impl FileWriter {
                     let alias = self.fetch_type(type_name);
 
                     if top_level != alias {
-                        self.write(format!("pub type {} = {};\n\n", top_level, alias));
+                        self.print_type(
+                            &top_level,
+                            format!("pub type {} = {};\n\n", top_level, alias),
+                        );
                     }
 
                     return;
@@ -469,10 +517,9 @@ impl FileWriter {
         let struct_name = to_pascal_case(element_name);
         self.write(format!("#[async_trait]\npub trait {0} {{\n", struct_name));
         node.children()
-            .for_each(|child| self.print_operation(&child));
+            .for_each(|child| self.print_operation(element_name, &child));
         self.write("}\n\n".to_string());
         self.flush_delayed_buffer();
-        self.reset_defined_types();
     }
 
     // WSDL bindings
@@ -506,7 +553,7 @@ impl FileWriter {
         ));
 
         node.children()
-            .for_each(|child| self.print_binding_operation(&child));
+            .for_each(|child| self.print_binding_operation(&trait_name, &child));
 
         self.write("}\n\n".to_string());
         self.print_default_constructor(struct_name.as_str());
@@ -550,20 +597,37 @@ impl FileWriter {
         ));
     }
 
-    fn map_name_message(&self, node: &Node) -> (Option<String>, Option<String>) {
-        (
-            self.get_some_attribute_as_string(node, "name"),
-            self.get_some_attribute_as_string(node, "message"),
-        )
+    fn map_name_message(&self, node: &Node) -> (String, Option<String>) {
+        let msg = self
+            .get_some_attribute_as_string(node, "message")
+            .map(|m| self.fetch_type(&m));
+
+        let name = self.get_some_attribute_as_string(node, "name");
+
+        let name = match name {
+            None => match &msg {
+                None => String::new(),
+                Some(msg) => to_snake_case(msg.as_str()),
+            },
+            Some(name) => name,
+        };
+
+        (name, msg)
     }
 
-    fn print_operation(&mut self, node: &Node) {
+    fn print_operation(&mut self, port_type_name: &str, node: &Node) {
         let element_name = match self.get_some_attribute(node, "name") {
             None => return,
             Some(n) => n,
         };
 
         let func_name = to_snake_case(element_name);
+
+        let some_documentation = node
+            .children()
+            .find(|c| c.has_tag_name("documentation"))
+            .map(|c| c.text().unwrap_or_default());
+
         let some_input = node
             .children()
             .find(|c| c.has_tag_name("input"))
@@ -579,21 +643,30 @@ impl FileWriter {
             .find(|c| c.has_tag_name("fault"))
             .map(|c| self.map_name_message(&c));
 
-        let input_type_template = match &some_input {
-            Some((Some(name), Some(msg))) => {
-                let type_name = to_pascal_case(name.as_str());
-                let message_type_name = self.fetch_type(msg.as_str());
+        let port_type = PortType {
+            name: format!("{}::{}", port_type_name, element_name.to_string()),
+            input_type: some_input,
+            output_type: some_output,
+            fault_type: some_fault,
+        };
 
-                format!(
-                    "pub type {0} = {1}::{2};\n",
-                    type_name, MESSAGES_MOD, message_type_name,
+        let input_type_template = match &port_type.input_type {
+            Some((name, Some(message_type_name))) => {
+                let type_name = to_pascal_case(name.as_str());
+
+                self.format_type(
+                    &type_name,
+                    format!(
+                        "pub type {0} = {1}::{2};\n",
+                        type_name, MESSAGES_MOD, message_type_name,
+                    ),
                 )
             }
             _ => "".to_string(),
         };
 
-        let input_template = match &some_input {
-            Some((Some(name), Some(msg))) => format!(
+        let input_template = match &port_type.input_type {
+            Some((name, Some(msg))) => format!(
                 "{}: {}",
                 to_snake_case(name.as_str()),
                 to_pascal_case(name.as_str())
@@ -601,43 +674,53 @@ impl FileWriter {
             _ => ("".to_string()),
         };
 
-        let (output_type_template, fault_type_template, output_template) = match some_output {
-            Some((Some(name), Some(msg))) => {
-                if let Some((Some(fault_name), Some(fault_type))) = some_fault {
-                    (
-                        format!(
-                            "pub type {} = {}::{};\n",
-                            to_pascal_case(name.as_str()),
-                            MESSAGES_MOD,
-                            self.fetch_type(msg.as_str())
-                        ),
-                        Option::Some(format!(
-                            "pub type {} = {}::{};\n",
-                            to_pascal_case(fault_name.as_str()),
-                            MESSAGES_MOD,
-                            self.fetch_type(fault_type.as_str())
-                        )),
-                        format!(
-                            "-> Result<{0}, {1}>",
-                            to_pascal_case(name.as_str()),
-                            to_pascal_case(fault_name.as_str())
-                        ),
-                    )
-                } else {
-                    (
-                        format!(
-                            "pub type {} = {}::{};\n",
-                            to_pascal_case(name.as_str()),
-                            MESSAGES_MOD,
-                            self.fetch_type(msg.as_str())
-                        ),
-                        Option::None,
-                        format!("-> {}", to_pascal_case(name.as_str())),
-                    )
+        let (output_type_template, fault_type_template, output_template) =
+            match &port_type.output_type {
+                Some((name, Some(msg))) => {
+                    if let Some((fault_name, Some(fault_type))) = &port_type.fault_type {
+                        (
+                            self.format_type(
+                                &to_pascal_case(name.as_str()),
+                                format!(
+                                    "pub type {} = {}::{};\n",
+                                    to_pascal_case(name.as_str()),
+                                    MESSAGES_MOD,
+                                    msg
+                                ),
+                            ),
+                            Option::Some(self.format_type(
+                                &to_pascal_case(fault_name.as_str()),
+                                format!(
+                                    "pub type {} = {}::{};\n",
+                                    to_pascal_case(fault_name.as_str()),
+                                    MESSAGES_MOD,
+                                    fault_type
+                                ),
+                            )),
+                            format!(
+                                "-> Result<{0}, {1}>",
+                                to_pascal_case(name.as_str()),
+                                to_pascal_case(fault_name.as_str())
+                            ),
+                        )
+                    } else {
+                        (
+                            self.format_type(
+                                to_pascal_case(name.as_str()).as_str(),
+                                format!(
+                                    "pub type {} = {}::{};\n",
+                                    to_pascal_case(name.as_str()),
+                                    MESSAGES_MOD,
+                                    msg.as_str()
+                                ),
+                            ),
+                            Option::None,
+                            format!("-> {}", to_pascal_case(name.as_str())),
+                        )
+                    }
                 }
-            }
-            _ => ("".to_string(), Option::None, "".to_string()),
-        };
+                _ => ("".to_string(), Option::None, "".to_string()),
+            };
 
         self.queue_port_types(
             &input_type_template,
@@ -645,30 +728,25 @@ impl FileWriter {
             fault_type_template,
         );
 
+        if let Some(doc) = some_documentation {
+            self.write(format!("\t/// {}\n", doc))
+        }
+
         self.write(format!(
             "\tasync fn {} (&mut self, {}) {};\n",
             func_name, input_template, output_template,
         ));
+
+        self.port_types.insert(port_type.name.clone(), port_type);
     }
 
     fn queue_port_types(&mut self, input: &str, output: &str, fault: Option<String>) {
         // make sure these messages get written at the end of the module
-
-        if !self.have_seen_type(input.to_string()) {
-            self.delayed_write(input.to_string());
-            self.seen_type(input.to_string());
-        }
-
-        if !self.have_seen_type(output.to_string()) {
-            self.delayed_write(output.to_string());
-            self.seen_type(output.to_string());
-        }
+        self.delayed_write(input.to_string());
+        self.delayed_write(output.to_string());
 
         if let Some(f) = fault {
-            if !self.have_seen_type(f.to_string()) {
-                self.seen_type(f.to_string());
-                self.delayed_write(f);
-            }
+            self.delayed_write(f);
         }
     }
 
@@ -717,13 +795,28 @@ impl FileWriter {
         )
     }
 
-    fn print_binding_operation(&mut self, node: &Node) {
+    fn print_binding_operation(&mut self, bind_type_name: &str, node: &Node) {
         let operation_name = match self.get_some_attribute(node, "name") {
             None => return,
             Some(n) => n,
         };
 
+        let port_type_name = format!("{}::{}", bind_type_name, operation_name);
+
+        let port_type = match self.port_types.get(&port_type_name) {
+            None => {
+                warn!(
+                    "failed to find matching port type for binding: {} with type: {}",
+                    operation_name, port_type_name
+                );
+                return;
+            }
+            Some(pt) => pt,
+        };
+
         let func_name = to_snake_case(operation_name);
+
+        /*
         let some_input = node
             .children()
             .find(|c| c.has_tag_name("input"))
@@ -738,14 +831,13 @@ impl FileWriter {
             .children()
             .find(|c| c.has_tag_name("fault"))
             .map(|c| self.get_some_attribute_as_string(&c, "name"));
+        */
 
-        let (input_name, input_type, input_soap_name, has_input) = match some_input {
-            Some(Some(name)) => {
-                let pascal_name = to_pascal_case(name.as_str());
-                let soap_name = format!("Soap{}", pascal_name);
-                let variable_name = to_snake_case(name.as_str());
+        let (input_name, input_type, input_soap_name, has_input) = match &port_type.input_type {
+            Some((input_name, Some(input_type))) => {
+                let soap_name = format!("Soap{}", input_type);
 
-                (variable_name, pascal_name, soap_name, true)
+                (input_name.clone(), input_type.clone(), soap_name, true)
             }
             _ => (String::new(), String::new(), String::new(), false),
         };
@@ -769,17 +861,17 @@ impl FileWriter {
             Option::None
         };
 
-        let (output_type, output_soap_name, output_xml_type, has_output) = match some_output {
-            Some(Some(name)) => {
-                let pascal_name = to_pascal_case(name.as_str());
-                let soap_name = format!("Soap{}", pascal_name);
-                (pascal_name, soap_name, name, true)
-            }
-            _ => (String::new(), String::new(), String::new(), false),
-        };
+        let (output_type, output_soap_name, output_xml_type, has_output) =
+            match &port_type.output_type {
+                Some((output_name, Some(output_type))) => {
+                    let soap_name = format!("Soap{}", output_type);
+                    (output_type.clone(), soap_name, output_name.clone(), true)
+                }
+                _ => (String::new(), String::new(), String::new(), false),
+            };
 
-        let fault_name = match some_fault {
-            Some(Some(fault_name)) => Option::from(to_pascal_case(fault_name.as_str())),
+        let fault_name = match &port_type.fault_type {
+            Some((fault_name, Some(fault_type))) => Option::from(fault_type),
             _ => Option::None,
         };
 
@@ -945,6 +1037,7 @@ impl ModWriter {
                 warn!("Failed to flush buffer: {:?}", err);
             }
         }
+        self.delayed_buffer = Cursor::new(vec![]);
     }
 
     fn set_level(&mut self, level: usize) {

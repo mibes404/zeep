@@ -1,83 +1,7 @@
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait AicAgentAdmin {
-        async fn get(&mut self, get_request: GetRequest) -> Result<GetResponse, AicServiceFault>;
-        async fn update(
-            &mut self,
-            update_request: UpdateRequest,
-        ) -> Result<UpdateResponse, AicServiceFault>;
-        async fn delete(
-            &mut self,
-            delete_request: DeleteRequest,
-        ) -> Result<DeleteResponse, AicServiceFault>;
-        async fn lookup_agent_ids(
-            &mut self,
-            lookup_agent_ids_request: LookupAgentIdsRequest,
-        ) -> Result<LookupAgentIdsResponse, AicServiceFault>;
-        async fn lookup_lrm_ids(
-            &mut self,
-            lookup_lrm_ids_request: LookupLRMIdsRequest,
-        ) -> Result<LookupLRMIdsResponse, AicServiceFault>;
-        async fn lookup_workgroups(
-            &mut self,
-            lookup_workgroups_request: LookupWorkgroupsRequest,
-        ) -> Result<LookupWorkgroupsResponse, AicServiceFault>;
-        async fn lookup_domains(
-            &mut self,
-            lookup_domains_request: LookupDomainsRequest,
-        ) -> Result<LookupDomainsResponse, AicServiceFault>;
-        async fn lookup_link_groups(
-            &mut self,
-            lookup_link_groups_request: LookupLinkGroupsRequest,
-        ) -> Result<LookupLinkGroupsResponse, AicServiceFault>;
-        async fn lookup_phone_types(
-            &mut self,
-            lookup_phone_types_request: LookupPhoneTypesRequest,
-        ) -> Result<LookupPhoneTypesResponse, AicServiceFault>;
-        async fn lookup_sites(
-            &mut self,
-            lookup_sites_request: LookupSitesRequest,
-        ) -> Result<LookupSitesResponse, AicServiceFault>;
-        async fn create(
-            &mut self,
-            create_request: CreateRequest,
-        ) -> Result<CreateResponse, AicServiceFault>;
-    }
-
-    pub type GetRequest = messages::GetRequest;
-    pub type GetResponse = messages::GetResponse;
-    pub type AicServiceFault = messages::AicServiceFault;
-    pub type UpdateRequest = messages::UpdateRequest;
-    pub type UpdateResponse = messages::UpdateResponse;
-    pub type DeleteRequest = messages::DeleteRequest;
-    pub type DeleteResponse = messages::DeleteResponse;
-    pub type LookupAgentIdsRequest = messages::LookupAgentIdsRequest;
-    pub type LookupAgentIdsResponse = messages::LookupAgentIdsResponse;
-    pub type LookupLRMIdsRequest = messages::LookupLRMIdsRequest;
-    pub type LookupLRMIdsResponse = messages::LookupLRMIdsResponse;
-    pub type LookupWorkgroupsRequest = messages::LookupWorkgroupsRequest;
-    pub type LookupWorkgroupsResponse = messages::LookupWorkgroupsResponse;
-    pub type LookupDomainsRequest = messages::LookupDomainsRequest;
-    pub type LookupDomainsResponse = messages::LookupDomainsResponse;
-    pub type LookupLinkGroupsRequest = messages::LookupLinkGroupsRequest;
-    pub type LookupLinkGroupsResponse = messages::LookupLinkGroupsResponse;
-    pub type LookupPhoneTypesRequest = messages::LookupPhoneTypesRequest;
-    pub type LookupPhoneTypesResponse = messages::LookupPhoneTypesResponse;
-    pub type LookupSitesRequest = messages::LookupSitesRequest;
-    pub type LookupSitesResponse = messages::LookupSitesResponse;
-    pub type CreateRequest = messages::CreateRequest;
-    pub type CreateResponse = messages::CreateResponse;
-}
-
 pub mod messages {
     use super::*;
     use async_trait::async_trait;
+    use std::time::SystemTime;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
@@ -88,165 +12,12 @@ pub mod messages {
         #[yaserde(flatten)]
         pub parameters: types::LookupPhoneTypes,
     }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupLinkGroupsRequest", default)]
-    pub struct LookupLinkGroupsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLinkGroups,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupLRMIdsResponse", default)]
-    pub struct LookupLRMIdsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLRMIdsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "CreateRequest", default)]
-    pub struct CreateRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Create,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "CreateResponse", default)]
-    pub struct CreateResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::CreateResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "UpdateRequest", default)]
-    pub struct UpdateRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Update,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupSitesRequest", default)]
-    pub struct LookupSitesRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupSites,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupDomainsRequest", default)]
-    pub struct LookupDomainsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupDomains,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupDomainsResponse", default)]
-    pub struct LookupDomainsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupDomainsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetResponse", default)]
-    pub struct GetResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::GetResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "DeleteResponse", default)]
-    pub struct DeleteResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::DeleteResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupLRMIdsRequest", default)]
-    pub struct LookupLRMIdsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLRMIds,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupLinkGroupsResponse", default)]
-    pub struct LookupLinkGroupsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLinkGroupsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "UpdateResponse", default)]
-    pub struct UpdateResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::UpdateResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetRequest", default)]
-    pub struct GetRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Get,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupAgentIdsResponse", default)]
-    pub struct LookupAgentIdsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupAgentIdsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupPhoneTypesResponse", default)]
-    pub struct LookupPhoneTypesResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupPhoneTypesResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupAgentIdsRequest", default)]
-    pub struct LookupAgentIdsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupAgentIds,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupSitesResponse", default)]
-    pub struct LookupSitesResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupSitesResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupWorkgroupsResponse", default)]
-    pub struct LookupWorkgroupsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupWorkgroupsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "AicServiceFault", default)]
-    pub struct AicServiceFault {
-        #[yaserde(flatten)]
-        pub fault: types::Fault,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "DeleteRequest", default)]
-    pub struct DeleteRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Delete,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupWorkgroupsRequest", default)]
-    pub struct LookupWorkgroupsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupWorkgroups,
-    }
 }
 
 pub mod types {
     use super::*;
     use async_trait::async_trait;
+    use std::time::SystemTime;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
@@ -822,9 +593,17 @@ pub mod types {
     }
 }
 
+use std::io::{Read, Write};
+use yaserde::{YaDeserialize, YaSerialize};
+
+pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
 pub mod bindings {
     use super::*;
     use async_trait::async_trait;
+    use std::time::SystemTime;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
@@ -839,9 +618,9 @@ pub mod bindings {
     impl ports::AicAgentAdmin for AicAgentAdminSoapBinding {
         async fn get(
             &mut self,
-            get_request: ports::GetRequest,
+            GetRequest: ports::GetRequest,
         ) -> Result<ports::GetResponse, ports::AicServiceFault> {
-            let __request = GetRequestSoapEnvelope::new(SoapGetRequest { body: get_request });
+            let __request = GetRequestSoapEnvelope::new(SoapGetRequest { body: GetRequest });
 
             let body = to_string(&__request).expect("failed to generate xml");
 
@@ -870,12 +649,13 @@ pub mod bindings {
 
             Ok(r.body.body)
         }
+
         async fn update(
             &mut self,
-            update_request: ports::UpdateRequest,
+            UpdateRequest: ports::UpdateRequest,
         ) -> Result<ports::UpdateResponse, ports::AicServiceFault> {
             let __request = UpdateRequestSoapEnvelope::new(SoapUpdateRequest {
-                body: update_request,
+                body: UpdateRequest,
             });
 
             let body = to_string(&__request).expect("failed to generate xml");
@@ -907,10 +687,10 @@ pub mod bindings {
         }
         async fn delete(
             &mut self,
-            delete_request: ports::DeleteRequest,
+            DeleteRequest: ports::DeleteRequest,
         ) -> Result<ports::DeleteResponse, ports::AicServiceFault> {
             let __request = DeleteRequestSoapEnvelope::new(SoapDeleteRequest {
-                body: delete_request,
+                body: DeleteRequest,
             });
 
             let body = to_string(&__request).expect("failed to generate xml");
@@ -942,10 +722,10 @@ pub mod bindings {
         }
         async fn lookup_agent_ids(
             &mut self,
-            lookup_agent_ids_request: ports::LookupAgentIdsRequest,
+            LookupAgentIdsRequest: ports::LookupAgentIdsRequest,
         ) -> Result<ports::LookupAgentIdsResponse, ports::AicServiceFault> {
             let __request = LookupAgentIdsRequestSoapEnvelope::new(SoapLookupAgentIdsRequest {
-                body: lookup_agent_ids_request,
+                body: LookupAgentIdsRequest,
             });
 
             let body = to_string(&__request).expect("failed to generate xml");
@@ -977,10 +757,10 @@ pub mod bindings {
         }
         async fn lookup_lrm_ids(
             &mut self,
-            lookup_lrm_ids_request: ports::LookupLRMIdsRequest,
+            LookupLRMIdsRequest: ports::LookupLRMIdsRequest,
         ) -> Result<ports::LookupLRMIdsResponse, ports::AicServiceFault> {
             let __request = LookupLRMIdsRequestSoapEnvelope::new(SoapLookupLRMIdsRequest {
-                body: lookup_lrm_ids_request,
+                body: LookupLRMIdsRequest,
             });
 
             let body = to_string(&__request).expect("failed to generate xml");
@@ -1012,10 +792,10 @@ pub mod bindings {
         }
         async fn lookup_workgroups(
             &mut self,
-            lookup_workgroups_request: ports::LookupWorkgroupsRequest,
+            LookupWorkgroupsRequest: ports::LookupWorkgroupsRequest,
         ) -> Result<ports::LookupWorkgroupsResponse, ports::AicServiceFault> {
             let __request = LookupWorkgroupsRequestSoapEnvelope::new(SoapLookupWorkgroupsRequest {
-                body: lookup_workgroups_request,
+                body: LookupWorkgroupsRequest,
             });
 
             let body = to_string(&__request).expect("failed to generate xml");
@@ -1048,10 +828,10 @@ pub mod bindings {
         }
         async fn lookup_domains(
             &mut self,
-            lookup_domains_request: ports::LookupDomainsRequest,
+            LookupDomainsRequest: ports::LookupDomainsRequest,
         ) -> Result<ports::LookupDomainsResponse, ports::AicServiceFault> {
             let __request = LookupDomainsRequestSoapEnvelope::new(SoapLookupDomainsRequest {
-                body: lookup_domains_request,
+                body: LookupDomainsRequest,
             });
 
             let body = to_string(&__request).expect("failed to generate xml");
@@ -1083,10 +863,10 @@ pub mod bindings {
         }
         async fn lookup_link_groups(
             &mut self,
-            lookup_link_groups_request: ports::LookupLinkGroupsRequest,
+            LookupLinkGroupsRequest: ports::LookupLinkGroupsRequest,
         ) -> Result<ports::LookupLinkGroupsResponse, ports::AicServiceFault> {
             let __request = LookupLinkGroupsRequestSoapEnvelope::new(SoapLookupLinkGroupsRequest {
-                body: lookup_link_groups_request,
+                body: LookupLinkGroupsRequest,
             });
 
             let body = to_string(&__request).expect("failed to generate xml");
@@ -1119,10 +899,10 @@ pub mod bindings {
         }
         async fn lookup_phone_types(
             &mut self,
-            lookup_phone_types_request: ports::LookupPhoneTypesRequest,
+            LookupPhoneTypesRequest: ports::LookupPhoneTypesRequest,
         ) -> Result<ports::LookupPhoneTypesResponse, ports::AicServiceFault> {
             let __request = LookupPhoneTypesRequestSoapEnvelope::new(SoapLookupPhoneTypesRequest {
-                body: lookup_phone_types_request,
+                body: LookupPhoneTypesRequest,
             });
 
             let body = to_string(&__request).expect("failed to generate xml");
@@ -1155,10 +935,10 @@ pub mod bindings {
         }
         async fn lookup_sites(
             &mut self,
-            lookup_sites_request: ports::LookupSitesRequest,
+            LookupSitesRequest: ports::LookupSitesRequest,
         ) -> Result<ports::LookupSitesResponse, ports::AicServiceFault> {
             let __request = LookupSitesRequestSoapEnvelope::new(SoapLookupSitesRequest {
-                body: lookup_sites_request,
+                body: LookupSitesRequest,
             });
 
             let body = to_string(&__request).expect("failed to generate xml");
@@ -1190,10 +970,10 @@ pub mod bindings {
         }
         async fn create(
             &mut self,
-            create_request: ports::CreateRequest,
+            CreateRequest: ports::CreateRequest,
         ) -> Result<ports::CreateResponse, ports::AicServiceFault> {
             let __request = CreateRequestSoapEnvelope::new(SoapCreateRequest {
-                body: create_request,
+                body: CreateRequest,
             });
 
             let body = to_string(&__request).expect("failed to generate xml");
@@ -1229,7 +1009,7 @@ pub mod bindings {
         fn default() -> Self {
             AicAgentAdminSoapBinding {
                 client: reqwest::Client::new(),
-                url: String::default(),
+                url: String::new(),
                 credentials: Option::None,
             }
         }
@@ -2102,10 +1882,80 @@ pub mod bindings {
     }
 }
 
-use std::io::{Read, Write};
-use yaserde::{YaDeserialize, YaSerialize};
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use std::time::SystemTime;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
 
-pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+    #[async_trait]
+    pub trait AicAgentAdmin {
+        async fn get(&mut self, get_request: GetRequest) -> Result<GetResponse, AicServiceFault>;
+        async fn update(
+            &mut self,
+            update_request: UpdateRequest,
+        ) -> Result<UpdateResponse, AicServiceFault>;
+        async fn delete(
+            &mut self,
+            delete_request: DeleteRequest,
+        ) -> Result<DeleteResponse, AicServiceFault>;
+        async fn lookup_agent_ids(
+            &mut self,
+            lookup_agent_ids_request: LookupAgentIdsRequest,
+        ) -> Result<LookupAgentIdsResponse, AicServiceFault>;
+        async fn lookup_lrm_ids(
+            &mut self,
+            lookup_lrm_ids_request: LookupLRMIdsRequest,
+        ) -> Result<LookupLRMIdsResponse, AicServiceFault>;
+        async fn lookup_workgroups(
+            &mut self,
+            lookup_workgroups_request: LookupWorkgroupsRequest,
+        ) -> Result<LookupWorkgroupsResponse, AicServiceFault>;
+        async fn lookup_domains(
+            &mut self,
+            lookup_domains_request: LookupDomainsRequest,
+        ) -> Result<LookupDomainsResponse, AicServiceFault>;
+        async fn lookup_link_groups(
+            &mut self,
+            lookup_link_groups_request: LookupLinkGroupsRequest,
+        ) -> Result<LookupLinkGroupsResponse, AicServiceFault>;
+        async fn lookup_phone_types(
+            &mut self,
+            lookup_phone_types_request: LookupPhoneTypesRequest,
+        ) -> Result<LookupPhoneTypesResponse, AicServiceFault>;
+        async fn lookup_sites(
+            &mut self,
+            lookup_sites_request: LookupSitesRequest,
+        ) -> Result<LookupSitesResponse, AicServiceFault>;
+        async fn create(
+            &mut self,
+            create_request: CreateRequest,
+        ) -> Result<CreateResponse, AicServiceFault>;
+    }
 
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
+    pub type GetRequest = messages::GetRequest;
+    pub type GetResponse = messages::GetResponse;
+    pub type AicServiceFault = messages::AicServiceFault;
+    pub type UpdateRequest = messages::UpdateRequest;
+    pub type UpdateResponse = messages::UpdateResponse;
+    pub type DeleteRequest = messages::DeleteRequest;
+    pub type DeleteResponse = messages::DeleteResponse;
+    pub type LookupAgentIdsRequest = messages::LookupAgentIdsRequest;
+    pub type LookupAgentIdsResponse = messages::LookupAgentIdsResponse;
+    pub type LookupLRMIdsRequest = messages::LookupLRMIdsRequest;
+    pub type LookupLRMIdsResponse = messages::LookupLRMIdsResponse;
+    pub type LookupWorkgroupsRequest = messages::LookupWorkgroupsRequest;
+    pub type LookupWorkgroupsResponse = messages::LookupWorkgroupsResponse;
+    pub type LookupDomainsRequest = messages::LookupDomainsRequest;
+    pub type LookupDomainsResponse = messages::LookupDomainsResponse;
+    pub type LookupLinkGroupsRequest = messages::LookupLinkGroupsRequest;
+    pub type LookupLinkGroupsResponse = messages::LookupLinkGroupsResponse;
+    pub type LookupPhoneTypesRequest = messages::LookupPhoneTypesRequest;
+    pub type LookupPhoneTypesResponse = messages::LookupPhoneTypesResponse;
+    pub type LookupSitesRequest = messages::LookupSitesRequest;
+    pub type LookupSitesResponse = messages::LookupSitesResponse;
+    pub type CreateRequest = messages::CreateRequest;
+    pub type CreateResponse = messages::CreateResponse;
+}

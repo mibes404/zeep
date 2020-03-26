@@ -9,7 +9,7 @@ use crate::aic::ports::{
 use crate::aic::types::{Agent, AgentChatChannel, Create, LookupAgentIds};
 use crate::smgr::types::XmlUser;
 use crate::weather::bindings::WeatherSoap;
-use crate::weather::ports::WeatherSoap as p_ws;
+use crate::weather::ports::WeatherSoap as ws_p;
 use soap_client::envelop;
 use soap_client::soap::SOAP_ENCODING;
 use yaserde::de::from_str;
