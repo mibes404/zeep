@@ -3,11 +3,24 @@ use crate::aic::bindings::{
     LookupAgentIdsResponseSoapEnvelope, SoapCreateRequest, SoapLookupAgentIdsRequest,
     SoapLookupAgentIdsResponse,
 };
+use crate::aic::messages::{GetRequest, UpdateRequest};
 use crate::aic::ports::{
     AicAgentAdmin, CreateRequest, LookupAgentIdsRequest, LookupAgentIdsResponse,
 };
-use crate::aic::types::{Agent, AgentChatChannel, Create, LookupAgentIds};
+use crate::aic::types::{
+    Agent, AgentAdvocateInfo, AgentBasicProfile, AgentChatChannel, Create, Get, LookupAgentIds,
+    Update,
+};
+use crate::hello::bindings::HelloEndpointServiceSoapBinding;
+use crate::hello::messages::SayHello;
+use crate::hello::ports::HelloEndpoint;
+use crate::hello::types;
+use crate::hello::types::HelloRequest;
 use crate::smgr::types::XmlUser;
+use crate::tempconverter::bindings::TempConverterEndpointServiceSoapBinding;
+use crate::tempconverter::messages::CelsiusToFahrenheit;
+use crate::tempconverter::ports::TempConverterEndpoint;
+use crate::tempconverter::types::CelsiusToFahrenheitRequest;
 use crate::weather::bindings;
 use crate::weather::messages::GetWeatherInformationSoapIn;
 use crate::weather::ports::WeatherSoap;
@@ -24,7 +37,9 @@ extern crate yaserde;
 extern crate yaserde_derive;
 
 mod aic;
+mod hello;
 mod smgr;
+mod tempconverter;
 mod weather;
 
 #[tokio::main]
@@ -144,12 +159,59 @@ async fn main() {
 
     println!("{:?}", r);
 
+    let claire = aic
+        .get(GetRequest {
+            parameters: Get {
+                login_id: "claire".to_string(),
+            },
+        })
+        .await
+        .expect("can not get claire");
+
+    println!("{:?}", claire);
+
+    /*
     let mut w =
         bindings::WeatherSoap::new("http://wsf.cdyne.com/WeatherWS/Weather.asmx", Option::None);
     let w_info = w
         .get_weather_information(GetWeatherInformationSoapIn::default())
         .await;
     println!("{:?}", w_info);
+
+    let mut tc = TempConverterEndpointServiceSoapBinding::new(
+        "http://www.learnwebservices.com/services/tempconverter",
+        Option::None,
+    );
+    let fahrenheit = tc
+        .celsius_to_fahrenheit(CelsiusToFahrenheit {
+            celsius_to_fahrenheit_request: CelsiusToFahrenheitRequest {
+                temperature_in_celsius: 30.0,
+            },
+        })
+        .await;
+    println!(
+        "{:?}",
+        fahrenheit
+            .celsius_to_fahrenheit_response
+            .temperature_in_fahrenheit
+    );
+        */
+
+    let mut h = HelloEndpointServiceSoapBinding::new(
+        "http://www.learnwebservices.com/services/hello",
+        Option::None,
+    );
+    let hi = h
+        .say_hello(SayHello {
+            parameters: types::SayHello {
+                hello_request: HelloRequest {
+                    name: "Skippy".to_string(),
+                },
+            },
+        })
+        .await;
+
+    println!("{:?}", hi);
 }
 
 #[cfg(test)]

@@ -356,7 +356,7 @@ impl FileWriter {
     fn fetch_type(&self, node_type: &str) -> String {
         match self.split_type(node_type) {
             "string" | "base64Binary" => "String".to_string(),
-            "decimal" => "f64".to_string(),
+            "decimal" | "double" => "f64".to_string(),
             "integer" | "int" | "long" => "u64".to_string(),
             "short" => "u8".to_string(),
             "boolean" => "bool".to_string(),
