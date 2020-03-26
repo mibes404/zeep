@@ -354,7 +354,8 @@ impl FileWriter {
             "integer" | "int" | "long" => "u64".to_string(),
             "short" => "u8".to_string(),
             "boolean" => "bool".to_string(),
-            "date" | "dateTime" | "xs:time" => "SystemTime".to_string(),
+            // use String for now
+            "date" | "dateTime" | "xs:time" => "String".to_string(),
             v => to_pascal_case(v),
         }
     }
@@ -506,7 +507,7 @@ impl FileWriter {
         let struct_name = to_pascal_case(element_name);
         self.write(format!("#[async_trait]\npub trait {0} {{\n", struct_name));
         node.children()
-            .for_each(|child| self.print_operation(element_name, &child));
+            .for_each(|child| self.print_operation(to_pascal_case(element_name).as_str(), &child));
         self.write("}\n\n".to_string());
         self.flush_delayed_buffer();
     }
@@ -597,7 +598,7 @@ impl FileWriter {
         let name = match name {
             None => match &msg {
                 None => String::new(),
-                Some(msg) => to_snake_case(msg.as_str()),
+                Some(msg) => to_pascal_case(msg.as_str()),
             },
             Some(name) => name,
         };
@@ -641,17 +642,13 @@ impl FileWriter {
         };
 
         let input_type_template = match &port_type.input_type {
-            Some((name, Some(message_type_name))) => {
-                let type_name = to_pascal_case(name.as_str());
-
-                self.format_type(
-                    &type_name,
-                    format!(
-                        "pub type {0} = {1}::{2};\n",
-                        type_name, MESSAGES_MOD, message_type_name,
-                    ),
-                )
-            }
+            Some((type_name, Some(message_type_name))) => self.format_type(
+                &type_name,
+                format!(
+                    "pub type {0} = {1}::{2};\n",
+                    type_name, MESSAGES_MOD, message_type_name,
+                ),
+            ),
             _ => "".to_string(),
         };
 
@@ -666,46 +663,39 @@ impl FileWriter {
 
         let (output_type_template, fault_type_template, output_template) =
             match &port_type.output_type {
-                Some((name, Some(msg))) => {
+                Some((type_name, Some(msg))) => {
                     if let Some((fault_name, Some(fault_type))) = &port_type.fault_type {
                         (
                             self.format_type(
-                                &to_pascal_case(name.as_str()),
-                                format!(
-                                    "pub type {} = {}::{};\n",
-                                    to_pascal_case(name.as_str()),
-                                    MESSAGES_MOD,
-                                    msg
-                                ),
+                                &type_name,
+                                format!("pub type {} = {}::{};\n", type_name, MESSAGES_MOD, msg),
                             ),
                             Option::Some(self.format_type(
-                                &to_pascal_case(fault_name.as_str()),
+                                &fault_name,
                                 format!(
                                     "pub type {} = {}::{};\n",
-                                    to_pascal_case(fault_name.as_str()),
-                                    MESSAGES_MOD,
-                                    fault_type
+                                    fault_name, MESSAGES_MOD, fault_type
                                 ),
                             )),
                             format!(
                                 "-> Result<{0}, {1}>",
-                                to_pascal_case(name.as_str()),
+                                type_name,
                                 to_pascal_case(fault_name.as_str())
                             ),
                         )
                     } else {
                         (
                             self.format_type(
-                                to_pascal_case(name.as_str()).as_str(),
+                                type_name,
                                 format!(
                                     "pub type {} = {}::{};\n",
-                                    to_pascal_case(name.as_str()),
+                                    type_name,
                                     MESSAGES_MOD,
                                     msg.as_str()
                                 ),
                             ),
                             Option::None,
-                            format!("-> {}", to_pascal_case(name.as_str())),
+                            format!("-> {}", type_name),
                         )
                     }
                 }
@@ -997,7 +987,6 @@ impl ModWriter {
             use yaserde::de::from_str;
             use async_trait::async_trait;
             use yaserde::ser::to_string;
-            use std::time::SystemTime;
             "#
             .to_string(),
             0,

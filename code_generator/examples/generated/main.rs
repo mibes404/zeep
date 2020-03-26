@@ -8,8 +8,9 @@ use crate::aic::ports::{
 };
 use crate::aic::types::{Agent, AgentChatChannel, Create, LookupAgentIds};
 use crate::smgr::types::XmlUser;
-use crate::weather::bindings::WeatherSoap;
-use crate::weather::ports::WeatherSoap as ws_p;
+use crate::weather::bindings;
+use crate::weather::messages::GetWeatherInformationSoapIn;
+use crate::weather::ports::WeatherSoap;
 use soap_client::envelop;
 use soap_client::soap::SOAP_ENCODING;
 use yaserde::de::from_str;
@@ -143,11 +144,10 @@ async fn main() {
 
     println!("{:?}", r);
 
-    let mut w = WeatherSoap::new("http://ws.cdyne.com/WeatherWS/", Option::None);
+    let mut w = bindings::WeatherSoap::new("http://ws.cdyne.com/WeatherWS/", Option::None);
     let w_info = w
-        .get_weather_information()
-        .await
-        .expect("can not lookup weather");
+        .get_weather_information(GetWeatherInformationSoapIn::default())
+        .await;
     println!("{:?}", w_info);
 }
 
