@@ -10,20 +10,6 @@ use crate::aic::types::{
     Agent, AgentAdvocateInfo, AgentBasicProfile, AgentChatChannel, Create, Get, LookupAgentIds,
     Update,
 };
-use crate::hello::bindings::HelloEndpointServiceSoapBinding;
-use crate::hello::messages::SayHello;
-use crate::hello::ports::HelloEndpoint;
-use crate::hello::types;
-use crate::hello::types::HelloRequest;
-use crate::smgr::types::XmlUser;
-use crate::tempconverter::bindings::TempConverterEndpointServiceSoapBinding;
-use crate::tempconverter::messages::CelsiusToFahrenheit;
-use crate::tempconverter::ports::TempConverterEndpoint;
-use crate::tempconverter::types::CelsiusToFahrenheitRequest;
-use crate::weather::bindings;
-use crate::weather::messages::GetWeatherInformationSoapIn;
-use crate::weather::ports::WeatherSoap;
-use crate::weather::types::GetWeatherInformation;
 use yaserde::de::from_str;
 use yaserde::ser::to_string;
 
@@ -35,10 +21,6 @@ extern crate yaserde;
 extern crate yaserde_derive;
 
 mod aic;
-mod hello;
-mod smgr;
-mod tempconverter;
-mod weather;
 
 #[tokio::main]
 async fn main() {
@@ -65,52 +47,6 @@ async fn main() {
     };
 
     println!("{}", to_string(&c).expect("failed to generate xml"));
-
-    // smgr
-
-    let xml_user = XmlUser {
-        user_organization_details: vec![],
-        authentication_type: vec![],
-        description: "".to_string(),
-        display_name: "".to_string(),
-        display_name_ascii: "".to_string(),
-        dn: "".to_string(),
-        is_duplicated_login_allowed: false,
-        is_enabled: vec![],
-        is_virtual_user: false,
-        given_name: vec![],
-        given_name_ascii: vec![],
-        honorific: "".to_string(),
-        employee_no: vec![],
-        department: vec![],
-        organization: vec![],
-        middle_name: "".to_string(),
-        manager_name: "".to_string(),
-        preferred_given_name: "".to_string(),
-        preferred_language: "".to_string(),
-        source: vec![],
-        source_user_key: vec![],
-        status: "".to_string(),
-        suffix: "".to_string(),
-        surname: vec![],
-        surname_ascii: vec![],
-        time_zone: "".to_string(),
-        title: "".to_string(),
-        user_name: vec![],
-        user_password: "".to_string(),
-        comm_password: "".to_string(),
-        user_type: vec![],
-        localized_names: vec![],
-        address: vec![],
-        security_identity: vec![],
-        presence_user_default: Default::default(),
-        presence_user_acl: vec![],
-        presence_user_cl_default: vec![],
-        comm_profile_set: vec![],
-    };
-
-    println!("-------");
-    println!("{}", to_string(&xml_user).expect("failed to generate xml"));
 
     // test SOAP
     let create_request = CreateRequestSoapEnvelope::new(SoapCreateRequest {
@@ -185,52 +121,6 @@ async fn main() {
     if let Err(Some(err)) = not_claire {
         println!("{:?}", err.fault_string);
     }
-
-    /* -- this is not giving a response at the moment; SQL error...
-    let mut w =
-        bindings::WeatherSoap::new("http://wsf.cdyne.com/WeatherWS/Weather.asmx", Option::None);
-    let w_info = w
-        .get_weather_information(GetWeatherInformationSoapIn {
-            parameters: GetWeatherInformation {},
-        })
-        .await;
-    println!("{:?}", w_info);
-    */
-
-    let mut tc = TempConverterEndpointServiceSoapBinding::new(
-        "http://www.learnwebservices.com/services/tempconverter",
-        Option::None,
-    );
-    let fahrenheit = tc
-        .celsius_to_fahrenheit(CelsiusToFahrenheit {
-            celsius_to_fahrenheit_request: CelsiusToFahrenheitRequest {
-                temperature_in_celsius: 30.0,
-            },
-        })
-        .await;
-
-    println!(
-        "{:?}",
-        fahrenheit
-            .celsius_to_fahrenheit_response
-            .temperature_in_fahrenheit
-    );
-
-    let mut h = HelloEndpointServiceSoapBinding::new(
-        "http://www.learnwebservices.com/services/hello",
-        Option::None,
-    );
-    let hi = h
-        .say_hello(SayHello {
-            parameters: types::SayHello {
-                hello_request: HelloRequest {
-                    name: "Claire".to_string(),
-                },
-            },
-        })
-        .await;
-
-    println!("{:?}", hi);
 }
 
 #[cfg(test)]
@@ -238,9 +128,6 @@ mod tests {
     use super::*;
     use crate::aic::bindings::LookupAgentIdsResponseSoapEnvelope;
     use crate::aic::types;
-    use crate::tempconverter::bindings::{
-        CelsiusToFahrenheitSoapEnvelope, SoapCelsiusToFahrenheit,
-    };
 
     #[test]
     fn test_unmarshal() {
@@ -292,30 +179,5 @@ mod tests {
         let r: LookupAgentIdsResponseSoapEnvelope = from_str(&xml).expect("can not unmarshal");
 
         println!("{:?}", r);
-    }
-
-    #[test]
-    fn test_celsius_to_fahrenheit_req() {
-        let request = CelsiusToFahrenheitSoapEnvelope {
-            encoding_style: "http://www.w3.org/2003/05/soap-encoding".to_string(),
-            tnsattr: Option::from("http://learnwebservices.com/services/tempconverter".to_string()),
-            urnattr: None,
-            xsiattr: None,
-            header: None,
-            body: SoapCelsiusToFahrenheit {
-                body: CelsiusToFahrenheit {
-                    celsius_to_fahrenheit_request: CelsiusToFahrenheitRequest {
-                        temperature_in_celsius: 30.0,
-                    },
-                },
-                xmlns: Option::from(
-                    "http://learnwebservices.com/services/tempconverter".to_string(),
-                ),
-            },
-        };
-
-        let request_body = to_string(&request).expect("can not parse request");
-        let expected = r#"<?xml version="1.0" encoding="utf-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" soapenv:encodingStyle="http://www.w3.org/2003/05/soap-encoding" xmlns:tns="http://learnwebservices.com/services/tempconverter"><soapenv:Body xmlns="http://learnwebservices.com/services/tempconverter"><CelsiusToFahrenheitRequest><tns:TemperatureInCelsius>30</tns:TemperatureInCelsius></CelsiusToFahrenheitRequest></soapenv:Body></soapenv:Envelope>"#.to_string();
-        assert_eq!(request_body, expected);
     }
 }

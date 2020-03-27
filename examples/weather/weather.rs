@@ -5,7 +5,167 @@ use yaserde::{{YaSerialize, YaDeserialize}};
             use std::io::{Read, Write};
             
             pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-            pub mod ports {
+            pub mod types {
+use yaserde::{{YaSerialize, YaDeserialize}};
+            use yaserde::de::from_str;
+            use async_trait::async_trait;
+            use yaserde::ser::to_string;
+            use super::*;
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "GetWeatherInformation", default)]
+pub struct GetWeatherInformation {
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "GetWeatherInformationResponse", default)]
+pub struct GetWeatherInformationResponse {
+	#[yaserde(prefix = "tns", rename = "GetWeatherInformationResult", default)]
+	pub get_weather_information_result: Vec<ArrayOfWeatherDescription>,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "ArrayOfWeatherDescription", default)]
+pub struct ArrayOfWeatherDescription {
+	#[yaserde(prefix = "tns", rename = "WeatherDescription", default)]
+	pub weather_description: Vec<WeatherDescription>,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "WeatherDescription", default)]
+pub struct WeatherDescription {
+	#[yaserde(prefix = "tns", rename = "WeatherID", default)]
+	pub weather_id: Vec<u8>,
+	#[yaserde(prefix = "tns", rename = "Description", default)]
+	pub description: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "PictureURL", default)]
+	pub picture_url: Vec<String>,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "GetCityForecastByZIP", default)]
+pub struct GetCityForecastByZIP {
+	#[yaserde(prefix = "tns", rename = "ZIP", default)]
+	pub zip: Vec<String>,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "GetCityForecastByZIPResponse", default)]
+pub struct GetCityForecastByZIPResponse {
+	#[yaserde(prefix = "tns", rename = "GetCityForecastByZIPResult", default)]
+	pub get_city_forecast_by_zip_result: Vec<ForecastReturn>,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "ForecastReturn", default)]
+pub struct ForecastReturn {
+	#[yaserde(prefix = "tns", rename = "Success", default)]
+	pub success: Vec<bool>,
+	#[yaserde(prefix = "tns", rename = "ResponseText", default)]
+	pub response_text: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "State", default)]
+	pub state: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "City", default)]
+	pub city: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "WeatherStationCity", default)]
+	pub weather_station_city: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "ForecastResult", default)]
+	pub forecast_result: Vec<ArrayOfForecast>,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "ArrayOfForecast", default)]
+pub struct ArrayOfForecast {
+	#[yaserde(prefix = "tns", rename = "Forecast", default)]
+	pub forecast: Vec<Forecast>,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "Forecast", default)]
+pub struct Forecast {
+	#[yaserde(prefix = "tns", rename = "Date", default)]
+	pub date: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "WeatherID", default)]
+	pub weather_id: Vec<u8>,
+	#[yaserde(prefix = "tns", rename = "Desciption", default)]
+	pub desciption: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "Temperatures", default)]
+	pub temperatures: Vec<Temp>,
+	#[yaserde(prefix = "tns", rename = "ProbabilityOfPrecipiation", default)]
+	pub probability_of_precipiation: Vec<Pop>,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "temp", default)]
+pub struct Temp {
+	#[yaserde(prefix = "tns", rename = "MorningLow", default)]
+	pub morning_low: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "DaytimeHigh", default)]
+	pub daytime_high: Vec<String>,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "POP", default)]
+pub struct Pop {
+	#[yaserde(prefix = "tns", rename = "Nighttime", default)]
+	pub nighttime: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "Daytime", default)]
+	pub daytime: Vec<String>,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "GetCityWeatherByZIP", default)]
+pub struct GetCityWeatherByZIP {
+	#[yaserde(prefix = "tns", rename = "ZIP", default)]
+	pub zip: Vec<String>,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "GetCityWeatherByZIPResponse", default)]
+pub struct GetCityWeatherByZIPResponse {
+	#[yaserde(prefix = "tns", rename = "GetCityWeatherByZIPResult", default)]
+	pub get_city_weather_by_zip_result: Vec<WeatherReturn>,
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "WeatherReturn", default)]
+pub struct WeatherReturn {
+	#[yaserde(prefix = "tns", rename = "Success", default)]
+	pub success: Vec<bool>,
+	#[yaserde(prefix = "tns", rename = "ResponseText", default)]
+	pub response_text: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "State", default)]
+	pub state: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "City", default)]
+	pub city: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "WeatherStationCity", default)]
+	pub weather_station_city: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "WeatherID", default)]
+	pub weather_id: Vec<u8>,
+	#[yaserde(prefix = "tns", rename = "Description", default)]
+	pub description: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "Temperature", default)]
+	pub temperature: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "RelativeHumidity", default)]
+	pub relative_humidity: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "Wind", default)]
+	pub wind: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "Pressure", default)]
+	pub pressure: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "Visibility", default)]
+	pub visibility: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "WindChill", default)]
+	pub wind_chill: Vec<String>,
+	#[yaserde(prefix = "tns", rename = "Remarks", default)]
+	pub remarks: Vec<String>,
+}
+
+}
+
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct Header {}
+    pub mod ports {
 use yaserde::{{YaSerialize, YaDeserialize}};
             use yaserde::de::from_str;
             use async_trait::async_trait;
@@ -1455,164 +1615,3 @@ impl Default for WeatherHttpPost {
         
                 }
 
-pub mod types {
-use yaserde::{{YaSerialize, YaDeserialize}};
-            use yaserde::de::from_str;
-            use async_trait::async_trait;
-            use yaserde::ser::to_string;
-            use super::*;
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "GetWeatherInformation", default)]
-pub struct GetWeatherInformation {
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "GetWeatherInformationResponse", default)]
-pub struct GetWeatherInformationResponse {
-	#[yaserde(prefix = "tns", rename = "GetWeatherInformationResult", default)]
-	pub get_weather_information_result: Vec<ArrayOfWeatherDescription>,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "ArrayOfWeatherDescription", default)]
-pub struct ArrayOfWeatherDescription {
-	#[yaserde(prefix = "tns", rename = "WeatherDescription", default)]
-	pub weather_description: Vec<WeatherDescription>,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "WeatherDescription", default)]
-pub struct WeatherDescription {
-	#[yaserde(prefix = "tns", rename = "WeatherID", default)]
-	pub weather_id: Vec<u8>,
-	#[yaserde(prefix = "tns", rename = "Description", default)]
-	pub description: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "PictureURL", default)]
-	pub picture_url: Vec<String>,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "GetCityForecastByZIP", default)]
-pub struct GetCityForecastByZIP {
-	#[yaserde(prefix = "tns", rename = "ZIP", default)]
-	pub zip: Vec<String>,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "GetCityForecastByZIPResponse", default)]
-pub struct GetCityForecastByZIPResponse {
-	#[yaserde(prefix = "tns", rename = "GetCityForecastByZIPResult", default)]
-	pub get_city_forecast_by_zip_result: Vec<ForecastReturn>,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "ForecastReturn", default)]
-pub struct ForecastReturn {
-	#[yaserde(prefix = "tns", rename = "Success", default)]
-	pub success: Vec<bool>,
-	#[yaserde(prefix = "tns", rename = "ResponseText", default)]
-	pub response_text: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "State", default)]
-	pub state: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "City", default)]
-	pub city: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "WeatherStationCity", default)]
-	pub weather_station_city: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "ForecastResult", default)]
-	pub forecast_result: Vec<ArrayOfForecast>,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "ArrayOfForecast", default)]
-pub struct ArrayOfForecast {
-	#[yaserde(prefix = "tns", rename = "Forecast", default)]
-	pub forecast: Vec<Forecast>,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "Forecast", default)]
-pub struct Forecast {
-	#[yaserde(prefix = "tns", rename = "Date", default)]
-	pub date: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "WeatherID", default)]
-	pub weather_id: Vec<u8>,
-	#[yaserde(prefix = "tns", rename = "Desciption", default)]
-	pub desciption: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "Temperatures", default)]
-	pub temperatures: Vec<Temp>,
-	#[yaserde(prefix = "tns", rename = "ProbabilityOfPrecipiation", default)]
-	pub probability_of_precipiation: Vec<Pop>,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "temp", default)]
-pub struct Temp {
-	#[yaserde(prefix = "tns", rename = "MorningLow", default)]
-	pub morning_low: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "DaytimeHigh", default)]
-	pub daytime_high: Vec<String>,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "POP", default)]
-pub struct Pop {
-	#[yaserde(prefix = "tns", rename = "Nighttime", default)]
-	pub nighttime: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "Daytime", default)]
-	pub daytime: Vec<String>,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "GetCityWeatherByZIP", default)]
-pub struct GetCityWeatherByZIP {
-	#[yaserde(prefix = "tns", rename = "ZIP", default)]
-	pub zip: Vec<String>,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "GetCityWeatherByZIPResponse", default)]
-pub struct GetCityWeatherByZIPResponse {
-	#[yaserde(prefix = "tns", rename = "GetCityWeatherByZIPResult", default)]
-	pub get_city_weather_by_zip_result: Vec<WeatherReturn>,
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "tns", namespace = "tns: http://ws.cdyne.com/WeatherWS/", rename = "WeatherReturn", default)]
-pub struct WeatherReturn {
-	#[yaserde(prefix = "tns", rename = "Success", default)]
-	pub success: Vec<bool>,
-	#[yaserde(prefix = "tns", rename = "ResponseText", default)]
-	pub response_text: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "State", default)]
-	pub state: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "City", default)]
-	pub city: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "WeatherStationCity", default)]
-	pub weather_station_city: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "WeatherID", default)]
-	pub weather_id: Vec<u8>,
-	#[yaserde(prefix = "tns", rename = "Description", default)]
-	pub description: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "Temperature", default)]
-	pub temperature: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "RelativeHumidity", default)]
-	pub relative_humidity: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "Wind", default)]
-	pub wind: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "Pressure", default)]
-	pub pressure: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "Visibility", default)]
-	pub visibility: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "WindChill", default)]
-	pub wind_chill: Vec<String>,
-	#[yaserde(prefix = "tns", rename = "Remarks", default)]
-	pub remarks: Vec<String>,
-}
-
-}
-
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct Header {}
-    

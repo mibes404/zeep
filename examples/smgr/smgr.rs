@@ -5,7 +5,19 @@ use yaserde::{{YaSerialize, YaDeserialize}};
             use std::io::{Read, Write};
             
             pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-            pub mod types {
+            pub mod ports {
+use yaserde::{{YaSerialize, YaDeserialize}};
+            use yaserde::de::from_str;
+            use async_trait::async_trait;
+            use yaserde::ser::to_string;
+            use super::*;
+
+}
+
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct Header {}
+    pub mod types {
 use yaserde::{{YaSerialize, YaDeserialize}};
             use yaserde::de::from_str;
             use async_trait::async_trait;
@@ -477,15 +489,6 @@ pub struct XmlAgentLoginIdSkillsData {
 
 }
 
-pub mod bindings {
-use yaserde::{{YaSerialize, YaDeserialize}};
-            use yaserde::de::from_str;
-            use async_trait::async_trait;
-            use yaserde::ser::to_string;
-            use super::*;
-
-}
-
 pub mod messages {
 use yaserde::{{YaSerialize, YaDeserialize}};
             use yaserde::de::from_str;
@@ -495,10 +498,7 @@ use yaserde::{{YaSerialize, YaDeserialize}};
 
 }
 
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct Header {}
-    pub mod ports {
+pub mod bindings {
 use yaserde::{{YaSerialize, YaDeserialize}};
             use yaserde::de::from_str;
             use async_trait::async_trait;
