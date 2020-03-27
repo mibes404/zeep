@@ -900,8 +900,10 @@ impl FileWriter {
                         prefix = "soapenv"
                     )]
                     pub struct {0} {{
-                        pub faultcode: Option<String>,
-                        pub faultstring: Option<String>,
+                        #[yaserde(rename = "faultcode", default)]
+                        pub fault_code: Option<String>,
+                        #[yaserde(rename = "faultstring", default)]
+                        pub fault_string: Option<String>,
                         #[yaserde(rename = "{3}", default)]
                         pub detail: Option<{2}::{1}>,
                     }}

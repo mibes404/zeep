@@ -1,7 +1,6 @@
 use crate::aic::bindings::{
     AicAgentAdminSoapBinding, CreateRequestSoapEnvelope, LookupAgentIdsRequestSoapEnvelope,
-    LookupAgentIdsResponseSoapEnvelope, SoapCreateRequest, SoapLookupAgentIdsRequest,
-    SoapLookupAgentIdsResponse,
+    SoapCreateRequest, SoapLookupAgentIdsRequest, SoapLookupAgentIdsResponse,
 };
 use crate::aic::messages::{GetRequest, UpdateRequest};
 use crate::aic::ports::{

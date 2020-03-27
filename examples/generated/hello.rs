@@ -5,26 +5,7 @@ use yaserde::{{YaSerialize, YaDeserialize}};
             use std::io::{Read, Write};
             
             pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-            
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct Header {}
-    pub mod ports {
-use yaserde::{{YaSerialize, YaDeserialize}};
-            use yaserde::de::from_str;
-            use async_trait::async_trait;
-            use yaserde::ser::to_string;
-            use super::*;
-
-#[async_trait]
-pub trait HelloEndpoint {
-	async fn say_hello (&mut self, say_hello: SayHello) -> SayHelloResponse;
-}
-
-pub type SayHello = messages::SayHello;
-pub type SayHelloResponse = messages::SayHelloResponse;
-}
-
-pub mod messages {
+            pub mod messages {
 use yaserde::{{YaSerialize, YaDeserialize}};
             use yaserde::de::from_str;
             use async_trait::async_trait;
@@ -45,6 +26,25 @@ pub struct SayHello {
 	pub parameters: types::SayHello,
 }
 
+}
+
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct Header {}
+    pub mod ports {
+use yaserde::{{YaSerialize, YaDeserialize}};
+            use yaserde::de::from_str;
+            use async_trait::async_trait;
+            use yaserde::ser::to_string;
+            use super::*;
+
+#[async_trait]
+pub trait HelloEndpoint {
+	async fn say_hello (&mut self, say_hello: SayHello) -> SayHelloResponse;
+}
+
+pub type SayHello = messages::SayHello;
+pub type SayHelloResponse = messages::SayHelloResponse;
 }
 
 pub mod bindings {
