@@ -5,1555 +5,6 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetWeatherInformationSoapIn", default)]
-    pub struct GetWeatherInformationSoapIn {
-        #[yaserde(flatten)]
-        pub parameters: types::GetWeatherInformation,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetWeatherInformationSoapOut", default)]
-    pub struct GetWeatherInformationSoapOut {
-        #[yaserde(flatten)]
-        pub parameters: types::GetWeatherInformationResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetCityForecastByZIPSoapIn", default)]
-    pub struct GetCityForecastByZIPSoapIn {
-        #[yaserde(flatten)]
-        pub parameters: types::GetCityForecastByZIP,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetCityForecastByZIPSoapOut", default)]
-    pub struct GetCityForecastByZIPSoapOut {
-        #[yaserde(flatten)]
-        pub parameters: types::GetCityForecastByZIPResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetCityWeatherByZIPSoapIn", default)]
-    pub struct GetCityWeatherByZIPSoapIn {
-        #[yaserde(flatten)]
-        pub parameters: types::GetCityWeatherByZIP,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetCityWeatherByZIPSoapOut", default)]
-    pub struct GetCityWeatherByZIPSoapOut {
-        #[yaserde(flatten)]
-        pub parameters: types::GetCityWeatherByZIPResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetWeatherInformationHttpGetIn", default)]
-    pub struct GetWeatherInformationHttpGetIn {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetWeatherInformationHttpGetOut", default)]
-    pub struct GetWeatherInformationHttpGetOut {
-        #[yaserde(flatten)]
-        pub body: types::ArrayOfWeatherDescription,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetCityForecastByZIPHttpGetIn", default)]
-    pub struct GetCityForecastByZIPHttpGetIn {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetCityForecastByZIPHttpGetOut", default)]
-    pub struct GetCityForecastByZIPHttpGetOut {
-        #[yaserde(flatten)]
-        pub body: types::ForecastReturn,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetCityWeatherByZIPHttpGetIn", default)]
-    pub struct GetCityWeatherByZIPHttpGetIn {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetCityWeatherByZIPHttpGetOut", default)]
-    pub struct GetCityWeatherByZIPHttpGetOut {
-        #[yaserde(flatten)]
-        pub body: types::WeatherReturn,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetWeatherInformationHttpPostIn", default)]
-    pub struct GetWeatherInformationHttpPostIn {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetWeatherInformationHttpPostOut", default)]
-    pub struct GetWeatherInformationHttpPostOut {
-        #[yaserde(flatten)]
-        pub body: types::ArrayOfWeatherDescription,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetCityForecastByZIPHttpPostIn", default)]
-    pub struct GetCityForecastByZIPHttpPostIn {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetCityForecastByZIPHttpPostOut", default)]
-    pub struct GetCityForecastByZIPHttpPostOut {
-        #[yaserde(flatten)]
-        pub body: types::ForecastReturn,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetCityWeatherByZIPHttpPostIn", default)]
-    pub struct GetCityWeatherByZIPHttpPostIn {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetCityWeatherByZIPHttpPostOut", default)]
-    pub struct GetCityWeatherByZIPHttpPostOut {
-        #[yaserde(flatten)]
-        pub body: types::WeatherReturn,
-    }
-}
-
-pub mod bindings {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    pub struct WeatherSoap {
-        client: reqwest::Client,
-        url: String,
-        credentials: Option<(String, String)>,
-    }
-
-    #[async_trait]
-    impl ports::WeatherSoap for WeatherSoap {
-        async fn get_weather_information(
-            &mut self,
-            get_weather_information_soap_in: ports::GetWeatherInformationSoapIn,
-        ) -> ports::GetWeatherInformationSoapOut {
-            let __request =
-                GetWeatherInformationSoapInSoapEnvelope::new(SoapGetWeatherInformationSoapIn {
-                    body: get_weather_information_soap_in,
-                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
-
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header(
-                    "Soapaction",
-                    "http://ws.cdyne.com/WeatherWS/GetWeatherInformation",
-                );
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
-
-            let r: GetWeatherInformationSoapOutSoapEnvelope =
-                from_str(&txt).expect("can not unmarshal");
-            r.body.body
-        }
-        async fn get_city_forecast_by_zip(
-            &mut self,
-            get_city_forecast_by_zip_soap_in: ports::GetCityForecastByZIPSoapIn,
-        ) -> ports::GetCityForecastByZIPSoapOut {
-            let __request =
-                GetCityForecastByZIPSoapInSoapEnvelope::new(SoapGetCityForecastByZIPSoapIn {
-                    body: get_city_forecast_by_zip_soap_in,
-                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
-
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header(
-                    "Soapaction",
-                    "http://ws.cdyne.com/WeatherWS/GetCityForecastByZIP",
-                );
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
-
-            let r: GetCityForecastByZIPSoapOutSoapEnvelope =
-                from_str(&txt).expect("can not unmarshal");
-            r.body.body
-        }
-        async fn get_city_weather_by_zip(
-            &mut self,
-            get_city_weather_by_zip_soap_in: ports::GetCityWeatherByZIPSoapIn,
-        ) -> ports::GetCityWeatherByZIPSoapOut {
-            let __request =
-                GetCityWeatherByZIPSoapInSoapEnvelope::new(SoapGetCityWeatherByZIPSoapIn {
-                    body: get_city_weather_by_zip_soap_in,
-                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
-
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header(
-                    "Soapaction",
-                    "http://ws.cdyne.com/WeatherWS/GetCityWeatherByZIP",
-                );
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
-
-            let r: GetCityWeatherByZIPSoapOutSoapEnvelope =
-                from_str(&txt).expect("can not unmarshal");
-            r.body.body
-        }
-    }
-
-    impl Default for WeatherSoap {
-        fn default() -> Self {
-            WeatherSoap {
-                client: reqwest::Client::new(),
-                url: "http://ws.cdyne.com/WeatherWS/".to_string(),
-                credentials: Option::None,
-            }
-        }
-    }
-    impl WeatherSoap {
-        pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
-            WeatherSoap {
-                client: reqwest::Client::new(),
-                url: url.to_string(),
-                credentials,
-            }
-        }
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetWeatherInformationSoapIn {
-        #[yaserde(rename = "GetWeatherInformation", default)]
-        pub body: ports::GetWeatherInformationSoapIn,
-        #[yaserde(attribute)]
-        pub xmlns: Option<String>,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetWeatherInformationSoapInSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetWeatherInformationSoapIn,
-    }
-
-    impl GetWeatherInformationSoapInSoapEnvelope {
-        pub fn new(body: SoapGetWeatherInformationSoapIn) -> Self {
-            GetWeatherInformationSoapInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetWeatherInformationSoapOut {
-        #[yaserde(rename = "GetWeatherInformationSoapOut", default)]
-        pub body: ports::GetWeatherInformationSoapOut,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetWeatherInformationSoapOutSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetWeatherInformationSoapOut,
-    }
-
-    impl GetWeatherInformationSoapOutSoapEnvelope {
-        pub fn new(body: SoapGetWeatherInformationSoapOut) -> Self {
-            GetWeatherInformationSoapOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetCityForecastByZIPSoapIn {
-        #[yaserde(rename = "GetCityForecastByZIP", default)]
-        pub body: ports::GetCityForecastByZIPSoapIn,
-        #[yaserde(attribute)]
-        pub xmlns: Option<String>,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetCityForecastByZIPSoapInSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetCityForecastByZIPSoapIn,
-    }
-
-    impl GetCityForecastByZIPSoapInSoapEnvelope {
-        pub fn new(body: SoapGetCityForecastByZIPSoapIn) -> Self {
-            GetCityForecastByZIPSoapInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetCityForecastByZIPSoapOut {
-        #[yaserde(rename = "GetCityForecastByZIPSoapOut", default)]
-        pub body: ports::GetCityForecastByZIPSoapOut,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetCityForecastByZIPSoapOutSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetCityForecastByZIPSoapOut,
-    }
-
-    impl GetCityForecastByZIPSoapOutSoapEnvelope {
-        pub fn new(body: SoapGetCityForecastByZIPSoapOut) -> Self {
-            GetCityForecastByZIPSoapOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetCityWeatherByZIPSoapIn {
-        #[yaserde(rename = "GetCityWeatherByZIP", default)]
-        pub body: ports::GetCityWeatherByZIPSoapIn,
-        #[yaserde(attribute)]
-        pub xmlns: Option<String>,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetCityWeatherByZIPSoapInSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetCityWeatherByZIPSoapIn,
-    }
-
-    impl GetCityWeatherByZIPSoapInSoapEnvelope {
-        pub fn new(body: SoapGetCityWeatherByZIPSoapIn) -> Self {
-            GetCityWeatherByZIPSoapInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetCityWeatherByZIPSoapOut {
-        #[yaserde(rename = "GetCityWeatherByZIPSoapOut", default)]
-        pub body: ports::GetCityWeatherByZIPSoapOut,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetCityWeatherByZIPSoapOutSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetCityWeatherByZIPSoapOut,
-    }
-
-    impl GetCityWeatherByZIPSoapOutSoapEnvelope {
-        pub fn new(body: SoapGetCityWeatherByZIPSoapOut) -> Self {
-            GetCityWeatherByZIPSoapOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    pub struct WeatherSoap12 {
-        client: reqwest::Client,
-        url: String,
-        credentials: Option<(String, String)>,
-    }
-
-    #[async_trait]
-    impl ports::WeatherSoap for WeatherSoap12 {
-        async fn get_weather_information(
-            &mut self,
-            get_weather_information_soap_in: ports::GetWeatherInformationSoapIn,
-        ) -> ports::GetWeatherInformationSoapOut {
-            let __request =
-                GetWeatherInformationSoapInSoapEnvelope::new(SoapGetWeatherInformationSoapIn {
-                    body: get_weather_information_soap_in,
-                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
-
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header(
-                    "Soapaction",
-                    "http://ws.cdyne.com/WeatherWS/GetWeatherInformation",
-                );
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
-
-            let r: GetWeatherInformationSoapOutSoapEnvelope =
-                from_str(&txt).expect("can not unmarshal");
-            r.body.body
-        }
-        async fn get_city_forecast_by_zip(
-            &mut self,
-            get_city_forecast_by_zip_soap_in: ports::GetCityForecastByZIPSoapIn,
-        ) -> ports::GetCityForecastByZIPSoapOut {
-            let __request =
-                GetCityForecastByZIPSoapInSoapEnvelope::new(SoapGetCityForecastByZIPSoapIn {
-                    body: get_city_forecast_by_zip_soap_in,
-                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
-
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header(
-                    "Soapaction",
-                    "http://ws.cdyne.com/WeatherWS/GetCityForecastByZIP",
-                );
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
-
-            let r: GetCityForecastByZIPSoapOutSoapEnvelope =
-                from_str(&txt).expect("can not unmarshal");
-            r.body.body
-        }
-        async fn get_city_weather_by_zip(
-            &mut self,
-            get_city_weather_by_zip_soap_in: ports::GetCityWeatherByZIPSoapIn,
-        ) -> ports::GetCityWeatherByZIPSoapOut {
-            let __request =
-                GetCityWeatherByZIPSoapInSoapEnvelope::new(SoapGetCityWeatherByZIPSoapIn {
-                    body: get_city_weather_by_zip_soap_in,
-                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
-
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header(
-                    "Soapaction",
-                    "http://ws.cdyne.com/WeatherWS/GetCityWeatherByZIP",
-                );
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
-
-            let r: GetCityWeatherByZIPSoapOutSoapEnvelope =
-                from_str(&txt).expect("can not unmarshal");
-            r.body.body
-        }
-    }
-
-    impl Default for WeatherSoap12 {
-        fn default() -> Self {
-            WeatherSoap12 {
-                client: reqwest::Client::new(),
-                url: "http://ws.cdyne.com/WeatherWS/".to_string(),
-                credentials: Option::None,
-            }
-        }
-    }
-    impl WeatherSoap12 {
-        pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
-            WeatherSoap12 {
-                client: reqwest::Client::new(),
-                url: url.to_string(),
-                credentials,
-            }
-        }
-    }
-    pub struct WeatherHttpGet {
-        client: reqwest::Client,
-        url: String,
-        credentials: Option<(String, String)>,
-    }
-
-    #[async_trait]
-    impl ports::WeatherHttpGet for WeatherHttpGet {
-        async fn get_weather_information(
-            &mut self,
-            get_weather_information_http_get_in: ports::GetWeatherInformationHttpGetIn,
-        ) -> ports::GetWeatherInformationHttpGetOut {
-            let __request = GetWeatherInformationHttpGetInSoapEnvelope::new(
-                SoapGetWeatherInformationHttpGetIn {
-                    body: get_weather_information_http_get_in,
-                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                },
-            );
-
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header(
-                    "Soapaction",
-                    "http://ws.cdyne.com/WeatherWS//GetWeatherInformation",
-                );
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
-
-            let r: GetWeatherInformationHttpGetOutSoapEnvelope =
-                from_str(&txt).expect("can not unmarshal");
-            r.body.body
-        }
-        async fn get_city_forecast_by_zip(
-            &mut self,
-            get_city_forecast_by_zip_http_get_in: ports::GetCityForecastByZIPHttpGetIn,
-        ) -> ports::GetCityForecastByZIPHttpGetOut {
-            let __request =
-                GetCityForecastByZIPHttpGetInSoapEnvelope::new(SoapGetCityForecastByZIPHttpGetIn {
-                    body: get_city_forecast_by_zip_http_get_in,
-                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
-
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header(
-                    "Soapaction",
-                    "http://ws.cdyne.com/WeatherWS//GetCityForecastByZIP",
-                );
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
-
-            let r: GetCityForecastByZIPHttpGetOutSoapEnvelope =
-                from_str(&txt).expect("can not unmarshal");
-            r.body.body
-        }
-        async fn get_city_weather_by_zip(
-            &mut self,
-            get_city_weather_by_zip_http_get_in: ports::GetCityWeatherByZIPHttpGetIn,
-        ) -> ports::GetCityWeatherByZIPHttpGetOut {
-            let __request =
-                GetCityWeatherByZIPHttpGetInSoapEnvelope::new(SoapGetCityWeatherByZIPHttpGetIn {
-                    body: get_city_weather_by_zip_http_get_in,
-                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
-
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header(
-                    "Soapaction",
-                    "http://ws.cdyne.com/WeatherWS//GetCityWeatherByZIP",
-                );
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
-
-            let r: GetCityWeatherByZIPHttpGetOutSoapEnvelope =
-                from_str(&txt).expect("can not unmarshal");
-            r.body.body
-        }
-    }
-
-    impl Default for WeatherHttpGet {
-        fn default() -> Self {
-            WeatherHttpGet {
-                client: reqwest::Client::new(),
-                url: "http://ws.cdyne.com/WeatherWS/".to_string(),
-                credentials: Option::None,
-            }
-        }
-    }
-    impl WeatherHttpGet {
-        pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
-            WeatherHttpGet {
-                client: reqwest::Client::new(),
-                url: url.to_string(),
-                credentials,
-            }
-        }
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetWeatherInformationHttpGetIn {
-        #[yaserde(rename = "GetWeatherInformation", default)]
-        pub body: ports::GetWeatherInformationHttpGetIn,
-        #[yaserde(attribute)]
-        pub xmlns: Option<String>,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetWeatherInformationHttpGetInSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetWeatherInformationHttpGetIn,
-    }
-
-    impl GetWeatherInformationHttpGetInSoapEnvelope {
-        pub fn new(body: SoapGetWeatherInformationHttpGetIn) -> Self {
-            GetWeatherInformationHttpGetInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetWeatherInformationHttpGetOut {
-        #[yaserde(rename = "GetWeatherInformationHttpGetOut", default)]
-        pub body: ports::GetWeatherInformationHttpGetOut,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetWeatherInformationHttpGetOutSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetWeatherInformationHttpGetOut,
-    }
-
-    impl GetWeatherInformationHttpGetOutSoapEnvelope {
-        pub fn new(body: SoapGetWeatherInformationHttpGetOut) -> Self {
-            GetWeatherInformationHttpGetOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetCityForecastByZIPHttpGetIn {
-        #[yaserde(rename = "GetCityForecastByZIP", default)]
-        pub body: ports::GetCityForecastByZIPHttpGetIn,
-        #[yaserde(attribute)]
-        pub xmlns: Option<String>,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetCityForecastByZIPHttpGetInSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetCityForecastByZIPHttpGetIn,
-    }
-
-    impl GetCityForecastByZIPHttpGetInSoapEnvelope {
-        pub fn new(body: SoapGetCityForecastByZIPHttpGetIn) -> Self {
-            GetCityForecastByZIPHttpGetInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetCityForecastByZIPHttpGetOut {
-        #[yaserde(rename = "GetCityForecastByZIPHttpGetOut", default)]
-        pub body: ports::GetCityForecastByZIPHttpGetOut,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetCityForecastByZIPHttpGetOutSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetCityForecastByZIPHttpGetOut,
-    }
-
-    impl GetCityForecastByZIPHttpGetOutSoapEnvelope {
-        pub fn new(body: SoapGetCityForecastByZIPHttpGetOut) -> Self {
-            GetCityForecastByZIPHttpGetOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetCityWeatherByZIPHttpGetIn {
-        #[yaserde(rename = "GetCityWeatherByZIP", default)]
-        pub body: ports::GetCityWeatherByZIPHttpGetIn,
-        #[yaserde(attribute)]
-        pub xmlns: Option<String>,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetCityWeatherByZIPHttpGetInSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetCityWeatherByZIPHttpGetIn,
-    }
-
-    impl GetCityWeatherByZIPHttpGetInSoapEnvelope {
-        pub fn new(body: SoapGetCityWeatherByZIPHttpGetIn) -> Self {
-            GetCityWeatherByZIPHttpGetInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetCityWeatherByZIPHttpGetOut {
-        #[yaserde(rename = "GetCityWeatherByZIPHttpGetOut", default)]
-        pub body: ports::GetCityWeatherByZIPHttpGetOut,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetCityWeatherByZIPHttpGetOutSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetCityWeatherByZIPHttpGetOut,
-    }
-
-    impl GetCityWeatherByZIPHttpGetOutSoapEnvelope {
-        pub fn new(body: SoapGetCityWeatherByZIPHttpGetOut) -> Self {
-            GetCityWeatherByZIPHttpGetOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    pub struct WeatherHttpPost {
-        client: reqwest::Client,
-        url: String,
-        credentials: Option<(String, String)>,
-    }
-
-    #[async_trait]
-    impl ports::WeatherHttpPost for WeatherHttpPost {
-        async fn get_weather_information(
-            &mut self,
-            get_weather_information_http_post_in: ports::GetWeatherInformationHttpPostIn,
-        ) -> ports::GetWeatherInformationHttpPostOut {
-            let __request = GetWeatherInformationHttpPostInSoapEnvelope::new(
-                SoapGetWeatherInformationHttpPostIn {
-                    body: get_weather_information_http_post_in,
-                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                },
-            );
-
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header(
-                    "Soapaction",
-                    "http://ws.cdyne.com/WeatherWS//GetWeatherInformation",
-                );
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
-
-            let r: GetWeatherInformationHttpPostOutSoapEnvelope =
-                from_str(&txt).expect("can not unmarshal");
-            r.body.body
-        }
-        async fn get_city_forecast_by_zip(
-            &mut self,
-            get_city_forecast_by_zip_http_post_in: ports::GetCityForecastByZIPHttpPostIn,
-        ) -> ports::GetCityForecastByZIPHttpPostOut {
-            let __request = GetCityForecastByZIPHttpPostInSoapEnvelope::new(
-                SoapGetCityForecastByZIPHttpPostIn {
-                    body: get_city_forecast_by_zip_http_post_in,
-                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                },
-            );
-
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header(
-                    "Soapaction",
-                    "http://ws.cdyne.com/WeatherWS//GetCityForecastByZIP",
-                );
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
-
-            let r: GetCityForecastByZIPHttpPostOutSoapEnvelope =
-                from_str(&txt).expect("can not unmarshal");
-            r.body.body
-        }
-        async fn get_city_weather_by_zip(
-            &mut self,
-            get_city_weather_by_zip_http_post_in: ports::GetCityWeatherByZIPHttpPostIn,
-        ) -> ports::GetCityWeatherByZIPHttpPostOut {
-            let __request =
-                GetCityWeatherByZIPHttpPostInSoapEnvelope::new(SoapGetCityWeatherByZIPHttpPostIn {
-                    body: get_city_weather_by_zip_http_post_in,
-                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
-
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header(
-                    "Soapaction",
-                    "http://ws.cdyne.com/WeatherWS//GetCityWeatherByZIP",
-                );
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
-
-            let r: GetCityWeatherByZIPHttpPostOutSoapEnvelope =
-                from_str(&txt).expect("can not unmarshal");
-            r.body.body
-        }
-    }
-
-    impl Default for WeatherHttpPost {
-        fn default() -> Self {
-            WeatherHttpPost {
-                client: reqwest::Client::new(),
-                url: "http://ws.cdyne.com/WeatherWS/".to_string(),
-                credentials: Option::None,
-            }
-        }
-    }
-    impl WeatherHttpPost {
-        pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
-            WeatherHttpPost {
-                client: reqwest::Client::new(),
-                url: url.to_string(),
-                credentials,
-            }
-        }
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetWeatherInformationHttpPostIn {
-        #[yaserde(rename = "GetWeatherInformation", default)]
-        pub body: ports::GetWeatherInformationHttpPostIn,
-        #[yaserde(attribute)]
-        pub xmlns: Option<String>,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetWeatherInformationHttpPostInSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetWeatherInformationHttpPostIn,
-    }
-
-    impl GetWeatherInformationHttpPostInSoapEnvelope {
-        pub fn new(body: SoapGetWeatherInformationHttpPostIn) -> Self {
-            GetWeatherInformationHttpPostInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetWeatherInformationHttpPostOut {
-        #[yaserde(rename = "GetWeatherInformationHttpPostOut", default)]
-        pub body: ports::GetWeatherInformationHttpPostOut,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetWeatherInformationHttpPostOutSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetWeatherInformationHttpPostOut,
-    }
-
-    impl GetWeatherInformationHttpPostOutSoapEnvelope {
-        pub fn new(body: SoapGetWeatherInformationHttpPostOut) -> Self {
-            GetWeatherInformationHttpPostOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetCityForecastByZIPHttpPostIn {
-        #[yaserde(rename = "GetCityForecastByZIP", default)]
-        pub body: ports::GetCityForecastByZIPHttpPostIn,
-        #[yaserde(attribute)]
-        pub xmlns: Option<String>,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetCityForecastByZIPHttpPostInSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetCityForecastByZIPHttpPostIn,
-    }
-
-    impl GetCityForecastByZIPHttpPostInSoapEnvelope {
-        pub fn new(body: SoapGetCityForecastByZIPHttpPostIn) -> Self {
-            GetCityForecastByZIPHttpPostInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetCityForecastByZIPHttpPostOut {
-        #[yaserde(rename = "GetCityForecastByZIPHttpPostOut", default)]
-        pub body: ports::GetCityForecastByZIPHttpPostOut,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetCityForecastByZIPHttpPostOutSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetCityForecastByZIPHttpPostOut,
-    }
-
-    impl GetCityForecastByZIPHttpPostOutSoapEnvelope {
-        pub fn new(body: SoapGetCityForecastByZIPHttpPostOut) -> Self {
-            GetCityForecastByZIPHttpPostOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetCityWeatherByZIPHttpPostIn {
-        #[yaserde(rename = "GetCityWeatherByZIP", default)]
-        pub body: ports::GetCityWeatherByZIPHttpPostIn,
-        #[yaserde(attribute)]
-        pub xmlns: Option<String>,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetCityWeatherByZIPHttpPostInSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetCityWeatherByZIPHttpPostIn,
-    }
-
-    impl GetCityWeatherByZIPHttpPostInSoapEnvelope {
-        pub fn new(body: SoapGetCityWeatherByZIPHttpPostIn) -> Self {
-            GetCityWeatherByZIPHttpPostInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapGetCityWeatherByZIPHttpPostOut {
-        #[yaserde(rename = "GetCityWeatherByZIPHttpPostOut", default)]
-        pub body: ports::GetCityWeatherByZIPHttpPostOut,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct GetCityWeatherByZIPHttpPostOutSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapGetCityWeatherByZIPHttpPostOut,
-    }
-
-    impl GetCityWeatherByZIPHttpPostOutSoapEnvelope {
-        pub fn new(body: SoapGetCityWeatherByZIPHttpPostOut) -> Self {
-            GetCityWeatherByZIPHttpPostOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
-                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
-            }
-        }
-    }
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait WeatherSoap {
-        /// Gets Information for each WeatherID
-        async fn get_weather_information(
-            &mut self,
-            get_weather_information_soap_in: GetWeatherInformationSoapIn,
-        ) -> GetWeatherInformationSoapOut;
-        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
-        async fn get_city_forecast_by_zip(
-            &mut self,
-            get_city_forecast_by_zip_soap_in: GetCityForecastByZIPSoapIn,
-        ) -> GetCityForecastByZIPSoapOut;
-        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
-        async fn get_city_weather_by_zip(
-            &mut self,
-            get_city_weather_by_zip_soap_in: GetCityWeatherByZIPSoapIn,
-        ) -> GetCityWeatherByZIPSoapOut;
-    }
-
-    pub type GetWeatherInformationSoapIn = messages::GetWeatherInformationSoapIn;
-    pub type GetWeatherInformationSoapOut = messages::GetWeatherInformationSoapOut;
-    pub type GetCityForecastByZIPSoapIn = messages::GetCityForecastByZIPSoapIn;
-    pub type GetCityForecastByZIPSoapOut = messages::GetCityForecastByZIPSoapOut;
-    pub type GetCityWeatherByZIPSoapIn = messages::GetCityWeatherByZIPSoapIn;
-    pub type GetCityWeatherByZIPSoapOut = messages::GetCityWeatherByZIPSoapOut;
-    #[async_trait]
-    pub trait WeatherHttpGet {
-        /// Gets Information for each WeatherID
-        async fn get_weather_information(
-            &mut self,
-            get_weather_information_http_get_in: GetWeatherInformationHttpGetIn,
-        ) -> GetWeatherInformationHttpGetOut;
-        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
-        async fn get_city_forecast_by_zip(
-            &mut self,
-            get_city_forecast_by_zip_http_get_in: GetCityForecastByZIPHttpGetIn,
-        ) -> GetCityForecastByZIPHttpGetOut;
-        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
-        async fn get_city_weather_by_zip(
-            &mut self,
-            get_city_weather_by_zip_http_get_in: GetCityWeatherByZIPHttpGetIn,
-        ) -> GetCityWeatherByZIPHttpGetOut;
-    }
-
-    pub type GetWeatherInformationHttpGetIn = messages::GetWeatherInformationHttpGetIn;
-    pub type GetWeatherInformationHttpGetOut = messages::GetWeatherInformationHttpGetOut;
-    pub type GetCityForecastByZIPHttpGetIn = messages::GetCityForecastByZIPHttpGetIn;
-    pub type GetCityForecastByZIPHttpGetOut = messages::GetCityForecastByZIPHttpGetOut;
-    pub type GetCityWeatherByZIPHttpGetIn = messages::GetCityWeatherByZIPHttpGetIn;
-    pub type GetCityWeatherByZIPHttpGetOut = messages::GetCityWeatherByZIPHttpGetOut;
-    #[async_trait]
-    pub trait WeatherHttpPost {
-        /// Gets Information for each WeatherID
-        async fn get_weather_information(
-            &mut self,
-            get_weather_information_http_post_in: GetWeatherInformationHttpPostIn,
-        ) -> GetWeatherInformationHttpPostOut;
-        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
-        async fn get_city_forecast_by_zip(
-            &mut self,
-            get_city_forecast_by_zip_http_post_in: GetCityForecastByZIPHttpPostIn,
-        ) -> GetCityForecastByZIPHttpPostOut;
-        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
-        async fn get_city_weather_by_zip(
-            &mut self,
-            get_city_weather_by_zip_http_post_in: GetCityWeatherByZIPHttpPostIn,
-        ) -> GetCityWeatherByZIPHttpPostOut;
-    }
-
-    pub type GetWeatherInformationHttpPostIn = messages::GetWeatherInformationHttpPostIn;
-    pub type GetWeatherInformationHttpPostOut = messages::GetWeatherInformationHttpPostOut;
-    pub type GetCityForecastByZIPHttpPostIn = messages::GetCityForecastByZIPHttpPostIn;
-    pub type GetCityForecastByZIPHttpPostOut = messages::GetCityForecastByZIPHttpPostOut;
-    pub type GetCityWeatherByZIPHttpPostIn = messages::GetCityWeatherByZIPHttpPostIn;
-    pub type GetCityWeatherByZIPHttpPostOut = messages::GetCityWeatherByZIPHttpPostOut;
-}
-
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -1776,5 +227,1634 @@ pub mod types {
         pub wind_chill: Vec<String>,
         #[yaserde(prefix = "tns", rename = "Remarks", default)]
         pub remarks: Vec<String>,
+    }
+}
+
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetWeatherInformationSoapIn", default)]
+    pub struct GetWeatherInformationSoapIn {
+        #[yaserde(flatten)]
+        pub parameters: types::GetWeatherInformation,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetWeatherInformationSoapOut", default)]
+    pub struct GetWeatherInformationSoapOut {
+        #[yaserde(flatten)]
+        pub parameters: types::GetWeatherInformationResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetCityForecastByZIPSoapIn", default)]
+    pub struct GetCityForecastByZIPSoapIn {
+        #[yaserde(flatten)]
+        pub parameters: types::GetCityForecastByZIP,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetCityForecastByZIPSoapOut", default)]
+    pub struct GetCityForecastByZIPSoapOut {
+        #[yaserde(flatten)]
+        pub parameters: types::GetCityForecastByZIPResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetCityWeatherByZIPSoapIn", default)]
+    pub struct GetCityWeatherByZIPSoapIn {
+        #[yaserde(flatten)]
+        pub parameters: types::GetCityWeatherByZIP,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetCityWeatherByZIPSoapOut", default)]
+    pub struct GetCityWeatherByZIPSoapOut {
+        #[yaserde(flatten)]
+        pub parameters: types::GetCityWeatherByZIPResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetWeatherInformationHttpGetIn", default)]
+    pub struct GetWeatherInformationHttpGetIn {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetWeatherInformationHttpGetOut", default)]
+    pub struct GetWeatherInformationHttpGetOut {
+        #[yaserde(flatten)]
+        pub body: types::ArrayOfWeatherDescription,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetCityForecastByZIPHttpGetIn", default)]
+    pub struct GetCityForecastByZIPHttpGetIn {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetCityForecastByZIPHttpGetOut", default)]
+    pub struct GetCityForecastByZIPHttpGetOut {
+        #[yaserde(flatten)]
+        pub body: types::ForecastReturn,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetCityWeatherByZIPHttpGetIn", default)]
+    pub struct GetCityWeatherByZIPHttpGetIn {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetCityWeatherByZIPHttpGetOut", default)]
+    pub struct GetCityWeatherByZIPHttpGetOut {
+        #[yaserde(flatten)]
+        pub body: types::WeatherReturn,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetWeatherInformationHttpPostIn", default)]
+    pub struct GetWeatherInformationHttpPostIn {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetWeatherInformationHttpPostOut", default)]
+    pub struct GetWeatherInformationHttpPostOut {
+        #[yaserde(flatten)]
+        pub body: types::ArrayOfWeatherDescription,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetCityForecastByZIPHttpPostIn", default)]
+    pub struct GetCityForecastByZIPHttpPostIn {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetCityForecastByZIPHttpPostOut", default)]
+    pub struct GetCityForecastByZIPHttpPostOut {
+        #[yaserde(flatten)]
+        pub body: types::ForecastReturn,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetCityWeatherByZIPHttpPostIn", default)]
+    pub struct GetCityWeatherByZIPHttpPostIn {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetCityWeatherByZIPHttpPostOut", default)]
+    pub struct GetCityWeatherByZIPHttpPostOut {
+        #[yaserde(flatten)]
+        pub body: types::WeatherReturn,
+    }
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[async_trait]
+    pub trait WeatherSoap {
+        /// Gets Information for each WeatherID
+        async fn get_weather_information(
+            &mut self,
+            get_weather_information_soap_in: GetWeatherInformationSoapIn,
+        ) -> Result<GetWeatherInformationSoapOut, Option<SoapFault>>;
+        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
+        async fn get_city_forecast_by_zip(
+            &mut self,
+            get_city_forecast_by_zip_soap_in: GetCityForecastByZIPSoapIn,
+        ) -> Result<GetCityForecastByZIPSoapOut, Option<SoapFault>>;
+        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
+        async fn get_city_weather_by_zip(
+            &mut self,
+            get_city_weather_by_zip_soap_in: GetCityWeatherByZIPSoapIn,
+        ) -> Result<GetCityWeatherByZIPSoapOut, Option<SoapFault>>;
+    }
+
+    pub type GetWeatherInformationSoapIn = messages::GetWeatherInformationSoapIn;
+    pub type GetWeatherInformationSoapOut = messages::GetWeatherInformationSoapOut;
+    pub type GetCityForecastByZIPSoapIn = messages::GetCityForecastByZIPSoapIn;
+    pub type GetCityForecastByZIPSoapOut = messages::GetCityForecastByZIPSoapOut;
+    pub type GetCityWeatherByZIPSoapIn = messages::GetCityWeatherByZIPSoapIn;
+    pub type GetCityWeatherByZIPSoapOut = messages::GetCityWeatherByZIPSoapOut;
+    #[async_trait]
+    pub trait WeatherHttpGet {
+        /// Gets Information for each WeatherID
+        async fn get_weather_information(
+            &mut self,
+            get_weather_information_http_get_in: GetWeatherInformationHttpGetIn,
+        ) -> Result<GetWeatherInformationHttpGetOut, Option<SoapFault>>;
+        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
+        async fn get_city_forecast_by_zip(
+            &mut self,
+            get_city_forecast_by_zip_http_get_in: GetCityForecastByZIPHttpGetIn,
+        ) -> Result<GetCityForecastByZIPHttpGetOut, Option<SoapFault>>;
+        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
+        async fn get_city_weather_by_zip(
+            &mut self,
+            get_city_weather_by_zip_http_get_in: GetCityWeatherByZIPHttpGetIn,
+        ) -> Result<GetCityWeatherByZIPHttpGetOut, Option<SoapFault>>;
+    }
+
+    pub type GetWeatherInformationHttpGetIn = messages::GetWeatherInformationHttpGetIn;
+    pub type GetWeatherInformationHttpGetOut = messages::GetWeatherInformationHttpGetOut;
+    pub type GetCityForecastByZIPHttpGetIn = messages::GetCityForecastByZIPHttpGetIn;
+    pub type GetCityForecastByZIPHttpGetOut = messages::GetCityForecastByZIPHttpGetOut;
+    pub type GetCityWeatherByZIPHttpGetIn = messages::GetCityWeatherByZIPHttpGetIn;
+    pub type GetCityWeatherByZIPHttpGetOut = messages::GetCityWeatherByZIPHttpGetOut;
+    #[async_trait]
+    pub trait WeatherHttpPost {
+        /// Gets Information for each WeatherID
+        async fn get_weather_information(
+            &mut self,
+            get_weather_information_http_post_in: GetWeatherInformationHttpPostIn,
+        ) -> Result<GetWeatherInformationHttpPostOut, Option<SoapFault>>;
+        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
+        async fn get_city_forecast_by_zip(
+            &mut self,
+            get_city_forecast_by_zip_http_post_in: GetCityForecastByZIPHttpPostIn,
+        ) -> Result<GetCityForecastByZIPHttpPostOut, Option<SoapFault>>;
+        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
+        async fn get_city_weather_by_zip(
+            &mut self,
+            get_city_weather_by_zip_http_post_in: GetCityWeatherByZIPHttpPostIn,
+        ) -> Result<GetCityWeatherByZIPHttpPostOut, Option<SoapFault>>;
+    }
+
+    pub type GetWeatherInformationHttpPostIn = messages::GetWeatherInformationHttpPostIn;
+    pub type GetWeatherInformationHttpPostOut = messages::GetWeatherInformationHttpPostOut;
+    pub type GetCityForecastByZIPHttpPostIn = messages::GetCityForecastByZIPHttpPostIn;
+    pub type GetCityForecastByZIPHttpPostOut = messages::GetCityForecastByZIPHttpPostOut;
+    pub type GetCityWeatherByZIPHttpPostIn = messages::GetCityWeatherByZIPHttpPostIn;
+    pub type GetCityWeatherByZIPHttpPostOut = messages::GetCityWeatherByZIPHttpPostOut;
+}
+
+pub mod bindings {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    pub struct WeatherSoap {
+        client: reqwest::Client,
+        url: String,
+        credentials: Option<(String, String)>,
+    }
+
+    #[async_trait]
+    impl ports::WeatherSoap for WeatherSoap {
+        async fn get_weather_information(
+            &mut self,
+            get_weather_information_soap_in: ports::GetWeatherInformationSoapIn,
+        ) -> Result<ports::GetWeatherInformationSoapOut, Option<SoapFault>> {
+            let __request =
+                GetWeatherInformationSoapInSoapEnvelope::new(SoapGetWeatherInformationSoapIn {
+                    body: get_weather_information_soap_in,
+                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                });
+
+            let body = to_string(&__request).expect("failed to generate xml");
+            debug!("SOAP Request: {}", body);
+
+            let mut req = self
+                .client
+                .post(&self.url)
+                .body(body)
+                .header("Content-Type", "text/xml")
+                .header(
+                    "Soapaction",
+                    "http://ws.cdyne.com/WeatherWS/GetWeatherInformation",
+                );
+
+            if let Some(credentials) = &self.credentials {
+                req = req.basic_auth(
+                    credentials.0.to_string(),
+                    Option::from(credentials.1.to_string()),
+                );
+            }
+
+            let res = req.send().await.expect("can not send request");
+
+            let status = res.status();
+            debug!("SOAP Status: {}", status);
+
+            let txt = res.text().await.unwrap_or_default();
+            debug!("SOAP Response: {}", txt);
+
+            let r: GetWeatherInformationSoapOutSoapEnvelope =
+                from_str(&txt).expect("can not unmarshal");
+            if status.is_success() {
+                Ok(r.body.body)
+            } else {
+                Err(r.body.fault)
+            }
+        }
+        async fn get_city_forecast_by_zip(
+            &mut self,
+            get_city_forecast_by_zip_soap_in: ports::GetCityForecastByZIPSoapIn,
+        ) -> Result<ports::GetCityForecastByZIPSoapOut, Option<SoapFault>> {
+            let __request =
+                GetCityForecastByZIPSoapInSoapEnvelope::new(SoapGetCityForecastByZIPSoapIn {
+                    body: get_city_forecast_by_zip_soap_in,
+                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                });
+
+            let body = to_string(&__request).expect("failed to generate xml");
+            debug!("SOAP Request: {}", body);
+
+            let mut req = self
+                .client
+                .post(&self.url)
+                .body(body)
+                .header("Content-Type", "text/xml")
+                .header(
+                    "Soapaction",
+                    "http://ws.cdyne.com/WeatherWS/GetCityForecastByZIP",
+                );
+
+            if let Some(credentials) = &self.credentials {
+                req = req.basic_auth(
+                    credentials.0.to_string(),
+                    Option::from(credentials.1.to_string()),
+                );
+            }
+
+            let res = req.send().await.expect("can not send request");
+
+            let status = res.status();
+            debug!("SOAP Status: {}", status);
+
+            let txt = res.text().await.unwrap_or_default();
+            debug!("SOAP Response: {}", txt);
+
+            let r: GetCityForecastByZIPSoapOutSoapEnvelope =
+                from_str(&txt).expect("can not unmarshal");
+            if status.is_success() {
+                Ok(r.body.body)
+            } else {
+                Err(r.body.fault)
+            }
+        }
+        async fn get_city_weather_by_zip(
+            &mut self,
+            get_city_weather_by_zip_soap_in: ports::GetCityWeatherByZIPSoapIn,
+        ) -> Result<ports::GetCityWeatherByZIPSoapOut, Option<SoapFault>> {
+            let __request =
+                GetCityWeatherByZIPSoapInSoapEnvelope::new(SoapGetCityWeatherByZIPSoapIn {
+                    body: get_city_weather_by_zip_soap_in,
+                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                });
+
+            let body = to_string(&__request).expect("failed to generate xml");
+            debug!("SOAP Request: {}", body);
+
+            let mut req = self
+                .client
+                .post(&self.url)
+                .body(body)
+                .header("Content-Type", "text/xml")
+                .header(
+                    "Soapaction",
+                    "http://ws.cdyne.com/WeatherWS/GetCityWeatherByZIP",
+                );
+
+            if let Some(credentials) = &self.credentials {
+                req = req.basic_auth(
+                    credentials.0.to_string(),
+                    Option::from(credentials.1.to_string()),
+                );
+            }
+
+            let res = req.send().await.expect("can not send request");
+
+            let status = res.status();
+            debug!("SOAP Status: {}", status);
+
+            let txt = res.text().await.unwrap_or_default();
+            debug!("SOAP Response: {}", txt);
+
+            let r: GetCityWeatherByZIPSoapOutSoapEnvelope =
+                from_str(&txt).expect("can not unmarshal");
+            if status.is_success() {
+                Ok(r.body.body)
+            } else {
+                Err(r.body.fault)
+            }
+        }
+    }
+
+    impl Default for WeatherSoap {
+        fn default() -> Self {
+            WeatherSoap {
+                client: reqwest::Client::new(),
+                url: "http://ws.cdyne.com/WeatherWS/".to_string(),
+                credentials: Option::None,
+            }
+        }
+    }
+    impl WeatherSoap {
+        pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
+            WeatherSoap {
+                client: reqwest::Client::new(),
+                url: url.to_string(),
+                credentials,
+            }
+        }
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetWeatherInformationSoapIn {
+        #[yaserde(rename = "GetWeatherInformation", default)]
+        pub body: ports::GetWeatherInformationSoapIn,
+        #[yaserde(attribute)]
+        pub xmlns: Option<String>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetWeatherInformationSoapInSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetWeatherInformationSoapIn,
+    }
+
+    impl GetWeatherInformationSoapInSoapEnvelope {
+        pub fn new(body: SoapGetWeatherInformationSoapIn) -> Self {
+            GetWeatherInformationSoapInSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetWeatherInformationSoapOut {
+        #[yaserde(rename = "GetWeatherInformationSoapOut", default)]
+        pub body: ports::GetWeatherInformationSoapOut,
+        #[yaserde(rename = "Fault", default)]
+        pub fault: Option<SoapFault>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetWeatherInformationSoapOutSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetWeatherInformationSoapOut,
+    }
+
+    impl GetWeatherInformationSoapOutSoapEnvelope {
+        pub fn new(body: SoapGetWeatherInformationSoapOut) -> Self {
+            GetWeatherInformationSoapOutSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetCityForecastByZIPSoapIn {
+        #[yaserde(rename = "GetCityForecastByZIP", default)]
+        pub body: ports::GetCityForecastByZIPSoapIn,
+        #[yaserde(attribute)]
+        pub xmlns: Option<String>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetCityForecastByZIPSoapInSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetCityForecastByZIPSoapIn,
+    }
+
+    impl GetCityForecastByZIPSoapInSoapEnvelope {
+        pub fn new(body: SoapGetCityForecastByZIPSoapIn) -> Self {
+            GetCityForecastByZIPSoapInSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetCityForecastByZIPSoapOut {
+        #[yaserde(rename = "GetCityForecastByZIPSoapOut", default)]
+        pub body: ports::GetCityForecastByZIPSoapOut,
+        #[yaserde(rename = "Fault", default)]
+        pub fault: Option<SoapFault>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetCityForecastByZIPSoapOutSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetCityForecastByZIPSoapOut,
+    }
+
+    impl GetCityForecastByZIPSoapOutSoapEnvelope {
+        pub fn new(body: SoapGetCityForecastByZIPSoapOut) -> Self {
+            GetCityForecastByZIPSoapOutSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetCityWeatherByZIPSoapIn {
+        #[yaserde(rename = "GetCityWeatherByZIP", default)]
+        pub body: ports::GetCityWeatherByZIPSoapIn,
+        #[yaserde(attribute)]
+        pub xmlns: Option<String>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetCityWeatherByZIPSoapInSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetCityWeatherByZIPSoapIn,
+    }
+
+    impl GetCityWeatherByZIPSoapInSoapEnvelope {
+        pub fn new(body: SoapGetCityWeatherByZIPSoapIn) -> Self {
+            GetCityWeatherByZIPSoapInSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetCityWeatherByZIPSoapOut {
+        #[yaserde(rename = "GetCityWeatherByZIPSoapOut", default)]
+        pub body: ports::GetCityWeatherByZIPSoapOut,
+        #[yaserde(rename = "Fault", default)]
+        pub fault: Option<SoapFault>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetCityWeatherByZIPSoapOutSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetCityWeatherByZIPSoapOut,
+    }
+
+    impl GetCityWeatherByZIPSoapOutSoapEnvelope {
+        pub fn new(body: SoapGetCityWeatherByZIPSoapOut) -> Self {
+            GetCityWeatherByZIPSoapOutSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    pub struct WeatherSoap12 {
+        client: reqwest::Client,
+        url: String,
+        credentials: Option<(String, String)>,
+    }
+
+    #[async_trait]
+    impl ports::WeatherSoap for WeatherSoap12 {
+        async fn get_weather_information(
+            &mut self,
+            get_weather_information_soap_in: ports::GetWeatherInformationSoapIn,
+        ) -> Result<ports::GetWeatherInformationSoapOut, Option<SoapFault>> {
+            let __request =
+                GetWeatherInformationSoapInSoapEnvelope::new(SoapGetWeatherInformationSoapIn {
+                    body: get_weather_information_soap_in,
+                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                });
+
+            let body = to_string(&__request).expect("failed to generate xml");
+            debug!("SOAP Request: {}", body);
+
+            let mut req = self
+                .client
+                .post(&self.url)
+                .body(body)
+                .header("Content-Type", "text/xml")
+                .header(
+                    "Soapaction",
+                    "http://ws.cdyne.com/WeatherWS/GetWeatherInformation",
+                );
+
+            if let Some(credentials) = &self.credentials {
+                req = req.basic_auth(
+                    credentials.0.to_string(),
+                    Option::from(credentials.1.to_string()),
+                );
+            }
+
+            let res = req.send().await.expect("can not send request");
+
+            let status = res.status();
+            debug!("SOAP Status: {}", status);
+
+            let txt = res.text().await.unwrap_or_default();
+            debug!("SOAP Response: {}", txt);
+
+            let r: GetWeatherInformationSoapOutSoapEnvelope =
+                from_str(&txt).expect("can not unmarshal");
+            if status.is_success() {
+                Ok(r.body.body)
+            } else {
+                Err(r.body.fault)
+            }
+        }
+        async fn get_city_forecast_by_zip(
+            &mut self,
+            get_city_forecast_by_zip_soap_in: ports::GetCityForecastByZIPSoapIn,
+        ) -> Result<ports::GetCityForecastByZIPSoapOut, Option<SoapFault>> {
+            let __request =
+                GetCityForecastByZIPSoapInSoapEnvelope::new(SoapGetCityForecastByZIPSoapIn {
+                    body: get_city_forecast_by_zip_soap_in,
+                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                });
+
+            let body = to_string(&__request).expect("failed to generate xml");
+            debug!("SOAP Request: {}", body);
+
+            let mut req = self
+                .client
+                .post(&self.url)
+                .body(body)
+                .header("Content-Type", "text/xml")
+                .header(
+                    "Soapaction",
+                    "http://ws.cdyne.com/WeatherWS/GetCityForecastByZIP",
+                );
+
+            if let Some(credentials) = &self.credentials {
+                req = req.basic_auth(
+                    credentials.0.to_string(),
+                    Option::from(credentials.1.to_string()),
+                );
+            }
+
+            let res = req.send().await.expect("can not send request");
+
+            let status = res.status();
+            debug!("SOAP Status: {}", status);
+
+            let txt = res.text().await.unwrap_or_default();
+            debug!("SOAP Response: {}", txt);
+
+            let r: GetCityForecastByZIPSoapOutSoapEnvelope =
+                from_str(&txt).expect("can not unmarshal");
+            if status.is_success() {
+                Ok(r.body.body)
+            } else {
+                Err(r.body.fault)
+            }
+        }
+        async fn get_city_weather_by_zip(
+            &mut self,
+            get_city_weather_by_zip_soap_in: ports::GetCityWeatherByZIPSoapIn,
+        ) -> Result<ports::GetCityWeatherByZIPSoapOut, Option<SoapFault>> {
+            let __request =
+                GetCityWeatherByZIPSoapInSoapEnvelope::new(SoapGetCityWeatherByZIPSoapIn {
+                    body: get_city_weather_by_zip_soap_in,
+                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                });
+
+            let body = to_string(&__request).expect("failed to generate xml");
+            debug!("SOAP Request: {}", body);
+
+            let mut req = self
+                .client
+                .post(&self.url)
+                .body(body)
+                .header("Content-Type", "text/xml")
+                .header(
+                    "Soapaction",
+                    "http://ws.cdyne.com/WeatherWS/GetCityWeatherByZIP",
+                );
+
+            if let Some(credentials) = &self.credentials {
+                req = req.basic_auth(
+                    credentials.0.to_string(),
+                    Option::from(credentials.1.to_string()),
+                );
+            }
+
+            let res = req.send().await.expect("can not send request");
+
+            let status = res.status();
+            debug!("SOAP Status: {}", status);
+
+            let txt = res.text().await.unwrap_or_default();
+            debug!("SOAP Response: {}", txt);
+
+            let r: GetCityWeatherByZIPSoapOutSoapEnvelope =
+                from_str(&txt).expect("can not unmarshal");
+            if status.is_success() {
+                Ok(r.body.body)
+            } else {
+                Err(r.body.fault)
+            }
+        }
+    }
+
+    impl Default for WeatherSoap12 {
+        fn default() -> Self {
+            WeatherSoap12 {
+                client: reqwest::Client::new(),
+                url: "http://ws.cdyne.com/WeatherWS/".to_string(),
+                credentials: Option::None,
+            }
+        }
+    }
+    impl WeatherSoap12 {
+        pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
+            WeatherSoap12 {
+                client: reqwest::Client::new(),
+                url: url.to_string(),
+                credentials,
+            }
+        }
+    }
+    pub struct WeatherHttpGet {
+        client: reqwest::Client,
+        url: String,
+        credentials: Option<(String, String)>,
+    }
+
+    #[async_trait]
+    impl ports::WeatherHttpGet for WeatherHttpGet {
+        async fn get_weather_information(
+            &mut self,
+            get_weather_information_http_get_in: ports::GetWeatherInformationHttpGetIn,
+        ) -> Result<ports::GetWeatherInformationHttpGetOut, Option<SoapFault>> {
+            let __request = GetWeatherInformationHttpGetInSoapEnvelope::new(
+                SoapGetWeatherInformationHttpGetIn {
+                    body: get_weather_information_http_get_in,
+                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                },
+            );
+
+            let body = to_string(&__request).expect("failed to generate xml");
+            debug!("SOAP Request: {}", body);
+
+            let mut req = self
+                .client
+                .post(&self.url)
+                .body(body)
+                .header("Content-Type", "text/xml")
+                .header(
+                    "Soapaction",
+                    "http://ws.cdyne.com/WeatherWS//GetWeatherInformation",
+                );
+
+            if let Some(credentials) = &self.credentials {
+                req = req.basic_auth(
+                    credentials.0.to_string(),
+                    Option::from(credentials.1.to_string()),
+                );
+            }
+
+            let res = req.send().await.expect("can not send request");
+
+            let status = res.status();
+            debug!("SOAP Status: {}", status);
+
+            let txt = res.text().await.unwrap_or_default();
+            debug!("SOAP Response: {}", txt);
+
+            let r: GetWeatherInformationHttpGetOutSoapEnvelope =
+                from_str(&txt).expect("can not unmarshal");
+            if status.is_success() {
+                Ok(r.body.body)
+            } else {
+                Err(r.body.fault)
+            }
+        }
+        async fn get_city_forecast_by_zip(
+            &mut self,
+            get_city_forecast_by_zip_http_get_in: ports::GetCityForecastByZIPHttpGetIn,
+        ) -> Result<ports::GetCityForecastByZIPHttpGetOut, Option<SoapFault>> {
+            let __request =
+                GetCityForecastByZIPHttpGetInSoapEnvelope::new(SoapGetCityForecastByZIPHttpGetIn {
+                    body: get_city_forecast_by_zip_http_get_in,
+                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                });
+
+            let body = to_string(&__request).expect("failed to generate xml");
+            debug!("SOAP Request: {}", body);
+
+            let mut req = self
+                .client
+                .post(&self.url)
+                .body(body)
+                .header("Content-Type", "text/xml")
+                .header(
+                    "Soapaction",
+                    "http://ws.cdyne.com/WeatherWS//GetCityForecastByZIP",
+                );
+
+            if let Some(credentials) = &self.credentials {
+                req = req.basic_auth(
+                    credentials.0.to_string(),
+                    Option::from(credentials.1.to_string()),
+                );
+            }
+
+            let res = req.send().await.expect("can not send request");
+
+            let status = res.status();
+            debug!("SOAP Status: {}", status);
+
+            let txt = res.text().await.unwrap_or_default();
+            debug!("SOAP Response: {}", txt);
+
+            let r: GetCityForecastByZIPHttpGetOutSoapEnvelope =
+                from_str(&txt).expect("can not unmarshal");
+            if status.is_success() {
+                Ok(r.body.body)
+            } else {
+                Err(r.body.fault)
+            }
+        }
+        async fn get_city_weather_by_zip(
+            &mut self,
+            get_city_weather_by_zip_http_get_in: ports::GetCityWeatherByZIPHttpGetIn,
+        ) -> Result<ports::GetCityWeatherByZIPHttpGetOut, Option<SoapFault>> {
+            let __request =
+                GetCityWeatherByZIPHttpGetInSoapEnvelope::new(SoapGetCityWeatherByZIPHttpGetIn {
+                    body: get_city_weather_by_zip_http_get_in,
+                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                });
+
+            let body = to_string(&__request).expect("failed to generate xml");
+            debug!("SOAP Request: {}", body);
+
+            let mut req = self
+                .client
+                .post(&self.url)
+                .body(body)
+                .header("Content-Type", "text/xml")
+                .header(
+                    "Soapaction",
+                    "http://ws.cdyne.com/WeatherWS//GetCityWeatherByZIP",
+                );
+
+            if let Some(credentials) = &self.credentials {
+                req = req.basic_auth(
+                    credentials.0.to_string(),
+                    Option::from(credentials.1.to_string()),
+                );
+            }
+
+            let res = req.send().await.expect("can not send request");
+
+            let status = res.status();
+            debug!("SOAP Status: {}", status);
+
+            let txt = res.text().await.unwrap_or_default();
+            debug!("SOAP Response: {}", txt);
+
+            let r: GetCityWeatherByZIPHttpGetOutSoapEnvelope =
+                from_str(&txt).expect("can not unmarshal");
+            if status.is_success() {
+                Ok(r.body.body)
+            } else {
+                Err(r.body.fault)
+            }
+        }
+    }
+
+    impl Default for WeatherHttpGet {
+        fn default() -> Self {
+            WeatherHttpGet {
+                client: reqwest::Client::new(),
+                url: "http://ws.cdyne.com/WeatherWS/".to_string(),
+                credentials: Option::None,
+            }
+        }
+    }
+    impl WeatherHttpGet {
+        pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
+            WeatherHttpGet {
+                client: reqwest::Client::new(),
+                url: url.to_string(),
+                credentials,
+            }
+        }
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetWeatherInformationHttpGetIn {
+        #[yaserde(rename = "GetWeatherInformation", default)]
+        pub body: ports::GetWeatherInformationHttpGetIn,
+        #[yaserde(attribute)]
+        pub xmlns: Option<String>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetWeatherInformationHttpGetInSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetWeatherInformationHttpGetIn,
+    }
+
+    impl GetWeatherInformationHttpGetInSoapEnvelope {
+        pub fn new(body: SoapGetWeatherInformationHttpGetIn) -> Self {
+            GetWeatherInformationHttpGetInSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetWeatherInformationHttpGetOut {
+        #[yaserde(rename = "GetWeatherInformationHttpGetOut", default)]
+        pub body: ports::GetWeatherInformationHttpGetOut,
+        #[yaserde(rename = "Fault", default)]
+        pub fault: Option<SoapFault>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetWeatherInformationHttpGetOutSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetWeatherInformationHttpGetOut,
+    }
+
+    impl GetWeatherInformationHttpGetOutSoapEnvelope {
+        pub fn new(body: SoapGetWeatherInformationHttpGetOut) -> Self {
+            GetWeatherInformationHttpGetOutSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetCityForecastByZIPHttpGetIn {
+        #[yaserde(rename = "GetCityForecastByZIP", default)]
+        pub body: ports::GetCityForecastByZIPHttpGetIn,
+        #[yaserde(attribute)]
+        pub xmlns: Option<String>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetCityForecastByZIPHttpGetInSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetCityForecastByZIPHttpGetIn,
+    }
+
+    impl GetCityForecastByZIPHttpGetInSoapEnvelope {
+        pub fn new(body: SoapGetCityForecastByZIPHttpGetIn) -> Self {
+            GetCityForecastByZIPHttpGetInSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetCityForecastByZIPHttpGetOut {
+        #[yaserde(rename = "GetCityForecastByZIPHttpGetOut", default)]
+        pub body: ports::GetCityForecastByZIPHttpGetOut,
+        #[yaserde(rename = "Fault", default)]
+        pub fault: Option<SoapFault>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetCityForecastByZIPHttpGetOutSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetCityForecastByZIPHttpGetOut,
+    }
+
+    impl GetCityForecastByZIPHttpGetOutSoapEnvelope {
+        pub fn new(body: SoapGetCityForecastByZIPHttpGetOut) -> Self {
+            GetCityForecastByZIPHttpGetOutSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetCityWeatherByZIPHttpGetIn {
+        #[yaserde(rename = "GetCityWeatherByZIP", default)]
+        pub body: ports::GetCityWeatherByZIPHttpGetIn,
+        #[yaserde(attribute)]
+        pub xmlns: Option<String>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetCityWeatherByZIPHttpGetInSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetCityWeatherByZIPHttpGetIn,
+    }
+
+    impl GetCityWeatherByZIPHttpGetInSoapEnvelope {
+        pub fn new(body: SoapGetCityWeatherByZIPHttpGetIn) -> Self {
+            GetCityWeatherByZIPHttpGetInSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetCityWeatherByZIPHttpGetOut {
+        #[yaserde(rename = "GetCityWeatherByZIPHttpGetOut", default)]
+        pub body: ports::GetCityWeatherByZIPHttpGetOut,
+        #[yaserde(rename = "Fault", default)]
+        pub fault: Option<SoapFault>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetCityWeatherByZIPHttpGetOutSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetCityWeatherByZIPHttpGetOut,
+    }
+
+    impl GetCityWeatherByZIPHttpGetOutSoapEnvelope {
+        pub fn new(body: SoapGetCityWeatherByZIPHttpGetOut) -> Self {
+            GetCityWeatherByZIPHttpGetOutSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    pub struct WeatherHttpPost {
+        client: reqwest::Client,
+        url: String,
+        credentials: Option<(String, String)>,
+    }
+
+    #[async_trait]
+    impl ports::WeatherHttpPost for WeatherHttpPost {
+        async fn get_weather_information(
+            &mut self,
+            get_weather_information_http_post_in: ports::GetWeatherInformationHttpPostIn,
+        ) -> Result<ports::GetWeatherInformationHttpPostOut, Option<SoapFault>> {
+            let __request = GetWeatherInformationHttpPostInSoapEnvelope::new(
+                SoapGetWeatherInformationHttpPostIn {
+                    body: get_weather_information_http_post_in,
+                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                },
+            );
+
+            let body = to_string(&__request).expect("failed to generate xml");
+            debug!("SOAP Request: {}", body);
+
+            let mut req = self
+                .client
+                .post(&self.url)
+                .body(body)
+                .header("Content-Type", "text/xml")
+                .header(
+                    "Soapaction",
+                    "http://ws.cdyne.com/WeatherWS//GetWeatherInformation",
+                );
+
+            if let Some(credentials) = &self.credentials {
+                req = req.basic_auth(
+                    credentials.0.to_string(),
+                    Option::from(credentials.1.to_string()),
+                );
+            }
+
+            let res = req.send().await.expect("can not send request");
+
+            let status = res.status();
+            debug!("SOAP Status: {}", status);
+
+            let txt = res.text().await.unwrap_or_default();
+            debug!("SOAP Response: {}", txt);
+
+            let r: GetWeatherInformationHttpPostOutSoapEnvelope =
+                from_str(&txt).expect("can not unmarshal");
+            if status.is_success() {
+                Ok(r.body.body)
+            } else {
+                Err(r.body.fault)
+            }
+        }
+        async fn get_city_forecast_by_zip(
+            &mut self,
+            get_city_forecast_by_zip_http_post_in: ports::GetCityForecastByZIPHttpPostIn,
+        ) -> Result<ports::GetCityForecastByZIPHttpPostOut, Option<SoapFault>> {
+            let __request = GetCityForecastByZIPHttpPostInSoapEnvelope::new(
+                SoapGetCityForecastByZIPHttpPostIn {
+                    body: get_city_forecast_by_zip_http_post_in,
+                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                },
+            );
+
+            let body = to_string(&__request).expect("failed to generate xml");
+            debug!("SOAP Request: {}", body);
+
+            let mut req = self
+                .client
+                .post(&self.url)
+                .body(body)
+                .header("Content-Type", "text/xml")
+                .header(
+                    "Soapaction",
+                    "http://ws.cdyne.com/WeatherWS//GetCityForecastByZIP",
+                );
+
+            if let Some(credentials) = &self.credentials {
+                req = req.basic_auth(
+                    credentials.0.to_string(),
+                    Option::from(credentials.1.to_string()),
+                );
+            }
+
+            let res = req.send().await.expect("can not send request");
+
+            let status = res.status();
+            debug!("SOAP Status: {}", status);
+
+            let txt = res.text().await.unwrap_or_default();
+            debug!("SOAP Response: {}", txt);
+
+            let r: GetCityForecastByZIPHttpPostOutSoapEnvelope =
+                from_str(&txt).expect("can not unmarshal");
+            if status.is_success() {
+                Ok(r.body.body)
+            } else {
+                Err(r.body.fault)
+            }
+        }
+        async fn get_city_weather_by_zip(
+            &mut self,
+            get_city_weather_by_zip_http_post_in: ports::GetCityWeatherByZIPHttpPostIn,
+        ) -> Result<ports::GetCityWeatherByZIPHttpPostOut, Option<SoapFault>> {
+            let __request =
+                GetCityWeatherByZIPHttpPostInSoapEnvelope::new(SoapGetCityWeatherByZIPHttpPostIn {
+                    body: get_city_weather_by_zip_http_post_in,
+                    xmlns: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                });
+
+            let body = to_string(&__request).expect("failed to generate xml");
+            debug!("SOAP Request: {}", body);
+
+            let mut req = self
+                .client
+                .post(&self.url)
+                .body(body)
+                .header("Content-Type", "text/xml")
+                .header(
+                    "Soapaction",
+                    "http://ws.cdyne.com/WeatherWS//GetCityWeatherByZIP",
+                );
+
+            if let Some(credentials) = &self.credentials {
+                req = req.basic_auth(
+                    credentials.0.to_string(),
+                    Option::from(credentials.1.to_string()),
+                );
+            }
+
+            let res = req.send().await.expect("can not send request");
+
+            let status = res.status();
+            debug!("SOAP Status: {}", status);
+
+            let txt = res.text().await.unwrap_or_default();
+            debug!("SOAP Response: {}", txt);
+
+            let r: GetCityWeatherByZIPHttpPostOutSoapEnvelope =
+                from_str(&txt).expect("can not unmarshal");
+            if status.is_success() {
+                Ok(r.body.body)
+            } else {
+                Err(r.body.fault)
+            }
+        }
+    }
+
+    impl Default for WeatherHttpPost {
+        fn default() -> Self {
+            WeatherHttpPost {
+                client: reqwest::Client::new(),
+                url: "http://ws.cdyne.com/WeatherWS/".to_string(),
+                credentials: Option::None,
+            }
+        }
+    }
+    impl WeatherHttpPost {
+        pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
+            WeatherHttpPost {
+                client: reqwest::Client::new(),
+                url: url.to_string(),
+                credentials,
+            }
+        }
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetWeatherInformationHttpPostIn {
+        #[yaserde(rename = "GetWeatherInformation", default)]
+        pub body: ports::GetWeatherInformationHttpPostIn,
+        #[yaserde(attribute)]
+        pub xmlns: Option<String>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetWeatherInformationHttpPostInSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetWeatherInformationHttpPostIn,
+    }
+
+    impl GetWeatherInformationHttpPostInSoapEnvelope {
+        pub fn new(body: SoapGetWeatherInformationHttpPostIn) -> Self {
+            GetWeatherInformationHttpPostInSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetWeatherInformationHttpPostOut {
+        #[yaserde(rename = "GetWeatherInformationHttpPostOut", default)]
+        pub body: ports::GetWeatherInformationHttpPostOut,
+        #[yaserde(rename = "Fault", default)]
+        pub fault: Option<SoapFault>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetWeatherInformationHttpPostOutSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetWeatherInformationHttpPostOut,
+    }
+
+    impl GetWeatherInformationHttpPostOutSoapEnvelope {
+        pub fn new(body: SoapGetWeatherInformationHttpPostOut) -> Self {
+            GetWeatherInformationHttpPostOutSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetCityForecastByZIPHttpPostIn {
+        #[yaserde(rename = "GetCityForecastByZIP", default)]
+        pub body: ports::GetCityForecastByZIPHttpPostIn,
+        #[yaserde(attribute)]
+        pub xmlns: Option<String>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetCityForecastByZIPHttpPostInSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetCityForecastByZIPHttpPostIn,
+    }
+
+    impl GetCityForecastByZIPHttpPostInSoapEnvelope {
+        pub fn new(body: SoapGetCityForecastByZIPHttpPostIn) -> Self {
+            GetCityForecastByZIPHttpPostInSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetCityForecastByZIPHttpPostOut {
+        #[yaserde(rename = "GetCityForecastByZIPHttpPostOut", default)]
+        pub body: ports::GetCityForecastByZIPHttpPostOut,
+        #[yaserde(rename = "Fault", default)]
+        pub fault: Option<SoapFault>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetCityForecastByZIPHttpPostOutSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetCityForecastByZIPHttpPostOut,
+    }
+
+    impl GetCityForecastByZIPHttpPostOutSoapEnvelope {
+        pub fn new(body: SoapGetCityForecastByZIPHttpPostOut) -> Self {
+            GetCityForecastByZIPHttpPostOutSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetCityWeatherByZIPHttpPostIn {
+        #[yaserde(rename = "GetCityWeatherByZIP", default)]
+        pub body: ports::GetCityWeatherByZIPHttpPostIn,
+        #[yaserde(attribute)]
+        pub xmlns: Option<String>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetCityWeatherByZIPHttpPostInSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetCityWeatherByZIPHttpPostIn,
+    }
+
+    impl GetCityWeatherByZIPHttpPostInSoapEnvelope {
+        pub fn new(body: SoapGetCityWeatherByZIPHttpPostIn) -> Self {
+            GetCityWeatherByZIPHttpPostInSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    pub struct SoapGetCityWeatherByZIPHttpPostOut {
+        #[yaserde(rename = "GetCityWeatherByZIPHttpPostOut", default)]
+        pub body: ports::GetCityWeatherByZIPHttpPostOut,
+        #[yaserde(rename = "Fault", default)]
+        pub fault: Option<SoapFault>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Envelope",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct GetCityWeatherByZIPHttpPostOutSoapEnvelope {
+        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
+        pub encoding_style: String,
+        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+        pub tnsattr: Option<String>,
+        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
+        pub urnattr: Option<String>,
+        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
+        pub xsiattr: Option<String>,
+        #[yaserde(rename = "Header", prefix = "soapenv")]
+        pub header: Option<Header>,
+        #[yaserde(rename = "Body", prefix = "soapenv")]
+        pub body: SoapGetCityWeatherByZIPHttpPostOut,
+    }
+
+    impl GetCityWeatherByZIPHttpPostOutSoapEnvelope {
+        pub fn new(body: SoapGetCityWeatherByZIPHttpPostOut) -> Self {
+            GetCityWeatherByZIPHttpPostOutSoapEnvelope {
+                encoding_style: SOAP_ENCODING.to_string(),
+                tnsattr: Option::from("http://ws.cdyne.com/WeatherWS/".to_string()),
+                body,
+                urnattr: None,
+                xsiattr: None,
+                header: None,
+            }
+        }
     }
 }

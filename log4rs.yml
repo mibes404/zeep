@@ -15,5 +15,5 @@ root:
     - stdout
 
 loggers:
-  generated:
-    level: info
+  weather:
+    level: debug

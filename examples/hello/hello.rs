@@ -27,6 +27,41 @@ pub mod messages {
     }
 }
 
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[async_trait]
+    pub trait HelloEndpoint {
+        async fn say_hello(
+            &mut self,
+            say_hello: SayHello,
+        ) -> Result<SayHelloResponse, Option<SoapFault>>;
+    }
+
+    pub type SayHello = messages::SayHello;
+    pub type SayHelloResponse = messages::SayHelloResponse;
+}
+
 pub mod bindings {
     use super::*;
     use async_trait::async_trait;
@@ -42,7 +77,10 @@ pub mod bindings {
 
     #[async_trait]
     impl ports::HelloEndpoint for HelloEndpointServiceSoapBinding {
-        async fn say_hello(&mut self, say_hello: ports::SayHello) -> ports::SayHelloResponse {
+        async fn say_hello(
+            &mut self,
+            say_hello: ports::SayHello,
+        ) -> Result<ports::SayHelloResponse, Option<SoapFault>> {
             let __request = SayHelloSoapEnvelope::new(SoapSayHello {
                 body: say_hello,
                 xmlns: Option::from("http://learnwebservices.com/services/hello".to_string()),
@@ -74,7 +112,11 @@ pub mod bindings {
             debug!("SOAP Response: {}", txt);
 
             let r: SayHelloResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
-            r.body.body
+            if status.is_success() {
+                Ok(r.body.body)
+            } else {
+                Err(r.body.fault)
+            }
         }
     }
 
@@ -141,6 +183,8 @@ pub mod bindings {
     pub struct SoapSayHelloResponse {
         #[yaserde(rename = "SayHelloResponse", default)]
         pub body: ports::SayHelloResponse,
+        #[yaserde(rename = "Fault", default)]
+        pub fault: Option<SoapFault>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
@@ -175,22 +219,6 @@ pub mod bindings {
             }
         }
     }
-}
-
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait HelloEndpoint {
-        async fn say_hello(&mut self, say_hello: SayHello) -> SayHelloResponse;
-    }
-
-    pub type SayHello = messages::SayHello;
-    pub type SayHelloResponse = messages::SayHelloResponse;
 }
 
 pub mod types {
@@ -248,6 +276,3 @@ pub mod types {
         pub message: String,
     }
 }
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}

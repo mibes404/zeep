@@ -30,7 +30,8 @@ async fn main() {
                 temperature_in_celsius: 30.0,
             },
         })
-        .await;
+        .await
+        .expect("can not obtain temperature");
 
     println!(
         "{:?}",

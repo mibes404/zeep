@@ -201,6 +201,20 @@ impl FileWriter {
             r#"
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct Header {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Fault",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct SoapFault {
+        #[yaserde(rename = "faultcode", default)]
+        pub fault_code: Option<String>,
+        #[yaserde(rename = "faultstring", default)]
+        pub fault_string: Option<String>,
+    }
+        
     "#
             .to_string(),
         );
@@ -720,7 +734,7 @@ impl FileWriter {
                                 ),
                             ),
                             Option::None,
-                            format!("-> {}", type_name),
+                            format!("-> Result<{}, Option<SoapFault>>", type_name),
                         )
                     }
                 }
@@ -926,7 +940,10 @@ impl FileWriter {
                 fault_soap_name, PORTS_MOD,
             )
         } else {
-            String::new()
+            r#"     #[yaserde(rename = "Fault", default)]
+                            pub fault: Option<SoapFault>,
+                            "#
+            .to_string()
         };
 
         let soap_wrapper_out = if has_output {
@@ -962,7 +979,10 @@ impl FileWriter {
                     output_type, fault_soap_name, PORTS_MOD,
                 )
             } else {
-                format!("-> {}::{}", PORTS_MOD, output_type)
+                format!(
+                    "-> Result<{}::{}, Option<SoapFault>>",
+                    PORTS_MOD, output_type
+                )
             }
         } else {
             String::new()
@@ -1010,7 +1030,7 @@ impl FileWriter {
         input_variable: &str,
         input_type: &str,
         output_type: &str,
-        fault_type: Option<&String>,
+        _fault_type: Option<&String>,
         operation_name: &str,
         soap_action: Option<&str>,
     ) {
@@ -1065,18 +1085,14 @@ impl FileWriter {
             input_variable, input_type, output_type, action, xmlns
         ));
 
-        if fault_type.is_some() {
-            self.write(
-                r#"if status.is_success() {
-				Ok(r.body.body)
-			} else {
-				Err(r.body.fault)
-			}"#
-                .to_string(),
-            )
+        self.write(
+            r#"if status.is_success() {
+            Ok(r.body.body)
         } else {
-            self.write("r.body.body".to_string())
-        }
+            Err(r.body.fault)
+        }"#
+            .to_string(),
+        );
     }
 }
 

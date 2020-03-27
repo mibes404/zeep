@@ -34,7 +34,8 @@ async fn main() {
                 },
             },
         })
-        .await;
+        .await
+        .expect("can not greet");
 
     println!("{:?}", hi);
 }
