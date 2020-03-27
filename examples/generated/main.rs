@@ -175,6 +175,18 @@ async fn main() {
 
     println!("{:?}", claire);
 
+    let not_claire = aic
+        .get(GetRequest {
+            parameters: Get {
+                login_id: "not_claire".to_string(),
+            },
+        })
+        .await;
+
+    if let Err(Some(err)) = not_claire {
+        println!("{:?}", err.faultstring);
+    }
+
     /* -- this is not giving a response at the moment; SQL error...
     let mut w =
         bindings::WeatherSoap::new("http://wsf.cdyne.com/WeatherWS/Weather.asmx", Option::None);
@@ -268,7 +280,10 @@ mod tests {
         let b2 = to_string(&t).expect("failed to generate xml");
         println!("{:?}", b2);
 
-        let t2 = LookupAgentIdsResponseSoapEnvelope::new(SoapLookupAgentIdsResponse { body: t });
+        let t2 = LookupAgentIdsResponseSoapEnvelope::new(SoapLookupAgentIdsResponse {
+            body: t,
+            fault: Option::None,
+        });
 
         let b3 = to_string(&t2).expect("failed to generate xml");
         println!("{:?}", b3);

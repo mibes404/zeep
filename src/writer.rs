@@ -878,22 +878,73 @@ impl FileWriter {
                 _ => (String::new(), String::new(), String::new(), false),
             };
 
-        let fault_type = match &port_type.fault_type {
-            Some((_fault_name, Some(fault_type))) => Option::from(fault_type),
-            _ => Option::None,
+        let (fault_type, fault_xml_type, fault_soap_name, has_fault) = match &port_type.fault_type {
+            Some((fault_name, Some(fault_type))) => {
+                let soap_name = format!("{}Fault", output_soap_name);
+                (
+                    fault_type.to_string(),
+                    fault_name.to_string(),
+                    soap_name,
+                    true,
+                )
+            }
+            _ => (String::new(), String::new(), String::new(), false),
+        };
+
+        let soap_wrapper_fault = if has_fault {
+            format!(
+                r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+                    #[yaserde(
+                        root = "Fault",
+                        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+                        prefix = "soapenv"
+                    )]
+                    pub struct {0} {{
+                        pub faultcode: Option<String>,
+                        pub faultstring: Option<String>,
+                        #[yaserde(rename = "{3}", default)]
+                        pub detail: Option<{2}::{1}>,
+                    }}
+            "#,
+                fault_soap_name, fault_type, PORTS_MOD, fault_xml_type
+            )
+        } else {
+            String::new()
+        };
+
+        let soap_fault = if has_fault {
+            format!(
+                r#"     #[yaserde(rename = "Fault", default)]
+                            pub fault: Option<{0}>,
+                            "#,
+                fault_soap_name,
+            )
+        } else {
+            String::new()
         };
 
         let soap_wrapper_out = if has_output {
             if !self.have_seen_type(output_soap_name.clone()) {
                 self.seen_type(output_soap_name.clone());
                 Option::from(format!(
-                "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct {0} {{\n\t#[yaserde(rename = \"{3}\", default)]\n\tpub body: {2}::{1},\n}}\n{4}\n",
-                output_soap_name,
-                output_type,
-                PORTS_MOD,
-                output_xml_type,
-                self.construct_soap_wrapper(output_type.as_str(), output_soap_name.as_str())
-            ))
+                    r#"{6}
+                    
+                    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+                    pub struct {0} {{
+                    #[yaserde(rename = "{3}", default)]
+                    pub body: {2}::{1},
+                    {4}
+                }}
+                {5}
+                "#,
+                    output_soap_name,
+                    output_type,
+                    PORTS_MOD,
+                    output_xml_type,
+                    soap_fault,
+                    self.construct_soap_wrapper(output_type.as_str(), output_soap_name.as_str()),
+                    soap_wrapper_fault,
+                ))
             } else {
                 Option::None
             }
@@ -902,10 +953,10 @@ impl FileWriter {
         };
 
         let output_template = if has_output {
-            if let Some(fault_type) = fault_type {
+            if has_fault {
                 format!(
-                    "-> Result<{2}::{0}, {2}::{1}>",
-                    output_type, fault_type, PORTS_MOD,
+                    "-> Result<{2}::{0}, Option<{1}>>",
+                    output_type, fault_soap_name, PORTS_MOD,
                 )
             } else {
                 format!("-> {}::{}", PORTS_MOD, output_type)
@@ -930,7 +981,11 @@ impl FileWriter {
                 input_name.as_str(),
                 input_type.as_str(),
                 output_type.as_str(),
-                fault_type,
+                if has_fault {
+                    Option::from(&fault_type)
+                } else {
+                    Option::None
+                },
                 &operation_name,
                 some_soap_action,
             )
@@ -996,6 +1051,9 @@ impl FileWriter {
             .await
             .expect("can not send request");
         
+        let status = res.status();
+        debug!("SOAP Status: {{}}", status);
+
         let txt = res.text().await.unwrap_or_default();
         debug!("SOAP Response: {{}}", txt);
 
@@ -1005,7 +1063,14 @@ impl FileWriter {
         ));
 
         if fault_type.is_some() {
-            self.write("Ok(r.body.body)".to_string())
+            self.write(
+                r#"if status.is_success() {
+				Ok(r.body.body)
+			} else {
+				Err(r.body.fault)
+			}"#
+                .to_string(),
+            )
         } else {
             self.write("r.body.body".to_string())
         }

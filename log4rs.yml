@@ -16,4 +16,4 @@ root:
 
 loggers:
   generated:
-    level: info
+    level: debug
