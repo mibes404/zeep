@@ -695,12 +695,15 @@ impl FileWriter {
                             Option::Some(self.format_type(
                                 &fault_name,
                                 format!(
-                                    "pub type {} = {}::{};\n",
-                                    fault_name, MESSAGES_MOD, fault_type
+                                    "pub type {} = {}::{};\n{}\n",
+                                    fault_name,
+                                    MESSAGES_MOD,
+                                    fault_type,
+                                    self.fault_soap_wrapper(fault_name, fault_type)
                                 ),
                             )),
                             format!(
-                                "-> Result<{0}, {1}>",
+                                "-> Result<{0}, Option<Soap{1}>>",
                                 type_name,
                                 to_pascal_case(fault_name.as_str())
                             ),
@@ -740,6 +743,29 @@ impl FileWriter {
         ));
 
         self.port_types.insert(port_type.name.clone(), port_type);
+    }
+
+    fn fault_soap_wrapper(&self, fault_name: &str, fault_type: &str) -> String {
+        let soap_fault_name = format!("Soap{}", fault_name);
+
+        format!(
+            r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+                    #[yaserde(
+                        root = "Fault",
+                        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+                        prefix = "soapenv"
+                    )]
+                    pub struct {0} {{
+                        #[yaserde(rename = "faultcode", default)]
+                        pub fault_code: Option<String>,
+                        #[yaserde(rename = "faultstring", default)]
+                        pub fault_string: Option<String>,
+                        #[yaserde(rename = "{2}", default)]
+                        pub detail: Option<{1}>,
+                    }}
+            "#,
+            soap_fault_name, fault_name, fault_type
+        )
     }
 
     fn queue_port_types(&mut self, input: &str, output: &str, fault: Option<String>) {
@@ -878,9 +904,10 @@ impl FileWriter {
                 _ => (String::new(), String::new(), String::new(), false),
             };
 
-        let (fault_type, fault_xml_type, fault_soap_name, has_fault) = match &port_type.fault_type {
+        let (fault_type, _fault_xml_type, fault_soap_name, has_fault) = match &port_type.fault_type
+        {
             Some((fault_name, Some(fault_type))) => {
-                let soap_name = format!("{}Fault", output_soap_name);
+                let soap_name = format!("Soap{}", fault_type);
                 (
                     fault_type.to_string(),
                     fault_name.to_string(),
@@ -891,35 +918,12 @@ impl FileWriter {
             _ => (String::new(), String::new(), String::new(), false),
         };
 
-        let soap_wrapper_fault = if has_fault {
-            format!(
-                r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-                    #[yaserde(
-                        root = "Fault",
-                        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-                        prefix = "soapenv"
-                    )]
-                    pub struct {0} {{
-                        #[yaserde(rename = "faultcode", default)]
-                        pub fault_code: Option<String>,
-                        #[yaserde(rename = "faultstring", default)]
-                        pub fault_string: Option<String>,
-                        #[yaserde(rename = "{3}", default)]
-                        pub detail: Option<{2}::{1}>,
-                    }}
-            "#,
-                fault_soap_name, fault_type, PORTS_MOD, fault_xml_type
-            )
-        } else {
-            String::new()
-        };
-
         let soap_fault = if has_fault {
             format!(
                 r#"     #[yaserde(rename = "Fault", default)]
-                            pub fault: Option<{0}>,
+                            pub fault: Option<{1}::{0}>,
                             "#,
-                fault_soap_name,
+                fault_soap_name, PORTS_MOD,
             )
         } else {
             String::new()
@@ -929,9 +933,7 @@ impl FileWriter {
             if !self.have_seen_type(output_soap_name.clone()) {
                 self.seen_type(output_soap_name.clone());
                 Option::from(format!(
-                    r#"{6}
-                    
-                    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+                    r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
                     pub struct {0} {{
                     #[yaserde(rename = "{3}", default)]
                     pub body: {2}::{1},
@@ -945,7 +947,6 @@ impl FileWriter {
                     output_xml_type,
                     soap_fault,
                     self.construct_soap_wrapper(output_type.as_str(), output_soap_name.as_str()),
-                    soap_wrapper_fault,
                 ))
             } else {
                 Option::None
@@ -957,7 +958,7 @@ impl FileWriter {
         let output_template = if has_output {
             if has_fault {
                 format!(
-                    "-> Result<{2}::{0}, Option<{1}>>",
+                    "-> Result<{2}::{0}, Option<{2}::{1}>>",
                     output_type, fault_soap_name, PORTS_MOD,
                 )
             } else {

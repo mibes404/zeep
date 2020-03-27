@@ -183,7 +183,7 @@ async fn main() {
         .await;
 
     if let Err(Some(err)) = not_claire {
-        println!("{:?}", err.faultstring);
+        println!("{:?}", err.fault_string);
     }
 
     /* -- this is not giving a response at the moment; SQL error...
@@ -236,6 +236,7 @@ async fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::aic::bindings::LookupAgentIdsResponseSoapEnvelope;
     use crate::aic::types;
     use crate::tempconverter::bindings::{
         CelsiusToFahrenheitSoapEnvelope, SoapCelsiusToFahrenheit,
