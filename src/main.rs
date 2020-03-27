@@ -13,7 +13,7 @@ fn main() {
     let matches = App::new("XSD Generator")
         .version("0.1.0")
         .author("Marcel Ibes <mibes@avaya.com>")
-        .about("Generate Serde annotated Rust structs from XSD")
+        .about("Generate Yaserde annotated Rust structs from XSD or WSDL")
         .arg(
             Arg::with_name("to_file")
                 .short("o")
