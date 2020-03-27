@@ -140,24 +140,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "code_generator"
-version = "0.1.0"
-dependencies = [
- "Inflector",
- "async-trait",
- "clap",
- "log",
- "log4rs",
- "reqwest",
- "roxmltree",
- "soap_client",
- "tokio",
- "xml-rs",
- "yaserde",
- "yaserde_derive",
-]
-
-[[package]]
 name = "core-foundation"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1064,20 +1046,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5c2fb2ec9bcd216a5b0d0ccf31ab17b5ed1d627960edff65bbe95d3ce221cefc"
 
 [[package]]
-name = "soap_client"
-version = "0.1.0"
-dependencies = [
- "Inflector",
- "clap",
- "log",
- "log4rs",
- "roxmltree",
- "xml-rs",
- "yaserde",
- "yaserde_derive",
-]
-
-[[package]]
 name = "socket2"
 version = "0.3.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1510,4 +1478,21 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "zeep"
+version = "0.1.0"
+dependencies = [
+ "Inflector",
+ "async-trait",
+ "clap",
+ "log",
+ "log4rs",
+ "reqwest",
+ "roxmltree",
+ "tokio",
+ "xml-rs",
+ "yaserde",
+ "yaserde_derive",
 ]

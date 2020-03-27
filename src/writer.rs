@@ -1,6 +1,6 @@
 use inflector::cases::pascalcase::to_pascal_case;
 use inflector::cases::snakecase::to_snake_case;
-use log::{info, warn};
+use log::warn;
 use roxmltree::Node;
 use std::cell::RefCell;
 use std::collections::HashMap;
@@ -13,7 +13,6 @@ const MESSAGES_MOD: &str = "messages";
 const TYPES_MOD: &str = "types";
 const PORTS_MOD: &str = "ports";
 const BINDINGS_MOD: &str = "bindings";
-const SOAP_ENV: &str = "soapenv";
 
 pub struct FileWriter {
     base_path: String,
@@ -142,12 +141,6 @@ impl FileWriter {
     pub fn seen_type(&mut self, type_def: String) {
         if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
             mw.seen_type(type_def);
-        }
-    }
-
-    pub fn reset_defined_types(&mut self) {
-        if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
-            mw.reset_defined_types();
         }
     }
 
@@ -377,7 +370,9 @@ impl FileWriter {
         self.inc_level();
         self.write("#[derive(Debug, Default, YaSerialize, YaDeserialize)]\n".to_string());
 
-        if let Some(tns) = &self.target_name_space {
+        let some_tns = self.target_name_space.clone();
+
+        if let Some(tns) = some_tns {
             self.write(format!(
                 "#[yaserde(prefix = \"ns\", namespace = \"ns: {}\", rename = \"{}\", default)]\npub struct {} {{\n",
                 tns,
@@ -659,7 +654,7 @@ impl FileWriter {
         };
 
         let input_template = match &port_type.input_type {
-            Some((name, Some(msg))) => format!(
+            Some((name, Some(_msg))) => format!(
                 "{}: {}",
                 to_snake_case(name.as_str()),
                 to_pascal_case(name.as_str())
@@ -858,7 +853,7 @@ impl FileWriter {
             };
 
         let fault_type = match &port_type.fault_type {
-            Some((fault_name, Some(fault_type))) => Option::from(fault_type),
+            Some((_fault_name, Some(fault_type))) => Option::from(fault_type),
             _ => Option::None,
         };
 
@@ -1100,10 +1095,6 @@ impl ModWriter {
 
     pub fn seen_type(&mut self, type_def: String) {
         self.defined_types.push(type_def);
-    }
-
-    pub fn reset_defined_types(&mut self) {
-        self.defined_types.clear();
     }
 
     pub fn have_seen_type(&self, type_def: String) -> bool {
