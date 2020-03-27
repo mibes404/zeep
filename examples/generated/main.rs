@@ -24,6 +24,7 @@ use crate::tempconverter::types::CelsiusToFahrenheitRequest;
 use crate::weather::bindings;
 use crate::weather::messages::GetWeatherInformationSoapIn;
 use crate::weather::ports::WeatherSoap;
+use crate::weather::types::GetWeatherInformation;
 use yaserde::de::from_str;
 use yaserde::ser::to_string;
 
@@ -174,11 +175,13 @@ async fn main() {
 
     println!("{:?}", claire);
 
-    /*
+    /* -- this is not giving a response at the moment; SQL error...
     let mut w =
         bindings::WeatherSoap::new("http://wsf.cdyne.com/WeatherWS/Weather.asmx", Option::None);
     let w_info = w
-        .get_weather_information(GetWeatherInformationSoapIn::default())
+        .get_weather_information(GetWeatherInformationSoapIn {
+            parameters: GetWeatherInformation {},
+        })
         .await;
     println!("{:?}", w_info);
     */
