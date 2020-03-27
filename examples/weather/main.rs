@@ -29,5 +29,9 @@ async fn main() {
         })
         .await;
 
-    println!("{:?}", w_info);
+    if let Err(Some(err)) = w_info {
+        println!("Failed: {:?}", err.fault_string);
+    } else {
+        println!("Succeeded: {:?}", w_info);
+    }
 }
