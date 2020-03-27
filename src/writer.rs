@@ -13,6 +13,10 @@ const MESSAGES_MOD: &str = "messages";
 const TYPES_MOD: &str = "types";
 const PORTS_MOD: &str = "ports";
 const BINDINGS_MOD: &str = "bindings";
+const SIGNATURE: &str = r#"//! THIS IS A GENERATED FILE!
+//! Take care when hand editing. Changes may be lost during subsequent runs of the code generator.
+//!
+"#;
 
 pub struct FileWriter {
     base_path: String,
@@ -89,7 +93,7 @@ impl FileWriter {
 
     pub fn process_file(&mut self, base_path: &str, file_name: &str) {
         self.base_path = base_path.to_string();
-        self.print_header();
+        self.print_global_header();
         self.print_common_structs();
         self.process_file_in_path(file_name, true);
     }
@@ -115,7 +119,7 @@ impl FileWriter {
                 }
 
                 // return writer for next loop
-                self.writer = Option::Some(writer);
+                self.writer.replace(writer);
             }
         }
     }
@@ -123,6 +127,16 @@ impl FileWriter {
     fn write(&mut self, buf: String) {
         if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
             mw.write(buf, self.level)
+        }
+    }
+
+    fn direct_write(&mut self, buf: String) {
+        if let Some(mut writer) = self.writer.take() {
+            if let Err(err) = writer.write_all(buf.as_bytes()) {
+                warn!("Failed to write directly to output: {:?}", err);
+            }
+
+            self.writer.replace(writer);
         }
     }
 
@@ -167,8 +181,9 @@ impl FileWriter {
         self.set_level(self.level - 1);
     }
 
-    fn print_header(&mut self) {
-        self.write(
+    fn print_global_header(&mut self) {
+        self.direct_write(SIGNATURE.to_string());
+        self.direct_write(
             r#"use yaserde::{{YaSerialize, YaDeserialize}};
             use std::io::{Read, Write};
             
@@ -951,6 +966,7 @@ impl FileWriter {
         }});            
         
         let body = to_string(&__request).expect("failed to generate xml");
+        debug!("SOAP Request: {{}}", body);
         
         let mut req = self.client
         .post(&self.url)
@@ -970,7 +986,8 @@ impl FileWriter {
             .expect("can not send request");
         
         let txt = res.text().await.unwrap_or_default();
-        
+        debug!("SOAP Response: {{}}", txt);
+
         let r: {2}SoapEnvelope = from_str(&txt).expect("can not unmarshal");
         "#,
             input_variable, input_type, output_type, action, xmlns

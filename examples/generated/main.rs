@@ -24,8 +24,6 @@ use crate::tempconverter::types::CelsiusToFahrenheitRequest;
 use crate::weather::bindings;
 use crate::weather::messages::GetWeatherInformationSoapIn;
 use crate::weather::ports::WeatherSoap;
-use soap_client::envelop;
-use soap_client::soap::SOAP_ENCODING;
 use yaserde::de::from_str;
 use yaserde::ser::to_string;
 
@@ -44,6 +42,10 @@ mod weather;
 
 #[tokio::main]
 async fn main() {
+    if let Err(err) = log4rs::init_file("log4rs.yml", Default::default()) {
+        warn!("Unable to find log4rs.yml logging config. {}", err);
+    }
+
     let c = Create {
         agent: Agent {
             advocate_info: None,

@@ -15,5 +15,5 @@ root:
     - stdout
 
 loggers:
-  kp_micro_phonebook:
+  generated:
     level: debug
