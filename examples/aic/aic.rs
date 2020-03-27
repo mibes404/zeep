@@ -5,192 +5,6 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupPhoneTypesRequest", default)]
-    pub struct LookupPhoneTypesRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupPhoneTypes,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupLinkGroupsRequest", default)]
-    pub struct LookupLinkGroupsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLinkGroups,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupLRMIdsResponse", default)]
-    pub struct LookupLRMIdsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLRMIdsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "CreateRequest", default)]
-    pub struct CreateRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Create,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "CreateResponse", default)]
-    pub struct CreateResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::CreateResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "UpdateRequest", default)]
-    pub struct UpdateRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Update,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupSitesRequest", default)]
-    pub struct LookupSitesRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupSites,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupDomainsRequest", default)]
-    pub struct LookupDomainsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupDomains,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupDomainsResponse", default)]
-    pub struct LookupDomainsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupDomainsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetResponse", default)]
-    pub struct GetResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::GetResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "DeleteResponse", default)]
-    pub struct DeleteResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::DeleteResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupLRMIdsRequest", default)]
-    pub struct LookupLRMIdsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLRMIds,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupLinkGroupsResponse", default)]
-    pub struct LookupLinkGroupsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLinkGroupsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "UpdateResponse", default)]
-    pub struct UpdateResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::UpdateResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "GetRequest", default)]
-    pub struct GetRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Get,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupAgentIdsResponse", default)]
-    pub struct LookupAgentIdsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupAgentIdsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupPhoneTypesResponse", default)]
-    pub struct LookupPhoneTypesResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupPhoneTypesResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupAgentIdsRequest", default)]
-    pub struct LookupAgentIdsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupAgentIds,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupSitesResponse", default)]
-    pub struct LookupSitesResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupSitesResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupWorkgroupsResponse", default)]
-    pub struct LookupWorkgroupsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupWorkgroupsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "AicServiceFault", default)]
-    pub struct AicServiceFault {
-        #[yaserde(flatten)]
-        pub fault: types::Fault,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "DeleteRequest", default)]
-    pub struct DeleteRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Delete,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "LookupWorkgroupsRequest", default)]
-    pub struct LookupWorkgroupsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupWorkgroups,
-    }
-}
-
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -862,6 +676,191 @@ pub mod ports {
     pub type LookupSitesResponse = messages::LookupSitesResponse;
     pub type CreateRequest = messages::CreateRequest;
     pub type CreateResponse = messages::CreateResponse;
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupPhoneTypesRequest", default)]
+    pub struct LookupPhoneTypesRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupPhoneTypes,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupLinkGroupsRequest", default)]
+    pub struct LookupLinkGroupsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupLinkGroups,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupLRMIdsResponse", default)]
+    pub struct LookupLRMIdsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupLRMIdsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "CreateRequest", default)]
+    pub struct CreateRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::Create,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "CreateResponse", default)]
+    pub struct CreateResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::CreateResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "UpdateRequest", default)]
+    pub struct UpdateRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::Update,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupSitesRequest", default)]
+    pub struct LookupSitesRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupSites,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupDomainsRequest", default)]
+    pub struct LookupDomainsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupDomains,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupDomainsResponse", default)]
+    pub struct LookupDomainsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupDomainsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetResponse", default)]
+    pub struct GetResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::GetResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "DeleteResponse", default)]
+    pub struct DeleteResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::DeleteResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupLRMIdsRequest", default)]
+    pub struct LookupLRMIdsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupLRMIds,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupLinkGroupsResponse", default)]
+    pub struct LookupLinkGroupsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupLinkGroupsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "UpdateResponse", default)]
+    pub struct UpdateResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::UpdateResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "GetRequest", default)]
+    pub struct GetRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::Get,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupAgentIdsResponse", default)]
+    pub struct LookupAgentIdsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupAgentIdsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupPhoneTypesResponse", default)]
+    pub struct LookupPhoneTypesResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupPhoneTypesResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupAgentIdsRequest", default)]
+    pub struct LookupAgentIdsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupAgentIds,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupSitesResponse", default)]
+    pub struct LookupSitesResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupSitesResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupWorkgroupsResponse", default)]
+    pub struct LookupWorkgroupsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupWorkgroupsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "AicServiceFault", default)]
+    pub struct AicServiceFault {
+        #[yaserde(flatten)]
+        pub fault: types::Fault,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "DeleteRequest", default)]
+    pub struct DeleteRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::Delete,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "LookupWorkgroupsRequest", default)]
+    pub struct LookupWorkgroupsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupWorkgroups,
+    }
 }
 
 pub mod bindings {

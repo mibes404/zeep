@@ -27,6 +27,62 @@ pub mod messages {
     }
 }
 
+pub mod types {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://learnwebservices.com/services/hello",
+        rename = "SayHello",
+        default
+    )]
+    pub struct SayHello {
+        #[yaserde(prefix = "tns", rename = "HelloRequest", default)]
+        pub hello_request: HelloRequest,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://learnwebservices.com/services/hello",
+        rename = "helloRequest",
+        default
+    )]
+    pub struct HelloRequest {
+        #[yaserde(prefix = "tns", rename = "Name", default)]
+        pub name: String,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://learnwebservices.com/services/hello",
+        rename = "SayHelloResponse",
+        default
+    )]
+    pub struct SayHelloResponse {
+        #[yaserde(prefix = "tns", rename = "HelloResponse", default)]
+        pub hello_response: HelloResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://learnwebservices.com/services/hello",
+        rename = "helloResponse",
+        default
+    )]
+    pub struct HelloResponse {
+        #[yaserde(prefix = "tns", rename = "Message", default)]
+        pub message: String,
+    }
+}
+
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 pub struct Header {}
 
@@ -41,25 +97,6 @@ pub struct SoapFault {
     pub fault_code: Option<String>,
     #[yaserde(rename = "faultstring", default)]
     pub fault_string: Option<String>,
-}
-
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait HelloEndpoint {
-        async fn say_hello(
-            &mut self,
-            say_hello: SayHello,
-        ) -> Result<SayHelloResponse, Option<SoapFault>>;
-    }
-
-    pub type SayHello = messages::SayHello;
-    pub type SayHelloResponse = messages::SayHelloResponse;
 }
 
 pub mod bindings {
@@ -221,58 +258,21 @@ pub mod bindings {
     }
 }
 
-pub mod types {
+pub mod ports {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://learnwebservices.com/services/hello",
-        rename = "SayHello",
-        default
-    )]
-    pub struct SayHello {
-        #[yaserde(prefix = "tns", rename = "HelloRequest", default)]
-        pub hello_request: HelloRequest,
+    #[async_trait]
+    pub trait HelloEndpoint {
+        async fn say_hello(
+            &mut self,
+            say_hello: SayHello,
+        ) -> Result<SayHelloResponse, Option<SoapFault>>;
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://learnwebservices.com/services/hello",
-        rename = "helloRequest",
-        default
-    )]
-    pub struct HelloRequest {
-        #[yaserde(prefix = "tns", rename = "Name", default)]
-        pub name: String,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://learnwebservices.com/services/hello",
-        rename = "SayHelloResponse",
-        default
-    )]
-    pub struct SayHelloResponse {
-        #[yaserde(prefix = "tns", rename = "HelloResponse", default)]
-        pub hello_response: HelloResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://learnwebservices.com/services/hello",
-        rename = "helloResponse",
-        default
-    )]
-    pub struct HelloResponse {
-        #[yaserde(prefix = "tns", rename = "Message", default)]
-        pub message: String,
-    }
+    pub type SayHello = messages::SayHello;
+    pub type SayHelloResponse = messages::SayHelloResponse;
 }
