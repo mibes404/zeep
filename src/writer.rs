@@ -322,7 +322,7 @@ impl FileWriter {
 
                 if let Some(_tns) = &self.target_name_space {
                     self.write(format!(
-                        "\t#[yaserde(prefix = \"ns\", rename = \"{}\", default)]\n",
+                        "\t#[yaserde(prefix = \"tns\", rename = \"{}\", default)]\n",
                         element_name,
                     ));
                 } else {
@@ -392,7 +392,7 @@ impl FileWriter {
 
         if let Some(tns) = some_tns {
             self.write(format!(
-                "#[yaserde(prefix = \"ns\", namespace = \"ns: {}\", rename = \"{}\", default)]\npub struct {} {{\n",
+                "#[yaserde(prefix = \"tns\", namespace = \"tns: {}\", rename = \"{}\", default)]\npub struct {} {{\n",
                 tns,
                 name,
                 to_pascal_case(name)
