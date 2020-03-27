@@ -223,6 +223,9 @@ async fn main() {
 mod tests {
     use super::*;
     use crate::aic::types;
+    use crate::tempconverter::bindings::{
+        CelsiusToFahrenheitSoapEnvelope, SoapCelsiusToFahrenheit,
+    };
 
     #[test]
     fn test_unmarshal() {
@@ -271,5 +274,30 @@ mod tests {
         let r: LookupAgentIdsResponseSoapEnvelope = from_str(&xml).expect("can not unmarshal");
 
         println!("{:?}", r);
+    }
+
+    #[test]
+    fn test_celsius_to_fahrenheit_req() {
+        let request = CelsiusToFahrenheitSoapEnvelope {
+            encoding_style: "http://www.w3.org/2003/05/soap-encoding".to_string(),
+            tnsattr: Option::from("http://learnwebservices.com/services/tempconverter".to_string()),
+            urnattr: None,
+            xsiattr: None,
+            header: None,
+            body: SoapCelsiusToFahrenheit {
+                body: CelsiusToFahrenheit {
+                    celsius_to_fahrenheit_request: CelsiusToFahrenheitRequest {
+                        temperature_in_celsius: 30.0,
+                    },
+                },
+                xmlns: Option::from(
+                    "http://learnwebservices.com/services/tempconverter".to_string(),
+                ),
+            },
+        };
+
+        let request_body = to_string(&request).expect("can not parse request");
+        let expected = r#"<?xml version="1.0" encoding="utf-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" soapenv:encodingStyle="http://www.w3.org/2003/05/soap-encoding" xmlns:tns="http://learnwebservices.com/services/tempconverter"><soapenv:Body xmlns="http://learnwebservices.com/services/tempconverter"><CelsiusToFahrenheitRequest><ns:TemperatureInCelsius>30</ns:TemperatureInCelsius></CelsiusToFahrenheitRequest></soapenv:Body></soapenv:Envelope>"#.to_string();
+        assert_eq!(request_body, expected);
     }
 }

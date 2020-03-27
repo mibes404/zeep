@@ -26,6 +26,7 @@ pub struct FileWriter {
     writer: Option<Box<dyn std::io::Write>>,
     target_name_space: Option<String>,
     port_types: HashMap<String, PortType>,
+    message_types: HashMap<String, String>,
 }
 
 struct ModWriter {
@@ -64,6 +65,7 @@ impl Default for FileWriter {
             writer: Option::Some(Box::new(stdout())),
             target_name_space: Option::None,
             port_types: HashMap::new(),
+            message_types: HashMap::new(),
         }
     }
 }
@@ -78,6 +80,7 @@ impl FileWriter {
             writer: Option::Some(Box::new(dest_file_name)),
             target_name_space: Option::None,
             port_types: HashMap::new(),
+            message_types: HashMap::new(),
         }
     }
 
@@ -487,14 +490,14 @@ impl FileWriter {
             let maybe_part = node.children().find(|child| child.has_tag_name("part"));
 
             if let Some(part) = maybe_part {
-                self.print_part(&part);
+                self.print_part(name, &part);
             }
 
             self.write("}\n\n".to_string());
         }
     }
 
-    fn print_part(&mut self, node: &Node) {
+    fn print_part(&mut self, message_name: &str, node: &Node) {
         let element_name = match self.get_some_attribute(node, "name") {
             None => return,
             Some(n) => n,
@@ -509,6 +512,9 @@ impl FileWriter {
                 TYPES_MOD,
                 self.fetch_type(type_name)
             ));
+
+            self.message_types
+                .insert(message_name.to_string(), type_name.to_string());
         }
     }
 
@@ -797,6 +803,11 @@ impl FileWriter {
             Some(n) => n,
         };
 
+        let message_type_name = match self.message_types.get(operation_name) {
+            None => operation_name.to_string(),
+            Some(mt) => self.split_type(mt).to_string(),
+        };
+
         let port_type_name = format!("{}::{}", bind_type_name, operation_name);
 
         let port_type = match self.port_types.get(&port_type_name) {
@@ -810,7 +821,7 @@ impl FileWriter {
             Some(pt) => pt.clone(),
         };
 
-        let func_name = to_snake_case(operation_name);
+        let func_name = to_snake_case(&operation_name);
 
         let (input_name, input_type, input_soap_name, has_input) = match &port_type.input_type {
             Some((input_name, Some(input_type))) => {
@@ -848,7 +859,7 @@ impl FileWriter {
                     input_soap_name,
                     input_type,
                     PORTS_MOD,
-                    operation_name,
+                    message_type_name,
                     self.construct_soap_wrapper(input_type.as_str(), input_soap_name.as_str())
                 ))
             } else {
@@ -920,7 +931,7 @@ impl FileWriter {
                 input_type.as_str(),
                 output_type.as_str(),
                 fault_type,
-                operation_name,
+                &operation_name,
                 some_soap_action,
             )
         }
