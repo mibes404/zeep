@@ -161,7 +161,7 @@ impl FileWriter {
         }
     }
 
-    pub fn have_seen_type(&mut self, type_def: String) -> bool {
+    pub fn have_seen_type(&mut self, type_def: &str) -> bool {
         if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
             mw.have_seen_type(type_def)
         } else {
@@ -286,7 +286,7 @@ impl FileWriter {
     }
 
     fn format_type(&mut self, id: &str, definition: String) -> String {
-        if !self.have_seen_type(id.to_string()) {
+        if !self.have_seen_type(&id.to_string()) {
             self.seen_type(id.to_string());
             definition
         } else {
@@ -552,6 +552,7 @@ impl FileWriter {
 
     fn print_binding(&mut self, node: &Node) {
         self.check_section(Section::Bindings);
+
         let element_name = match self.get_some_attribute(node, "name") {
             None => return,
             Some(n) => n,
@@ -564,6 +565,11 @@ impl FileWriter {
 
         let struct_name = to_pascal_case(element_name);
         let trait_name = self.fetch_type(type_name);
+
+        if !self.have_seen_type(&struct_name) {
+            self.seen_type(struct_name.clone());
+            self.print_binding_helpers(&struct_name);
+        }
 
         self.write(format!(
             r#"pub struct {0} {{
@@ -585,6 +591,35 @@ impl FileWriter {
         self.print_default_constructor(struct_name.as_str());
         self.print_constructor(struct_name.as_str());
         self.flush_delayed_buffer();
+    }
+
+    fn print_binding_helpers(&mut self, struct_name: &str) {
+        self.write(format!(r#"
+            impl {0} {{
+                async fn send_soap_request<T: YaSerialize>(&mut self, request: &T, action: &str) -> (reqwest::StatusCode, String) {{
+                    let body = to_string(request).expect("failed to generate xml");
+                    debug!("SOAP Request: {{}}", body);
+                    let mut req = self
+                        .client
+                        .post(&self.url)
+                        .body(body)
+                        .header("Content-Type", "text/xml")
+                        .header("Soapaction", action);
+                    if let Some(credentials) = &self.credentials {{
+                        req = req.basic_auth(
+                            credentials.0.to_string(),
+                            Option::from(credentials.1.to_string()),
+                        );
+                    }}
+                    let res = req.send().await.expect("can not send request");
+                    let status = res.status();
+                    debug!("SOAP Status: {{}}", status);
+                    let txt = res.text().await.unwrap_or_default();
+                    debug!("SOAP Response: {{}}", txt);
+                    (status, txt)
+                }}
+            }}
+            "#, struct_name))
     }
 
     fn print_default_constructor(&mut self, struct_name: &str) {
@@ -884,7 +919,7 @@ impl FileWriter {
         };
 
         let soap_wrapper_in = if has_input {
-            if !self.have_seen_type(input_soap_name.clone()) {
+            if !self.have_seen_type(&input_soap_name) {
                 self.seen_type(input_soap_name.clone());
                 Option::from(format!(
                     r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -947,7 +982,7 @@ impl FileWriter {
         };
 
         let soap_wrapper_out = if has_output {
-            if !self.have_seen_type(output_soap_name.clone()) {
+            if !self.have_seen_type(&output_soap_name) {
                 self.seen_type(output_soap_name.clone());
                 Option::from(format!(
                     r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -1054,33 +1089,9 @@ impl FileWriter {
             xmlns: {4},
         }});            
         
-        let body = to_string(&__request).expect("failed to generate xml");
-        debug!("SOAP Request: {{}}", body);
-        
-        let mut req = self.client
-        .post(&self.url)
-        .body(body)
-        .header("Content-Type", "text/xml")
-        .header(
-            "Soapaction",
-            "{3}",
-        );
-        
-        if let Some(credentials) = &self.credentials {{
-            req = req.basic_auth(credentials.0.to_string(), Option::from(credentials.1.to_string()));    
-        }}
-        
-        let res = req.send()
-            .await
-            .expect("can not send request");
-        
-        let status = res.status();
-        debug!("SOAP Status: {{}}", status);
+        let (status, response) = self.send_soap_request(&__request, "{3}").await;
 
-        let txt = res.text().await.unwrap_or_default();
-        debug!("SOAP Response: {{}}", txt);
-
-        let r: {2}SoapEnvelope = from_str(&txt).expect("can not unmarshal");
+        let r: {2}SoapEnvelope = from_str(&response).expect("can not unmarshal");
         "#,
             input_variable, input_type, output_type, action, xmlns
         ));
@@ -1209,7 +1220,7 @@ impl ModWriter {
         self.defined_types.push(type_def);
     }
 
-    pub fn have_seen_type(&self, type_def: String) -> bool {
-        self.defined_types.contains(&type_def)
+    pub fn have_seen_type(&self, type_def: &str) -> bool {
+        self.defined_types.contains(&type_def.to_string())
     }
 }

@@ -5,140 +5,6 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
-pub mod types {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://learnwebservices.com/services/tempconverter",
-        rename = "celsiusToFahrenheitRequest",
-        default
-    )]
-    pub struct CelsiusToFahrenheitRequest {
-        #[yaserde(prefix = "tns", rename = "TemperatureInCelsius", default)]
-        pub temperature_in_celsius: f64,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://learnwebservices.com/services/tempconverter",
-        rename = "celsiusToFahrenheitResponse",
-        default
-    )]
-    pub struct CelsiusToFahrenheitResponse {
-        #[yaserde(prefix = "tns", rename = "TemperatureInFahrenheit", default)]
-        pub temperature_in_fahrenheit: f64,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://learnwebservices.com/services/tempconverter",
-        rename = "fahrenheitToCelsiusRequest",
-        default
-    )]
-    pub struct FahrenheitToCelsiusRequest {
-        #[yaserde(prefix = "tns", rename = "TemperatureInFahrenheit", default)]
-        pub temperature_in_fahrenheit: f64,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://learnwebservices.com/services/tempconverter",
-        rename = "fahrenheitToCelsiusResponse",
-        default
-    )]
-    pub struct FahrenheitToCelsiusResponse {
-        #[yaserde(prefix = "tns", rename = "TemperatureInCelsius", default)]
-        pub temperature_in_celsius: f64,
-    }
-}
-
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "CelsiusToFahrenheit", default)]
-    pub struct CelsiusToFahrenheit {
-        #[yaserde(flatten)]
-        pub celsius_to_fahrenheit_request: types::CelsiusToFahrenheitRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "FahrenheitToCelsius", default)]
-    pub struct FahrenheitToCelsius {
-        #[yaserde(flatten)]
-        pub fahrenheit_to_celsius_request: types::FahrenheitToCelsiusRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "CelsiusToFahrenheitResponse", default)]
-    pub struct CelsiusToFahrenheitResponse {
-        #[yaserde(flatten)]
-        pub celsius_to_fahrenheit_response: types::CelsiusToFahrenheitResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(rename = "FahrenheitToCelsiusResponse", default)]
-    pub struct FahrenheitToCelsiusResponse {
-        #[yaserde(flatten)]
-        pub fahrenheit_to_celsius_response: types::FahrenheitToCelsiusResponse,
-    }
-}
-
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait TempConverterEndpoint {
-        async fn celsius_to_fahrenheit(
-            &mut self,
-            celsius_to_fahrenheit: CelsiusToFahrenheit,
-        ) -> Result<CelsiusToFahrenheitResponse, Option<SoapFault>>;
-        async fn fahrenheit_to_celsius(
-            &mut self,
-            fahrenheit_to_celsius: FahrenheitToCelsius,
-        ) -> Result<FahrenheitToCelsiusResponse, Option<SoapFault>>;
-    }
-
-    pub type CelsiusToFahrenheit = messages::CelsiusToFahrenheit;
-    pub type CelsiusToFahrenheitResponse = messages::CelsiusToFahrenheitResponse;
-    pub type FahrenheitToCelsius = messages::FahrenheitToCelsius;
-    pub type FahrenheitToCelsiusResponse = messages::FahrenheitToCelsiusResponse;
-}
-
 pub mod bindings {
     use super::*;
     use async_trait::async_trait;
@@ -146,6 +12,34 @@ pub mod bindings {
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
 
+    impl TempConverterEndpointServiceSoapBinding {
+        async fn send_soap_request<T: YaSerialize>(
+            &mut self,
+            request: &T,
+            action: &str,
+        ) -> (reqwest::StatusCode, String) {
+            let body = to_string(request).expect("failed to generate xml");
+            debug!("SOAP Request: {}", body);
+            let mut req = self
+                .client
+                .post(&self.url)
+                .body(body)
+                .header("Content-Type", "text/xml")
+                .header("Soapaction", action);
+            if let Some(credentials) = &self.credentials {
+                req = req.basic_auth(
+                    credentials.0.to_string(),
+                    Option::from(credentials.1.to_string()),
+                );
+            }
+            let res = req.send().await.expect("can not send request");
+            let status = res.status();
+            debug!("SOAP Status: {}", status);
+            let txt = res.text().await.unwrap_or_default();
+            debug!("SOAP Response: {}", txt);
+            (status, txt)
+        }
+    }
     pub struct TempConverterEndpointServiceSoapBinding {
         client: reqwest::Client,
         url: String,
@@ -165,33 +59,10 @@ pub mod bindings {
                 ),
             });
 
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header("Soapaction", "");
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
+            let (status, response) = self.send_soap_request(&__request, "").await;
 
             let r: CelsiusToFahrenheitResponseSoapEnvelope =
-                from_str(&txt).expect("can not unmarshal");
+                from_str(&response).expect("can not unmarshal");
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -209,33 +80,10 @@ pub mod bindings {
                 ),
             });
 
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header("Soapaction", "");
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
+            let (status, response) = self.send_soap_request(&__request, "").await;
 
             let r: FahrenheitToCelsiusResponseSoapEnvelope =
-                from_str(&txt).expect("can not unmarshal");
+                from_str(&response).expect("can not unmarshal");
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -432,5 +280,138 @@ pub mod bindings {
                 header: None,
             }
         }
+    }
+}
+
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[async_trait]
+    pub trait TempConverterEndpoint {
+        async fn celsius_to_fahrenheit(
+            &mut self,
+            celsius_to_fahrenheit: CelsiusToFahrenheit,
+        ) -> Result<CelsiusToFahrenheitResponse, Option<SoapFault>>;
+        async fn fahrenheit_to_celsius(
+            &mut self,
+            fahrenheit_to_celsius: FahrenheitToCelsius,
+        ) -> Result<FahrenheitToCelsiusResponse, Option<SoapFault>>;
+    }
+
+    pub type CelsiusToFahrenheit = messages::CelsiusToFahrenheit;
+    pub type CelsiusToFahrenheitResponse = messages::CelsiusToFahrenheitResponse;
+    pub type FahrenheitToCelsius = messages::FahrenheitToCelsius;
+    pub type FahrenheitToCelsiusResponse = messages::FahrenheitToCelsiusResponse;
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "CelsiusToFahrenheit", default)]
+    pub struct CelsiusToFahrenheit {
+        #[yaserde(flatten)]
+        pub celsius_to_fahrenheit_request: types::CelsiusToFahrenheitRequest,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "FahrenheitToCelsius", default)]
+    pub struct FahrenheitToCelsius {
+        #[yaserde(flatten)]
+        pub fahrenheit_to_celsius_request: types::FahrenheitToCelsiusRequest,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "CelsiusToFahrenheitResponse", default)]
+    pub struct CelsiusToFahrenheitResponse {
+        #[yaserde(flatten)]
+        pub celsius_to_fahrenheit_response: types::CelsiusToFahrenheitResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(rename = "FahrenheitToCelsiusResponse", default)]
+    pub struct FahrenheitToCelsiusResponse {
+        #[yaserde(flatten)]
+        pub fahrenheit_to_celsius_response: types::FahrenheitToCelsiusResponse,
+    }
+}
+
+pub mod types {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://learnwebservices.com/services/tempconverter",
+        rename = "celsiusToFahrenheitRequest",
+        default
+    )]
+    pub struct CelsiusToFahrenheitRequest {
+        #[yaserde(prefix = "tns", rename = "TemperatureInCelsius", default)]
+        pub temperature_in_celsius: f64,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://learnwebservices.com/services/tempconverter",
+        rename = "celsiusToFahrenheitResponse",
+        default
+    )]
+    pub struct CelsiusToFahrenheitResponse {
+        #[yaserde(prefix = "tns", rename = "TemperatureInFahrenheit", default)]
+        pub temperature_in_fahrenheit: f64,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://learnwebservices.com/services/tempconverter",
+        rename = "fahrenheitToCelsiusRequest",
+        default
+    )]
+    pub struct FahrenheitToCelsiusRequest {
+        #[yaserde(prefix = "tns", rename = "TemperatureInFahrenheit", default)]
+        pub temperature_in_fahrenheit: f64,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://learnwebservices.com/services/tempconverter",
+        rename = "fahrenheitToCelsiusResponse",
+        default
+    )]
+    pub struct FahrenheitToCelsiusResponse {
+        #[yaserde(prefix = "tns", rename = "TemperatureInCelsius", default)]
+        pub temperature_in_celsius: f64,
     }
 }

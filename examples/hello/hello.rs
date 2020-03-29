@@ -5,6 +5,42 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[async_trait]
+    pub trait HelloEndpoint {
+        async fn say_hello(
+            &mut self,
+            say_hello: SayHello,
+        ) -> Result<SayHelloResponse, Option<SoapFault>>;
+    }
+
+    pub type SayHello = messages::SayHello;
+    pub type SayHelloResponse = messages::SayHelloResponse;
+}
+
 pub mod messages {
     use super::*;
     use async_trait::async_trait;
@@ -83,22 +119,6 @@ pub mod types {
     }
 }
 
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
 pub mod bindings {
     use super::*;
     use async_trait::async_trait;
@@ -106,6 +126,34 @@ pub mod bindings {
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
 
+    impl HelloEndpointServiceSoapBinding {
+        async fn send_soap_request<T: YaSerialize>(
+            &mut self,
+            request: &T,
+            action: &str,
+        ) -> (reqwest::StatusCode, String) {
+            let body = to_string(request).expect("failed to generate xml");
+            debug!("SOAP Request: {}", body);
+            let mut req = self
+                .client
+                .post(&self.url)
+                .body(body)
+                .header("Content-Type", "text/xml")
+                .header("Soapaction", action);
+            if let Some(credentials) = &self.credentials {
+                req = req.basic_auth(
+                    credentials.0.to_string(),
+                    Option::from(credentials.1.to_string()),
+                );
+            }
+            let res = req.send().await.expect("can not send request");
+            let status = res.status();
+            debug!("SOAP Status: {}", status);
+            let txt = res.text().await.unwrap_or_default();
+            debug!("SOAP Response: {}", txt);
+            (status, txt)
+        }
+    }
     pub struct HelloEndpointServiceSoapBinding {
         client: reqwest::Client,
         url: String,
@@ -123,32 +171,9 @@ pub mod bindings {
                 xmlns: Option::from("http://learnwebservices.com/services/hello".to_string()),
             });
 
-            let body = to_string(&__request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
+            let (status, response) = self.send_soap_request(&__request, "").await;
 
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header("Soapaction", "");
-
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::from(credentials.1.to_string()),
-                );
-            }
-
-            let res = req.send().await.expect("can not send request");
-
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
-
-            let r: SayHelloResponseSoapEnvelope = from_str(&txt).expect("can not unmarshal");
+            let r: SayHelloResponseSoapEnvelope = from_str(&response).expect("can not unmarshal");
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -256,23 +281,4 @@ pub mod bindings {
             }
         }
     }
-}
-
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait HelloEndpoint {
-        async fn say_hello(
-            &mut self,
-            say_hello: SayHello,
-        ) -> Result<SayHelloResponse, Option<SoapFault>>;
-    }
-
-    pub type SayHello = messages::SayHello;
-    pub type SayHelloResponse = messages::SayHelloResponse;
 }
