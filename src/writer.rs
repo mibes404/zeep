@@ -329,7 +329,16 @@ impl FileWriter {
                 _ => true,
             }
         };
-        let as_option = self.get_some_attribute(node, "nillable").is_some();
+        let as_option = {
+            match (
+                self.get_some_attribute(node, "nillable"),
+                self.get_some_attribute(node, "minOccurs"),
+            ) {
+                // either nillable set or minOccurs being 0 means the field is optional
+                (Some(_), _) | (_, Some("0")) => true,
+                _ => false,
+            }
+        };
 
         let maybe_complex = node
             .children()
