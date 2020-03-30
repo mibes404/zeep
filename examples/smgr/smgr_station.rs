@@ -494,12 +494,8 @@ pub mod types {
         pub comm_profile_sub_type: Option<String>,
         #[yaserde(prefix = "tns", rename = "jobId", default)]
         pub job_id: Option<String>,
-        #[yaserde(
-            prefix = "ns8",
-            namespace = "ns8: http://xml.avaya.com/schema/import_csm_cm",
-            flatten
-        )]
-        pub station: XmlStationProfile,
+        #[yaserde(flatten)]
+        pub station: Option<XmlStationProfile>,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -631,483 +627,483 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/schema/import",
+        prefix = "ns8",
+        namespace = "ns8: http://xml.avaya.com/schema/import_csm_cm",
         rename = "xmlStationProfile",
         default
     )]
     pub struct XmlStationProfile {
-        #[yaserde(prefix = "tns", rename = "cmName", default)]
+        #[yaserde(prefix = "ns8", rename = "cmName", default)]
         pub cm_name: String,
-        #[yaserde(prefix = "tns", rename = "prefHandleId", default)]
+        #[yaserde(prefix = "ns8", rename = "prefHandleId", default)]
         pub pref_handle_id: Option<String>,
-        #[yaserde(prefix = "tns", rename = "useExistingExtension", default)]
+        #[yaserde(prefix = "ns8", rename = "useExistingExtension", default)]
         pub use_existing_extension: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "extensionRange", default)]
+        #[yaserde(prefix = "ns8", rename = "extensionRange", default)]
         pub extension_range: Option<String>,
-        #[yaserde(prefix = "tns", rename = "extension", default)]
+        #[yaserde(prefix = "ns8", rename = "extension", default)]
         pub extension: String,
-        #[yaserde(prefix = "tns", rename = "template", default)]
+        #[yaserde(prefix = "ns8", rename = "template", default)]
         pub template: Option<String>,
-        #[yaserde(prefix = "tns", rename = "setType", default)]
+        #[yaserde(prefix = "ns8", rename = "setType", default)]
         pub set_type: Option<String>,
-        #[yaserde(prefix = "tns", rename = "securityCode", default)]
+        #[yaserde(prefix = "ns8", rename = "securityCode", default)]
         pub security_code: Option<String>,
-        #[yaserde(prefix = "tns", rename = "port", default)]
+        #[yaserde(prefix = "ns8", rename = "port", default)]
         pub port: Option<String>,
-        #[yaserde(prefix = "tns", rename = "deleteOnUnassign", default)]
+        #[yaserde(prefix = "ns8", rename = "deleteOnUnassign", default)]
         pub delete_on_unassign: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "overRideEndpointName", default)]
+        #[yaserde(prefix = "ns8", rename = "overRideEndpointName", default)]
         pub over_ride_endpoint_name: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "dualRegistration", default)]
+        #[yaserde(prefix = "ns8", rename = "dualRegistration", default)]
         pub dual_registration: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "enhCallrInfodisplay", default)]
+        #[yaserde(prefix = "ns8", rename = "enhCallrInfodisplay", default)]
         pub enh_callr_infodisplay: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "lockMessages", default)]
+        #[yaserde(prefix = "ns8", rename = "lockMessages", default)]
         pub lock_messages: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "coveragePath1", default)]
+        #[yaserde(prefix = "ns8", rename = "coveragePath1", default)]
         pub coverage_path_1: Option<String>,
-        #[yaserde(prefix = "tns", rename = "coveragePath2", default)]
+        #[yaserde(prefix = "ns8", rename = "coveragePath2", default)]
         pub coverage_path_2: Option<String>,
-        #[yaserde(prefix = "tns", rename = "huntToStation", default)]
+        #[yaserde(prefix = "ns8", rename = "huntToStation", default)]
         pub hunt_to_station: Option<String>,
-        #[yaserde(prefix = "tns", rename = "tn", default)]
+        #[yaserde(prefix = "ns8", rename = "tn", default)]
         pub tn: Option<u64>,
-        #[yaserde(prefix = "tns", rename = "cor", default)]
+        #[yaserde(prefix = "ns8", rename = "cor", default)]
         pub cor: Option<u64>,
-        #[yaserde(prefix = "tns", rename = "cos", default)]
+        #[yaserde(prefix = "ns8", rename = "cos", default)]
         pub cos: Option<u64>,
-        #[yaserde(prefix = "tns", rename = "xmobileType", default)]
+        #[yaserde(prefix = "ns8", rename = "xmobileType", default)]
         pub xmobile_type: Option<String>,
-        #[yaserde(prefix = "tns", rename = "mappingMode", default)]
+        #[yaserde(prefix = "ns8", rename = "mappingMode", default)]
         pub mapping_mode: Option<String>,
-        #[yaserde(prefix = "tns", rename = "configurationSet", default)]
+        #[yaserde(prefix = "ns8", rename = "configurationSet", default)]
         pub configuration_set: Option<String>,
-        #[yaserde(prefix = "tns", rename = "mobilityTrunkGroup", default)]
+        #[yaserde(prefix = "ns8", rename = "mobilityTrunkGroup", default)]
         pub mobility_trunk_group: Option<String>,
-        #[yaserde(prefix = "tns", rename = "dialPrefix", default)]
+        #[yaserde(prefix = "ns8", rename = "dialPrefix", default)]
         pub dial_prefix: Option<String>,
-        #[yaserde(prefix = "tns", rename = "cellPhoneNumber", default)]
+        #[yaserde(prefix = "ns8", rename = "cellPhoneNumber", default)]
         pub cell_phone_number: Option<String>,
-        #[yaserde(prefix = "tns", rename = "musicSource", default)]
+        #[yaserde(prefix = "ns8", rename = "musicSource", default)]
         pub music_source: Option<u64>,
-        #[yaserde(prefix = "tns", rename = "tests", default)]
+        #[yaserde(prefix = "ns8", rename = "tests", default)]
         pub tests: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "dataModule", default)]
+        #[yaserde(prefix = "ns8", rename = "dataModule", default)]
         pub data_module: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "speakerphone", default)]
+        #[yaserde(prefix = "ns8", rename = "speakerphone", default)]
         pub speakerphone: Option<String>,
-        #[yaserde(prefix = "tns", rename = "displayLanguage", default)]
+        #[yaserde(prefix = "ns8", rename = "displayLanguage", default)]
         pub display_language: Option<String>,
-        #[yaserde(prefix = "tns", rename = "personalizedRingingPattern", default)]
+        #[yaserde(prefix = "ns8", rename = "personalizedRingingPattern", default)]
         pub personalized_ringing_pattern: Option<u64>,
-        #[yaserde(prefix = "tns", rename = "messageLampExt", default)]
+        #[yaserde(prefix = "ns8", rename = "messageLampExt", default)]
         pub message_lamp_ext: Option<String>,
-        #[yaserde(prefix = "tns", rename = "muteButtonEnabled", default)]
+        #[yaserde(prefix = "ns8", rename = "muteButtonEnabled", default)]
         pub mute_button_enabled: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "mediaComplexExt", default)]
+        #[yaserde(prefix = "ns8", rename = "mediaComplexExt", default)]
         pub media_complex_ext: Option<String>,
-        #[yaserde(prefix = "tns", rename = "ipSoftphone", default)]
+        #[yaserde(prefix = "ns8", rename = "ipSoftphone", default)]
         pub ip_softphone: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "survivableGkNodeName", default)]
+        #[yaserde(prefix = "ns8", rename = "survivableGkNodeName", default)]
         pub survivable_gk_node_name: Option<String>,
-        #[yaserde(prefix = "tns", rename = "survivableCOR", default)]
+        #[yaserde(prefix = "ns8", rename = "survivableCOR", default)]
         pub survivable_cor: Option<String>,
-        #[yaserde(prefix = "tns", rename = "survivableTrunkDest", default)]
+        #[yaserde(prefix = "ns8", rename = "survivableTrunkDest", default)]
         pub survivable_trunk_dest: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "voiceMailNumber", default)]
+        #[yaserde(prefix = "ns8", rename = "voiceMailNumber", default)]
         pub voice_mail_number: Option<String>,
-        #[yaserde(prefix = "tns", rename = "offPremisesStation", default)]
+        #[yaserde(prefix = "ns8", rename = "offPremisesStation", default)]
         pub off_premises_station: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "dataOption", default)]
+        #[yaserde(prefix = "ns8", rename = "dataOption", default)]
         pub data_option: Option<String>,
-        #[yaserde(prefix = "tns", rename = "displayModule", default)]
+        #[yaserde(prefix = "ns8", rename = "displayModule", default)]
         pub display_module: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "messageWaitingIndicator", default)]
+        #[yaserde(prefix = "ns8", rename = "messageWaitingIndicator", default)]
         pub message_waiting_indicator: Option<String>,
-        #[yaserde(prefix = "tns", rename = "remoteOfficePhone", default)]
+        #[yaserde(prefix = "ns8", rename = "remoteOfficePhone", default)]
         pub remote_office_phone: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "lwcReception", default)]
+        #[yaserde(prefix = "ns8", rename = "lwcReception", default)]
         pub lwc_reception: Option<String>,
-        #[yaserde(prefix = "tns", rename = "lwcActivation", default)]
+        #[yaserde(prefix = "ns8", rename = "lwcActivation", default)]
         pub lwc_activation: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "lwcLogExternalCalls", default)]
+        #[yaserde(prefix = "ns8", rename = "lwcLogExternalCalls", default)]
         pub lwc_log_external_calls: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "cdrPrivacy", default)]
+        #[yaserde(prefix = "ns8", rename = "cdrPrivacy", default)]
         pub cdr_privacy: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "redirectNotification", default)]
+        #[yaserde(prefix = "ns8", rename = "redirectNotification", default)]
         pub redirect_notification: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "perButtonRingControl", default)]
+        #[yaserde(prefix = "ns8", rename = "perButtonRingControl", default)]
         pub per_button_ring_control: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "bridgedCallAlerting", default)]
+        #[yaserde(prefix = "ns8", rename = "bridgedCallAlerting", default)]
         pub bridged_call_alerting: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "bridgedIdleLinePreference", default)]
+        #[yaserde(prefix = "ns8", rename = "bridgedIdleLinePreference", default)]
         pub bridged_idle_line_preference: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "confTransOnPrimaryAppearance", default)]
+        #[yaserde(prefix = "ns8", rename = "confTransOnPrimaryAppearance", default)]
         pub conf_trans_on_primary_appearance: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "customizableLabels", default)]
+        #[yaserde(prefix = "ns8", rename = "customizableLabels", default)]
         pub customizable_labels: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "expansionModule", default)]
+        #[yaserde(prefix = "ns8", rename = "expansionModule", default)]
         pub expansion_module: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "ipVideoSoftphone", default)]
+        #[yaserde(prefix = "ns8", rename = "ipVideoSoftphone", default)]
         pub ip_video_softphone: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "activeStationRinging", default)]
+        #[yaserde(prefix = "ns8", rename = "activeStationRinging", default)]
         pub active_station_ringing: Option<String>,
-        #[yaserde(prefix = "tns", rename = "idleActiveRinging", default)]
+        #[yaserde(prefix = "ns8", rename = "idleActiveRinging", default)]
         pub idle_active_ringing: Option<String>,
-        #[yaserde(prefix = "tns", rename = "switchhookFlash", default)]
+        #[yaserde(prefix = "ns8", rename = "switchhookFlash", default)]
         pub switchhook_flash: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "ignoreRotaryDigits", default)]
+        #[yaserde(prefix = "ns8", rename = "ignoreRotaryDigits", default)]
         pub ignore_rotary_digits: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "h320Conversion", default)]
+        #[yaserde(prefix = "ns8", rename = "h320Conversion", default)]
         pub h_320_conversion: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "serviceLinkMode", default)]
+        #[yaserde(prefix = "ns8", rename = "serviceLinkMode", default)]
         pub service_link_mode: Option<String>,
-        #[yaserde(prefix = "tns", rename = "multimediaMode", default)]
+        #[yaserde(prefix = "ns8", rename = "multimediaMode", default)]
         pub multimedia_mode: Option<String>,
-        #[yaserde(prefix = "tns", rename = "mwiServedUserType", default)]
+        #[yaserde(prefix = "ns8", rename = "mwiServedUserType", default)]
         pub mwi_served_user_type: Option<String>,
-        #[yaserde(prefix = "tns", rename = "audixName", default)]
+        #[yaserde(prefix = "ns8", rename = "audixName", default)]
         pub audix_name: Option<String>,
-        #[yaserde(prefix = "tns", rename = "automaticMoves", default)]
+        #[yaserde(prefix = "ns8", rename = "automaticMoves", default)]
         pub automatic_moves: Option<String>,
-        #[yaserde(prefix = "tns", rename = "remoteSoftphoneEmergencyCalls", default)]
+        #[yaserde(prefix = "ns8", rename = "remoteSoftphoneEmergencyCalls", default)]
         pub remote_softphone_emergency_calls: Option<String>,
-        #[yaserde(prefix = "tns", rename = "emergencyLocationExt", default)]
+        #[yaserde(prefix = "ns8", rename = "emergencyLocationExt", default)]
         pub emergency_location_ext: Option<String>,
-        #[yaserde(prefix = "tns", rename = "alwaysUse", default)]
+        #[yaserde(prefix = "ns8", rename = "alwaysUse", default)]
         pub always_use: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "precedenceCallWaiting", default)]
+        #[yaserde(prefix = "ns8", rename = "precedenceCallWaiting", default)]
         pub precedence_call_waiting: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "autoSelectAnyIdleAppearance", default)]
+        #[yaserde(prefix = "ns8", rename = "autoSelectAnyIdleAppearance", default)]
         pub auto_select_any_idle_appearance: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "coverageMsgRetrieval", default)]
+        #[yaserde(prefix = "ns8", rename = "coverageMsgRetrieval", default)]
         pub coverage_msg_retrieval: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "autoAnswer", default)]
+        #[yaserde(prefix = "ns8", rename = "autoAnswer", default)]
         pub auto_answer: Option<String>,
-        #[yaserde(prefix = "tns", rename = "dataRestriction", default)]
+        #[yaserde(prefix = "ns8", rename = "dataRestriction", default)]
         pub data_restriction: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "idleAppearancePreference", default)]
+        #[yaserde(prefix = "ns8", rename = "idleAppearancePreference", default)]
         pub idle_appearance_preference: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "callWaitingIndication", default)]
+        #[yaserde(prefix = "ns8", rename = "callWaitingIndication", default)]
         pub call_waiting_indication: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "attCallWaitingIndication", default)]
+        #[yaserde(prefix = "ns8", rename = "attCallWaitingIndication", default)]
         pub att_call_waiting_indication: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "distinctiveAudibleAlert", default)]
+        #[yaserde(prefix = "ns8", rename = "distinctiveAudibleAlert", default)]
         pub distinctive_audible_alert: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "restrictLastAppearance", default)]
+        #[yaserde(prefix = "ns8", rename = "restrictLastAppearance", default)]
         pub restrict_last_appearance: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "adjunctSupervision", default)]
+        #[yaserde(prefix = "ns8", rename = "adjunctSupervision", default)]
         pub adjunct_supervision: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "perStationCpnSendCallingNumber", default)]
+        #[yaserde(prefix = "ns8", rename = "perStationCpnSendCallingNumber", default)]
         pub per_station_cpn_send_calling_number: Option<String>,
-        #[yaserde(prefix = "tns", rename = "busyAutoCallbackWithoutFlash", default)]
+        #[yaserde(prefix = "ns8", rename = "busyAutoCallbackWithoutFlash", default)]
         pub busy_auto_callback_without_flash: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "audibleMessageWaiting", default)]
+        #[yaserde(prefix = "ns8", rename = "audibleMessageWaiting", default)]
         pub audible_message_waiting: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "extendedLocalCalls", default)]
+        #[yaserde(prefix = "ns8", rename = "extendedLocalCalls", default)]
         pub extended_local_calls: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "imsFeatureSequencing", default)]
+        #[yaserde(prefix = "ns8", rename = "imsFeatureSequencing", default)]
         pub ims_feature_sequencing: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "displayClientRedirection", default)]
+        #[yaserde(prefix = "ns8", rename = "displayClientRedirection", default)]
         pub display_client_redirection: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "selectLastUsedAppearance", default)]
+        #[yaserde(prefix = "ns8", rename = "selectLastUsedAppearance", default)]
         pub select_last_used_appearance: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "coverageAfterForwarding", default)]
+        #[yaserde(prefix = "ns8", rename = "coverageAfterForwarding", default)]
         pub coverage_after_forwarding: Option<String>,
-        #[yaserde(prefix = "tns", rename = "directIpIpAudioConnections", default)]
+        #[yaserde(prefix = "ns8", rename = "directIpIpAudioConnections", default)]
         pub direct_ip_ip_audio_connections: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "ipAudioHairpinning", default)]
+        #[yaserde(prefix = "ns8", rename = "ipAudioHairpinning", default)]
         pub ip_audio_hairpinning: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "primeAppearancePreference", default)]
+        #[yaserde(prefix = "ns8", rename = "primeAppearancePreference", default)]
         pub prime_appearance_preference: Option<String>,
-        #[yaserde(prefix = "tns", rename = "stationSiteData", default)]
+        #[yaserde(prefix = "ns8", rename = "stationSiteData", default)]
         pub station_site_data: Option<XmlStationSiteData>,
-        #[yaserde(prefix = "tns", rename = "abbrList", default)]
+        #[yaserde(prefix = "ns8", rename = "abbrList", default)]
         pub abbr_list: Vec<XmlStationAbbreviatedDialingData>,
-        #[yaserde(prefix = "tns", rename = "buttons", default)]
+        #[yaserde(prefix = "ns8", rename = "buttons", default)]
         pub buttons: Vec<XmlButtonData>,
-        #[yaserde(prefix = "tns", rename = "featureButtons", default)]
+        #[yaserde(prefix = "ns8", rename = "featureButtons", default)]
         pub feature_buttons: Vec<XmlButtonData>,
-        #[yaserde(prefix = "tns", rename = "expansionModuleButtons", default)]
+        #[yaserde(prefix = "ns8", rename = "expansionModuleButtons", default)]
         pub expansion_module_buttons: Vec<XmlButtonData>,
-        #[yaserde(prefix = "tns", rename = "softKeys", default)]
+        #[yaserde(prefix = "ns8", rename = "softKeys", default)]
         pub soft_keys: Vec<XmlButtonData>,
-        #[yaserde(prefix = "tns", rename = "displayButtons", default)]
+        #[yaserde(prefix = "ns8", rename = "displayButtons", default)]
         pub display_buttons: Vec<XmlButtonData>,
-        #[yaserde(prefix = "tns", rename = "stationDataModule", default)]
+        #[yaserde(prefix = "ns8", rename = "stationDataModule", default)]
         pub station_data_module: Option<XmlStationDataModule>,
-        #[yaserde(prefix = "tns", rename = "hotLineData", default)]
+        #[yaserde(prefix = "ns8", rename = "hotLineData", default)]
         pub hot_line_data: Option<XmlStationHotLineData>,
-        #[yaserde(prefix = "tns", rename = "nativeName", default)]
+        #[yaserde(prefix = "ns8", rename = "nativeName", default)]
         pub native_name: Option<XmlNativeNameData>,
-        #[yaserde(prefix = "tns", rename = "buttonModules", default)]
+        #[yaserde(prefix = "ns8", rename = "buttonModules", default)]
         pub button_modules: Option<u64>,
-        #[yaserde(prefix = "tns", rename = "unconditionalInternalDest", default)]
+        #[yaserde(prefix = "ns8", rename = "unconditionalInternalDest", default)]
         pub unconditional_internal_dest: Option<String>,
-        #[yaserde(prefix = "tns", rename = "unconditionalInternalActive", default)]
+        #[yaserde(prefix = "ns8", rename = "unconditionalInternalActive", default)]
         pub unconditional_internal_active: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "unconditionalExternalDest", default)]
+        #[yaserde(prefix = "ns8", rename = "unconditionalExternalDest", default)]
         pub unconditional_external_dest: Option<String>,
-        #[yaserde(prefix = "tns", rename = "unconditionalExternalActive", default)]
+        #[yaserde(prefix = "ns8", rename = "unconditionalExternalActive", default)]
         pub unconditional_external_active: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "busyInternalDest", default)]
+        #[yaserde(prefix = "ns8", rename = "busyInternalDest", default)]
         pub busy_internal_dest: Option<String>,
-        #[yaserde(prefix = "tns", rename = "busyInternalActive", default)]
+        #[yaserde(prefix = "ns8", rename = "busyInternalActive", default)]
         pub busy_internal_active: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "busyExternalDest", default)]
+        #[yaserde(prefix = "ns8", rename = "busyExternalDest", default)]
         pub busy_external_dest: Option<String>,
-        #[yaserde(prefix = "tns", rename = "busyExternalActive", default)]
+        #[yaserde(prefix = "ns8", rename = "busyExternalActive", default)]
         pub busy_external_active: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "noReplyInternalDest", default)]
+        #[yaserde(prefix = "ns8", rename = "noReplyInternalDest", default)]
         pub no_reply_internal_dest: Option<String>,
-        #[yaserde(prefix = "tns", rename = "noReplyInternalActive", default)]
+        #[yaserde(prefix = "ns8", rename = "noReplyInternalActive", default)]
         pub no_reply_internal_active: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "noReplyExternalDest", default)]
+        #[yaserde(prefix = "ns8", rename = "noReplyExternalDest", default)]
         pub no_reply_external_dest: Option<String>,
-        #[yaserde(prefix = "tns", rename = "noReplyExternalActive", default)]
+        #[yaserde(prefix = "ns8", rename = "noReplyExternalActive", default)]
         pub no_reply_external_active: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "sacCfOverride", default)]
+        #[yaserde(prefix = "ns8", rename = "sacCfOverride", default)]
         pub sac_cf_override: Option<String>,
-        #[yaserde(prefix = "tns", rename = "lossGroup", default)]
+        #[yaserde(prefix = "ns8", rename = "lossGroup", default)]
         pub loss_group: Option<u64>,
-        #[yaserde(prefix = "tns", rename = "timeOfDayLockTable", default)]
+        #[yaserde(prefix = "ns8", rename = "timeOfDayLockTable", default)]
         pub time_of_day_lock_table: Option<String>,
-        #[yaserde(prefix = "tns", rename = "emuLoginAllowed", default)]
+        #[yaserde(prefix = "ns8", rename = "emuLoginAllowed", default)]
         pub emu_login_allowed: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "ec500State", default)]
+        #[yaserde(prefix = "ns8", rename = "ec500State", default)]
         pub ec_500_state: Option<String>,
-        #[yaserde(prefix = "tns", rename = "muteOnOffHookInSCMode", default)]
+        #[yaserde(prefix = "ns8", rename = "muteOnOffHookInSCMode", default)]
         pub mute_on_off_hook_in_sc_mode: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "type3pccEnabled", default)]
+        #[yaserde(prefix = "ns8", rename = "type3pccEnabled", default)]
         pub type_3pcc_enabled: Option<String>,
-        #[yaserde(prefix = "tns", rename = "calculateRoutePattern", default)]
+        #[yaserde(prefix = "ns8", rename = "calculateRoutePattern", default)]
         pub calculate_route_pattern: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "sipTrunk", default)]
+        #[yaserde(prefix = "ns8", rename = "sipTrunk", default)]
         pub sip_trunk: Option<String>,
-        #[yaserde(prefix = "tns", rename = "enableReachStaDomainControl", default)]
+        #[yaserde(prefix = "ns8", rename = "enableReachStaDomainControl", default)]
         pub enable_reach_sta_domain_control: Option<String>,
-        #[yaserde(prefix = "tns", rename = "multimediaEarlyAnswer", default)]
+        #[yaserde(prefix = "ns8", rename = "multimediaEarlyAnswer", default)]
         pub multimedia_early_answer: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "bridgedApprOrigRestr", default)]
+        #[yaserde(prefix = "ns8", rename = "bridgedApprOrigRestr", default)]
         pub bridged_appr_orig_restr: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "callApprDispFormat", default)]
+        #[yaserde(prefix = "ns8", rename = "callApprDispFormat", default)]
         pub call_appr_disp_format: Option<String>,
-        #[yaserde(prefix = "tns", rename = "ipPhoneGroupId", default)]
+        #[yaserde(prefix = "ns8", rename = "ipPhoneGroupId", default)]
         pub ip_phone_group_id: Option<String>,
-        #[yaserde(prefix = "tns", rename = "xoipEndPointType", default)]
+        #[yaserde(prefix = "ns8", rename = "xoipEndPointType", default)]
         pub xoip_end_point_type: Option<String>,
-        #[yaserde(prefix = "tns", rename = "xid", default)]
+        #[yaserde(prefix = "ns8", rename = "xid", default)]
         pub xid: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "stepClearing", default)]
+        #[yaserde(prefix = "ns8", rename = "stepClearing", default)]
         pub step_clearing: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "fixedTei", default)]
+        #[yaserde(prefix = "ns8", rename = "fixedTei", default)]
         pub fixed_tei: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "tei", default)]
+        #[yaserde(prefix = "ns8", rename = "tei", default)]
         pub tei: Option<String>,
-        #[yaserde(prefix = "tns", rename = "countryProtocol", default)]
+        #[yaserde(prefix = "ns8", rename = "countryProtocol", default)]
         pub country_protocol: Option<String>,
-        #[yaserde(prefix = "tns", rename = "endptInit", default)]
+        #[yaserde(prefix = "ns8", rename = "endptInit", default)]
         pub endpt_init: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "spid", default)]
+        #[yaserde(prefix = "ns8", rename = "spid", default)]
         pub spid: Option<String>,
-        #[yaserde(prefix = "tns", rename = "endptId", default)]
+        #[yaserde(prefix = "ns8", rename = "endptId", default)]
         pub endpt_id: Option<String>,
-        #[yaserde(prefix = "tns", rename = "isMCTSignalling", default)]
+        #[yaserde(prefix = "ns8", rename = "isMCTSignalling", default)]
         pub is_mct_signalling: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "isShortCallingPartyDisplay", default)]
+        #[yaserde(prefix = "ns8", rename = "isShortCallingPartyDisplay", default)]
         pub is_short_calling_party_display: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "passageWay", default)]
+        #[yaserde(prefix = "ns8", rename = "passageWay", default)]
         pub passage_way: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "dtmfOverIp", default)]
+        #[yaserde(prefix = "ns8", rename = "dtmfOverIp", default)]
         pub dtmf_over_ip: Option<String>,
-        #[yaserde(prefix = "tns", rename = "location", default)]
+        #[yaserde(prefix = "ns8", rename = "location", default)]
         pub location: Option<String>,
-        #[yaserde(prefix = "tns", rename = "displayCallerId", default)]
+        #[yaserde(prefix = "ns8", rename = "displayCallerId", default)]
         pub display_caller_id: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "callerIdMsgWaitingIndication", default)]
+        #[yaserde(prefix = "ns8", rename = "callerIdMsgWaitingIndication", default)]
         pub caller_id_msg_waiting_indication: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "recallRotaryDigit", default)]
+        #[yaserde(prefix = "ns8", rename = "recallRotaryDigit", default)]
         pub recall_rotary_digit: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "profileSettingsData", default)]
+        #[yaserde(prefix = "ns8", rename = "profileSettingsData", default)]
         pub profile_settings_data: Option<XmlProfileSettings>,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/schema/import",
+        prefix = "ns8",
+        namespace = "ns8: http://xml.avaya.com/schema/import_csm_cm",
         rename = "xmlStationSiteData",
         default
     )]
     pub struct XmlStationSiteData {
-        #[yaserde(prefix = "tns", rename = "room", default)]
+        #[yaserde(prefix = "ns8", rename = "room", default)]
         pub room: Option<String>,
-        #[yaserde(prefix = "tns", rename = "jack", default)]
+        #[yaserde(prefix = "ns8", rename = "jack", default)]
         pub jack: Option<String>,
-        #[yaserde(prefix = "tns", rename = "cable", default)]
+        #[yaserde(prefix = "ns8", rename = "cable", default)]
         pub cable: Option<String>,
-        #[yaserde(prefix = "tns", rename = "floor", default)]
+        #[yaserde(prefix = "ns8", rename = "floor", default)]
         pub floor: Option<String>,
-        #[yaserde(prefix = "tns", rename = "building", default)]
+        #[yaserde(prefix = "ns8", rename = "building", default)]
         pub building: Option<String>,
-        #[yaserde(prefix = "tns", rename = "headset", default)]
+        #[yaserde(prefix = "ns8", rename = "headset", default)]
         pub headset: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "speaker", default)]
+        #[yaserde(prefix = "ns8", rename = "speaker", default)]
         pub speaker: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "mounting", default)]
+        #[yaserde(prefix = "ns8", rename = "mounting", default)]
         pub mounting: Option<String>,
-        #[yaserde(prefix = "tns", rename = "cordLength", default)]
+        #[yaserde(prefix = "ns8", rename = "cordLength", default)]
         pub cord_length: Option<u64>,
-        #[yaserde(prefix = "tns", rename = "setColor", default)]
+        #[yaserde(prefix = "ns8", rename = "setColor", default)]
         pub set_color: Option<String>,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/schema/import",
+        prefix = "ns8",
+        namespace = "ns8: http://xml.avaya.com/schema/import_csm_cm",
         rename = "xmlStationAbbreviatedDialingData",
         default
     )]
     pub struct XmlStationAbbreviatedDialingData {
-        #[yaserde(prefix = "tns", rename = "listType", default)]
+        #[yaserde(prefix = "ns8", rename = "listType", default)]
         pub list_type: String,
-        #[yaserde(prefix = "tns", rename = "number", default)]
+        #[yaserde(prefix = "ns8", rename = "number", default)]
         pub number: u64,
-        #[yaserde(prefix = "tns", rename = "listId", default)]
+        #[yaserde(prefix = "ns8", rename = "listId", default)]
         pub list_id: Option<u64>,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/schema/import",
+        prefix = "ns8",
+        namespace = "ns8: http://xml.avaya.com/schema/import_csm_cm",
         rename = "xmlButtonData",
         default
     )]
     pub struct XmlButtonData {
-        #[yaserde(prefix = "tns", rename = "number", default)]
+        #[yaserde(prefix = "ns8", rename = "number", default)]
         pub number: u64,
-        #[yaserde(prefix = "tns", rename = "type", default)]
+        #[yaserde(prefix = "ns8", rename = "type", default)]
         pub rs_type: String,
-        #[yaserde(prefix = "tns", rename = "data1", default)]
+        #[yaserde(prefix = "ns8", rename = "data1", default)]
         pub data_1: Option<String>,
-        #[yaserde(prefix = "tns", rename = "data2", default)]
+        #[yaserde(prefix = "ns8", rename = "data2", default)]
         pub data_2: Option<String>,
-        #[yaserde(prefix = "tns", rename = "data3", default)]
+        #[yaserde(prefix = "ns8", rename = "data3", default)]
         pub data_3: Option<String>,
-        #[yaserde(prefix = "tns", rename = "data4", default)]
+        #[yaserde(prefix = "ns8", rename = "data4", default)]
         pub data_4: Option<String>,
-        #[yaserde(prefix = "tns", rename = "data5", default)]
+        #[yaserde(prefix = "ns8", rename = "data5", default)]
         pub data_5: Option<String>,
-        #[yaserde(prefix = "tns", rename = "data6", default)]
+        #[yaserde(prefix = "ns8", rename = "data6", default)]
         pub data_6: Option<String>,
-        #[yaserde(prefix = "tns", rename = "isFavorite", default)]
+        #[yaserde(prefix = "ns8", rename = "isFavorite", default)]
         pub is_favorite: Option<bool>,
-        #[yaserde(prefix = "tns", rename = "buttonLabel", default)]
+        #[yaserde(prefix = "ns8", rename = "buttonLabel", default)]
         pub button_label: Option<String>,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/schema/import",
+        prefix = "ns8",
+        namespace = "ns8: http://xml.avaya.com/schema/import_csm_cm",
         rename = "xmlStationDataModule",
         default
     )]
     pub struct XmlStationDataModule {
-        #[yaserde(prefix = "tns", rename = "dataExtension", default)]
+        #[yaserde(prefix = "ns8", rename = "dataExtension", default)]
         pub data_extension: String,
-        #[yaserde(prefix = "tns", rename = "name", default)]
+        #[yaserde(prefix = "ns8", rename = "name", default)]
         pub name: Option<String>,
-        #[yaserde(prefix = "tns", rename = "cor", default)]
+        #[yaserde(prefix = "ns8", rename = "cor", default)]
         pub cor: u64,
-        #[yaserde(prefix = "tns", rename = "cos", default)]
+        #[yaserde(prefix = "ns8", rename = "cos", default)]
         pub cos: u64,
-        #[yaserde(prefix = "tns", rename = "itc", default)]
+        #[yaserde(prefix = "ns8", rename = "itc", default)]
         pub itc: String,
-        #[yaserde(prefix = "tns", rename = "tn", default)]
+        #[yaserde(prefix = "ns8", rename = "tn", default)]
         pub tn: u64,
-        #[yaserde(prefix = "tns", rename = "listType", default)]
+        #[yaserde(prefix = "ns8", rename = "listType", default)]
         pub list_type: Option<String>,
-        #[yaserde(prefix = "tns", rename = "listId", default)]
+        #[yaserde(prefix = "ns8", rename = "listId", default)]
         pub list_id: Option<u64>,
-        #[yaserde(prefix = "tns", rename = "specialDialingOption", default)]
+        #[yaserde(prefix = "ns8", rename = "specialDialingOption", default)]
         pub special_dialing_option: Option<String>,
-        #[yaserde(prefix = "tns", rename = "specialDialingAbbrDialCode", default)]
+        #[yaserde(prefix = "ns8", rename = "specialDialingAbbrDialCode", default)]
         pub special_dialing_abbr_dial_code: Option<String>,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/schema/import",
+        prefix = "ns8",
+        namespace = "ns8: http://xml.avaya.com/schema/import_csm_cm",
         rename = "xmlStationHotLineData",
         default
     )]
     pub struct XmlStationHotLineData {
-        #[yaserde(prefix = "tns", rename = "hotLineDestAbbrevList", default)]
+        #[yaserde(prefix = "ns8", rename = "hotLineDestAbbrevList", default)]
         pub hot_line_dest_abbrev_list: Option<u64>,
-        #[yaserde(prefix = "tns", rename = "hotLineAbbrevDialCode", default)]
+        #[yaserde(prefix = "ns8", rename = "hotLineAbbrevDialCode", default)]
         pub hot_line_abbrev_dial_code: Option<String>,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/schema/import",
+        prefix = "ns8",
+        namespace = "ns8: http://xml.avaya.com/schema/import_csm_cm",
         rename = "xmlNativeNameData",
         default
     )]
     pub struct XmlNativeNameData {
-        #[yaserde(prefix = "tns", rename = "locale", default)]
+        #[yaserde(prefix = "ns8", rename = "locale", default)]
         pub locale: Option<String>,
-        #[yaserde(prefix = "tns", rename = "name", default)]
+        #[yaserde(prefix = "ns8", rename = "name", default)]
         pub name: Option<String>,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/schema/import",
+        prefix = "ns8",
+        namespace = "ns8: http://xml.avaya.com/schema/import_csm_cm",
         rename = "xmlProfileSettings",
         default
     )]
     pub struct XmlProfileSettings {
-        #[yaserde(prefix = "tns", rename = "phoneScreenCalling", default)]
+        #[yaserde(prefix = "ns8", rename = "phoneScreenCalling", default)]
         pub phone_screen_calling: Option<String>,
-        #[yaserde(prefix = "tns", rename = "profileRedial", default)]
+        #[yaserde(prefix = "ns8", rename = "profileRedial", default)]
         pub profile_redial: Option<String>,
-        #[yaserde(prefix = "tns", rename = "dialingOption", default)]
+        #[yaserde(prefix = "ns8", rename = "dialingOption", default)]
         pub dialing_option: Option<String>,
-        #[yaserde(prefix = "tns", rename = "headsetSignaling", default)]
+        #[yaserde(prefix = "ns8", rename = "headsetSignaling", default)]
         pub headset_signaling: Option<String>,
-        #[yaserde(prefix = "tns", rename = "audioPath", default)]
+        #[yaserde(prefix = "ns8", rename = "audioPath", default)]
         pub audio_path: Option<String>,
-        #[yaserde(prefix = "tns", rename = "buttonClicks", default)]
+        #[yaserde(prefix = "ns8", rename = "buttonClicks", default)]
         pub button_clicks: Option<String>,
-        #[yaserde(prefix = "tns", rename = "phoneScreen", default)]
+        #[yaserde(prefix = "ns8", rename = "phoneScreen", default)]
         pub phone_screen: Option<String>,
-        #[yaserde(prefix = "tns", rename = "backgroundLogo", default)]
+        #[yaserde(prefix = "ns8", rename = "backgroundLogo", default)]
         pub background_logo: Option<String>,
-        #[yaserde(prefix = "tns", rename = "personalizedRinging", default)]
+        #[yaserde(prefix = "ns8", rename = "personalizedRinging", default)]
         pub personalized_ringing: Option<String>,
-        #[yaserde(prefix = "tns", rename = "callPickUpIndication", default)]
+        #[yaserde(prefix = "ns8", rename = "callPickUpIndication", default)]
         pub call_pick_up_indication: Option<String>,
-        #[yaserde(prefix = "tns", rename = "touchPanel", default)]
+        #[yaserde(prefix = "ns8", rename = "touchPanel", default)]
         pub touch_panel: Option<String>,
-        #[yaserde(prefix = "tns", rename = "language", default)]
+        #[yaserde(prefix = "ns8", rename = "language", default)]
         pub language: Option<String>,
-        #[yaserde(prefix = "tns", rename = "userPreferredLanguage", default)]
+        #[yaserde(prefix = "ns8", rename = "userPreferredLanguage", default)]
         pub user_preferred_language: Option<String>,
-        #[yaserde(prefix = "tns", rename = "languageFileInUse", default)]
+        #[yaserde(prefix = "ns8", rename = "languageFileInUse", default)]
         pub language_file_in_use: Option<String>,
-        #[yaserde(prefix = "tns", rename = "timeFormat", default)]
+        #[yaserde(prefix = "ns8", rename = "timeFormat", default)]
         pub time_format: Option<String>,
-        #[yaserde(prefix = "tns", rename = "awayTimer", default)]
+        #[yaserde(prefix = "ns8", rename = "awayTimer", default)]
         pub away_timer: Option<String>,
-        #[yaserde(prefix = "tns", rename = "awayTimerValue", default)]
+        #[yaserde(prefix = "ns8", rename = "awayTimerValue", default)]
         pub away_timer_value: Option<u64>,
     }
 }
