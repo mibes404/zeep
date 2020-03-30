@@ -1,5 +1,7 @@
 //! THIS IS A GENERATED FILE!
-//! Take care when hand editing. Changes may be lost during subsequent runs of the code generator.
+//! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
+//!
+//! version: 0.0.2
 //!
 use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
@@ -172,22 +174,6 @@ pub mod messages {
         #[yaserde(flatten)]
         pub parameters: types::LookupWorkgroups,
     }
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
 }
 
 pub mod bindings {
@@ -1520,6 +1506,22 @@ pub mod ports {
     pub type LookupSitesResponse = messages::LookupSitesResponse;
     pub type CreateRequest = messages::CreateRequest;
     pub type CreateResponse = messages::CreateResponse;
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
 }
 
 pub mod types {

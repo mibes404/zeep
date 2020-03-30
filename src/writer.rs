@@ -15,9 +15,10 @@ const TYPES_MOD: &str = "types";
 const PORTS_MOD: &str = "ports";
 const BINDINGS_MOD: &str = "bindings";
 const SIGNATURE: &str = r#"//! THIS IS A GENERATED FILE!
-//! Take care when hand editing. Changes may be lost during subsequent runs of the code generator.
+//! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
 "#;
+const VERSION: &str = "0.0.2";
 
 pub struct FileWriter {
     base_path: String,
@@ -190,6 +191,7 @@ impl FileWriter {
 
     fn print_global_header(&mut self) {
         self.direct_write(SIGNATURE.to_string());
+        self.direct_write(format!("//! version: {}\n//!\n", VERSION));
         self.direct_write(
             r#"use yaserde::{{YaSerialize, YaDeserialize}};
             use std::io::{Read, Write};
