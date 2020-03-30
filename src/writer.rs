@@ -1,3 +1,4 @@
+use crate::error::{WriterError, WriterResult};
 use inflector::cases::pascalcase::to_pascal_case;
 use inflector::cases::snakecase::to_snake_case;
 use log::warn;
@@ -94,21 +95,22 @@ impl FileWriter {
         mod_writers
     }
 
-    pub fn process_file(&mut self, base_path: &str, file_name: &str) {
+    pub fn process_file(&mut self, base_path: &str, file_name: &str) -> WriterResult<()> {
         self.base_path = base_path.to_string();
         self.print_global_header();
         self.print_common_structs();
-        self.process_file_in_path(file_name, true);
+        self.process_file_in_path(file_name, true)?;
+        Ok(())
     }
 
-    fn process_file_in_path(&mut self, file_name: &str, print_when_done: bool) {
+    fn process_file_in_path(&mut self, file_name: &str, print_when_done: bool) -> WriterResult<()> {
         let f_in = format!("{}/{}", self.base_path, file_name);
-        let xml = std::fs::read_to_string(f_in).expect("can not read file");
-        let doc = roxmltree::Document::parse(&xml).unwrap();
-        doc.root().children().for_each(|n| self.print(&n));
+        let xml = std::fs::read_to_string(f_in)?;
+        let doc = roxmltree::Document::parse(&xml)?;
+        doc.root().children().try_for_each(|n| self.print(&n))?;
 
         if !print_when_done {
-            return;
+            return Ok(());
         }
 
         // once all elements are processed, write them to output
@@ -125,6 +127,8 @@ impl FileWriter {
                 self.writer.replace(writer);
             }
         }
+
+        Ok(())
     }
 
     fn write(&mut self, buf: String) {
@@ -220,22 +224,24 @@ impl FileWriter {
         );
     }
 
-    fn print(&mut self, node: &Node) {
+    fn print(&mut self, node: &Node) -> WriterResult<()> {
         if !node.is_element() {
-            return;
+            return Ok(());
         }
 
         match node.tag_name().name() {
-            "definitions" => self.print_definitions(node),
-            "schema" => self.print_xsd(node),
+            "definitions" => self.print_definitions(node)?,
+            "schema" => self.print_xsd(node)?,
             _ => {}
         }
+
+        Ok(())
     }
 
-    fn print_definitions(&mut self, node: &Node) {
+    fn print_definitions(&mut self, node: &Node) -> WriterResult<()> {
         node.children()
             .filter(|child| child.tag_name().name() == "types")
-            .for_each(|node| self.print_types(&node));
+            .try_for_each(|node| self.print_types(&node))?;
 
         node.children()
             .filter(|child| child.tag_name().name() == "message")
@@ -248,15 +254,19 @@ impl FileWriter {
         node.children()
             .filter(|child| child.tag_name().name() == "binding")
             .for_each(|node| self.print_binding(&node));
+
+        Ok(())
     }
 
-    fn print_types(&mut self, node: &Node) {
+    fn print_types(&mut self, node: &Node) -> WriterResult<()> {
         node.children()
             .filter(|c| c.has_tag_name("schema"))
-            .for_each(|c| self.print_xsd(&c));
+            .try_for_each(|c| self.print_xsd(&c))?;
+
+        Ok(())
     }
 
-    fn print_xsd(&mut self, node: &Node) {
+    fn print_xsd(&mut self, node: &Node) -> WriterResult<()> {
         self.check_section(Section::Types);
 
         self.target_name_space = self
@@ -264,25 +274,29 @@ impl FileWriter {
             .map(|s| s.to_string());
 
         node.children()
-            .for_each(|child| match child.tag_name().name() {
+            .try_for_each(|child| match child.tag_name().name() {
                 "import" => self.import_file(&child),
                 "element" => self.print_element(&child),
                 "complexType" => {
                     if let Some(n) = self.get_some_attribute(&child, "name") {
                         self.print_complex_element(&child, n)
-                    };
+                    } else {
+                        Ok(())
+                    }
                 }
-                _ => {}
-            })
+                _ => Ok(()),
+            })?;
+
+        Ok(())
     }
 
-    fn import_file(&mut self, node: &Node) {
+    fn import_file(&mut self, node: &Node) -> WriterResult<()> {
         let name = match self.get_some_attribute(node, "schemaLocation") {
-            None => return,
+            None => return Ok(()),
             Some(n) => n,
         };
 
-        self.process_file_in_path(name, false);
+        self.process_file_in_path(name, false)
     }
 
     fn format_type(&mut self, id: &str, definition: String) -> String {
@@ -301,9 +315,14 @@ impl FileWriter {
         }
     }
 
-    fn print_element(&mut self, node: &Node) {
+    fn print_element(&mut self, node: &Node) -> WriterResult<()> {
         let name = match self.get_some_attribute(node, "name") {
-            None => return,
+            None => {
+                return Err(WriterError::new(format!(
+                    "node {} has no name attribute",
+                    node.tag_name().name()
+                )))
+            }
             Some(n) => n,
         };
 
@@ -316,7 +335,7 @@ impl FileWriter {
 
         // fields
         if let Some(complex) = maybe_complex {
-            self.print_complex_element(&complex, name)
+            self.print_complex_element(&complex, name)?
         } else if let Some(element_name) = self.get_some_attribute(node, "name") {
             if let Some(type_name) = self.get_some_attribute(node, "type") {
                 if self.level == 0 {
@@ -331,7 +350,7 @@ impl FileWriter {
                         );
                     }
 
-                    return;
+                    return Ok(());
                 }
 
                 if let Some(_tns) = &self.target_name_space {
@@ -362,6 +381,8 @@ impl FileWriter {
                 }
             }
         }
+
+        Ok(())
     }
 
     fn get_some_attribute<'a>(&self, node: &'a Node, attr_name: &str) -> Option<&'a str> {
@@ -398,7 +419,7 @@ impl FileWriter {
         }
     }
 
-    fn print_complex_element(&mut self, node: &Node, name: &str) {
+    fn print_complex_element(&mut self, node: &Node, name: &str) -> WriterResult<()> {
         self.inc_level();
         self.write("#[derive(Debug, Default, YaSerialize, YaDeserialize)]\n".to_string());
 
@@ -426,22 +447,25 @@ impl FileWriter {
             .find(|child| child.has_tag_name("complexContent"));
 
         if let Some(sequence) = maybe_sequence {
-            self.print_sequence(&sequence);
+            self.print_sequence(&sequence)?;
         }
 
         if let Some(complex) = maybe_complex {
-            self.print_complex_content(&complex);
+            self.print_complex_content(&complex)?;
         }
 
         self.write("}\n\n".to_string());
         self.dec_level();
+        Ok(())
     }
 
-    fn print_sequence(&mut self, node: &Node) {
-        node.children().for_each(|child| self.print_element(&child));
+    fn print_sequence(&mut self, node: &Node) -> WriterResult<()> {
+        node.children()
+            .try_for_each(|child| self.print_element(&child))?;
+        Ok(())
     }
 
-    fn print_complex_content(&mut self, node: &Node) {
+    fn print_complex_content(&mut self, node: &Node) -> WriterResult<()> {
         if let Some(extension) = node
             .children()
             .find(|child| child.has_tag_name("extension"))
@@ -454,11 +478,11 @@ impl FileWriter {
                 .find(|ext_child| ext_child.has_tag_name("sequence"));
 
             if let Some(sequence) = maybe_sequence {
-                self.print_sequence(&sequence);
+                self.print_sequence(&sequence)?;
             }
         }
 
-        self.print_sequence(node);
+        self.print_sequence(node)
     }
 
     fn print_extension(&mut self, node: &Node) {

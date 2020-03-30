@@ -3,6 +3,7 @@ use clap::{App, Arg};
 use log::warn;
 use std::fs::File;
 
+mod error;
 mod writer;
 
 fn main() {
@@ -50,9 +51,13 @@ fn main() {
             "parsing {}/{} --> {}",
             base_path, from_file_name, output_file
         );
-        writer.process_file(base_path, from_file_name);
+        if let Err(err) = writer.process_file(base_path, from_file_name) {
+            println!("Failed to process {}: {}", from_file_name, err.to_string())
+        }
     } else {
         let mut writer = FileWriter::default();
-        writer.process_file(base_path, from_file_name);
+        if let Err(err) = writer.process_file(base_path, from_file_name) {
+            println!("Failed to process {}: {}", from_file_name, err.to_string())
+        }
     }
 }
