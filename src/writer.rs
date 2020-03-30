@@ -329,6 +329,7 @@ impl FileWriter {
                 _ => true,
             }
         };
+
         let as_option = {
             match (
                 self.get_some_attribute(node, "nillable"),
@@ -363,44 +364,45 @@ impl FileWriter {
                     &top_level,
                     format!("pub type {} = {};\n\n", top_level, alias),
                 );
+
+                return Ok(());
+            }
+        } else {
+            // fields
+            if let Some(_tns) = &self.target_name_space {
+                self.write(format!(
+                    "\t#[yaserde(prefix = \"tns\", rename = \"{}\", default)]\n",
+                    element_name,
+                ));
+            } else {
+                self.write(format!(
+                    "\t#[yaserde(rename = \"{}\", default)]\n",
+                    element_name,
+                ));
             }
 
-            return Ok(());
-        }
+            if let Some(simple) = maybe_simplex {
+                type_name = match self.deconstruct_simplex_element(&simple) {
+                    Ok(tn) => tn,
+                    Err(_) => type_name,
+                };
+            }
 
-        // fields
-        if let Some(_tns) = &self.target_name_space {
-            self.write(format!(
-                "\t#[yaserde(prefix = \"tns\", rename = \"{}\", default)]\n",
-                element_name,
-            ));
-        } else {
-            self.write(format!(
-                "\t#[yaserde(rename = \"{}\", default)]\n",
-                element_name,
-            ));
-        }
-
-        if let Some(simple) = maybe_simplex {
-            type_name = match self.deconstruct_simplex_element(&simple) {
-                Ok(tn) => tn,
-                Err(_) => type_name,
-            };
-        }
-
-        if as_vec || as_option {
-            self.write(format!(
-                "\tpub {}: {}<{}>,\n",
-                self.shield_reserved_names(&to_snake_case(element_name)),
-                if as_vec { "Vec" } else { "Option" },
-                self.fetch_type(&type_name)
-            ));
-        } else {
-            self.write(format!(
-                "\tpub {}: {},\n",
-                self.shield_reserved_names(&to_snake_case(element_name)),
-                self.fetch_type(&type_name)
-            ));
+            // add the element to the owning structure
+            if as_vec || as_option {
+                self.write(format!(
+                    "\tpub {}: {}<{}>,\n",
+                    self.shield_reserved_names(&to_snake_case(element_name)),
+                    if as_vec { "Vec" } else { "Option" },
+                    self.fetch_type(&type_name)
+                ));
+            } else {
+                self.write(format!(
+                    "\tpub {}: {},\n",
+                    self.shield_reserved_names(&to_snake_case(element_name)),
+                    self.fetch_type(&type_name)
+                ));
+            }
         }
 
         if let Some(complex) = maybe_complex {
