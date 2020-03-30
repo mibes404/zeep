@@ -318,7 +318,7 @@ impl FileWriter {
     }
 
     fn print_element(&mut self, node: &Node) -> WriterResult<()> {
-        let name = match self.get_some_attribute(node, "name") {
+        let element_name = match self.get_some_attribute(node, "name") {
             None => return Ok(()),
             Some(n) => n,
         };
@@ -335,53 +335,64 @@ impl FileWriter {
             .children()
             .find(|child| child.has_tag_name("complexType"));
 
-        // fields
-        if let Some(complex) = maybe_complex {
-            self.print_complex_element(&complex, name)?
-        } else if let Some(element_name) = self.get_some_attribute(node, "name") {
-            if let Some(type_name) = self.get_some_attribute(node, "type") {
-                if self.level == 0 {
-                    // top-level == type alias
-                    let top_level = to_pascal_case(element_name);
-                    let alias = self.fetch_type(type_name);
+        let maybe_simplex = node
+            .children()
+            .find(|child| child.has_tag_name("simpleType"));
 
-                    if top_level != alias {
-                        self.print_type(
-                            &top_level,
-                            format!("pub type {} = {};\n\n", top_level, alias),
-                        );
-                    }
+        let type_name = match self.get_some_attribute(node, "type") {
+            None => to_pascal_case(element_name),
+            Some(t) => t.to_string(),
+        };
 
-                    return Ok(());
-                }
+        if self.level == 0 {
+            // top-level == type alias
+            let top_level = to_pascal_case(element_name);
+            let alias = self.fetch_type(&type_name);
 
-                if let Some(_tns) = &self.target_name_space {
-                    self.write(format!(
-                        "\t#[yaserde(prefix = \"tns\", rename = \"{}\", default)]\n",
-                        element_name,
-                    ));
-                } else {
-                    self.write(format!(
-                        "\t#[yaserde(rename = \"{}\", default)]\n",
-                        element_name,
-                    ));
-                }
-
-                if as_vec || as_option {
-                    self.write(format!(
-                        "\tpub {}: {}<{}>,\n",
-                        self.shield_reserved_names(&to_snake_case(element_name)),
-                        if as_vec { "Vec" } else { "Option" },
-                        self.fetch_type(type_name)
-                    ));
-                } else {
-                    self.write(format!(
-                        "\tpub {}: {},\n",
-                        self.shield_reserved_names(&to_snake_case(element_name)),
-                        self.fetch_type(type_name)
-                    ));
-                }
+            if top_level != alias {
+                self.print_type(
+                    &top_level,
+                    format!("pub type {} = {};\n\n", top_level, alias),
+                );
             }
+
+            return Ok(());
+        }
+
+        // fields
+        if let Some(_tns) = &self.target_name_space {
+            self.write(format!(
+                "\t#[yaserde(prefix = \"tns\", rename = \"{}\", default)]\n",
+                element_name,
+            ));
+        } else {
+            self.write(format!(
+                "\t#[yaserde(rename = \"{}\", default)]\n",
+                element_name,
+            ));
+        }
+
+        if as_vec || as_option {
+            self.write(format!(
+                "\tpub {}: {}<{}>,\n",
+                self.shield_reserved_names(&to_snake_case(element_name)),
+                if as_vec { "Vec" } else { "Option" },
+                self.fetch_type(&type_name)
+            ));
+        } else {
+            self.write(format!(
+                "\tpub {}: {},\n",
+                self.shield_reserved_names(&to_snake_case(element_name)),
+                self.fetch_type(&type_name)
+            ));
+        }
+
+        if let Some(complex) = maybe_complex {
+            self.print_complex_element(&complex, element_name)?
+        }
+
+        if let Some(simple) = maybe_simplex {
+            self.print_simplex_element(&simple, element_name)?
         }
 
         Ok(())
@@ -422,6 +433,12 @@ impl FileWriter {
     }
 
     fn print_complex_element(&mut self, node: &Node, name: &str) -> WriterResult<()> {
+        if self.have_seen_type(name) {
+            return Ok(());
+        }
+
+        self.seen_type(name.to_string());
+
         self.inc_level();
         self.write("#[derive(Debug, Default, YaSerialize, YaDeserialize)]\n".to_string());
 
@@ -457,6 +474,38 @@ impl FileWriter {
         }
 
         self.write("}\n\n".to_string());
+        self.dec_level();
+
+        Ok(())
+    }
+
+    fn print_simplex_element(&mut self, node: &Node, name: &str) -> WriterResult<()> {
+        if self.have_seen_type(name) {
+            return Ok(());
+        }
+
+        self.seen_type(name.to_string());
+
+        self.inc_level();
+
+        let restriction = match node.children().find(|c| c.has_tag_name("restriction")) {
+            None => return Ok(()),
+            Some(c) => c,
+        };
+
+        let base = match self.get_some_attribute(&restriction, "base") {
+            None => return Ok(()),
+            Some(b) => b,
+        };
+
+        let type_name = to_pascal_case(name);
+
+        self.write(format!(
+            "pub type {} = {};\n",
+            type_name,
+            self.fetch_type(base)
+        ));
+
         self.dec_level();
 
         Ok(())
