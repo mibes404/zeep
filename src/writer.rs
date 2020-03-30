@@ -333,7 +333,7 @@ impl FileWriter {
 
         let maybe_complex = node
             .children()
-            .find(|child| child.has_tag_name("complexType") || !self.is_simple_node(&child));
+            .find(|child| child.has_tag_name("complexType"));
 
         // fields
         if let Some(complex) = maybe_complex {
@@ -414,18 +414,6 @@ impl FileWriter {
         }
     }
 
-    fn is_simple_node(&self, node: &Node) -> bool {
-        if let Some(node_type) = self.get_some_attribute(node, "type") {
-            match self.split_type(node_type) {
-                "string" | "base64Binary" | "decimal" | "double" | "integer" | "int" | "long"
-                | "short" | "boolean" | "date" | "dateTime" | "xs:time" => true,
-                _ => false,
-            }
-        } else {
-            false
-        }
-    }
-
     fn split_type<'a>(&self, node_type: &'a str) -> &'a str {
         match node_type.split(':').last() {
             None => "String",
@@ -470,6 +458,7 @@ impl FileWriter {
 
         self.write("}\n\n".to_string());
         self.dec_level();
+
         Ok(())
     }
 
