@@ -7,12 +7,6 @@ pub struct WriterError {
     pub message: String,
 }
 
-impl WriterError {
-    pub fn new(message: String) -> Self {
-        WriterError { message }
-    }
-}
-
 impl fmt::Display for WriterError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "writer error: {}", self.message)

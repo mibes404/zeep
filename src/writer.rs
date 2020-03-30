@@ -1,4 +1,4 @@
-use crate::error::{WriterError, WriterResult};
+use crate::error::WriterResult;
 use inflector::cases::pascalcase::to_pascal_case;
 use inflector::cases::snakecase::to_snake_case;
 use log::warn;
@@ -317,12 +317,7 @@ impl FileWriter {
 
     fn print_element(&mut self, node: &Node) -> WriterResult<()> {
         let name = match self.get_some_attribute(node, "name") {
-            None => {
-                return Err(WriterError::new(format!(
-                    "node {} has no name attribute",
-                    node.tag_name().name()
-                )))
-            }
+            None => return Ok(()),
             Some(n) => n,
         };
 
