@@ -23,30 +23,6 @@ pub mod bindings {
     use yaserde::{YaDeserialize, YaSerialize};
 }
 
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -67,7 +43,7 @@ pub mod types {
     )]
     pub struct Users {
         #[yaserde(prefix = "tns", rename = "secureStore", default)]
-        pub secure_store: Vec<XmlSecureStore>,
+        pub secure_store: XmlSecureStore,
         #[yaserde(prefix = "tns", rename = "user", default)]
         pub user: Vec<XmlUser>,
     }
@@ -105,7 +81,7 @@ pub mod types {
     )]
     pub struct OwnedContactLists {
         #[yaserde(prefix = "tns", rename = "contactList", default)]
-        pub contact_list: Vec<XmlContactList>,
+        pub contact_list: XmlContactList,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -129,9 +105,9 @@ pub mod types {
     )]
     pub struct XmlUser {
         #[yaserde(prefix = "tns", rename = "UserOrganizationDetails", default)]
-        pub user_organization_details: Vec<UserOrganizationDetailsType>,
+        pub user_organization_details: UserOrganizationDetailsType,
         #[yaserde(prefix = "tns", rename = "authenticationType", default)]
-        pub authentication_type: Vec<String>,
+        pub authentication_type: String,
         #[yaserde(prefix = "tns", rename = "description", default)]
         pub description: String,
         #[yaserde(prefix = "tns", rename = "displayName", default)]
@@ -143,21 +119,21 @@ pub mod types {
         #[yaserde(prefix = "tns", rename = "isDuplicatedLoginAllowed", default)]
         pub is_duplicated_login_allowed: bool,
         #[yaserde(prefix = "tns", rename = "isEnabled", default)]
-        pub is_enabled: Vec<bool>,
+        pub is_enabled: bool,
         #[yaserde(prefix = "tns", rename = "isVirtualUser", default)]
         pub is_virtual_user: bool,
         #[yaserde(prefix = "tns", rename = "givenName", default)]
-        pub given_name: Vec<String>,
+        pub given_name: String,
         #[yaserde(prefix = "tns", rename = "givenNameAscii", default)]
-        pub given_name_ascii: Vec<String>,
+        pub given_name_ascii: String,
         #[yaserde(prefix = "tns", rename = "honorific", default)]
         pub honorific: String,
         #[yaserde(prefix = "tns", rename = "employeeNo", default)]
-        pub employee_no: Vec<String>,
+        pub employee_no: String,
         #[yaserde(prefix = "tns", rename = "department", default)]
-        pub department: Vec<String>,
+        pub department: String,
         #[yaserde(prefix = "tns", rename = "organization", default)]
-        pub organization: Vec<String>,
+        pub organization: String,
         #[yaserde(prefix = "tns", rename = "middleName", default)]
         pub middle_name: String,
         #[yaserde(prefix = "tns", rename = "managerName", default)]
@@ -167,23 +143,23 @@ pub mod types {
         #[yaserde(prefix = "tns", rename = "preferredLanguage", default)]
         pub preferred_language: String,
         #[yaserde(prefix = "tns", rename = "source", default)]
-        pub source: Vec<String>,
+        pub source: String,
         #[yaserde(prefix = "tns", rename = "sourceUserKey", default)]
-        pub source_user_key: Vec<String>,
+        pub source_user_key: String,
         #[yaserde(prefix = "tns", rename = "status", default)]
         pub status: String,
         #[yaserde(prefix = "tns", rename = "suffix", default)]
         pub suffix: String,
         #[yaserde(prefix = "tns", rename = "surname", default)]
-        pub surname: Vec<String>,
+        pub surname: String,
         #[yaserde(prefix = "tns", rename = "surnameAscii", default)]
-        pub surname_ascii: Vec<String>,
+        pub surname_ascii: String,
         #[yaserde(prefix = "tns", rename = "timeZone", default)]
         pub time_zone: String,
         #[yaserde(prefix = "tns", rename = "title", default)]
         pub title: String,
         #[yaserde(prefix = "tns", rename = "userName", default)]
-        pub user_name: Vec<String>,
+        pub user_name: String,
         #[yaserde(prefix = "tns", rename = "userPassword", default)]
         pub user_password: String,
         #[yaserde(prefix = "tns", rename = "commPassword", default)]
@@ -191,7 +167,7 @@ pub mod types {
         #[yaserde(prefix = "tns", rename = "userType", default)]
         pub user_type: Vec<String>,
         #[yaserde(prefix = "tns", rename = "localizedNames", default)]
-        pub localized_names: Vec<XmLocalizedNames>,
+        pub localized_names: XmLocalizedNames,
         #[yaserde(prefix = "tns", rename = "address", default)]
         pub address: Vec<XmlAddress>,
         #[yaserde(prefix = "tns", rename = "securityIdentity", default)]
@@ -201,7 +177,7 @@ pub mod types {
         #[yaserde(prefix = "tns", rename = "presenceUserACL", default)]
         pub presence_user_acl: Vec<XmlPresUserACLEntryType>,
         #[yaserde(prefix = "tns", rename = "presenceUserCLDefault", default)]
-        pub presence_user_cl_default: Vec<XmlPresUserCLDefaultType>,
+        pub presence_user_cl_default: XmlPresUserCLDefaultType,
         #[yaserde(prefix = "tns", rename = "commProfileSet", default)]
         pub comm_profile_set: Vec<XmlCommProfileSetType>,
     }
@@ -215,11 +191,11 @@ pub mod types {
     )]
     pub struct XmlSecurityIdentity {
         #[yaserde(prefix = "tns", rename = "identity", default)]
-        pub identity: Vec<String>,
+        pub identity: String,
         #[yaserde(prefix = "tns", rename = "realm", default)]
         pub realm: String,
         #[yaserde(prefix = "tns", rename = "type", default)]
-        pub rs_type: Vec<String>,
+        pub rs_type: String,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -231,9 +207,9 @@ pub mod types {
     )]
     pub struct XmlPresInfoTypeAccessType {
         #[yaserde(prefix = "tns", rename = "infoType", default)]
-        pub info_type: Vec<XmlPresInfoTypeType>,
+        pub info_type: XmlPresInfoTypeType,
         #[yaserde(prefix = "tns", rename = "access", default)]
-        pub access: Vec<String>,
+        pub access: String,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -293,9 +269,9 @@ pub mod types {
     )]
     pub struct XmlPresInfoTypeType {
         #[yaserde(prefix = "tns", rename = "label", default)]
-        pub label: Vec<String>,
+        pub label: String,
         #[yaserde(prefix = "tns", rename = "filter", default)]
-        pub filter: Vec<String>,
+        pub filter: String,
         #[yaserde(prefix = "tns", rename = "specFlags", default)]
         pub spec_flags: String,
     }
@@ -309,15 +285,15 @@ pub mod types {
     )]
     pub struct XmlContactList {
         #[yaserde(prefix = "tns", rename = "name", default)]
-        pub name: Vec<String>,
+        pub name: String,
         #[yaserde(prefix = "tns", rename = "description", default)]
         pub description: String,
         #[yaserde(prefix = "tns", rename = "isPublic", default)]
-        pub is_public: Vec<bool>,
+        pub is_public: bool,
         #[yaserde(prefix = "tns", rename = "members", default)]
         pub members: Vec<XmlContactListMember>,
         #[yaserde(prefix = "tns", rename = "contactListType", default)]
-        pub contact_list_type: Vec<String>,
+        pub contact_list_type: String,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -329,13 +305,13 @@ pub mod types {
     )]
     pub struct XmlContactListMember {
         #[yaserde(prefix = "tns", rename = "isFavorite", default)]
-        pub is_favorite: Vec<bool>,
+        pub is_favorite: bool,
         #[yaserde(prefix = "tns", rename = "isSpeedDial", default)]
         pub is_speed_dial: bool,
         #[yaserde(prefix = "tns", rename = "speedDialEntry", default)]
         pub speed_dial_entry: u64,
         #[yaserde(prefix = "tns", rename = "isPresenceBuddy", default)]
-        pub is_presence_buddy: Vec<bool>,
+        pub is_presence_buddy: bool,
         #[yaserde(prefix = "tns", rename = "label", default)]
         pub label: String,
         #[yaserde(prefix = "tns", rename = "altLabel", default)]
@@ -355,13 +331,13 @@ pub mod types {
     )]
     pub struct XmlContactAddress {
         #[yaserde(prefix = "tns", rename = "address", default)]
-        pub address: Vec<String>,
+        pub address: String,
         #[yaserde(prefix = "tns", rename = "altLabel", default)]
         pub alt_label: String,
         #[yaserde(prefix = "tns", rename = "contactCategory", default)]
-        pub contact_category: Vec<String>,
+        pub contact_category: String,
         #[yaserde(prefix = "tns", rename = "contactType", default)]
-        pub contact_type: Vec<String>,
+        pub contact_type: String,
         #[yaserde(prefix = "tns", rename = "label", default)]
         pub label: String,
     }
@@ -375,9 +351,9 @@ pub mod types {
     )]
     pub struct XmlAddress {
         #[yaserde(prefix = "tns", rename = "addressType", default)]
-        pub address_type: Vec<String>,
+        pub address_type: String,
         #[yaserde(prefix = "tns", rename = "name", default)]
-        pub name: Vec<String>,
+        pub name: String,
         #[yaserde(prefix = "tns", rename = "building", default)]
         pub building: String,
         #[yaserde(prefix = "tns", rename = "localityName", default)]
@@ -427,35 +403,35 @@ pub mod types {
         #[yaserde(prefix = "tns", rename = "description", default)]
         pub description: String,
         #[yaserde(prefix = "tns", rename = "displayName", default)]
-        pub display_name: Vec<String>,
+        pub display_name: String,
         #[yaserde(prefix = "tns", rename = "displayNameAscii", default)]
-        pub display_name_ascii: Vec<String>,
+        pub display_name_ascii: String,
         #[yaserde(prefix = "tns", rename = "dn", default)]
         pub dn: String,
         #[yaserde(prefix = "tns", rename = "givenName", default)]
-        pub given_name: Vec<String>,
+        pub given_name: String,
         #[yaserde(prefix = "tns", rename = "givenNameAscii", default)]
-        pub given_name_ascii: Vec<String>,
+        pub given_name_ascii: String,
         #[yaserde(prefix = "tns", rename = "initials", default)]
         pub initials: String,
         #[yaserde(prefix = "tns", rename = "middleName", default)]
         pub middle_name: String,
         #[yaserde(prefix = "tns", rename = "preferredGivenName", default)]
-        pub preferred_given_name: Vec<String>,
+        pub preferred_given_name: String,
         #[yaserde(prefix = "tns", rename = "preferredLanguage", default)]
         pub preferred_language: String,
         #[yaserde(prefix = "tns", rename = "isPublic", default)]
-        pub is_public: Vec<bool>,
+        pub is_public: bool,
         #[yaserde(prefix = "tns", rename = "source", default)]
-        pub source: Vec<String>,
+        pub source: String,
         #[yaserde(prefix = "tns", rename = "sourceUserKey", default)]
-        pub source_user_key: Vec<String>,
+        pub source_user_key: String,
         #[yaserde(prefix = "tns", rename = "suffix", default)]
         pub suffix: String,
         #[yaserde(prefix = "tns", rename = "surname", default)]
-        pub surname: Vec<String>,
+        pub surname: String,
         #[yaserde(prefix = "tns", rename = "surnameAscii", default)]
-        pub surname_ascii: Vec<String>,
+        pub surname_ascii: String,
         #[yaserde(prefix = "tns", rename = "title", default)]
         pub title: String,
         #[yaserde(prefix = "tns", rename = "ContactAddress", default)]
@@ -473,13 +449,13 @@ pub mod types {
     )]
     pub struct XmlHandle {
         #[yaserde(prefix = "tns", rename = "handleName", default)]
-        pub handle_name: Vec<String>,
+        pub handle_name: String,
         #[yaserde(prefix = "tns", rename = "handleType", default)]
-        pub handle_type: Vec<String>,
+        pub handle_type: String,
         #[yaserde(prefix = "tns", rename = "handleSubType", default)]
-        pub handle_sub_type: Vec<String>,
+        pub handle_sub_type: String,
         #[yaserde(prefix = "tns", rename = "domainName", default)]
-        pub domain_name: Vec<String>,
+        pub domain_name: String,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -491,11 +467,11 @@ pub mod types {
     )]
     pub struct XmlCommProfileType {
         #[yaserde(prefix = "tns", rename = "commProfileType", default)]
-        pub comm_profile_type: Vec<String>,
+        pub comm_profile_type: String,
         #[yaserde(prefix = "tns", rename = "commProfileSubType", default)]
-        pub comm_profile_sub_type: Vec<String>,
+        pub comm_profile_sub_type: String,
         #[yaserde(prefix = "tns", rename = "jobId", default)]
-        pub job_id: Vec<String>,
+        pub job_id: String,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -531,9 +507,9 @@ pub mod types {
     )]
     pub struct XmlCommProfileSetType {
         #[yaserde(prefix = "tns", rename = "commProfileSetName", default)]
-        pub comm_profile_set_name: Vec<String>,
+        pub comm_profile_set_name: String,
         #[yaserde(prefix = "tns", rename = "isPrimary", default)]
-        pub is_primary: Vec<bool>,
+        pub is_primary: bool,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -547,11 +523,11 @@ pub mod types {
         #[yaserde(flatten)]
         pub xml_comm_profile_type: XmlCommProfileType,
         #[yaserde(prefix = "tns", rename = "csEncryptionKeyId", default)]
-        pub cs_encryption_key_id: Vec<u64>,
+        pub cs_encryption_key_id: u64,
         #[yaserde(prefix = "tns", rename = "servicePassword", default)]
-        pub service_password: Vec<String>,
+        pub service_password: String,
         #[yaserde(prefix = "tns", rename = "serviceData", default)]
-        pub service_data: Vec<String>,
+        pub service_data: String,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -563,7 +539,7 @@ pub mod types {
     )]
     pub struct XmlSecureStore {
         #[yaserde(prefix = "tns", rename = "secureStoreData", default)]
-        pub secure_store_data: Vec<String>,
+        pub secure_store_data: String,
         #[yaserde(prefix = "tns", rename = "passwordEncrypted", default)]
         pub password_encrypted: bool,
     }
@@ -577,9 +553,9 @@ pub mod types {
     )]
     pub struct XmlLocalizedName {
         #[yaserde(prefix = "tns", rename = "locale", default)]
-        pub locale: Vec<String>,
+        pub locale: String,
         #[yaserde(prefix = "tns", rename = "name", default)]
-        pub name: Vec<String>,
+        pub name: String,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -612,11 +588,11 @@ pub mod types {
     )]
     pub struct UserOrganizationDetailsType {
         #[yaserde(prefix = "tns", rename = "organizationUnitLevelOne", default)]
-        pub organization_unit_level_one: Vec<String>,
+        pub organization_unit_level_one: String,
         #[yaserde(prefix = "tns", rename = "organizationUnitLevelTwo", default)]
-        pub organization_unit_level_two: Vec<String>,
+        pub organization_unit_level_two: String,
         #[yaserde(prefix = "tns", rename = "organizationUnitLevelThree", default)]
-        pub organization_unit_level_three: Vec<String>,
+        pub organization_unit_level_three: String,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -630,31 +606,31 @@ pub mod types {
         #[yaserde(flatten)]
         pub xml_comm_profile_type: XmlCommProfileType,
         #[yaserde(prefix = "tns", rename = "cmName", default)]
-        pub cm_name: Vec<String>,
+        pub cm_name: String,
         #[yaserde(prefix = "tns", rename = "useExistingAgent", default)]
-        pub use_existing_agent: Vec<bool>,
+        pub use_existing_agent: bool,
         #[yaserde(prefix = "tns", rename = "template", default)]
-        pub template: Vec<String>,
+        pub template: String,
         #[yaserde(prefix = "tns", rename = "aas", default)]
-        pub aas: Vec<bool>,
+        pub aas: bool,
         #[yaserde(prefix = "tns", rename = "audix", default)]
-        pub audix: Vec<bool>,
+        pub audix: bool,
         #[yaserde(prefix = "tns", rename = "deleteOnUnassign", default)]
-        pub delete_on_unassign: Vec<bool>,
+        pub delete_on_unassign: bool,
         #[yaserde(prefix = "tns", rename = "lwcLogExternalCalls", default)]
-        pub lwc_log_external_calls: Vec<bool>,
+        pub lwc_log_external_calls: bool,
         #[yaserde(prefix = "tns", rename = "audixNameforMessaging", default)]
-        pub audix_namefor_messaging: Vec<String>,
+        pub audix_namefor_messaging: String,
         #[yaserde(prefix = "tns", rename = "hearsServiceObservingTone", default)]
-        pub hears_service_observing_tone: Vec<bool>,
+        pub hears_service_observing_tone: bool,
         #[yaserde(prefix = "tns", rename = "loginIDforISDNSIPDisplay", default)]
-        pub login_i_dfor_isdnsip_display: Vec<bool>,
+        pub login_i_dfor_isdnsip_display: bool,
         #[yaserde(prefix = "tns", rename = "serviceObjective", default)]
-        pub service_objective: Vec<bool>,
+        pub service_objective: bool,
         #[yaserde(prefix = "tns", rename = "directAgentCallsFirst", default)]
-        pub direct_agent_calls_first: Vec<bool>,
+        pub direct_agent_calls_first: bool,
         #[yaserde(prefix = "tns", rename = "localCallPreference", default)]
-        pub local_call_preference: Vec<bool>,
+        pub local_call_preference: bool,
         #[yaserde(prefix = "tns", rename = "skills", default)]
         pub skills: Vec<XmlAgentLoginIdSkillsData>,
     }
@@ -668,6 +644,30 @@ pub mod types {
     )]
     pub struct XmlAgentLoginIdSkillsData {
         #[yaserde(prefix = "tns", rename = "number", default)]
-        pub number: Vec<String>,
+        pub number: String,
     }
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
 }
