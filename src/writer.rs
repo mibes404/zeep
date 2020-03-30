@@ -500,8 +500,22 @@ impl FileWriter {
 
         let type_name = to_pascal_case(name);
 
+        self.write("#[derive(Debug, YaSerialize, YaDeserialize)]\n".to_string());
+        self.write("#[yaserde(untagged)]\n".to_string());
+
         self.write(format!(
-            "pub type {} = {};\n",
+            "pub enum {} {{ Val({}) }}\n",
+            type_name,
+            self.fetch_type(base)
+        ));
+
+        self.write(format!(
+            r#"    impl Default for {0} {{
+                        fn default() -> Self {{
+                            {0}::Val({1}::default())
+                        }}
+                   }}
+            "#,
             type_name,
             self.fetch_type(base)
         ));
