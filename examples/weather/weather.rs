@@ -1281,20 +1281,88 @@ pub mod bindings {
     }
 }
 
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
 
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
+    #[async_trait]
+    pub trait WeatherSoap {
+        /// Gets Information for each WeatherID
+        async fn get_weather_information(
+            &mut self,
+            get_weather_information_soap_in: GetWeatherInformationSoapIn,
+        ) -> Result<GetWeatherInformationSoapOut, Option<SoapFault>>;
+        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
+        async fn get_city_forecast_by_zip(
+            &mut self,
+            get_city_forecast_by_zip_soap_in: GetCityForecastByZIPSoapIn,
+        ) -> Result<GetCityForecastByZIPSoapOut, Option<SoapFault>>;
+        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
+        async fn get_city_weather_by_zip(
+            &mut self,
+            get_city_weather_by_zip_soap_in: GetCityWeatherByZIPSoapIn,
+        ) -> Result<GetCityWeatherByZIPSoapOut, Option<SoapFault>>;
+    }
+
+    pub type GetWeatherInformationSoapIn = messages::GetWeatherInformationSoapIn;
+    pub type GetWeatherInformationSoapOut = messages::GetWeatherInformationSoapOut;
+    pub type GetCityForecastByZIPSoapIn = messages::GetCityForecastByZIPSoapIn;
+    pub type GetCityForecastByZIPSoapOut = messages::GetCityForecastByZIPSoapOut;
+    pub type GetCityWeatherByZIPSoapIn = messages::GetCityWeatherByZIPSoapIn;
+    pub type GetCityWeatherByZIPSoapOut = messages::GetCityWeatherByZIPSoapOut;
+    #[async_trait]
+    pub trait WeatherHttpGet {
+        /// Gets Information for each WeatherID
+        async fn get_weather_information(
+            &mut self,
+            get_weather_information_http_get_in: GetWeatherInformationHttpGetIn,
+        ) -> Result<GetWeatherInformationHttpGetOut, Option<SoapFault>>;
+        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
+        async fn get_city_forecast_by_zip(
+            &mut self,
+            get_city_forecast_by_zip_http_get_in: GetCityForecastByZIPHttpGetIn,
+        ) -> Result<GetCityForecastByZIPHttpGetOut, Option<SoapFault>>;
+        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
+        async fn get_city_weather_by_zip(
+            &mut self,
+            get_city_weather_by_zip_http_get_in: GetCityWeatherByZIPHttpGetIn,
+        ) -> Result<GetCityWeatherByZIPHttpGetOut, Option<SoapFault>>;
+    }
+
+    pub type GetWeatherInformationHttpGetIn = messages::GetWeatherInformationHttpGetIn;
+    pub type GetWeatherInformationHttpGetOut = messages::GetWeatherInformationHttpGetOut;
+    pub type GetCityForecastByZIPHttpGetIn = messages::GetCityForecastByZIPHttpGetIn;
+    pub type GetCityForecastByZIPHttpGetOut = messages::GetCityForecastByZIPHttpGetOut;
+    pub type GetCityWeatherByZIPHttpGetIn = messages::GetCityWeatherByZIPHttpGetIn;
+    pub type GetCityWeatherByZIPHttpGetOut = messages::GetCityWeatherByZIPHttpGetOut;
+    #[async_trait]
+    pub trait WeatherHttpPost {
+        /// Gets Information for each WeatherID
+        async fn get_weather_information(
+            &mut self,
+            get_weather_information_http_post_in: GetWeatherInformationHttpPostIn,
+        ) -> Result<GetWeatherInformationHttpPostOut, Option<SoapFault>>;
+        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
+        async fn get_city_forecast_by_zip(
+            &mut self,
+            get_city_forecast_by_zip_http_post_in: GetCityForecastByZIPHttpPostIn,
+        ) -> Result<GetCityForecastByZIPHttpPostOut, Option<SoapFault>>;
+        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
+        async fn get_city_weather_by_zip(
+            &mut self,
+            get_city_weather_by_zip_http_post_in: GetCityWeatherByZIPHttpPostIn,
+        ) -> Result<GetCityWeatherByZIPHttpPostOut, Option<SoapFault>>;
+    }
+
+    pub type GetWeatherInformationHttpPostIn = messages::GetWeatherInformationHttpPostIn;
+    pub type GetWeatherInformationHttpPostOut = messages::GetWeatherInformationHttpPostOut;
+    pub type GetCityForecastByZIPHttpPostIn = messages::GetCityForecastByZIPHttpPostIn;
+    pub type GetCityForecastByZIPHttpPostOut = messages::GetCityForecastByZIPHttpPostOut;
+    pub type GetCityWeatherByZIPHttpPostIn = messages::GetCityWeatherByZIPHttpPostIn;
+    pub type GetCityWeatherByZIPHttpPostOut = messages::GetCityWeatherByZIPHttpPostOut;
 }
 
 pub mod types {
@@ -1638,86 +1706,18 @@ pub mod messages {
     }
 }
 
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
 
-    #[async_trait]
-    pub trait WeatherSoap {
-        /// Gets Information for each WeatherID
-        async fn get_weather_information(
-            &mut self,
-            get_weather_information_soap_in: GetWeatherInformationSoapIn,
-        ) -> Result<GetWeatherInformationSoapOut, Option<SoapFault>>;
-        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
-        async fn get_city_forecast_by_zip(
-            &mut self,
-            get_city_forecast_by_zip_soap_in: GetCityForecastByZIPSoapIn,
-        ) -> Result<GetCityForecastByZIPSoapOut, Option<SoapFault>>;
-        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
-        async fn get_city_weather_by_zip(
-            &mut self,
-            get_city_weather_by_zip_soap_in: GetCityWeatherByZIPSoapIn,
-        ) -> Result<GetCityWeatherByZIPSoapOut, Option<SoapFault>>;
-    }
-
-    pub type GetWeatherInformationSoapIn = messages::GetWeatherInformationSoapIn;
-    pub type GetWeatherInformationSoapOut = messages::GetWeatherInformationSoapOut;
-    pub type GetCityForecastByZIPSoapIn = messages::GetCityForecastByZIPSoapIn;
-    pub type GetCityForecastByZIPSoapOut = messages::GetCityForecastByZIPSoapOut;
-    pub type GetCityWeatherByZIPSoapIn = messages::GetCityWeatherByZIPSoapIn;
-    pub type GetCityWeatherByZIPSoapOut = messages::GetCityWeatherByZIPSoapOut;
-    #[async_trait]
-    pub trait WeatherHttpGet {
-        /// Gets Information for each WeatherID
-        async fn get_weather_information(
-            &mut self,
-            get_weather_information_http_get_in: GetWeatherInformationHttpGetIn,
-        ) -> Result<GetWeatherInformationHttpGetOut, Option<SoapFault>>;
-        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
-        async fn get_city_forecast_by_zip(
-            &mut self,
-            get_city_forecast_by_zip_http_get_in: GetCityForecastByZIPHttpGetIn,
-        ) -> Result<GetCityForecastByZIPHttpGetOut, Option<SoapFault>>;
-        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
-        async fn get_city_weather_by_zip(
-            &mut self,
-            get_city_weather_by_zip_http_get_in: GetCityWeatherByZIPHttpGetIn,
-        ) -> Result<GetCityWeatherByZIPHttpGetOut, Option<SoapFault>>;
-    }
-
-    pub type GetWeatherInformationHttpGetIn = messages::GetWeatherInformationHttpGetIn;
-    pub type GetWeatherInformationHttpGetOut = messages::GetWeatherInformationHttpGetOut;
-    pub type GetCityForecastByZIPHttpGetIn = messages::GetCityForecastByZIPHttpGetIn;
-    pub type GetCityForecastByZIPHttpGetOut = messages::GetCityForecastByZIPHttpGetOut;
-    pub type GetCityWeatherByZIPHttpGetIn = messages::GetCityWeatherByZIPHttpGetIn;
-    pub type GetCityWeatherByZIPHttpGetOut = messages::GetCityWeatherByZIPHttpGetOut;
-    #[async_trait]
-    pub trait WeatherHttpPost {
-        /// Gets Information for each WeatherID
-        async fn get_weather_information(
-            &mut self,
-            get_weather_information_http_post_in: GetWeatherInformationHttpPostIn,
-        ) -> Result<GetWeatherInformationHttpPostOut, Option<SoapFault>>;
-        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
-        async fn get_city_forecast_by_zip(
-            &mut self,
-            get_city_forecast_by_zip_http_post_in: GetCityForecastByZIPHttpPostIn,
-        ) -> Result<GetCityForecastByZIPHttpPostOut, Option<SoapFault>>;
-        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
-        async fn get_city_weather_by_zip(
-            &mut self,
-            get_city_weather_by_zip_http_post_in: GetCityWeatherByZIPHttpPostIn,
-        ) -> Result<GetCityWeatherByZIPHttpPostOut, Option<SoapFault>>;
-    }
-
-    pub type GetWeatherInformationHttpPostIn = messages::GetWeatherInformationHttpPostIn;
-    pub type GetWeatherInformationHttpPostOut = messages::GetWeatherInformationHttpPostOut;
-    pub type GetCityForecastByZIPHttpPostIn = messages::GetCityForecastByZIPHttpPostIn;
-    pub type GetCityForecastByZIPHttpPostOut = messages::GetCityForecastByZIPHttpPostOut;
-    pub type GetCityWeatherByZIPHttpPostIn = messages::GetCityWeatherByZIPHttpPostIn;
-    pub type GetCityWeatherByZIPHttpPostOut = messages::GetCityWeatherByZIPHttpPostOut;
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
 }

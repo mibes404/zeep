@@ -738,7 +738,9 @@ impl FileWriter {
                 &type_name,
                 format!(
                     "pub type {0} = {1}::{2};\n",
-                    type_name, MESSAGES_MOD, message_type_name,
+                    to_pascal_case(type_name),
+                    MESSAGES_MOD,
+                    message_type_name,
                 ),
             ),
             _ => "".to_string(),
@@ -760,7 +762,12 @@ impl FileWriter {
                         (
                             self.format_type(
                                 &type_name,
-                                format!("pub type {} = {}::{};\n", type_name, MESSAGES_MOD, msg),
+                                format!(
+                                    "pub type {} = {}::{};\n",
+                                    to_pascal_case(type_name),
+                                    MESSAGES_MOD,
+                                    msg
+                                ),
                             ),
                             Option::Some(self.format_type(
                                 &fault_name,
@@ -774,7 +781,7 @@ impl FileWriter {
                             )),
                             format!(
                                 "-> Result<{0}, Option<Soap{1}>>",
-                                type_name,
+                                to_pascal_case(type_name),
                                 to_pascal_case(fault_name.as_str())
                             ),
                         )
@@ -784,13 +791,16 @@ impl FileWriter {
                                 type_name,
                                 format!(
                                     "pub type {} = {}::{};\n",
-                                    type_name,
+                                    to_pascal_case(type_name),
                                     MESSAGES_MOD,
                                     msg.as_str()
                                 ),
                             ),
                             Option::None,
-                            format!("-> Result<{}, Option<SoapFault>>", type_name),
+                            format!(
+                                "-> Result<{}, Option<SoapFault>>",
+                                to_pascal_case(type_name)
+                            ),
                         )
                     }
                 }
