@@ -494,7 +494,11 @@ pub mod types {
         pub comm_profile_sub_type: Option<String>,
         #[yaserde(prefix = "tns", rename = "jobId", default)]
         pub job_id: Option<String>,
-        #[yaserde("flatten")]
+        #[yaserde(
+            prefix = "ns8",
+            namespace = "ns8: http://xml.avaya.com/schema/import_csm_cm",
+            flatten
+        )]
         pub station: XmlStationProfile,
     }
 
