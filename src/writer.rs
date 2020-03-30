@@ -323,7 +323,12 @@ impl FileWriter {
             Some(n) => n,
         };
 
-        let as_vec = self.get_some_attribute(node, "maxOccurs").is_some();
+        let as_vec = {
+            match self.get_some_attribute(node, "maxOccurs") {
+                Some("1") | None => false,
+                _ => true,
+            }
+        };
         let as_option = self.get_some_attribute(node, "nillable").is_some();
 
         let maybe_complex = node

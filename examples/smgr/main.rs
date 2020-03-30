@@ -10,7 +10,23 @@ extern crate yaserde;
 extern crate yaserde_derive;
 
 mod smgr;
+mod smgr_station;
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs::read_to_string;
+
+    #[test]
+    fn test_unmarshall() {
+        let sample_response =
+            read_to_string("resources/smgr/smgr_get_response.xml").expect("file not found");
+        let users: crate::smgr_station::types::Users =
+            from_str(&sample_response).expect("problems unmarshalling");
+
+        println!("user {:?}", users);
+    }
+}
 #[tokio::main]
 async fn main() {
     if let Err(err) = log4rs::init_file("log4rs.yml", Default::default()) {
