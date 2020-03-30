@@ -1,4 +1,4 @@
-use crate::error::WriterResult;
+use crate::error::{WriterError, WriterResult};
 use inflector::cases::pascalcase::to_pascal_case;
 use inflector::cases::snakecase::to_snake_case;
 use log::warn;
@@ -339,7 +339,7 @@ impl FileWriter {
             .children()
             .find(|child| child.has_tag_name("simpleType"));
 
-        let type_name = match self.get_some_attribute(node, "type") {
+        let mut type_name = match self.get_some_attribute(node, "type") {
             None => to_pascal_case(element_name),
             Some(t) => t.to_string(),
         };
@@ -372,6 +372,13 @@ impl FileWriter {
             ));
         }
 
+        if let Some(simple) = maybe_simplex {
+            type_name = match self.deconstruct_simplex_element(&simple) {
+                Ok(tn) => tn,
+                Err(_) => type_name,
+            };
+        }
+
         if as_vec || as_option {
             self.write(format!(
                 "\tpub {}: {}<{}>,\n",
@@ -389,10 +396,6 @@ impl FileWriter {
 
         if let Some(complex) = maybe_complex {
             self.print_complex_element(&complex, element_name)?
-        }
-
-        if let Some(simple) = maybe_simplex {
-            self.print_simplex_element(&simple, element_name)?
         }
 
         Ok(())
@@ -479,50 +482,26 @@ impl FileWriter {
         Ok(())
     }
 
-    fn print_simplex_element(&mut self, node: &Node, name: &str) -> WriterResult<()> {
-        if self.have_seen_type(name) {
-            return Ok(());
-        }
-
-        self.seen_type(name.to_string());
-
-        self.inc_level();
-
+    fn deconstruct_simplex_element(&mut self, node: &Node) -> WriterResult<String> {
         let restriction = match node.children().find(|c| c.has_tag_name("restriction")) {
-            None => return Ok(()),
-            Some(c) => c,
-        };
-
-        let base = match self.get_some_attribute(&restriction, "base") {
-            None => return Ok(()),
+            None => {
+                return Err(WriterError {
+                    message: "restriction element is missing".to_string(),
+                })
+            }
             Some(b) => b,
         };
 
-        let type_name = to_pascal_case(name);
+        let base = match self.get_some_attribute(&restriction, "base") {
+            None => {
+                return Err(WriterError {
+                    message: "base type is missing".to_string(),
+                })
+            }
+            Some(b) => b,
+        };
 
-        self.write("#[derive(Debug, YaSerialize, YaDeserialize)]\n".to_string());
-        self.write("#[yaserde(untagged)]\n".to_string());
-
-        self.write(format!(
-            "pub enum {} {{ Val({}) }}\n",
-            type_name,
-            self.fetch_type(base)
-        ));
-
-        self.write(format!(
-            r#"    impl Default for {0} {{
-                        fn default() -> Self {{
-                            {0}::Val({1}::default())
-                        }}
-                   }}
-            "#,
-            type_name,
-            self.fetch_type(base)
-        ));
-
-        self.dec_level();
-
-        Ok(())
+        Ok(base.to_string())
     }
 
     fn print_sequence(&mut self, node: &Node) -> WriterResult<()> {

@@ -1,4 +1,4 @@
-use crate::smgr::types::{LoginName, NewLoginName, XmlUser};
+use crate::smgr::types::XmlUser;
 use yaserde::de::from_str;
 use yaserde::ser::to_string;
 
@@ -49,8 +49,8 @@ async fn main() {
         given_name: "".to_string(),
         given_name_ascii: "".to_string(),
         honorific: "".to_string(),
-        login_name: LoginName::default(),
-        new_login_name: NewLoginName::default(),
+        login_name: "".to_string(),
+        new_login_name: "".to_string(),
         employee_no: "".to_string(),
         department: "".to_string(),
         organization: "".to_string(),
