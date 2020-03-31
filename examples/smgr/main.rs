@@ -24,9 +24,57 @@ mod tests {
         let users: crate::smgr_station::types::Users =
             from_str(&sample_response).expect("problems unmarshalling");
 
+        let users = resolve_comm_profiles(users);
         println!("user {:?}", users);
     }
 }
+
+fn resolve_comm_profiles(
+    mut input: crate::smgr_station::types::Users,
+) -> crate::smgr_station::types::Users {
+    let new_users: Vec<crate::smgr_station::types::XmlUser> = input
+        .user
+        .iter()
+        .cloned()
+        .map(|mut new_user| {
+            new_user.comm_profile_set = new_user
+                .comm_profile_set
+                .iter()
+                .cloned()
+                .map(
+                    |mut comm_profile_set: crate::smgr_station::types::XmlCommProfileSetType| {
+                        if let Some(profile_list) = &comm_profile_set.comm_profile_list {
+                            let mut new_profile_list = profile_list.clone();
+                            let new_list = profile_list
+                                .comm_profile
+                                .iter()
+                                .cloned()
+                                .map(|mut comm_profile_type:crate::smgr_station::types::XmlCommProfileType| {
+                                    let profile_type_str = &comm_profile_type.comm_profile_type;
+                                    match profile_type_str.as_str() {
+                                        "PS" => comm_profile_type.station = None,
+                                        "CM" => {}
+                                        "SessionManager" => comm_profile_type.station = None,
+                                        _ => println!("Unknown comm profile type {}", profile_type_str),
+                                    };
+                                    comm_profile_type
+                                })
+                                .collect();
+                            new_profile_list.comm_profile = new_list;
+                            comm_profile_set.comm_profile_list = Some(new_profile_list);
+                        }
+                        comm_profile_set
+                    },
+                )
+                .collect();
+            new_user
+        })
+        .collect();
+
+    input.user = new_users;
+    input
+}
+
 #[tokio::main]
 async fn main() {
     if let Err(err) = log4rs::init_file("log4rs.yml", Default::default()) {
