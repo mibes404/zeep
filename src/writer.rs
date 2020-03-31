@@ -203,7 +203,10 @@ impl FileWriter {
         self.direct_write(SIGNATURE.to_string());
         self.direct_write(format!("//! version: {}\n//!\n", VERSION));
         self.direct_write(
-            r#"use yaserde::{{YaSerialize, YaDeserialize}};
+            r#"
+            #![allow(dead_code)]           
+            #![allow(unused_imports)]
+            use yaserde::{{YaSerialize, YaDeserialize}};
             use std::io::{Read, Write};
             
             pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
