@@ -80,6 +80,12 @@ impl Default for FileWriter {
 }
 
 impl FileWriter {
+    pub fn new(ns_prefix: Option<String>) -> Self {
+        let mut fw = FileWriter::default();
+        fw.ns_prefix = ns_prefix.unwrap_or_else(|| DEFAULT_NS_PREFIX.to_string());
+        fw
+    }
+
     pub fn new_file(dest_file_name: File, ns_prefix: Option<String>) -> Self {
         FileWriter {
             base_path: String::default(),

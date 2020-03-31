@@ -67,7 +67,7 @@ fn main() {
             println!("Failed to process {}: {}", from_file_name, err.to_string())
         }
     } else {
-        let mut writer = FileWriter::default();
+        let mut writer = FileWriter::new(ns_prefix);
         if let Err(err) = writer.process_file(base_path, from_file_name) {
             println!("Failed to process {}: {}", from_file_name, err.to_string())
         }
