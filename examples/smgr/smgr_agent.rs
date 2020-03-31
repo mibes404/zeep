@@ -1,0 +1,741 @@
+//! THIS IS A GENERATED FILE!
+//! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
+//!
+//! version: 0.0.2
+//!
+use std::io::{Read, Write};
+use yaserde::{YaDeserialize, YaSerialize};
+
+pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod bindings {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod types {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    pub type SecureStore = XmlSecureStore;
+
+    pub type User = XmlUser;
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "users",
+        default
+    )]
+    pub struct Users {
+        #[yaserde(prefix = "ns1", rename = "secureStore", default)]
+        pub secure_store: Option<XmlSecureStore>,
+        #[yaserde(prefix = "ns1", rename = "user", default)]
+        pub user: Vec<XmlUser>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "UserProvisionRules",
+        default
+    )]
+    pub struct UserProvisionRules {
+        #[yaserde(prefix = "ns1", rename = "UserProvisionRuleName", default)]
+        pub user_provision_rule_name: Vec<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "roles",
+        default
+    )]
+    pub struct Roles {
+        #[yaserde(prefix = "ns1", rename = "role", default)]
+        pub role: Vec<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "ownedContactLists",
+        default
+    )]
+    pub struct OwnedContactLists {
+        #[yaserde(prefix = "ns1", rename = "contactList", default)]
+        pub contact_list: XmlContactList,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "ownedContacts",
+        default
+    )]
+    pub struct OwnedContacts {
+        #[yaserde(prefix = "ns1", rename = "contact", default)]
+        pub contact: Vec<XmlContact>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlUser",
+        default
+    )]
+    pub struct XmlUser {
+        #[yaserde(prefix = "ns1", rename = "UserOrganizationDetails", default)]
+        pub user_organization_details: Option<UserOrganizationDetailsType>,
+        #[yaserde(prefix = "ns1", rename = "UserProvisionRules", default)]
+        pub user_provision_rules: Option<UserProvisionRules>,
+        #[yaserde(prefix = "ns1", rename = "authenticationType", default)]
+        pub authentication_type: String,
+        #[yaserde(prefix = "ns1", rename = "description", default)]
+        pub description: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "displayName", default)]
+        pub display_name: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "displayNameAscii", default)]
+        pub display_name_ascii: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "dn", default)]
+        pub dn: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "isDuplicatedLoginAllowed", default)]
+        pub is_duplicated_login_allowed: Option<bool>,
+        #[yaserde(prefix = "ns1", rename = "isEnabled", default)]
+        pub is_enabled: Option<bool>,
+        #[yaserde(prefix = "ns1", rename = "isVirtualUser", default)]
+        pub is_virtual_user: Option<bool>,
+        #[yaserde(prefix = "ns1", rename = "givenName", default)]
+        pub given_name: String,
+        #[yaserde(prefix = "ns1", rename = "givenNameAscii", default)]
+        pub given_name_ascii: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "honorific", default)]
+        pub honorific: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "loginName", default)]
+        pub login_name: String,
+        #[yaserde(prefix = "ns1", rename = "newLoginName", default)]
+        pub new_login_name: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "employeeNo", default)]
+        pub employee_no: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "department", default)]
+        pub department: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "organization", default)]
+        pub organization: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "middleName", default)]
+        pub middle_name: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "managerName", default)]
+        pub manager_name: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "preferredGivenName", default)]
+        pub preferred_given_name: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "preferredLanguage", default)]
+        pub preferred_language: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "source", default)]
+        pub source: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "sourceUserKey", default)]
+        pub source_user_key: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "status", default)]
+        pub status: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "suffix", default)]
+        pub suffix: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "surname", default)]
+        pub surname: String,
+        #[yaserde(prefix = "ns1", rename = "surnameAscii", default)]
+        pub surname_ascii: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "timeZone", default)]
+        pub time_zone: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "title", default)]
+        pub title: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "userName", default)]
+        pub user_name: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "userPassword", default)]
+        pub user_password: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "commPassword", default)]
+        pub comm_password: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "userType", default)]
+        pub user_type: Vec<String>,
+        #[yaserde(prefix = "ns1", rename = "roles", default)]
+        pub roles: Option<Roles>,
+        #[yaserde(prefix = "ns1", rename = "localizedNames", default)]
+        pub localized_names: Option<XmLocalizedNames>,
+        #[yaserde(prefix = "ns1", rename = "address", default)]
+        pub address: Vec<XmlAddress>,
+        #[yaserde(prefix = "ns1", rename = "securityIdentity", default)]
+        pub security_identity: Vec<XmlSecurityIdentity>,
+        #[yaserde(prefix = "ns1", rename = "ownedContactLists", default)]
+        pub owned_contact_lists: Option<OwnedContactLists>,
+        #[yaserde(prefix = "ns1", rename = "ownedContacts", default)]
+        pub owned_contacts: Option<OwnedContacts>,
+        #[yaserde(prefix = "ns1", rename = "presenceUserDefault", default)]
+        pub presence_user_default: Option<XmlPresUserDefaultType>,
+        #[yaserde(prefix = "ns1", rename = "presenceUserACL", default)]
+        pub presence_user_acl: Vec<XmlPresUserACLEntryType>,
+        #[yaserde(prefix = "ns1", rename = "presenceUserCLDefault", default)]
+        pub presence_user_cl_default: Option<XmlPresUserCLDefaultType>,
+        #[yaserde(prefix = "ns1", rename = "commProfileSet", default)]
+        pub comm_profile_set: Vec<XmlCommProfileSetType>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlSecurityIdentity",
+        default
+    )]
+    pub struct XmlSecurityIdentity {
+        #[yaserde(prefix = "ns1", rename = "identity", default)]
+        pub identity: String,
+        #[yaserde(prefix = "ns1", rename = "realm", default)]
+        pub realm: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "type", default)]
+        pub rs_type: String,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlPresInfoTypeAccessType",
+        default
+    )]
+    pub struct XmlPresInfoTypeAccessType {
+        #[yaserde(prefix = "ns1", rename = "infoType", default)]
+        pub info_type: XmlPresInfoTypeType,
+        #[yaserde(prefix = "ns1", rename = "access", default)]
+        pub access: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlPresACRuleType",
+        default
+    )]
+    pub struct XmlPresACRuleType {
+        #[yaserde(prefix = "ns1", rename = "infoTypeAccess", default)]
+        pub info_type_access: Vec<XmlPresInfoTypeAccessType>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlPresUserDefaultType",
+        default
+    )]
+    pub struct XmlPresUserDefaultType {
+        #[yaserde(flatten)]
+        pub xml_pres_ac_rule_type: XmlPresACRuleType,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlPresUserCLDefaultType",
+        default
+    )]
+    pub struct XmlPresUserCLDefaultType {
+        #[yaserde(flatten)]
+        pub xml_pres_ac_rule_type: XmlPresACRuleType,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlPresUserACLEntryType",
+        default
+    )]
+    pub struct XmlPresUserACLEntryType {
+        #[yaserde(flatten)]
+        pub xml_pres_ac_rule_type: XmlPresACRuleType,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlPresInfoTypeType",
+        default
+    )]
+    pub struct XmlPresInfoTypeType {
+        #[yaserde(prefix = "ns1", rename = "label", default)]
+        pub label: String,
+        #[yaserde(prefix = "ns1", rename = "filter", default)]
+        pub filter: String,
+        #[yaserde(prefix = "ns1", rename = "specFlags", default)]
+        pub spec_flags: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlContactList",
+        default
+    )]
+    pub struct XmlContactList {
+        #[yaserde(prefix = "ns1", rename = "name", default)]
+        pub name: String,
+        #[yaserde(prefix = "ns1", rename = "description", default)]
+        pub description: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "isPublic", default)]
+        pub is_public: bool,
+        #[yaserde(prefix = "ns1", rename = "members", default)]
+        pub members: Vec<XmlContactListMember>,
+        #[yaserde(prefix = "ns1", rename = "contactListType", default)]
+        pub contact_list_type: String,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlContactListMember",
+        default
+    )]
+    pub struct XmlContactListMember {
+        #[yaserde(prefix = "ns1", rename = "isFavorite", default)]
+        pub is_favorite: bool,
+        #[yaserde(prefix = "ns1", rename = "isSpeedDial", default)]
+        pub is_speed_dial: bool,
+        #[yaserde(prefix = "ns1", rename = "speedDialEntry", default)]
+        pub speed_dial_entry: Option<u64>,
+        #[yaserde(prefix = "ns1", rename = "isPresenceBuddy", default)]
+        pub is_presence_buddy: bool,
+        #[yaserde(prefix = "ns1", rename = "label", default)]
+        pub label: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "altLabel", default)]
+        pub alt_label: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "description", default)]
+        pub description: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "priorityLevel", default)]
+        pub priority_level: Option<u64>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlContactAddress",
+        default
+    )]
+    pub struct XmlContactAddress {
+        #[yaserde(prefix = "ns1", rename = "address", default)]
+        pub address: String,
+        #[yaserde(prefix = "ns1", rename = "altLabel", default)]
+        pub alt_label: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "contactCategory", default)]
+        pub contact_category: String,
+        #[yaserde(prefix = "ns1", rename = "contactType", default)]
+        pub contact_type: String,
+        #[yaserde(prefix = "ns1", rename = "label", default)]
+        pub label: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlAddress",
+        default
+    )]
+    pub struct XmlAddress {
+        #[yaserde(prefix = "ns1", rename = "addressType", default)]
+        pub address_type: String,
+        #[yaserde(prefix = "ns1", rename = "name", default)]
+        pub name: String,
+        #[yaserde(prefix = "ns1", rename = "building", default)]
+        pub building: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "localityName", default)]
+        pub locality_name: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "postalCode", default)]
+        pub postal_code: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "room", default)]
+        pub room: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "stateOrProvince", default)]
+        pub state_or_province: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "country", default)]
+        pub country: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "street", default)]
+        pub street: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "businessphone", default)]
+        pub businessphone: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "otherbusinessphone", default)]
+        pub otherbusinessphone: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "fax", default)]
+        pub fax: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "homephone", default)]
+        pub homephone: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "otherhomephone", default)]
+        pub otherhomephone: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "mobilephone", default)]
+        pub mobilephone: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "othermobilephone", default)]
+        pub othermobilephone: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "pager", default)]
+        pub pager: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "pager2", default)]
+        pub pager_2: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "postalAddress", default)]
+        pub postal_address: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "isPrivate", default)]
+        pub is_private: Option<bool>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlContact",
+        default
+    )]
+    pub struct XmlContact {
+        #[yaserde(prefix = "ns1", rename = "company", default)]
+        pub company: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "description", default)]
+        pub description: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "displayName", default)]
+        pub display_name: String,
+        #[yaserde(prefix = "ns1", rename = "displayNameAscii", default)]
+        pub display_name_ascii: String,
+        #[yaserde(prefix = "ns1", rename = "dn", default)]
+        pub dn: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "givenName", default)]
+        pub given_name: String,
+        #[yaserde(prefix = "ns1", rename = "givenNameAscii", default)]
+        pub given_name_ascii: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "initials", default)]
+        pub initials: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "middleName", default)]
+        pub middle_name: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "preferredGivenName", default)]
+        pub preferred_given_name: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "preferredLanguage", default)]
+        pub preferred_language: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "isPublic", default)]
+        pub is_public: bool,
+        #[yaserde(prefix = "ns1", rename = "source", default)]
+        pub source: String,
+        #[yaserde(prefix = "ns1", rename = "sourceUserKey", default)]
+        pub source_user_key: String,
+        #[yaserde(prefix = "ns1", rename = "suffix", default)]
+        pub suffix: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "surname", default)]
+        pub surname: String,
+        #[yaserde(prefix = "ns1", rename = "surnameAscii", default)]
+        pub surname_ascii: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "title", default)]
+        pub title: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "ContactAddress", default)]
+        pub contact_address: Vec<XmlContactAddress>,
+        #[yaserde(prefix = "ns1", rename = "addresses", default)]
+        pub addresses: Vec<XmlAddress>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlHandle",
+        default
+    )]
+    pub struct XmlHandle {
+        #[yaserde(prefix = "ns1", rename = "handleName", default)]
+        pub handle_name: String,
+        #[yaserde(prefix = "ns1", rename = "handleType", default)]
+        pub handle_type: String,
+        #[yaserde(prefix = "ns1", rename = "handleSubType", default)]
+        pub handle_sub_type: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "domainName", default)]
+        pub domain_name: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlCommProfileType",
+        default
+    )]
+    pub struct XmlCommProfileType {
+        #[yaserde(prefix = "ns1", rename = "commProfileType", default)]
+        pub comm_profile_type: String,
+        #[yaserde(prefix = "ns1", rename = "commProfileSubType", default)]
+        pub comm_profile_sub_type: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "jobId", default)]
+        pub job_id: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "handleList",
+        default
+    )]
+    pub struct HandleList {
+        #[yaserde(prefix = "ns1", rename = "handle", default)]
+        pub handle: Vec<XmlHandle>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "commProfileList",
+        default
+    )]
+    pub struct CommProfileList {
+        #[yaserde(prefix = "ns1", rename = "commProfile", default)]
+        pub comm_profile: Vec<XmlCommProfileType>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlCommProfileSetType",
+        default
+    )]
+    pub struct XmlCommProfileSetType {
+        #[yaserde(prefix = "ns1", rename = "commProfileSetName", default)]
+        pub comm_profile_set_name: String,
+        #[yaserde(prefix = "ns1", rename = "isPrimary", default)]
+        pub is_primary: bool,
+        #[yaserde(prefix = "ns1", rename = "handleList", default)]
+        pub handle_list: Option<HandleList>,
+        #[yaserde(prefix = "ns1", rename = "commProfileList", default)]
+        pub comm_profile_list: Option<CommProfileList>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "ForgeinCommProfileType",
+        default
+    )]
+    pub struct ForgeinCommProfileType {
+        #[yaserde(flatten)]
+        pub xml_comm_profile_type: XmlCommProfileType,
+        #[yaserde(prefix = "ns1", rename = "csEncryptionKeyId", default)]
+        pub cs_encryption_key_id: Option<u64>,
+        #[yaserde(prefix = "ns1", rename = "servicePassword", default)]
+        pub service_password: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "serviceData", default)]
+        pub service_data: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlSecureStore",
+        default
+    )]
+    pub struct XmlSecureStore {
+        #[yaserde(prefix = "ns1", rename = "secureStoreData", default)]
+        pub secure_store_data: String,
+        #[yaserde(prefix = "ns1", rename = "passwordEncrypted", default)]
+        pub password_encrypted: bool,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmlLocalizedName",
+        default
+    )]
+    pub struct XmlLocalizedName {
+        #[yaserde(prefix = "ns1", rename = "locale", default)]
+        pub locale: String,
+        #[yaserde(prefix = "ns1", rename = "name", default)]
+        pub name: String,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "xmLocalizedNames",
+        default
+    )]
+    pub struct XmLocalizedNames {
+        #[yaserde(prefix = "ns1", rename = "localizedName", default)]
+        pub localized_name: Vec<XmlLocalizedName>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "tenant",
+        default
+    )]
+    pub struct Tenant {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "ns1",
+        namespace = "ns1: http://xml.avaya.com/schema/import",
+        rename = "UserOrganizationDetailsType",
+        default
+    )]
+    pub struct UserOrganizationDetailsType {
+        #[yaserde(prefix = "ns1", rename = "tenant", default)]
+        pub tenant: Tenant,
+        #[yaserde(prefix = "ns1", rename = "organizationUnitLevelOne", default)]
+        pub organization_unit_level_one: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "organizationUnitLevelTwo", default)]
+        pub organization_unit_level_two: Option<String>,
+        #[yaserde(prefix = "ns1", rename = "organizationUnitLevelThree", default)]
+        pub organization_unit_level_three: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/schema/import_csm_agent",
+        rename = "xmlAgentProfile",
+        default
+    )]
+    pub struct XmlAgentProfile {
+        #[yaserde(flatten)]
+        pub xml_comm_profile_type: XmlCommProfileType,
+        #[yaserde(prefix = "tns", rename = "cmName", default)]
+        pub cm_name: String,
+        #[yaserde(prefix = "tns", rename = "useExistingAgent", default)]
+        pub use_existing_agent: Option<bool>,
+        #[yaserde(prefix = "tns", rename = "loginIdExtension", default)]
+        pub login_id_extension: String,
+        #[yaserde(prefix = "tns", rename = "template", default)]
+        pub template: Option<String>,
+        #[yaserde(prefix = "tns", rename = "securityCode", default)]
+        pub security_code: Option<String>,
+        #[yaserde(prefix = "tns", rename = "aas", default)]
+        pub aas: Option<bool>,
+        #[yaserde(prefix = "tns", rename = "audix", default)]
+        pub audix: Option<bool>,
+        #[yaserde(prefix = "tns", rename = "password", default)]
+        pub password: Option<String>,
+        #[yaserde(prefix = "tns", rename = "portExtension", default)]
+        pub port_extension: Option<String>,
+        #[yaserde(prefix = "tns", rename = "deleteOnUnassign", default)]
+        pub delete_on_unassign: Option<bool>,
+        #[yaserde(prefix = "tns", rename = "tn", default)]
+        pub tn: Option<u64>,
+        #[yaserde(prefix = "tns", rename = "cor", default)]
+        pub cor: Option<u64>,
+        #[yaserde(prefix = "tns", rename = "coveragePath", default)]
+        pub coverage_path: Option<String>,
+        #[yaserde(prefix = "tns", rename = "lwcReception", default)]
+        pub lwc_reception: Option<String>,
+        #[yaserde(prefix = "tns", rename = "lwcLogExternalCalls", default)]
+        pub lwc_log_external_calls: Option<bool>,
+        #[yaserde(prefix = "tns", rename = "audixNameforMessaging", default)]
+        pub audix_namefor_messaging: Option<String>,
+        #[yaserde(prefix = "tns", rename = "hearsServiceObservingTone", default)]
+        pub hears_service_observing_tone: Option<bool>,
+        #[yaserde(prefix = "tns", rename = "loginIDforISDNSIPDisplay", default)]
+        pub login_i_dfor_isdnsip_display: Option<bool>,
+        #[yaserde(prefix = "tns", rename = "autoAnswer", default)]
+        pub auto_answer: Option<String>,
+        #[yaserde(prefix = "tns", rename = "miaAcrossSkills", default)]
+        pub mia_across_skills: Option<String>,
+        #[yaserde(prefix = "tns", rename = "acwAgentConsideredIdle", default)]
+        pub acw_agent_considered_idle: Option<String>,
+        #[yaserde(prefix = "tns", rename = "auxWorkReasonCodeType", default)]
+        pub aux_work_reason_code_type: Option<String>,
+        #[yaserde(prefix = "tns", rename = "logoutReasonCodeType", default)]
+        pub logout_reason_code_type: Option<String>,
+        #[yaserde(
+            prefix = "tns",
+            rename = "maximumTimeAgentInAcwBeforeLogoutSec",
+            default
+        )]
+        pub maximum_time_agent_in_acw_before_logout_sec: Option<String>,
+        #[yaserde(prefix = "tns", rename = "forcedAgentLogoutTimeHr", default)]
+        pub forced_agent_logout_time_hr: Option<String>,
+        #[yaserde(prefix = "tns", rename = "forcedAgentLogoutTimeSec", default)]
+        pub forced_agent_logout_time_sec: Option<String>,
+        #[yaserde(prefix = "tns", rename = "directAgentSkill", default)]
+        pub direct_agent_skill: Option<String>,
+        #[yaserde(prefix = "tns", rename = "callHandlingPreference", default)]
+        pub call_handling_preference: Option<String>,
+        #[yaserde(prefix = "tns", rename = "serviceObjective", default)]
+        pub service_objective: Option<bool>,
+        #[yaserde(prefix = "tns", rename = "directAgentCallsFirst", default)]
+        pub direct_agent_calls_first: Option<bool>,
+        #[yaserde(prefix = "tns", rename = "localCallPreference", default)]
+        pub local_call_preference: Option<bool>,
+        #[yaserde(prefix = "tns", rename = "skills", default)]
+        pub skills: Vec<XmlAgentLoginIdSkillsData>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/schema/import_csm_agent",
+        rename = "xmlAgentLoginIdSkillsData",
+        default
+    )]
+    pub struct XmlAgentLoginIdSkillsData {
+        #[yaserde(prefix = "tns", rename = "number", default)]
+        pub number: String,
+        #[yaserde(prefix = "tns", rename = "skillNumber", default)]
+        pub skill_number: String,
+        #[yaserde(prefix = "tns", rename = "reserveLevel", default)]
+        pub reserve_level: Option<String>,
+        #[yaserde(prefix = "tns", rename = "skillLevel", default)]
+        pub skill_level: Option<String>,
+        #[yaserde(prefix = "tns", rename = "percentAllocation", default)]
+        pub percent_allocation: Option<String>,
+    }
+}
