@@ -30,7 +30,7 @@ mod tests {
         println!("user {:?}", users);
 
         let xml = to_string(&users).expect("problems marshalling");
-        println!("xml {:?}", xml);
+        println!("xml {}", xml);
     }
 }
 
@@ -56,9 +56,11 @@ fn resolve_comm_profiles(mut input: Users) -> Users {
                                 match profile_type_str.as_str() {
                                     "PS" => {
                                         comm_profile_type.station = None;
+                                        comm_profile_type.sm = None;
                                     }
                                     "CM" => {
                                         comm_profile_type.ps = None;
+                                        comm_profile_type.sm = None;
                                     }
                                     "SessionManager" => {
                                         comm_profile_type.station = None;

@@ -1,6 +1,6 @@
-<?xml version=\"1.0\" encoding=\"utf-8\"?>
-<tns:users xmlns:tns=\"http://xml.avaya.com/schema/import\">
-    <tns:user>
+<?xml version="1.0" encoding="utf-8"?>
+<tns:users xmlns:tns="http://xml.avaya.com/schema/import">
+    <tns:user>        
         <tns:authenticationType>basic</tns:authenticationType>
         <tns:displayName>Anselmann, Anna</tns:displayName>
         <tns:displayNameAscii>Anselmann, Anna</tns:displayNameAscii>
@@ -70,15 +70,17 @@
                 </tns:handle>
             </tns:handleList>
             <tns:commProfileList>
-                <tns:commProfile xmlns:ns2=\"http://xml.avaya.com/schema/import_csm_cm\" 
-                    xmlns:ns3=\"http://xml.avaya.com/schema/presence\">
+                <tns:commProfile xmlns:ns2="http://xml.avaya.com/schema/import_csm_cm" 
+                    xmlns:ns3="http://xml.avaya.com/schema/presence" 
+                    xmlns:ns7="http://xml.avaya.com/schema/import_sessionmanager">
                     <tns:commProfileType>PS</tns:commProfileType>
                     <ns3:system>ps.avayacloud.com</ns3:system>
                     <ns3:imGatewaySipEntity>ps.avayacloud.com</ns3:imGatewaySipEntity>
                     <ns3:publishViaAESCollector>SD</ns3:publishViaAESCollector>
                 </tns:commProfile>
-                <tns:commProfile xmlns:ns2=\"http://xml.avaya.com/schema/import_csm_cm\" 
-                    xmlns:ns3=\"http://xml.avaya.com/schema/presence\">
+                <tns:commProfile xmlns:ns2="http://xml.avaya.com/schema/import_csm_cm" 
+                    xmlns:ns3="http://xml.avaya.com/schema/presence" 
+                    xmlns:ns7="http://xml.avaya.com/schema/import_sessionmanager">
                     <tns:commProfileType>CM</tns:commProfileType>
                     <ns2:cmName>cm1</ns2:cmName>
                     <ns2:prefHandleId>351686@sip.avayacloud.com</ns2:prefHandleId>
@@ -329,9 +331,17 @@
                         <ns2:awayTimerValue>60</ns2:awayTimerValue>
                     </ns2:profileSettingsData>
                 </tns:commProfile>
-                <tns:commProfile xmlns:ns2=\"http://xml.avaya.com/schema/import_csm_cm\" 
-                    xmlns:ns3=\"http://xml.avaya.com/schema/presence\">
+                <tns:commProfile xmlns:ns2="http://xml.avaya.com/schema/import_csm_cm" 
+                    xmlns:ns3="http://xml.avaya.com/schema/presence" 
+                    xmlns:ns7="http://xml.avaya.com/schema/import_sessionmanager">
                     <tns:commProfileType>SessionManager</tns:commProfileType>
+                    <ns7:primarySM>SM01</ns7:primarySM>
+                    <ns7:terminationAppSequence>CMAppSeq</ns7:terminationAppSequence>
+                    <ns7:originationAppSequence>CMAppSeq</ns7:originationAppSequence>
+                    <ns7:homeLocation>Alsfeld-HE-I001</ns7:homeLocation>
+                    <ns7:maxSimultaneousDevices>2</ns7:maxSimultaneousDevices>
+                    <ns7:blockNewRegistrationWhenMaxActive>false</ns7:blockNewRegistrationWhenMaxActive>
+                    <ns7:enabledisablecalllog>true</ns7:enabledisablecalllog>
                 </tns:commProfile>
             </tns:commProfileList>
         </tns:commProfileSet>
