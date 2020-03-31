@@ -7,6 +7,583 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+pub mod types {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "Get",
+        default
+    )]
+    pub struct Get {
+        #[yaserde(prefix = "tns", rename = "loginId", default)]
+        pub login_id: String,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "GetResponse",
+        default
+    )]
+    pub struct GetResponse {
+        #[yaserde(prefix = "tns", rename = "GetReturn", default)]
+        pub get_return: Agent,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "AgentAdvocateInfo",
+        default
+    )]
+    pub struct AgentAdvocateInfo {
+        #[yaserde(prefix = "tns", rename = "LRMID", default)]
+        pub lrmid: Option<String>,
+        #[yaserde(prefix = "tns", rename = "enabled", default)]
+        pub enabled: bool,
+        #[yaserde(prefix = "tns", rename = "telephonyLinkGroup", default)]
+        pub telephony_link_group: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "ArrayOf_xsd_string",
+        default
+    )]
+    pub struct ArrayOfXsdString {
+        #[yaserde(prefix = "tns", rename = "item", default)]
+        pub item: Vec<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "AgentBasicProfile",
+        default
+    )]
+    pub struct AgentBasicProfile {
+        #[yaserde(prefix = "tns", rename = "domain", default)]
+        pub domain: Option<String>,
+        #[yaserde(prefix = "tns", rename = "employeeId", default)]
+        pub employee_id: Option<String>,
+        #[yaserde(prefix = "tns", rename = "externalAgent", default)]
+        pub external_agent: bool,
+        #[yaserde(prefix = "tns", rename = "firstName", default)]
+        pub first_name: Option<String>,
+        #[yaserde(prefix = "tns", rename = "lastName", default)]
+        pub last_name: Option<String>,
+        #[yaserde(prefix = "tns", rename = "middleName", default)]
+        pub middle_name: Option<String>,
+        #[yaserde(prefix = "tns", rename = "outOfOffice", default)]
+        pub out_of_office: bool,
+        #[yaserde(prefix = "tns", rename = "preferredName", default)]
+        pub preferred_name: Option<String>,
+        #[yaserde(prefix = "tns", rename = "site", default)]
+        pub site: Option<String>,
+        #[yaserde(prefix = "tns", rename = "softwareAgent", default)]
+        pub software_agent: bool,
+        #[yaserde(prefix = "tns", rename = "title", default)]
+        pub title: Option<String>,
+        #[yaserde(prefix = "tns", rename = "userAddressable", default)]
+        pub user_addressable: bool,
+        #[yaserde(prefix = "tns", rename = "workgroups", default)]
+        pub workgroups: Option<ArrayOfXsdString>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "AgentChatChannel",
+        default
+    )]
+    pub struct AgentChatChannel {
+        #[yaserde(prefix = "tns", rename = "enabled", default)]
+        pub enabled: bool,
+        #[yaserde(prefix = "tns", rename = "taskCeiling", default)]
+        pub task_ceiling: u8,
+        #[yaserde(prefix = "tns", rename = "taskLoad", default)]
+        pub task_load: u8,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "AgentEmailChannel",
+        default
+    )]
+    pub struct AgentEmailChannel {
+        #[yaserde(prefix = "tns", rename = "enabled", default)]
+        pub enabled: bool,
+        #[yaserde(prefix = "tns", rename = "fromAddress", default)]
+        pub from_address: Option<String>,
+        #[yaserde(prefix = "tns", rename = "showFullHeader", default)]
+        pub show_full_header: bool,
+        #[yaserde(prefix = "tns", rename = "taskCeiling", default)]
+        pub task_ceiling: u8,
+        #[yaserde(prefix = "tns", rename = "taskLoad", default)]
+        pub task_load: u8,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "AgentAddressInfo",
+        default
+    )]
+    pub struct AgentAddressInfo {
+        #[yaserde(prefix = "tns", rename = "POBox", default)]
+        pub po_box: Option<String>,
+        #[yaserde(prefix = "tns", rename = "address1", default)]
+        pub address_1: Option<String>,
+        #[yaserde(prefix = "tns", rename = "address2", default)]
+        pub address_2: Option<String>,
+        #[yaserde(prefix = "tns", rename = "building", default)]
+        pub building: Option<String>,
+        #[yaserde(prefix = "tns", rename = "city", default)]
+        pub city: Option<String>,
+        #[yaserde(prefix = "tns", rename = "company", default)]
+        pub company: Option<String>,
+        #[yaserde(prefix = "tns", rename = "countryOrRegion", default)]
+        pub country_or_region: Option<String>,
+        #[yaserde(prefix = "tns", rename = "mailStop", default)]
+        pub mail_stop: Option<String>,
+        #[yaserde(prefix = "tns", rename = "stateOrProvince", default)]
+        pub state_or_province: Option<String>,
+        #[yaserde(prefix = "tns", rename = "zipOrPostalCode", default)]
+        pub zip_or_postal_code: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "AgentAddress",
+        default
+    )]
+    pub struct AgentAddress {
+        #[yaserde(prefix = "tns", rename = "home", default)]
+        pub home: Option<AgentAddressInfo>,
+        #[yaserde(prefix = "tns", rename = "office", default)]
+        pub office: Option<AgentAddressInfo>,
+        #[yaserde(prefix = "tns", rename = "other", default)]
+        pub other: Option<AgentAddressInfo>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "AgentEmail",
+        default
+    )]
+    pub struct AgentEmail {
+        #[yaserde(prefix = "tns", rename = "internal", default)]
+        pub internal: Option<String>,
+        #[yaserde(prefix = "tns", rename = "mobileDevice", default)]
+        pub mobile_device: Option<String>,
+        #[yaserde(prefix = "tns", rename = "personal", default)]
+        pub personal: Option<String>,
+        #[yaserde(prefix = "tns", rename = "primary", default)]
+        pub primary: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "AgentPhoneInfo",
+        default
+    )]
+    pub struct AgentPhoneInfo {
+        #[yaserde(prefix = "tns", rename = "extension", default)]
+        pub extension: Option<String>,
+        #[yaserde(prefix = "tns", rename = "phoneNumber", default)]
+        pub phone_number: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "AgentPhone",
+        default
+    )]
+    pub struct AgentPhone {
+        #[yaserde(prefix = "tns", rename = "fax", default)]
+        pub fax: Option<AgentPhoneInfo>,
+        #[yaserde(prefix = "tns", rename = "home", default)]
+        pub home: Option<AgentPhoneInfo>,
+        #[yaserde(prefix = "tns", rename = "mobile", default)]
+        pub mobile: Option<AgentPhoneInfo>,
+        #[yaserde(prefix = "tns", rename = "pager", default)]
+        pub pager: Option<AgentPhoneInfo>,
+        #[yaserde(prefix = "tns", rename = "primary", default)]
+        pub primary: Option<AgentPhoneInfo>,
+        #[yaserde(prefix = "tns", rename = "secondary", default)]
+        pub secondary: Option<AgentPhoneInfo>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "AgentExtendedProfile",
+        default
+    )]
+    pub struct AgentExtendedProfile {
+        #[yaserde(prefix = "tns", rename = "address", default)]
+        pub address: Option<AgentAddress>,
+        #[yaserde(prefix = "tns", rename = "email", default)]
+        pub email: Option<AgentEmail>,
+        #[yaserde(prefix = "tns", rename = "phone", default)]
+        pub phone: Option<AgentPhone>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "AgentSecurity",
+        default
+    )]
+    pub struct AgentSecurity {
+        #[yaserde(prefix = "tns", rename = "disableLogin", default)]
+        pub disable_login: bool,
+        #[yaserde(prefix = "tns", rename = "forcePwdChange", default)]
+        pub force_pwd_change: bool,
+        #[yaserde(prefix = "tns", rename = "password", default)]
+        pub password: Option<String>,
+        #[yaserde(prefix = "tns", rename = "roleAdmin", default)]
+        pub role_admin: bool,
+        #[yaserde(prefix = "tns", rename = "roleAgent", default)]
+        pub role_agent: bool,
+        #[yaserde(prefix = "tns", rename = "roleClerk", default)]
+        pub role_clerk: bool,
+        #[yaserde(prefix = "tns", rename = "roleEditor", default)]
+        pub role_editor: bool,
+        #[yaserde(prefix = "tns", rename = "roleOperator", default)]
+        pub role_operator: bool,
+        #[yaserde(prefix = "tns", rename = "rolePostmaster", default)]
+        pub role_postmaster: bool,
+        #[yaserde(prefix = "tns", rename = "roleSupervisor", default)]
+        pub role_supervisor: bool,
+        #[yaserde(prefix = "tns", rename = "roleSupport", default)]
+        pub role_support: bool,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "AgentTaskLoad",
+        default
+    )]
+    pub struct AgentTaskLoad {
+        #[yaserde(prefix = "tns", rename = "taskCeiling", default)]
+        pub task_ceiling: u8,
+        #[yaserde(prefix = "tns", rename = "taskLoad", default)]
+        pub task_load: u8,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "AgentVoiceChannel",
+        default
+    )]
+    pub struct AgentVoiceChannel {
+        #[yaserde(prefix = "tns", rename = "enabled", default)]
+        pub enabled: bool,
+        #[yaserde(prefix = "tns", rename = "equipment", default)]
+        pub equipment: Option<String>,
+        #[yaserde(prefix = "tns", rename = "password", default)]
+        pub password: Option<String>,
+        #[yaserde(prefix = "tns", rename = "phoneId", default)]
+        pub phone_id: Option<String>,
+        #[yaserde(prefix = "tns", rename = "phoneType", default)]
+        pub phone_type: Option<String>,
+        #[yaserde(prefix = "tns", rename = "queue", default)]
+        pub queue: Option<String>,
+        #[yaserde(prefix = "tns", rename = "taskCeiling", default)]
+        pub task_ceiling: u8,
+        #[yaserde(prefix = "tns", rename = "taskLoad", default)]
+        pub task_load: u8,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "Agent",
+        default
+    )]
+    pub struct Agent {
+        #[yaserde(prefix = "tns", rename = "advocateInfo", default)]
+        pub advocate_info: Option<AgentAdvocateInfo>,
+        #[yaserde(prefix = "tns", rename = "basicProfile", default)]
+        pub basic_profile: Option<AgentBasicProfile>,
+        #[yaserde(prefix = "tns", rename = "chatChannel", default)]
+        pub chat_channel: Option<AgentChatChannel>,
+        #[yaserde(prefix = "tns", rename = "emailChannel", default)]
+        pub email_channel: Option<AgentEmailChannel>,
+        #[yaserde(prefix = "tns", rename = "extendedProfile", default)]
+        pub extended_profile: Option<AgentExtendedProfile>,
+        #[yaserde(prefix = "tns", rename = "loginId", default)]
+        pub login_id: Option<String>,
+        #[yaserde(prefix = "tns", rename = "security", default)]
+        pub security: Option<AgentSecurity>,
+        #[yaserde(prefix = "tns", rename = "taskLoad", default)]
+        pub task_load: Option<AgentTaskLoad>,
+        #[yaserde(prefix = "tns", rename = "voiceChannel", default)]
+        pub voice_channel: Option<AgentVoiceChannel>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "AicServiceFault",
+        default
+    )]
+    pub struct AicServiceFault {}
+
+    pub type Fault = AicServiceFault;
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "Update",
+        default
+    )]
+    pub struct Update {
+        #[yaserde(prefix = "tns", rename = "agent", default)]
+        pub agent: Agent,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "UpdateResponse",
+        default
+    )]
+    pub struct UpdateResponse {
+        #[yaserde(prefix = "tns", rename = "UpdateReturn", default)]
+        pub update_return: bool,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "Delete",
+        default
+    )]
+    pub struct Delete {
+        #[yaserde(prefix = "tns", rename = "loginId", default)]
+        pub login_id: String,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "DeleteResponse",
+        default
+    )]
+    pub struct DeleteResponse {
+        #[yaserde(prefix = "tns", rename = "DeleteReturn", default)]
+        pub delete_return: bool,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupAgentIds",
+        default
+    )]
+    pub struct LookupAgentIds {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupAgentIdsResponse",
+        default
+    )]
+    pub struct LookupAgentIdsResponse {
+        #[yaserde(prefix = "tns", rename = "LookupAgentIdsReturn", default)]
+        pub lookup_agent_ids_return: Vec<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupLRMIds",
+        default
+    )]
+    pub struct LookupLRMIds {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupLRMIdsResponse",
+        default
+    )]
+    pub struct LookupLRMIdsResponse {
+        #[yaserde(prefix = "tns", rename = "LookupLRMIdsReturn", default)]
+        pub lookup_lrm_ids_return: Vec<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupWorkgroups",
+        default
+    )]
+    pub struct LookupWorkgroups {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupWorkgroupsResponse",
+        default
+    )]
+    pub struct LookupWorkgroupsResponse {
+        #[yaserde(prefix = "tns", rename = "LookupWorkgroupsReturn", default)]
+        pub lookup_workgroups_return: Vec<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupDomains",
+        default
+    )]
+    pub struct LookupDomains {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupDomainsResponse",
+        default
+    )]
+    pub struct LookupDomainsResponse {
+        #[yaserde(prefix = "tns", rename = "LookupDomainsReturn", default)]
+        pub lookup_domains_return: Vec<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupLinkGroups",
+        default
+    )]
+    pub struct LookupLinkGroups {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupLinkGroupsResponse",
+        default
+    )]
+    pub struct LookupLinkGroupsResponse {
+        #[yaserde(prefix = "tns", rename = "LookupLinkGroupsReturn", default)]
+        pub lookup_link_groups_return: Vec<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupPhoneTypes",
+        default
+    )]
+    pub struct LookupPhoneTypes {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupPhoneTypesResponse",
+        default
+    )]
+    pub struct LookupPhoneTypesResponse {
+        #[yaserde(prefix = "tns", rename = "LookupPhoneTypesReturn", default)]
+        pub lookup_phone_types_return: Vec<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupSites",
+        default
+    )]
+    pub struct LookupSites {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "LookupSitesResponse",
+        default
+    )]
+    pub struct LookupSitesResponse {
+        #[yaserde(prefix = "tns", rename = "LookupSitesReturn", default)]
+        pub lookup_sites_return: Vec<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "Create",
+        default
+    )]
+    pub struct Create {
+        #[yaserde(prefix = "tns", rename = "agent", default)]
+        pub agent: Agent,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        rename = "CreateResponse",
+        default
+    )]
+    pub struct CreateResponse {
+        #[yaserde(prefix = "tns", rename = "CreateReturn", default)]
+        pub create_return: bool,
+    }
+}
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 pub struct Header {}
@@ -24,6 +601,101 @@ pub struct SoapFault {
     pub fault_string: Option<String>,
 }
 
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[async_trait]
+    pub trait AicAgentAdmin {
+        async fn get(
+            &self,
+            get_request: GetRequest,
+        ) -> Result<GetResponse, Option<SoapAicServiceFault>>;
+        async fn update(
+            &self,
+            update_request: UpdateRequest,
+        ) -> Result<UpdateResponse, Option<SoapAicServiceFault>>;
+        async fn delete(
+            &self,
+            delete_request: DeleteRequest,
+        ) -> Result<DeleteResponse, Option<SoapAicServiceFault>>;
+        async fn lookup_agent_ids(
+            &self,
+            lookup_agent_ids_request: LookupAgentIdsRequest,
+        ) -> Result<LookupAgentIdsResponse, Option<SoapAicServiceFault>>;
+        async fn lookup_lrm_ids(
+            &self,
+            lookup_lrm_ids_request: LookupLRMIdsRequest,
+        ) -> Result<LookupLRMIdsResponse, Option<SoapAicServiceFault>>;
+        async fn lookup_workgroups(
+            &self,
+            lookup_workgroups_request: LookupWorkgroupsRequest,
+        ) -> Result<LookupWorkgroupsResponse, Option<SoapAicServiceFault>>;
+        async fn lookup_domains(
+            &self,
+            lookup_domains_request: LookupDomainsRequest,
+        ) -> Result<LookupDomainsResponse, Option<SoapAicServiceFault>>;
+        async fn lookup_link_groups(
+            &self,
+            lookup_link_groups_request: LookupLinkGroupsRequest,
+        ) -> Result<LookupLinkGroupsResponse, Option<SoapAicServiceFault>>;
+        async fn lookup_phone_types(
+            &self,
+            lookup_phone_types_request: LookupPhoneTypesRequest,
+        ) -> Result<LookupPhoneTypesResponse, Option<SoapAicServiceFault>>;
+        async fn lookup_sites(
+            &self,
+            lookup_sites_request: LookupSitesRequest,
+        ) -> Result<LookupSitesResponse, Option<SoapAicServiceFault>>;
+        async fn create(
+            &self,
+            create_request: CreateRequest,
+        ) -> Result<CreateResponse, Option<SoapAicServiceFault>>;
+    }
+
+    pub type GetRequest = messages::GetRequest;
+    pub type GetResponse = messages::GetResponse;
+    pub type AicServiceFault = messages::AicServiceFault;
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Fault",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct SoapAicServiceFault {
+        #[yaserde(rename = "faultcode", default)]
+        pub fault_code: Option<String>,
+        #[yaserde(rename = "faultstring", default)]
+        pub fault_string: Option<String>,
+        #[yaserde(rename = "AicServiceFault", default)]
+        pub detail: Option<AicServiceFault>,
+    }
+
+    pub type UpdateRequest = messages::UpdateRequest;
+    pub type UpdateResponse = messages::UpdateResponse;
+    pub type DeleteRequest = messages::DeleteRequest;
+    pub type DeleteResponse = messages::DeleteResponse;
+    pub type LookupAgentIdsRequest = messages::LookupAgentIdsRequest;
+    pub type LookupAgentIdsResponse = messages::LookupAgentIdsResponse;
+    pub type LookupLRMIdsRequest = messages::LookupLRMIdsRequest;
+    pub type LookupLRMIdsResponse = messages::LookupLRMIdsResponse;
+    pub type LookupWorkgroupsRequest = messages::LookupWorkgroupsRequest;
+    pub type LookupWorkgroupsResponse = messages::LookupWorkgroupsResponse;
+    pub type LookupDomainsRequest = messages::LookupDomainsRequest;
+    pub type LookupDomainsResponse = messages::LookupDomainsResponse;
+    pub type LookupLinkGroupsRequest = messages::LookupLinkGroupsRequest;
+    pub type LookupLinkGroupsResponse = messages::LookupLinkGroupsResponse;
+    pub type LookupPhoneTypesRequest = messages::LookupPhoneTypesRequest;
+    pub type LookupPhoneTypesResponse = messages::LookupPhoneTypesResponse;
+    pub type LookupSitesRequest = messages::LookupSitesRequest;
+    pub type LookupSitesResponse = messages::LookupSitesResponse;
+    pub type CreateRequest = messages::CreateRequest;
+    pub type CreateResponse = messages::CreateResponse;
+}
+
 pub mod bindings {
     use super::*;
     use async_trait::async_trait;
@@ -33,7 +705,7 @@ pub mod bindings {
 
     impl AicAgentAdminSoapBinding {
         async fn send_soap_request<T: YaSerialize>(
-            &mut self,
+            &self,
             request: &T,
             action: &str,
         ) -> (reqwest::StatusCode, String) {
@@ -68,7 +740,7 @@ pub mod bindings {
     #[async_trait]
     impl ports::AicAgentAdmin for AicAgentAdminSoapBinding {
         async fn get(
-            &mut self,
+            &self,
             get_request: ports::GetRequest,
         ) -> Result<ports::GetResponse, Option<ports::SoapAicServiceFault>> {
             let __request = GetRequestSoapEnvelope::new(SoapGetRequest {
@@ -88,7 +760,7 @@ pub mod bindings {
             }
         }
         async fn update(
-            &mut self,
+            &self,
             update_request: ports::UpdateRequest,
         ) -> Result<ports::UpdateResponse, Option<ports::SoapAicServiceFault>> {
             let __request = UpdateRequestSoapEnvelope::new(SoapUpdateRequest {
@@ -108,7 +780,7 @@ pub mod bindings {
             }
         }
         async fn delete(
-            &mut self,
+            &self,
             delete_request: ports::DeleteRequest,
         ) -> Result<ports::DeleteResponse, Option<ports::SoapAicServiceFault>> {
             let __request = DeleteRequestSoapEnvelope::new(SoapDeleteRequest {
@@ -128,7 +800,7 @@ pub mod bindings {
             }
         }
         async fn lookup_agent_ids(
-            &mut self,
+            &self,
             lookup_agent_ids_request: ports::LookupAgentIdsRequest,
         ) -> Result<ports::LookupAgentIdsResponse, Option<ports::SoapAicServiceFault>> {
             let __request = LookupAgentIdsRequestSoapEnvelope::new(SoapLookupAgentIdsRequest {
@@ -149,7 +821,7 @@ pub mod bindings {
             }
         }
         async fn lookup_lrm_ids(
-            &mut self,
+            &self,
             lookup_lrm_ids_request: ports::LookupLRMIdsRequest,
         ) -> Result<ports::LookupLRMIdsResponse, Option<ports::SoapAicServiceFault>> {
             let __request = LookupLRMIdsRequestSoapEnvelope::new(SoapLookupLRMIdsRequest {
@@ -170,7 +842,7 @@ pub mod bindings {
             }
         }
         async fn lookup_workgroups(
-            &mut self,
+            &self,
             lookup_workgroups_request: ports::LookupWorkgroupsRequest,
         ) -> Result<ports::LookupWorkgroupsResponse, Option<ports::SoapAicServiceFault>> {
             let __request = LookupWorkgroupsRequestSoapEnvelope::new(SoapLookupWorkgroupsRequest {
@@ -191,7 +863,7 @@ pub mod bindings {
             }
         }
         async fn lookup_domains(
-            &mut self,
+            &self,
             lookup_domains_request: ports::LookupDomainsRequest,
         ) -> Result<ports::LookupDomainsResponse, Option<ports::SoapAicServiceFault>> {
             let __request = LookupDomainsRequestSoapEnvelope::new(SoapLookupDomainsRequest {
@@ -212,7 +884,7 @@ pub mod bindings {
             }
         }
         async fn lookup_link_groups(
-            &mut self,
+            &self,
             lookup_link_groups_request: ports::LookupLinkGroupsRequest,
         ) -> Result<ports::LookupLinkGroupsResponse, Option<ports::SoapAicServiceFault>> {
             let __request = LookupLinkGroupsRequestSoapEnvelope::new(SoapLookupLinkGroupsRequest {
@@ -233,7 +905,7 @@ pub mod bindings {
             }
         }
         async fn lookup_phone_types(
-            &mut self,
+            &self,
             lookup_phone_types_request: ports::LookupPhoneTypesRequest,
         ) -> Result<ports::LookupPhoneTypesResponse, Option<ports::SoapAicServiceFault>> {
             let __request = LookupPhoneTypesRequestSoapEnvelope::new(SoapLookupPhoneTypesRequest {
@@ -254,7 +926,7 @@ pub mod bindings {
             }
         }
         async fn lookup_sites(
-            &mut self,
+            &self,
             lookup_sites_request: ports::LookupSitesRequest,
         ) -> Result<ports::LookupSitesResponse, Option<ports::SoapAicServiceFault>> {
             let __request = LookupSitesRequestSoapEnvelope::new(SoapLookupSitesRequest {
@@ -275,7 +947,7 @@ pub mod bindings {
             }
         }
         async fn create(
-            &mut self,
+            &self,
             create_request: ports::CreateRequest,
         ) -> Result<ports::CreateResponse, Option<ports::SoapAicServiceFault>> {
             let __request = CreateRequestSoapEnvelope::new(SoapCreateRequest {
@@ -1428,677 +2100,4 @@ pub mod messages {
         #[yaserde(flatten)]
         pub parameters: types::LookupWorkgroups,
     }
-}
-
-pub mod types {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "Get",
-        default
-    )]
-    pub struct Get {
-        #[yaserde(prefix = "tns", rename = "loginId", default)]
-        pub login_id: String,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "GetResponse",
-        default
-    )]
-    pub struct GetResponse {
-        #[yaserde(prefix = "tns", rename = "GetReturn", default)]
-        pub get_return: Agent,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "AgentAdvocateInfo",
-        default
-    )]
-    pub struct AgentAdvocateInfo {
-        #[yaserde(prefix = "tns", rename = "LRMID", default)]
-        pub lrmid: Option<String>,
-        #[yaserde(prefix = "tns", rename = "enabled", default)]
-        pub enabled: bool,
-        #[yaserde(prefix = "tns", rename = "telephonyLinkGroup", default)]
-        pub telephony_link_group: Option<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "ArrayOf_xsd_string",
-        default
-    )]
-    pub struct ArrayOfXsdString {
-        #[yaserde(prefix = "tns", rename = "item", default)]
-        pub item: Vec<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "AgentBasicProfile",
-        default
-    )]
-    pub struct AgentBasicProfile {
-        #[yaserde(prefix = "tns", rename = "domain", default)]
-        pub domain: Option<String>,
-        #[yaserde(prefix = "tns", rename = "employeeId", default)]
-        pub employee_id: Option<String>,
-        #[yaserde(prefix = "tns", rename = "externalAgent", default)]
-        pub external_agent: bool,
-        #[yaserde(prefix = "tns", rename = "firstName", default)]
-        pub first_name: Option<String>,
-        #[yaserde(prefix = "tns", rename = "lastName", default)]
-        pub last_name: Option<String>,
-        #[yaserde(prefix = "tns", rename = "middleName", default)]
-        pub middle_name: Option<String>,
-        #[yaserde(prefix = "tns", rename = "outOfOffice", default)]
-        pub out_of_office: bool,
-        #[yaserde(prefix = "tns", rename = "preferredName", default)]
-        pub preferred_name: Option<String>,
-        #[yaserde(prefix = "tns", rename = "site", default)]
-        pub site: Option<String>,
-        #[yaserde(prefix = "tns", rename = "softwareAgent", default)]
-        pub software_agent: bool,
-        #[yaserde(prefix = "tns", rename = "title", default)]
-        pub title: Option<String>,
-        #[yaserde(prefix = "tns", rename = "userAddressable", default)]
-        pub user_addressable: bool,
-        #[yaserde(prefix = "tns", rename = "workgroups", default)]
-        pub workgroups: Option<ArrayOfXsdString>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "AgentChatChannel",
-        default
-    )]
-    pub struct AgentChatChannel {
-        #[yaserde(prefix = "tns", rename = "enabled", default)]
-        pub enabled: bool,
-        #[yaserde(prefix = "tns", rename = "taskCeiling", default)]
-        pub task_ceiling: u8,
-        #[yaserde(prefix = "tns", rename = "taskLoad", default)]
-        pub task_load: u8,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "AgentEmailChannel",
-        default
-    )]
-    pub struct AgentEmailChannel {
-        #[yaserde(prefix = "tns", rename = "enabled", default)]
-        pub enabled: bool,
-        #[yaserde(prefix = "tns", rename = "fromAddress", default)]
-        pub from_address: Option<String>,
-        #[yaserde(prefix = "tns", rename = "showFullHeader", default)]
-        pub show_full_header: bool,
-        #[yaserde(prefix = "tns", rename = "taskCeiling", default)]
-        pub task_ceiling: u8,
-        #[yaserde(prefix = "tns", rename = "taskLoad", default)]
-        pub task_load: u8,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "AgentAddressInfo",
-        default
-    )]
-    pub struct AgentAddressInfo {
-        #[yaserde(prefix = "tns", rename = "POBox", default)]
-        pub po_box: Option<String>,
-        #[yaserde(prefix = "tns", rename = "address1", default)]
-        pub address_1: Option<String>,
-        #[yaserde(prefix = "tns", rename = "address2", default)]
-        pub address_2: Option<String>,
-        #[yaserde(prefix = "tns", rename = "building", default)]
-        pub building: Option<String>,
-        #[yaserde(prefix = "tns", rename = "city", default)]
-        pub city: Option<String>,
-        #[yaserde(prefix = "tns", rename = "company", default)]
-        pub company: Option<String>,
-        #[yaserde(prefix = "tns", rename = "countryOrRegion", default)]
-        pub country_or_region: Option<String>,
-        #[yaserde(prefix = "tns", rename = "mailStop", default)]
-        pub mail_stop: Option<String>,
-        #[yaserde(prefix = "tns", rename = "stateOrProvince", default)]
-        pub state_or_province: Option<String>,
-        #[yaserde(prefix = "tns", rename = "zipOrPostalCode", default)]
-        pub zip_or_postal_code: Option<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "AgentAddress",
-        default
-    )]
-    pub struct AgentAddress {
-        #[yaserde(prefix = "tns", rename = "home", default)]
-        pub home: Option<AgentAddressInfo>,
-        #[yaserde(prefix = "tns", rename = "office", default)]
-        pub office: Option<AgentAddressInfo>,
-        #[yaserde(prefix = "tns", rename = "other", default)]
-        pub other: Option<AgentAddressInfo>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "AgentEmail",
-        default
-    )]
-    pub struct AgentEmail {
-        #[yaserde(prefix = "tns", rename = "internal", default)]
-        pub internal: Option<String>,
-        #[yaserde(prefix = "tns", rename = "mobileDevice", default)]
-        pub mobile_device: Option<String>,
-        #[yaserde(prefix = "tns", rename = "personal", default)]
-        pub personal: Option<String>,
-        #[yaserde(prefix = "tns", rename = "primary", default)]
-        pub primary: Option<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "AgentPhoneInfo",
-        default
-    )]
-    pub struct AgentPhoneInfo {
-        #[yaserde(prefix = "tns", rename = "extension", default)]
-        pub extension: Option<String>,
-        #[yaserde(prefix = "tns", rename = "phoneNumber", default)]
-        pub phone_number: Option<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "AgentPhone",
-        default
-    )]
-    pub struct AgentPhone {
-        #[yaserde(prefix = "tns", rename = "fax", default)]
-        pub fax: Option<AgentPhoneInfo>,
-        #[yaserde(prefix = "tns", rename = "home", default)]
-        pub home: Option<AgentPhoneInfo>,
-        #[yaserde(prefix = "tns", rename = "mobile", default)]
-        pub mobile: Option<AgentPhoneInfo>,
-        #[yaserde(prefix = "tns", rename = "pager", default)]
-        pub pager: Option<AgentPhoneInfo>,
-        #[yaserde(prefix = "tns", rename = "primary", default)]
-        pub primary: Option<AgentPhoneInfo>,
-        #[yaserde(prefix = "tns", rename = "secondary", default)]
-        pub secondary: Option<AgentPhoneInfo>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "AgentExtendedProfile",
-        default
-    )]
-    pub struct AgentExtendedProfile {
-        #[yaserde(prefix = "tns", rename = "address", default)]
-        pub address: Option<AgentAddress>,
-        #[yaserde(prefix = "tns", rename = "email", default)]
-        pub email: Option<AgentEmail>,
-        #[yaserde(prefix = "tns", rename = "phone", default)]
-        pub phone: Option<AgentPhone>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "AgentSecurity",
-        default
-    )]
-    pub struct AgentSecurity {
-        #[yaserde(prefix = "tns", rename = "disableLogin", default)]
-        pub disable_login: bool,
-        #[yaserde(prefix = "tns", rename = "forcePwdChange", default)]
-        pub force_pwd_change: bool,
-        #[yaserde(prefix = "tns", rename = "password", default)]
-        pub password: Option<String>,
-        #[yaserde(prefix = "tns", rename = "roleAdmin", default)]
-        pub role_admin: bool,
-        #[yaserde(prefix = "tns", rename = "roleAgent", default)]
-        pub role_agent: bool,
-        #[yaserde(prefix = "tns", rename = "roleClerk", default)]
-        pub role_clerk: bool,
-        #[yaserde(prefix = "tns", rename = "roleEditor", default)]
-        pub role_editor: bool,
-        #[yaserde(prefix = "tns", rename = "roleOperator", default)]
-        pub role_operator: bool,
-        #[yaserde(prefix = "tns", rename = "rolePostmaster", default)]
-        pub role_postmaster: bool,
-        #[yaserde(prefix = "tns", rename = "roleSupervisor", default)]
-        pub role_supervisor: bool,
-        #[yaserde(prefix = "tns", rename = "roleSupport", default)]
-        pub role_support: bool,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "AgentTaskLoad",
-        default
-    )]
-    pub struct AgentTaskLoad {
-        #[yaserde(prefix = "tns", rename = "taskCeiling", default)]
-        pub task_ceiling: u8,
-        #[yaserde(prefix = "tns", rename = "taskLoad", default)]
-        pub task_load: u8,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "AgentVoiceChannel",
-        default
-    )]
-    pub struct AgentVoiceChannel {
-        #[yaserde(prefix = "tns", rename = "enabled", default)]
-        pub enabled: bool,
-        #[yaserde(prefix = "tns", rename = "equipment", default)]
-        pub equipment: Option<String>,
-        #[yaserde(prefix = "tns", rename = "password", default)]
-        pub password: Option<String>,
-        #[yaserde(prefix = "tns", rename = "phoneId", default)]
-        pub phone_id: Option<String>,
-        #[yaserde(prefix = "tns", rename = "phoneType", default)]
-        pub phone_type: Option<String>,
-        #[yaserde(prefix = "tns", rename = "queue", default)]
-        pub queue: Option<String>,
-        #[yaserde(prefix = "tns", rename = "taskCeiling", default)]
-        pub task_ceiling: u8,
-        #[yaserde(prefix = "tns", rename = "taskLoad", default)]
-        pub task_load: u8,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "Agent",
-        default
-    )]
-    pub struct Agent {
-        #[yaserde(prefix = "tns", rename = "advocateInfo", default)]
-        pub advocate_info: Option<AgentAdvocateInfo>,
-        #[yaserde(prefix = "tns", rename = "basicProfile", default)]
-        pub basic_profile: Option<AgentBasicProfile>,
-        #[yaserde(prefix = "tns", rename = "chatChannel", default)]
-        pub chat_channel: Option<AgentChatChannel>,
-        #[yaserde(prefix = "tns", rename = "emailChannel", default)]
-        pub email_channel: Option<AgentEmailChannel>,
-        #[yaserde(prefix = "tns", rename = "extendedProfile", default)]
-        pub extended_profile: Option<AgentExtendedProfile>,
-        #[yaserde(prefix = "tns", rename = "loginId", default)]
-        pub login_id: Option<String>,
-        #[yaserde(prefix = "tns", rename = "security", default)]
-        pub security: Option<AgentSecurity>,
-        #[yaserde(prefix = "tns", rename = "taskLoad", default)]
-        pub task_load: Option<AgentTaskLoad>,
-        #[yaserde(prefix = "tns", rename = "voiceChannel", default)]
-        pub voice_channel: Option<AgentVoiceChannel>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "AicServiceFault",
-        default
-    )]
-    pub struct AicServiceFault {}
-
-    pub type Fault = AicServiceFault;
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "Update",
-        default
-    )]
-    pub struct Update {
-        #[yaserde(prefix = "tns", rename = "agent", default)]
-        pub agent: Agent,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "UpdateResponse",
-        default
-    )]
-    pub struct UpdateResponse {
-        #[yaserde(prefix = "tns", rename = "UpdateReturn", default)]
-        pub update_return: bool,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "Delete",
-        default
-    )]
-    pub struct Delete {
-        #[yaserde(prefix = "tns", rename = "loginId", default)]
-        pub login_id: String,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "DeleteResponse",
-        default
-    )]
-    pub struct DeleteResponse {
-        #[yaserde(prefix = "tns", rename = "DeleteReturn", default)]
-        pub delete_return: bool,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "LookupAgentIds",
-        default
-    )]
-    pub struct LookupAgentIds {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "LookupAgentIdsResponse",
-        default
-    )]
-    pub struct LookupAgentIdsResponse {
-        #[yaserde(prefix = "tns", rename = "LookupAgentIdsReturn", default)]
-        pub lookup_agent_ids_return: Vec<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "LookupLRMIds",
-        default
-    )]
-    pub struct LookupLRMIds {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "LookupLRMIdsResponse",
-        default
-    )]
-    pub struct LookupLRMIdsResponse {
-        #[yaserde(prefix = "tns", rename = "LookupLRMIdsReturn", default)]
-        pub lookup_lrm_ids_return: Vec<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "LookupWorkgroups",
-        default
-    )]
-    pub struct LookupWorkgroups {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "LookupWorkgroupsResponse",
-        default
-    )]
-    pub struct LookupWorkgroupsResponse {
-        #[yaserde(prefix = "tns", rename = "LookupWorkgroupsReturn", default)]
-        pub lookup_workgroups_return: Vec<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "LookupDomains",
-        default
-    )]
-    pub struct LookupDomains {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "LookupDomainsResponse",
-        default
-    )]
-    pub struct LookupDomainsResponse {
-        #[yaserde(prefix = "tns", rename = "LookupDomainsReturn", default)]
-        pub lookup_domains_return: Vec<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "LookupLinkGroups",
-        default
-    )]
-    pub struct LookupLinkGroups {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "LookupLinkGroupsResponse",
-        default
-    )]
-    pub struct LookupLinkGroupsResponse {
-        #[yaserde(prefix = "tns", rename = "LookupLinkGroupsReturn", default)]
-        pub lookup_link_groups_return: Vec<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "LookupPhoneTypes",
-        default
-    )]
-    pub struct LookupPhoneTypes {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "LookupPhoneTypesResponse",
-        default
-    )]
-    pub struct LookupPhoneTypesResponse {
-        #[yaserde(prefix = "tns", rename = "LookupPhoneTypesReturn", default)]
-        pub lookup_phone_types_return: Vec<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "LookupSites",
-        default
-    )]
-    pub struct LookupSites {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "LookupSitesResponse",
-        default
-    )]
-    pub struct LookupSitesResponse {
-        #[yaserde(prefix = "tns", rename = "LookupSitesReturn", default)]
-        pub lookup_sites_return: Vec<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "Create",
-        default
-    )]
-    pub struct Create {
-        #[yaserde(prefix = "tns", rename = "agent", default)]
-        pub agent: Agent,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
-        rename = "CreateResponse",
-        default
-    )]
-    pub struct CreateResponse {
-        #[yaserde(prefix = "tns", rename = "CreateReturn", default)]
-        pub create_return: bool,
-    }
-}
-
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait AicAgentAdmin {
-        async fn get(
-            &mut self,
-            get_request: GetRequest,
-        ) -> Result<GetResponse, Option<SoapAicServiceFault>>;
-        async fn update(
-            &mut self,
-            update_request: UpdateRequest,
-        ) -> Result<UpdateResponse, Option<SoapAicServiceFault>>;
-        async fn delete(
-            &mut self,
-            delete_request: DeleteRequest,
-        ) -> Result<DeleteResponse, Option<SoapAicServiceFault>>;
-        async fn lookup_agent_ids(
-            &mut self,
-            lookup_agent_ids_request: LookupAgentIdsRequest,
-        ) -> Result<LookupAgentIdsResponse, Option<SoapAicServiceFault>>;
-        async fn lookup_lrm_ids(
-            &mut self,
-            lookup_lrm_ids_request: LookupLRMIdsRequest,
-        ) -> Result<LookupLRMIdsResponse, Option<SoapAicServiceFault>>;
-        async fn lookup_workgroups(
-            &mut self,
-            lookup_workgroups_request: LookupWorkgroupsRequest,
-        ) -> Result<LookupWorkgroupsResponse, Option<SoapAicServiceFault>>;
-        async fn lookup_domains(
-            &mut self,
-            lookup_domains_request: LookupDomainsRequest,
-        ) -> Result<LookupDomainsResponse, Option<SoapAicServiceFault>>;
-        async fn lookup_link_groups(
-            &mut self,
-            lookup_link_groups_request: LookupLinkGroupsRequest,
-        ) -> Result<LookupLinkGroupsResponse, Option<SoapAicServiceFault>>;
-        async fn lookup_phone_types(
-            &mut self,
-            lookup_phone_types_request: LookupPhoneTypesRequest,
-        ) -> Result<LookupPhoneTypesResponse, Option<SoapAicServiceFault>>;
-        async fn lookup_sites(
-            &mut self,
-            lookup_sites_request: LookupSitesRequest,
-        ) -> Result<LookupSitesResponse, Option<SoapAicServiceFault>>;
-        async fn create(
-            &mut self,
-            create_request: CreateRequest,
-        ) -> Result<CreateResponse, Option<SoapAicServiceFault>>;
-    }
-
-    pub type GetRequest = messages::GetRequest;
-    pub type GetResponse = messages::GetResponse;
-    pub type AicServiceFault = messages::AicServiceFault;
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Fault",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct SoapAicServiceFault {
-        #[yaserde(rename = "faultcode", default)]
-        pub fault_code: Option<String>,
-        #[yaserde(rename = "faultstring", default)]
-        pub fault_string: Option<String>,
-        #[yaserde(rename = "AicServiceFault", default)]
-        pub detail: Option<AicServiceFault>,
-    }
-
-    pub type UpdateRequest = messages::UpdateRequest;
-    pub type UpdateResponse = messages::UpdateResponse;
-    pub type DeleteRequest = messages::DeleteRequest;
-    pub type DeleteResponse = messages::DeleteResponse;
-    pub type LookupAgentIdsRequest = messages::LookupAgentIdsRequest;
-    pub type LookupAgentIdsResponse = messages::LookupAgentIdsResponse;
-    pub type LookupLRMIdsRequest = messages::LookupLRMIdsRequest;
-    pub type LookupLRMIdsResponse = messages::LookupLRMIdsResponse;
-    pub type LookupWorkgroupsRequest = messages::LookupWorkgroupsRequest;
-    pub type LookupWorkgroupsResponse = messages::LookupWorkgroupsResponse;
-    pub type LookupDomainsRequest = messages::LookupDomainsRequest;
-    pub type LookupDomainsResponse = messages::LookupDomainsResponse;
-    pub type LookupLinkGroupsRequest = messages::LookupLinkGroupsRequest;
-    pub type LookupLinkGroupsResponse = messages::LookupLinkGroupsResponse;
-    pub type LookupPhoneTypesRequest = messages::LookupPhoneTypesRequest;
-    pub type LookupPhoneTypesResponse = messages::LookupPhoneTypesResponse;
-    pub type LookupSitesRequest = messages::LookupSitesRequest;
-    pub type LookupSitesResponse = messages::LookupSitesResponse;
-    pub type CreateRequest = messages::CreateRequest;
-    pub type CreateResponse = messages::CreateResponse;
 }
