@@ -531,6 +531,12 @@ impl FileWriter {
             .children()
             .find(|child| child.has_tag_name("complexContent"));
 
+        node.children()
+            .filter(|c| c.has_tag_name("attribute"))
+            .for_each(|c| {
+                self.print_attribute(&c);
+            });
+
         if let Some(sequence) = maybe_sequence {
             self.print_sequence(&sequence)?;
         }
@@ -543,6 +549,25 @@ impl FileWriter {
         self.dec_level();
 
         Ok(())
+    }
+
+    fn print_attribute(&mut self, node: &Node) {
+        let element_name = match self.get_some_attribute(node, "name") {
+            None => return,
+            Some(n) => n,
+        };
+
+        let element_type = match self.get_some_attribute(node, "type") {
+            None => return,
+            Some(n) => self.fetch_type(n),
+        };
+
+        self.write(format!(
+            "#[yaserde(rename=\"{}\", attribute)]\npub {}: {},\n",
+            element_name,
+            to_snake_case(element_name),
+            element_type
+        ));
     }
 
     fn deconstruct_simplex_element(&mut self, node: &Node) -> WriterResult<String> {
