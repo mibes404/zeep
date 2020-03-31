@@ -14,6 +14,7 @@ cargo run -- -p resources/smgr -i userimport.xsd -o examples/smgr/smgr.rs
 cargo run -- -p resources/smgr -i agentCommProfile.xsd -o examples/smgr/smgr_agent.rs -n ns1
 cargo run -- -p resources/smgr -i stationCommProfile.xsd -o examples/smgr/smgr_station.rs -n ns2
 cargo run -- -p resources/smgr -i presence.xsd -o examples/smgr/smgr_presence.rs -n ns3
+cargo run -- -p resources/smgr -i SessionManager.xsd -o examples/smgr/smgr_sm.rs -n ns7
 
 # Format the output
 rustfmt --color=always --edition=2018 examples/aic/aic_agent.rs
@@ -26,3 +27,4 @@ rustfmt --color=always --edition=2018 examples/smgr/smgr.rs
 rustfmt --color=always --edition=2018 examples/smgr/smgr_station.rs
 rustfmt --color=always --edition=2018 examples/smgr/smgr_agent.rs
 rustfmt --color=always --edition=2018 examples/smgr/smgr_presence.rs
+rustfmt --color=always --edition=2018 examples/smgr/smgr_sm.rs

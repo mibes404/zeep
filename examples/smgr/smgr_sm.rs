@@ -10,7 +10,40 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
 pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod bindings {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod messages {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
@@ -612,133 +645,35 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        prefix = "ns1",
-        namespace = "ns1: http://xml.avaya.com/schema/import_csm_agent",
-        root = "xmlAgentProfile",
+        prefix = "ns7",
+        namespace = "ns7: http://xml.avaya.com/schema/import_sessionmanager",
+        root = "SessionManagerCommProfXML",
         default
     )]
-    pub struct XmlAgentProfile {
-        #[yaserde(flatten)]
-        pub xml_comm_profile_type: XmlCommProfileType,
-        #[yaserde(prefix = "ns1", rename = "cmName", default)]
-        pub cm_name: String,
-        #[yaserde(prefix = "ns1", rename = "useExistingAgent", default)]
-        pub use_existing_agent: Option<bool>,
-        #[yaserde(prefix = "ns1", rename = "loginIdExtension", default)]
-        pub login_id_extension: String,
-        #[yaserde(prefix = "ns1", rename = "template", default)]
-        pub template: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "securityCode", default)]
-        pub security_code: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "aas", default)]
-        pub aas: Option<bool>,
-        #[yaserde(prefix = "ns1", rename = "audix", default)]
-        pub audix: Option<bool>,
-        #[yaserde(prefix = "ns1", rename = "password", default)]
-        pub password: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "portExtension", default)]
-        pub port_extension: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "deleteOnUnassign", default)]
-        pub delete_on_unassign: Option<bool>,
-        #[yaserde(prefix = "ns1", rename = "tn", default)]
-        pub tn: Option<u64>,
-        #[yaserde(prefix = "ns1", rename = "cor", default)]
-        pub cor: Option<u64>,
-        #[yaserde(prefix = "ns1", rename = "coveragePath", default)]
-        pub coverage_path: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "lwcReception", default)]
-        pub lwc_reception: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "lwcLogExternalCalls", default)]
-        pub lwc_log_external_calls: Option<bool>,
-        #[yaserde(prefix = "ns1", rename = "audixNameforMessaging", default)]
-        pub audix_namefor_messaging: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "hearsServiceObservingTone", default)]
-        pub hears_service_observing_tone: Option<bool>,
-        #[yaserde(prefix = "ns1", rename = "loginIDforISDNSIPDisplay", default)]
-        pub login_i_dfor_isdnsip_display: Option<bool>,
-        #[yaserde(prefix = "ns1", rename = "autoAnswer", default)]
-        pub auto_answer: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "miaAcrossSkills", default)]
-        pub mia_across_skills: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "acwAgentConsideredIdle", default)]
-        pub acw_agent_considered_idle: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "auxWorkReasonCodeType", default)]
-        pub aux_work_reason_code_type: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "logoutReasonCodeType", default)]
-        pub logout_reason_code_type: Option<String>,
-        #[yaserde(
-            prefix = "ns1",
-            rename = "maximumTimeAgentInAcwBeforeLogoutSec",
-            default
-        )]
-        pub maximum_time_agent_in_acw_before_logout_sec: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "forcedAgentLogoutTimeHr", default)]
-        pub forced_agent_logout_time_hr: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "forcedAgentLogoutTimeSec", default)]
-        pub forced_agent_logout_time_sec: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "directAgentSkill", default)]
-        pub direct_agent_skill: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "callHandlingPreference", default)]
-        pub call_handling_preference: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "serviceObjective", default)]
-        pub service_objective: Option<bool>,
-        #[yaserde(prefix = "ns1", rename = "directAgentCallsFirst", default)]
-        pub direct_agent_calls_first: Option<bool>,
-        #[yaserde(prefix = "ns1", rename = "localCallPreference", default)]
-        pub local_call_preference: Option<bool>,
-        #[yaserde(prefix = "ns1", rename = "skills", default)]
-        pub skills: Vec<XmlAgentLoginIdSkillsData>,
+    pub struct SessionManagerCommProfXML {
+        #[yaserde(prefix = "ns7", rename = "primarySM", default)]
+        pub primary_sm: String,
+        #[yaserde(prefix = "ns7", rename = "secondarySM", default)]
+        pub secondary_sm: Option<String>,
+        #[yaserde(prefix = "ns7", rename = "terminationAppSequence", default)]
+        pub termination_app_sequence: Option<String>,
+        #[yaserde(prefix = "ns7", rename = "originationAppSequence", default)]
+        pub origination_app_sequence: Option<String>,
+        #[yaserde(prefix = "ns7", rename = "confFactorySet", default)]
+        pub conf_factory_set: Option<String>,
+        #[yaserde(prefix = "ns7", rename = "survivabilityServer", default)]
+        pub survivability_server: Option<String>,
+        #[yaserde(prefix = "ns7", rename = "homeLocation", default)]
+        pub home_location: String,
+        #[yaserde(prefix = "ns7", rename = "maxSimultaneousDevices", default)]
+        pub max_simultaneous_devices: Option<u64>,
+        #[yaserde(prefix = "ns7", rename = "blockNewRegistrationWhenMaxActive", default)]
+        pub block_new_registration_when_max_active: Option<bool>,
+        #[yaserde(prefix = "ns7", rename = "enabledisablecalllog", default)]
+        pub enabledisablecalllog: Option<bool>,
+        #[yaserde(prefix = "ns7", rename = "emergencyTerminationAppSequence", default)]
+        pub emergency_termination_app_sequence: Option<String>,
+        #[yaserde(prefix = "ns7", rename = "emergencyOriginationAppSequence", default)]
+        pub emergency_origination_app_sequence: Option<String>,
     }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        prefix = "ns1",
-        namespace = "ns1: http://xml.avaya.com/schema/import_csm_agent",
-        root = "xmlAgentLoginIdSkillsData",
-        default
-    )]
-    pub struct XmlAgentLoginIdSkillsData {
-        #[yaserde(prefix = "ns1", rename = "number", default)]
-        pub number: String,
-        #[yaserde(prefix = "ns1", rename = "skillNumber", default)]
-        pub skill_number: String,
-        #[yaserde(prefix = "ns1", rename = "reserveLevel", default)]
-        pub reserve_level: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "skillLevel", default)]
-        pub skill_level: Option<String>,
-        #[yaserde(prefix = "ns1", rename = "percentAllocation", default)]
-        pub percent_allocation: Option<String>,
-    }
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
-pub mod bindings {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
 }

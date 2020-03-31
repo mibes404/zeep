@@ -3,27 +3,13 @@
 //!
 //! version: 0.0.2
 //!
+
+#![allow(dead_code)]
+#![allow(unused_imports)]
 use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
 pub mod ports {
     use super::*;
     use async_trait::async_trait;
@@ -47,6 +33,22 @@ pub mod ports {
     pub type CelsiusToFahrenheitResponse = messages::CelsiusToFahrenheitResponse;
     pub type FahrenheitToCelsius = messages::FahrenheitToCelsius;
     pub type FahrenheitToCelsiusResponse = messages::FahrenheitToCelsiusResponse;
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
 }
 
 pub mod bindings {
@@ -338,7 +340,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://learnwebservices.com/services/tempconverter",
-        rename = "celsiusToFahrenheitRequest",
+        root = "celsiusToFahrenheitRequest",
         default
     )]
     pub struct CelsiusToFahrenheitRequest {
@@ -350,7 +352,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://learnwebservices.com/services/tempconverter",
-        rename = "celsiusToFahrenheitResponse",
+        root = "celsiusToFahrenheitResponse",
         default
     )]
     pub struct CelsiusToFahrenheitResponse {
@@ -362,7 +364,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://learnwebservices.com/services/tempconverter",
-        rename = "fahrenheitToCelsiusRequest",
+        root = "fahrenheitToCelsiusRequest",
         default
     )]
     pub struct FahrenheitToCelsiusRequest {
@@ -374,7 +376,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://learnwebservices.com/services/tempconverter",
-        rename = "fahrenheitToCelsiusResponse",
+        root = "fahrenheitToCelsiusResponse",
         default
     )]
     pub struct FahrenheitToCelsiusResponse {
@@ -391,28 +393,28 @@ pub mod messages {
     use yaserde::{YaDeserialize, YaSerialize};
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(rename = "CelsiusToFahrenheit", default)]
+    #[yaserde(root = "CelsiusToFahrenheit", default)]
     pub struct CelsiusToFahrenheit {
         #[yaserde(flatten)]
         pub celsius_to_fahrenheit_request: types::CelsiusToFahrenheitRequest,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(rename = "FahrenheitToCelsius", default)]
+    #[yaserde(root = "FahrenheitToCelsius", default)]
     pub struct FahrenheitToCelsius {
         #[yaserde(flatten)]
         pub fahrenheit_to_celsius_request: types::FahrenheitToCelsiusRequest,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(rename = "CelsiusToFahrenheitResponse", default)]
+    #[yaserde(root = "CelsiusToFahrenheitResponse", default)]
     pub struct CelsiusToFahrenheitResponse {
         #[yaserde(flatten)]
         pub celsius_to_fahrenheit_response: types::CelsiusToFahrenheitResponse,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(rename = "FahrenheitToCelsiusResponse", default)]
+    #[yaserde(root = "FahrenheitToCelsiusResponse", default)]
     pub struct FahrenheitToCelsiusResponse {
         #[yaserde(flatten)]
         pub fahrenheit_to_celsius_response: types::FahrenheitToCelsiusResponse,

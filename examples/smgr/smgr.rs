@@ -3,13 +3,42 @@
 //!
 //! version: 0.0.2
 //!
+
+#![allow(dead_code)]
+#![allow(unused_imports)]
 use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
 pub mod types {
     use super::*;
     use crate::smgr_presence::types::XmlPsCommProfile;
+    use crate::smgr_sm::types::SessionManagerCommProfXML;
     use crate::smgr_station::types::XmlStationProfile;
     use async_trait::async_trait;
     use yaserde::de::from_str;
@@ -22,15 +51,15 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        rename = "users",
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
+        root = "users",
         default
     )]
     pub struct Users {
         #[yaserde(prefix = "tns", rename = "secureStore", default)]
         pub secure_store: Option<XmlSecureStore>,
-        #[yaserde(rename = "user", prefix = "tns", default)]
+        #[yaserde(prefix = "tns", rename = "user", default)]
         pub user: Vec<XmlUser>,
     }
 
@@ -38,7 +67,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "UserProvisionRules",
+        root = "UserProvisionRules",
         default
     )]
     pub struct UserProvisionRules {
@@ -50,7 +79,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "roles",
+        root = "roles",
         default
     )]
     pub struct Roles {
@@ -62,7 +91,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "ownedContactLists",
+        root = "ownedContactLists",
         default
     )]
     pub struct OwnedContactLists {
@@ -74,7 +103,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "ownedContacts",
+        root = "ownedContacts",
         default
     )]
     pub struct OwnedContacts {
@@ -84,9 +113,9 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        rename = "xmlUser",
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
+        root = "xmlUser",
         default
     )]
     pub struct XmlUser {
@@ -184,7 +213,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlSecurityIdentity",
+        root = "xmlSecurityIdentity",
         default
     )]
     pub struct XmlSecurityIdentity {
@@ -200,7 +229,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlPresInfoTypeAccessType",
+        root = "xmlPresInfoTypeAccessType",
         default
     )]
     pub struct XmlPresInfoTypeAccessType {
@@ -214,7 +243,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlPresACRuleType",
+        root = "xmlPresACRuleType",
         default
     )]
     pub struct XmlPresACRuleType {
@@ -226,7 +255,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlPresUserDefaultType",
+        root = "xmlPresUserDefaultType",
         default
     )]
     pub struct XmlPresUserDefaultType {
@@ -238,7 +267,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlPresUserCLDefaultType",
+        root = "xmlPresUserCLDefaultType",
         default
     )]
     pub struct XmlPresUserCLDefaultType {
@@ -250,7 +279,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlPresUserACLEntryType",
+        root = "xmlPresUserACLEntryType",
         default
     )]
     pub struct XmlPresUserACLEntryType {
@@ -262,7 +291,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlPresInfoTypeType",
+        root = "xmlPresInfoTypeType",
         default
     )]
     pub struct XmlPresInfoTypeType {
@@ -278,7 +307,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlContactList",
+        root = "xmlContactList",
         default
     )]
     pub struct XmlContactList {
@@ -298,7 +327,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlContactListMember",
+        root = "xmlContactListMember",
         default
     )]
     pub struct XmlContactListMember {
@@ -324,7 +353,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlContactAddress",
+        root = "xmlContactAddress",
         default
     )]
     pub struct XmlContactAddress {
@@ -344,7 +373,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlAddress",
+        root = "xmlAddress",
         default
     )]
     pub struct XmlAddress {
@@ -394,7 +423,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlContact",
+        root = "xmlContact",
         default
     )]
     pub struct XmlContact {
@@ -444,7 +473,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlHandle",
+        root = "xmlHandle",
         default
     )]
     pub struct XmlHandle {
@@ -462,7 +491,10 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlCommProfileType",
+        namespace = "ns2: http://xml.avaya.com/schema/import_csm_cm",
+        namespace = "ns3: http://xml.avaya.com/schema/presence",
+        namespace = "ns7: http://xml.avaya.com/schema/import_sessionmanager",
+        root = "xmlCommProfileType",
         default
     )]
     pub struct XmlCommProfileType {
@@ -476,13 +508,15 @@ pub mod types {
         pub station: Option<XmlStationProfile>,
         #[yaserde(flatten)]
         pub ps: Option<XmlPsCommProfile>,
+        #[yaserde(flatten)]
+        pub sm: Option<SessionManagerCommProfXML>,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "handleList",
+        root = "handleList",
         default
     )]
     pub struct HandleList {
@@ -494,7 +528,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "commProfileList",
+        root = "commProfileList",
         default
     )]
     pub struct CommProfileList {
@@ -506,7 +540,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlCommProfileSetType",
+        root = "xmlCommProfileSetType",
         default
     )]
     pub struct XmlCommProfileSetType {
@@ -524,7 +558,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "ForgeinCommProfileType",
+        root = "ForgeinCommProfileType",
         default
     )]
     pub struct ForgeinCommProfileType {
@@ -542,7 +576,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlSecureStore",
+        root = "xmlSecureStore",
         default
     )]
     pub struct XmlSecureStore {
@@ -556,7 +590,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmlLocalizedName",
+        root = "xmlLocalizedName",
         default
     )]
     pub struct XmlLocalizedName {
@@ -570,7 +604,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "xmLocalizedNames",
+        root = "xmLocalizedNames",
         default
     )]
     pub struct XmLocalizedNames {
@@ -582,7 +616,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "tenant",
+        root = "tenant",
         default
     )]
     pub struct Tenant {}
@@ -591,7 +625,7 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        rename = "UserOrganizationDetailsType",
+        root = "UserOrganizationDetailsType",
         default
     )]
     pub struct UserOrganizationDetailsType {
@@ -606,30 +640,6 @@ pub mod types {
     }
 }
 
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
 pub mod bindings {
     use super::*;
     use async_trait::async_trait;
@@ -638,7 +648,7 @@ pub mod bindings {
     use yaserde::{YaDeserialize, YaSerialize};
 }
 
-pub mod ports {
+pub mod messages {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;

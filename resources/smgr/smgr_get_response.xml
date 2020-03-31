@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<tns:users xsi:schemaLocation="http://xml.avaya.com/schema/import userimport.xsd" xmlns:ns4="http://xml.avaya.com/schema/import1" xmlns:ns3="http://xml.avaya.com/schema/import_csm_agent" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns6="http://xml.avaya.com/schema/import_scopia" xmlns:ns5="http://xml.avaya.com/schema/presence" xmlns:nsSomething="http://xml.avaya.com/schema/import_csm_cm" xmlns:ns7="http://xml.avaya.com/schema/import_sessionmanager" xmlns:ns13="http://xml.avaya.com/schema/import_mmcs" xmlns:ns9="http://xml.avaya.com/schema/import_csm_b5800" xmlns:ns12="http://xml.avaya.com/schema/import_csm_mm" xmlns:ns11="http://xml.avaya.com/schema/import_mem_officelinx" xmlns:ns10="http://xml.avaya.com/schema/import_workassignment" xmlns:tns="http://xml.avaya.com/schema/import" xmlns:ns15="http://xml.avaya.com/schema/deltaImport" xmlns:ns14="http://xml.avaya.com/schema/import_ce">
-  <secureStore>
-    <secureStoreData>1</secureStoreData>
-    <passwordEncrypted>true</passwordEncrypted>
-  </secureStore>
+<tns:users xsi:schemaLocation="http://xml.avaya.com/schema/import userimport.xsd" 
+  xmlns:ns4="http://xml.avaya.com/schema/import1" 
+  xmlns:ns3="http://xml.avaya.com/schema/import_csm_agent" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:ns6="http://xml.avaya.com/schema/import_scopia" 
+  xmlns:ns5="http://xml.avaya.com/schema/presence" 
+  xmlns:nsSomething="http://xml.avaya.com/schema/import_csm_cm" 
+  xmlns:ns7="http://xml.avaya.com/schema/import_sessionmanager" 
+  xmlns:ns13="http://xml.avaya.com/schema/import_mmcs" 
+  xmlns:ns9="http://xml.avaya.com/schema/import_csm_b5800" 
+  xmlns:ns12="http://xml.avaya.com/schema/import_csm_mm" 
+  xmlns:ns11="http://xml.avaya.com/schema/import_mem_officelinx" 
+  xmlns:ns10="http://xml.avaya.com/schema/import_workassignment" 
+  xmlns:tns="http://xml.avaya.com/schema/import" 
+  xmlns:ns15="http://xml.avaya.com/schema/deltaImport" 
+  xmlns:ns14="http://xml.avaya.com/schema/import_ce">
   <user>
     <UserOrganizationDetails>
       <tenant name="I-Hessen" createTenantIfNotAlreadyPresent="false"/>

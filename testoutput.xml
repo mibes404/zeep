@@ -1,14 +1,6 @@
 <?xml version=\"1.0\" encoding=\"utf-8\"?>
-<tns:Users xmlns:tns=\"http://xml.avaya.com/schema/import\">
-    <tns:secureStore>
-        <tns:secureStoreData>1</tns:secureStoreData>
-        <tns:passwordEncrypted>true</tns:passwordEncrypted>
-    </tns:secureStore>
-    <tns:XmlUser>
-        <tns:UserOrganizationDetails>
-            <tns:tenant />
-            <tns:organizationUnitLevelOne>Hessen</tns:organizationUnitLevelOne>
-        </tns:UserOrganizationDetails>
+<tns:users xmlns:tns=\"http://xml.avaya.com/schema/import\">
+    <tns:user>
         <tns:authenticationType>basic</tns:authenticationType>
         <tns:displayName>Anselmann, Anna</tns:displayName>
         <tns:displayNameAscii>Anselmann, Anna</tns:displayNameAscii>
@@ -38,308 +30,310 @@
                 <tns:contactListType>general</tns:contactListType>
             </tns:contactList>
         </tns:ownedContactLists>
-        <tns:XmlCommProfileSetType>
+        <tns:commProfileSet>
             <tns:commProfileSetName>Primary</tns:commProfileSetName>
             <tns:isPrimary>true</tns:isPrimary>
             <tns:handleList>
-                <tns:XmlHandle>
+                <tns:handle>
                     <tns:handleName>351686</tns:handleName>
                     <tns:handleType>xmpp</tns:handleType>
                     <tns:handleSubType>jabber</tns:handleSubType>
                     <tns:domainName>sip.avayacloud.com</tns:domainName>
-                </tns:XmlHandle>
-                <tns:XmlHandle>
+                </tns:handle>
+                <tns:handle>
                     <tns:handleName>lgarciabetti@avaya.com</tns:handleName>
                     <tns:handleType>smtp</tns:handleType>
                     <tns:handleSubType>msexchange</tns:handleSubType>
-                </tns:XmlHandle>
-                <tns:XmlHandle>
+                </tns:handle>
+                <tns:handle>
                     <tns:handleName>90170040@fake.aok.de</tns:handleName>
                     <tns:handleType>smtp</tns:handleType>
                     <tns:handleSubType>msexchange</tns:handleSubType>
-                </tns:XmlHandle>
-                <tns:XmlHandle>
+                </tns:handle>
+                <tns:handle>
                     <tns:handleName>351686</tns:handleName>
                     <tns:handleType>sip</tns:handleType>
                     <tns:handleSubType>username</tns:handleSubType>
                     <tns:domainName>sip.avayacloud.com</tns:domainName>
-                </tns:XmlHandle>
-                <tns:XmlHandle>
+                </tns:handle>
+                <tns:handle>
                     <tns:handleName>+49123456351686</tns:handleName>
                     <tns:handleType>sip</tns:handleType>
                     <tns:handleSubType>e164</tns:handleSubType>
                     <tns:domainName>sip.avayacloud.com</tns:domainName>
-                </tns:XmlHandle>
-                <tns:XmlHandle>
+                </tns:handle>
+                <tns:handle>
                     <tns:handleName>+49112233441686</tns:handleName>
                     <tns:handleType>sip</tns:handleType>
                     <tns:handleSubType>e164</tns:handleSubType>
                     <tns:domainName>sip.avayacloud.com</tns:domainName>
-                </tns:XmlHandle>
+                </tns:handle>
             </tns:handleList>
             <tns:commProfileList>
-                <tns:XmlCommProfileType>
+                <tns:commProfile xmlns:ns2=\"http://xml.avaya.com/schema/import_csm_cm\" 
+                    xmlns:ns3=\"http://xml.avaya.com/schema/presence\">
                     <tns:commProfileType>PS</tns:commProfileType>
-                    <ns1:commProfileType></ns1:commProfileType>
-                    <tns:system>ps.avayacloud.com</tns:system>
-                    <tns:imGatewaySipEntity>ps.avayacloud.com</tns:imGatewaySipEntity>
-                    <tns:publishViaAESCollector>SD</tns:publishViaAESCollector>
-                </tns:XmlCommProfileType>
-                <tns:XmlCommProfileType>
+                    <ns3:system>ps.avayacloud.com</ns3:system>
+                    <ns3:imGatewaySipEntity>ps.avayacloud.com</ns3:imGatewaySipEntity>
+                    <ns3:publishViaAESCollector>SD</ns3:publishViaAESCollector>
+                </tns:commProfile>
+                <tns:commProfile xmlns:ns2=\"http://xml.avaya.com/schema/import_csm_cm\" 
+                    xmlns:ns3=\"http://xml.avaya.com/schema/presence\">
                     <tns:commProfileType>CM</tns:commProfileType>
-                    <tns:cmName>cm1</tns:cmName>
-                    <tns:prefHandleId>351686@sip.avayacloud.com</tns:prefHandleId>
-                    <tns:useExistingExtension>false</tns:useExistingExtension>
-                    <tns:extension>351686</tns:extension>
-                    <tns:setType>9608SIP</tns:setType>
-                    <tns:port>S02526</tns:port>
-                    <tns:deleteOnUnassign>true</tns:deleteOnUnassign>
-                    <tns:overRideEndpointName>true</tns:overRideEndpointName>
-                    <tns:dualRegistration>false</tns:dualRegistration>
-                    <tns:enhCallrInfodisplay>false</tns:enhCallrInfodisplay>
-                    <tns:lockMessages>false</tns:lockMessages>
-                    <tns:coveragePath1>1</tns:coveragePath1>
-                    <tns:coveragePath2>1</tns:coveragePath2>
-                    <tns:tn>1</tns:tn>
-                    <tns:cor>5</tns:cor>
-                    <tns:cos>1</tns:cos>
-                    <tns:tests>false</tns:tests>
-                    <tns:dataModule>false</tns:dataModule>
-                    <tns:displayLanguage>unicode</tns:displayLanguage>
-                    <tns:personalizedRingingPattern>1</tns:personalizedRingingPattern>
-                    <tns:messageLampExt>351686</tns:messageLampExt>
-                    <tns:muteButtonEnabled>true</tns:muteButtonEnabled>
-                    <tns:ipSoftphone>true</tns:ipSoftphone>
-                    <tns:survivableCOR>internal</tns:survivableCOR>
-                    <tns:survivableTrunkDest>true</tns:survivableTrunkDest>
-                    <tns:voiceMailNumber>980098</tns:voiceMailNumber>
-                    <tns:offPremisesStation>false</tns:offPremisesStation>
-                    <tns:displayModule>false</tns:displayModule>
-                    <tns:remoteOfficePhone>false</tns:remoteOfficePhone>
-                    <tns:lwcReception>spe</tns:lwcReception>
-                    <tns:lwcActivation>true</tns:lwcActivation>
-                    <tns:lwcLogExternalCalls>false</tns:lwcLogExternalCalls>
-                    <tns:cdrPrivacy>false</tns:cdrPrivacy>
-                    <tns:redirectNotification>true</tns:redirectNotification>
-                    <tns:perButtonRingControl>true</tns:perButtonRingControl>
-                    <tns:bridgedCallAlerting>false</tns:bridgedCallAlerting>
-                    <tns:bridgedIdleLinePreference>false</tns:bridgedIdleLinePreference>
-                    <tns:customizableLabels>true</tns:customizableLabels>
-                    <tns:expansionModule>false</tns:expansionModule>
-                    <tns:ipVideoSoftphone>true</tns:ipVideoSoftphone>
-                    <tns:activeStationRinging>single</tns:activeStationRinging>
-                    <tns:switchhookFlash>false</tns:switchhookFlash>
-                    <tns:ignoreRotaryDigits>false</tns:ignoreRotaryDigits>
-                    <tns:h320Conversion>false</tns:h320Conversion>
-                    <tns:mwiServedUserType>sip-adjunct</tns:mwiServedUserType>
-                    <tns:remoteSoftphoneEmergencyCalls>as-on-local</tns:remoteSoftphoneEmergencyCalls>
-                    <tns:emergencyLocationExt>351686</tns:emergencyLocationExt>
-                    <tns:alwaysUse>false</tns:alwaysUse>
-                    <tns:precedenceCallWaiting>false</tns:precedenceCallWaiting>
-                    <tns:autoSelectAnyIdleAppearance>false</tns:autoSelectAnyIdleAppearance>
-                    <tns:coverageMsgRetrieval>true</tns:coverageMsgRetrieval>
-                    <tns:autoAnswer>none</tns:autoAnswer>
-                    <tns:dataRestriction>false</tns:dataRestriction>
-                    <tns:idleAppearancePreference>false</tns:idleAppearancePreference>
-                    <tns:callWaitingIndication>false</tns:callWaitingIndication>
-                    <tns:attCallWaitingIndication>false</tns:attCallWaitingIndication>
-                    <tns:distinctiveAudibleAlert>false</tns:distinctiveAudibleAlert>
-                    <tns:restrictLastAppearance>true</tns:restrictLastAppearance>
-                    <tns:adjunctSupervision>false</tns:adjunctSupervision>
-                    <tns:busyAutoCallbackWithoutFlash>false</tns:busyAutoCallbackWithoutFlash>
-                    <tns:audibleMessageWaiting>false</tns:audibleMessageWaiting>
-                    <tns:imsFeatureSequencing>false</tns:imsFeatureSequencing>
-                    <tns:displayClientRedirection>false</tns:displayClientRedirection>
-                    <tns:selectLastUsedAppearance>false</tns:selectLastUsedAppearance>
-                    <tns:coverageAfterForwarding>s</tns:coverageAfterForwarding>
-                    <tns:directIpIpAudioConnections>true</tns:directIpIpAudioConnections>
-                    <tns:ipAudioHairpinning>false</tns:ipAudioHairpinning>
-                    <tns:stationSiteData xmlns:tns=\"http://xml.avaya.com/schema/import_csm_cm\">
-                        <tns:headset>false</tns:headset>
-                        <tns:speaker>false</tns:speaker>
-                        <tns:mounting>d</tns:mounting>
-                        <tns:cordLength>0</tns:cordLength>
-                    </tns:stationSiteData>
-                    <tns:XmlButtonData xmlns:tns=\"http://xml.avaya.com/schema/import_csm_cm\">
-                        <tns:number>1</tns:number>
-                        <tns:type>call-appr</tns:type>
-                        <tns:data1></tns:data1>
-                        <tns:data2></tns:data2>
-                        <tns:data3>r</tns:data3>
-                        <tns:data4>n</tns:data4>
-                        <tns:data5></tns:data5>
-                        <tns:data6></tns:data6>
-                        <tns:buttonLabel></tns:buttonLabel>
-                    </tns:XmlButtonData>
-                    <tns:XmlButtonData xmlns:tns=\"http://xml.avaya.com/schema/import_csm_cm\">
-                        <tns:number>2</tns:number>
-                        <tns:type>call-appr</tns:type>
-                        <tns:data1></tns:data1>
-                        <tns:data2></tns:data2>
-                        <tns:data3>r</tns:data3>
-                        <tns:data4>n</tns:data4>
-                        <tns:data5></tns:data5>
-                        <tns:data6></tns:data6>
-                        <tns:buttonLabel></tns:buttonLabel>
-                    </tns:XmlButtonData>
-                    <tns:XmlButtonData xmlns:tns=\"http://xml.avaya.com/schema/import_csm_cm\">
-                        <tns:number>3</tns:number>
-                        <tns:type>call-appr</tns:type>
-                        <tns:data1></tns:data1>
-                        <tns:data2></tns:data2>
-                        <tns:data3>r</tns:data3>
-                        <tns:data4>n</tns:data4>
-                        <tns:data5></tns:data5>
-                        <tns:data6></tns:data6>
-                        <tns:buttonLabel></tns:buttonLabel>
-                    </tns:XmlButtonData>
-                    <tns:XmlButtonData xmlns:tns=\"http://xml.avaya.com/schema/import_csm_cm\">
-                        <tns:number>4</tns:number>
-                        <tns:type>cfwd-enh</tns:type>
-                        <tns:data1></tns:data1>
-                        <tns:data2></tns:data2>
-                        <tns:data3></tns:data3>
-                        <tns:data4></tns:data4>
-                        <tns:data5></tns:data5>
-                        <tns:data6></tns:data6>
-                        <tns:isFavorite>true</tns:isFavorite>
-                        <tns:buttonLabel>RUL</tns:buttonLabel>
-                    </tns:XmlButtonData>
-                    <tns:XmlButtonData xmlns:tns=\"http://xml.avaya.com/schema/import_csm_cm\">
-                        <tns:number>5</tns:number>
-                        <tns:type>call-pkup</tns:type>
-                        <tns:data1></tns:data1>
-                        <tns:data2></tns:data2>
-                        <tns:data3>single</tns:data3>
-                        <tns:data4>h</tns:data4>
-                        <tns:data5></tns:data5>
-                        <tns:data6></tns:data6>
-                        <tns:isFavorite>true</tns:isFavorite>
-                        <tns:buttonLabel>Pickup</tns:buttonLabel>
-                    </tns:XmlButtonData>
-                    <tns:XmlButtonData xmlns:tns=\"http://xml.avaya.com/schema/import_csm_cm\">
-                        <tns:number>6</tns:number>
-                        <tns:type>autodial</tns:type>
-                        <tns:data1></tns:data1>
-                        <tns:data2></tns:data2>
-                        <tns:data3></tns:data3>
-                        <tns:data4></tns:data4>
-                        <tns:data5>99811000</tns:data5>
-                        <tns:data6></tns:data6>
-                        <tns:isFavorite>true</tns:isFavorite>
-                        <tns:buttonLabel>Bedrohung</tns:buttonLabel>
-                    </tns:XmlButtonData>
-                    <tns:XmlButtonData xmlns:tns=\"http://xml.avaya.com/schema/import_csm_cm\">
-                        <tns:number>7</tns:number>
-                        <tns:type>autodial</tns:type>
-                        <tns:data1></tns:data1>
-                        <tns:data2></tns:data2>
-                        <tns:data3></tns:data3>
-                        <tns:data4></tns:data4>
-                        <tns:data5>99811100</tns:data5>
-                        <tns:data6></tns:data6>
-                        <tns:isFavorite>true</tns:isFavorite>
-                        <tns:buttonLabel>Ersthelfer</tns:buttonLabel>
-                    </tns:XmlButtonData>
-                    <tns:XmlButtonData xmlns:tns=\"http://xml.avaya.com/schema/import_csm_cm\">
-                        <tns:number>8</tns:number>
-                        <tns:type>autodial</tns:type>
-                        <tns:data1></tns:data1>
-                        <tns:data2></tns:data2>
-                        <tns:data3></tns:data3>
-                        <tns:data4></tns:data4>
-                        <tns:data5>99811200</tns:data5>
-                        <tns:data6></tns:data6>
-                        <tns:isFavorite>true</tns:isFavorite>
-                        <tns:buttonLabel>Räumumg</tns:buttonLabel>
-                    </tns:XmlButtonData>
-                    <tns:XmlButtonData xmlns:tns=\"http://xml.avaya.com/schema/import_csm_cm\">
-                        <tns:number>1</tns:number>
-                        <tns:type>cpn-blk</tns:type>
-                        <tns:data1></tns:data1>
-                        <tns:data2></tns:data2>
-                        <tns:data3></tns:data3>
-                        <tns:data4></tns:data4>
-                        <tns:data5></tns:data5>
-                        <tns:data6></tns:data6>
-                        <tns:isFavorite>false</tns:isFavorite>
-                        <tns:buttonLabel>Anonym</tns:buttonLabel>
-                    </tns:XmlButtonData>
-                    <tns:XmlButtonData xmlns:tns=\"http://xml.avaya.com/schema/import_csm_cm\">
-                        <tns:number>2</tns:number>
-                        <tns:type>auto-cback</tns:type>
-                        <tns:data1></tns:data1>
-                        <tns:data2></tns:data2>
-                        <tns:data3></tns:data3>
-                        <tns:data4></tns:data4>
-                        <tns:data5></tns:data5>
-                        <tns:data6></tns:data6>
-                        <tns:isFavorite>false</tns:isFavorite>
-                        <tns:buttonLabel>Rückruf</tns:buttonLabel>
-                    </tns:XmlButtonData>
-                    <tns:XmlButtonData xmlns:tns=\"http://xml.avaya.com/schema/import_csm_cm\">
-                        <tns:number>3</tns:number>
-                        <tns:type>limit-call</tns:type>
-                        <tns:data1></tns:data1>
-                        <tns:data2></tns:data2>
-                        <tns:data3></tns:data3>
-                        <tns:data4></tns:data4>
-                        <tns:data5></tns:data5>
-                        <tns:data6></tns:data6>
-                        <tns:isFavorite>false</tns:isFavorite>
-                        <tns:buttonLabel></tns:buttonLabel>
-                    </tns:XmlButtonData>
-                    <tns:nativeName xmlns:tns=\"http://xml.avaya.com/schema/import_csm_cm\" />
-                    <tns:buttonModules>0</tns:buttonModules>
-                    <tns:unconditionalInternalActive>false</tns:unconditionalInternalActive>
-                    <tns:unconditionalExternalActive>false</tns:unconditionalExternalActive>
-                    <tns:busyInternalActive>false</tns:busyInternalActive>
-                    <tns:busyExternalActive>false</tns:busyExternalActive>
-                    <tns:noReplyInternalActive>false</tns:noReplyInternalActive>
-                    <tns:noReplyExternalActive>false</tns:noReplyExternalActive>
-                    <tns:sacCfOverride>y</tns:sacCfOverride>
-                    <tns:lossGroup>19</tns:lossGroup>
-                    <tns:emuLoginAllowed>false</tns:emuLoginAllowed>
-                    <tns:ec500State>disabled</tns:ec500State>
-                    <tns:muteOnOffHookInSCMode>false</tns:muteOnOffHookInSCMode>
-                    <tns:type3pccEnabled>Avaya</tns:type3pccEnabled>
-                    <tns:calculateRoutePattern>false</tns:calculateRoutePattern>
-                    <tns:sipTrunk>aar</tns:sipTrunk>
-                    <tns:enableReachStaDomainControl>s</tns:enableReachStaDomainControl>
-                    <tns:multimediaEarlyAnswer>false</tns:multimediaEarlyAnswer>
-                    <tns:bridgedApprOrigRestr>false</tns:bridgedApprOrigRestr>
-                    <tns:xid>false</tns:xid>
-                    <tns:stepClearing>false</tns:stepClearing>
-                    <tns:fixedTei>false</tns:fixedTei>
-                    <tns:endptInit>false</tns:endptInit>
-                    <tns:isShortCallingPartyDisplay>true</tns:isShortCallingPartyDisplay>
-                    <tns:displayCallerId>true</tns:displayCallerId>
-                    <tns:callerIdMsgWaitingIndication>false</tns:callerIdMsgWaitingIndication>
-                    <tns:recallRotaryDigit>false</tns:recallRotaryDigit>
-                    <tns:profileSettingsData xmlns:tns=\"http://xml.avaya.com/schema/import_csm_cm\">
-                        <tns:phoneScreenCalling>Yes</tns:phoneScreenCalling>
-                        <tns:profileRedial>List</tns:profileRedial>
-                        <tns:dialingOption>On-hook</tns:dialingOption>
-                        <tns:headsetSignaling>Disabled</tns:headsetSignaling>
-                        <tns:audioPath>Speaker</tns:audioPath>
-                        <tns:buttonClicks>Off</tns:buttonClicks>
-                        <tns:phoneScreen>Half</tns:phoneScreen>
-                        <tns:backgroundLogo>Default</tns:backgroundLogo>
-                        <tns:personalizedRinging>Classic Tone 3</tns:personalizedRinging>
-                        <tns:callPickUpIndication>Visual</tns:callPickUpIndication>
-                        <tns:touchPanel>1</tns:touchPanel>
-                        <tns:language>German</tns:language>
-                        <tns:userPreferredLanguage>German</tns:userPreferredLanguage>
-                        <tns:languageFileInUse>Mlf_German.xml</tns:languageFileInUse>
-                        <tns:timeFormat>24 Hour</tns:timeFormat>
-                        <tns:awayTimer>On</tns:awayTimer>
-                        <tns:awayTimerValue>60</tns:awayTimerValue>
-                    </tns:profileSettingsData>
-                </tns:XmlCommProfileType>
-                <tns:XmlCommProfileType>
+                    <ns2:cmName>cm1</ns2:cmName>
+                    <ns2:prefHandleId>351686@sip.avayacloud.com</ns2:prefHandleId>
+                    <ns2:useExistingExtension>false</ns2:useExistingExtension>
+                    <ns2:extension>351686</ns2:extension>
+                    <ns2:setType>9608SIP</ns2:setType>
+                    <ns2:port>S02526</ns2:port>
+                    <ns2:deleteOnUnassign>true</ns2:deleteOnUnassign>
+                    <ns2:overRideEndpointName>true</ns2:overRideEndpointName>
+                    <ns2:dualRegistration>false</ns2:dualRegistration>
+                    <ns2:enhCallrInfodisplay>false</ns2:enhCallrInfodisplay>
+                    <ns2:lockMessages>false</ns2:lockMessages>
+                    <ns2:coveragePath1>1</ns2:coveragePath1>
+                    <ns2:coveragePath2>1</ns2:coveragePath2>
+                    <ns2:tn>1</ns2:tn>
+                    <ns2:cor>5</ns2:cor>
+                    <ns2:cos>1</ns2:cos>
+                    <ns2:tests>false</ns2:tests>
+                    <ns2:dataModule>false</ns2:dataModule>
+                    <ns2:displayLanguage>unicode</ns2:displayLanguage>
+                    <ns2:personalizedRingingPattern>1</ns2:personalizedRingingPattern>
+                    <ns2:messageLampExt>351686</ns2:messageLampExt>
+                    <ns2:muteButtonEnabled>true</ns2:muteButtonEnabled>
+                    <ns2:ipSoftphone>true</ns2:ipSoftphone>
+                    <ns2:survivableCOR>internal</ns2:survivableCOR>
+                    <ns2:survivableTrunkDest>true</ns2:survivableTrunkDest>
+                    <ns2:voiceMailNumber>980098</ns2:voiceMailNumber>
+                    <ns2:offPremisesStation>false</ns2:offPremisesStation>
+                    <ns2:displayModule>false</ns2:displayModule>
+                    <ns2:remoteOfficePhone>false</ns2:remoteOfficePhone>
+                    <ns2:lwcReception>spe</ns2:lwcReception>
+                    <ns2:lwcActivation>true</ns2:lwcActivation>
+                    <ns2:lwcLogExternalCalls>false</ns2:lwcLogExternalCalls>
+                    <ns2:cdrPrivacy>false</ns2:cdrPrivacy>
+                    <ns2:redirectNotification>true</ns2:redirectNotification>
+                    <ns2:perButtonRingControl>true</ns2:perButtonRingControl>
+                    <ns2:bridgedCallAlerting>false</ns2:bridgedCallAlerting>
+                    <ns2:bridgedIdleLinePreference>false</ns2:bridgedIdleLinePreference>
+                    <ns2:customizableLabels>true</ns2:customizableLabels>
+                    <ns2:expansionModule>false</ns2:expansionModule>
+                    <ns2:ipVideoSoftphone>true</ns2:ipVideoSoftphone>
+                    <ns2:activeStationRinging>single</ns2:activeStationRinging>
+                    <ns2:switchhookFlash>false</ns2:switchhookFlash>
+                    <ns2:ignoreRotaryDigits>false</ns2:ignoreRotaryDigits>
+                    <ns2:h320Conversion>false</ns2:h320Conversion>
+                    <ns2:mwiServedUserType>sip-adjunct</ns2:mwiServedUserType>
+                    <ns2:remoteSoftphoneEmergencyCalls>as-on-local</ns2:remoteSoftphoneEmergencyCalls>
+                    <ns2:emergencyLocationExt>351686</ns2:emergencyLocationExt>
+                    <ns2:alwaysUse>false</ns2:alwaysUse>
+                    <ns2:precedenceCallWaiting>false</ns2:precedenceCallWaiting>
+                    <ns2:autoSelectAnyIdleAppearance>false</ns2:autoSelectAnyIdleAppearance>
+                    <ns2:coverageMsgRetrieval>true</ns2:coverageMsgRetrieval>
+                    <ns2:autoAnswer>none</ns2:autoAnswer>
+                    <ns2:dataRestriction>false</ns2:dataRestriction>
+                    <ns2:idleAppearancePreference>false</ns2:idleAppearancePreference>
+                    <ns2:callWaitingIndication>false</ns2:callWaitingIndication>
+                    <ns2:attCallWaitingIndication>false</ns2:attCallWaitingIndication>
+                    <ns2:distinctiveAudibleAlert>false</ns2:distinctiveAudibleAlert>
+                    <ns2:restrictLastAppearance>true</ns2:restrictLastAppearance>
+                    <ns2:adjunctSupervision>false</ns2:adjunctSupervision>
+                    <ns2:busyAutoCallbackWithoutFlash>false</ns2:busyAutoCallbackWithoutFlash>
+                    <ns2:audibleMessageWaiting>false</ns2:audibleMessageWaiting>
+                    <ns2:imsFeatureSequencing>false</ns2:imsFeatureSequencing>
+                    <ns2:displayClientRedirection>false</ns2:displayClientRedirection>
+                    <ns2:selectLastUsedAppearance>false</ns2:selectLastUsedAppearance>
+                    <ns2:coverageAfterForwarding>s</ns2:coverageAfterForwarding>
+                    <ns2:directIpIpAudioConnections>true</ns2:directIpIpAudioConnections>
+                    <ns2:ipAudioHairpinning>false</ns2:ipAudioHairpinning>
+                    <ns2:stationSiteData>
+                        <ns2:headset>false</ns2:headset>
+                        <ns2:speaker>false</ns2:speaker>
+                        <ns2:mounting>d</ns2:mounting>
+                        <ns2:cordLength>0</ns2:cordLength>
+                    </ns2:stationSiteData>
+                    <ns2:buttons>
+                        <ns2:number>1</ns2:number>
+                        <ns2:type>call-appr</ns2:type>
+                        <ns2:data1></ns2:data1>
+                        <ns2:data2></ns2:data2>
+                        <ns2:data3>r</ns2:data3>
+                        <ns2:data4>n</ns2:data4>
+                        <ns2:data5></ns2:data5>
+                        <ns2:data6></ns2:data6>
+                        <ns2:buttonLabel></ns2:buttonLabel>
+                    </ns2:buttons>
+                    <ns2:buttons>
+                        <ns2:number>2</ns2:number>
+                        <ns2:type>call-appr</ns2:type>
+                        <ns2:data1></ns2:data1>
+                        <ns2:data2></ns2:data2>
+                        <ns2:data3>r</ns2:data3>
+                        <ns2:data4>n</ns2:data4>
+                        <ns2:data5></ns2:data5>
+                        <ns2:data6></ns2:data6>
+                        <ns2:buttonLabel></ns2:buttonLabel>
+                    </ns2:buttons>
+                    <ns2:buttons>
+                        <ns2:number>3</ns2:number>
+                        <ns2:type>call-appr</ns2:type>
+                        <ns2:data1></ns2:data1>
+                        <ns2:data2></ns2:data2>
+                        <ns2:data3>r</ns2:data3>
+                        <ns2:data4>n</ns2:data4>
+                        <ns2:data5></ns2:data5>
+                        <ns2:data6></ns2:data6>
+                        <ns2:buttonLabel></ns2:buttonLabel>
+                    </ns2:buttons>
+                    <ns2:buttons>
+                        <ns2:number>4</ns2:number>
+                        <ns2:type>cfwd-enh</ns2:type>
+                        <ns2:data1></ns2:data1>
+                        <ns2:data2></ns2:data2>
+                        <ns2:data3></ns2:data3>
+                        <ns2:data4></ns2:data4>
+                        <ns2:data5></ns2:data5>
+                        <ns2:data6></ns2:data6>
+                        <ns2:isFavorite>true</ns2:isFavorite>
+                        <ns2:buttonLabel>RUL</ns2:buttonLabel>
+                    </ns2:buttons>
+                    <ns2:buttons>
+                        <ns2:number>5</ns2:number>
+                        <ns2:type>call-pkup</ns2:type>
+                        <ns2:data1></ns2:data1>
+                        <ns2:data2></ns2:data2>
+                        <ns2:data3>single</ns2:data3>
+                        <ns2:data4>h</ns2:data4>
+                        <ns2:data5></ns2:data5>
+                        <ns2:data6></ns2:data6>
+                        <ns2:isFavorite>true</ns2:isFavorite>
+                        <ns2:buttonLabel>Pickup</ns2:buttonLabel>
+                    </ns2:buttons>
+                    <ns2:buttons>
+                        <ns2:number>6</ns2:number>
+                        <ns2:type>autodial</ns2:type>
+                        <ns2:data1></ns2:data1>
+                        <ns2:data2></ns2:data2>
+                        <ns2:data3></ns2:data3>
+                        <ns2:data4></ns2:data4>
+                        <ns2:data5>99811000</ns2:data5>
+                        <ns2:data6></ns2:data6>
+                        <ns2:isFavorite>true</ns2:isFavorite>
+                        <ns2:buttonLabel>Bedrohung</ns2:buttonLabel>
+                    </ns2:buttons>
+                    <ns2:buttons>
+                        <ns2:number>7</ns2:number>
+                        <ns2:type>autodial</ns2:type>
+                        <ns2:data1></ns2:data1>
+                        <ns2:data2></ns2:data2>
+                        <ns2:data3></ns2:data3>
+                        <ns2:data4></ns2:data4>
+                        <ns2:data5>99811100</ns2:data5>
+                        <ns2:data6></ns2:data6>
+                        <ns2:isFavorite>true</ns2:isFavorite>
+                        <ns2:buttonLabel>Ersthelfer</ns2:buttonLabel>
+                    </ns2:buttons>
+                    <ns2:buttons>
+                        <ns2:number>8</ns2:number>
+                        <ns2:type>autodial</ns2:type>
+                        <ns2:data1></ns2:data1>
+                        <ns2:data2></ns2:data2>
+                        <ns2:data3></ns2:data3>
+                        <ns2:data4></ns2:data4>
+                        <ns2:data5>99811200</ns2:data5>
+                        <ns2:data6></ns2:data6>
+                        <ns2:isFavorite>true</ns2:isFavorite>
+                        <ns2:buttonLabel>Räumumg</ns2:buttonLabel>
+                    </ns2:buttons>
+                    <ns2:featureButtons>
+                        <ns2:number>1</ns2:number>
+                        <ns2:type>cpn-blk</ns2:type>
+                        <ns2:data1></ns2:data1>
+                        <ns2:data2></ns2:data2>
+                        <ns2:data3></ns2:data3>
+                        <ns2:data4></ns2:data4>
+                        <ns2:data5></ns2:data5>
+                        <ns2:data6></ns2:data6>
+                        <ns2:isFavorite>false</ns2:isFavorite>
+                        <ns2:buttonLabel>Anonym</ns2:buttonLabel>
+                    </ns2:featureButtons>
+                    <ns2:featureButtons>
+                        <ns2:number>2</ns2:number>
+                        <ns2:type>auto-cback</ns2:type>
+                        <ns2:data1></ns2:data1>
+                        <ns2:data2></ns2:data2>
+                        <ns2:data3></ns2:data3>
+                        <ns2:data4></ns2:data4>
+                        <ns2:data5></ns2:data5>
+                        <ns2:data6></ns2:data6>
+                        <ns2:isFavorite>false</ns2:isFavorite>
+                        <ns2:buttonLabel>Rückruf</ns2:buttonLabel>
+                    </ns2:featureButtons>
+                    <ns2:featureButtons>
+                        <ns2:number>3</ns2:number>
+                        <ns2:type>limit-call</ns2:type>
+                        <ns2:data1></ns2:data1>
+                        <ns2:data2></ns2:data2>
+                        <ns2:data3></ns2:data3>
+                        <ns2:data4></ns2:data4>
+                        <ns2:data5></ns2:data5>
+                        <ns2:data6></ns2:data6>
+                        <ns2:isFavorite>false</ns2:isFavorite>
+                        <ns2:buttonLabel></ns2:buttonLabel>
+                    </ns2:featureButtons>
+                    <ns2:nativeName />
+                    <ns2:buttonModules>0</ns2:buttonModules>
+                    <ns2:unconditionalInternalActive>false</ns2:unconditionalInternalActive>
+                    <ns2:unconditionalExternalActive>false</ns2:unconditionalExternalActive>
+                    <ns2:busyInternalActive>false</ns2:busyInternalActive>
+                    <ns2:busyExternalActive>false</ns2:busyExternalActive>
+                    <ns2:noReplyInternalActive>false</ns2:noReplyInternalActive>
+                    <ns2:noReplyExternalActive>false</ns2:noReplyExternalActive>
+                    <ns2:sacCfOverride>y</ns2:sacCfOverride>
+                    <ns2:lossGroup>19</ns2:lossGroup>
+                    <ns2:emuLoginAllowed>false</ns2:emuLoginAllowed>
+                    <ns2:ec500State>disabled</ns2:ec500State>
+                    <ns2:muteOnOffHookInSCMode>false</ns2:muteOnOffHookInSCMode>
+                    <ns2:type3pccEnabled>Avaya</ns2:type3pccEnabled>
+                    <ns2:calculateRoutePattern>false</ns2:calculateRoutePattern>
+                    <ns2:sipTrunk>aar</ns2:sipTrunk>
+                    <ns2:enableReachStaDomainControl>s</ns2:enableReachStaDomainControl>
+                    <ns2:multimediaEarlyAnswer>false</ns2:multimediaEarlyAnswer>
+                    <ns2:bridgedApprOrigRestr>false</ns2:bridgedApprOrigRestr>
+                    <ns2:xid>false</ns2:xid>
+                    <ns2:stepClearing>false</ns2:stepClearing>
+                    <ns2:fixedTei>false</ns2:fixedTei>
+                    <ns2:endptInit>false</ns2:endptInit>
+                    <ns2:isShortCallingPartyDisplay>true</ns2:isShortCallingPartyDisplay>
+                    <ns2:displayCallerId>true</ns2:displayCallerId>
+                    <ns2:callerIdMsgWaitingIndication>false</ns2:callerIdMsgWaitingIndication>
+                    <ns2:recallRotaryDigit>false</ns2:recallRotaryDigit>
+                    <ns2:profileSettingsData>
+                        <ns2:phoneScreenCalling>Yes</ns2:phoneScreenCalling>
+                        <ns2:profileRedial>List</ns2:profileRedial>
+                        <ns2:dialingOption>On-hook</ns2:dialingOption>
+                        <ns2:headsetSignaling>Disabled</ns2:headsetSignaling>
+                        <ns2:audioPath>Speaker</ns2:audioPath>
+                        <ns2:buttonClicks>Off</ns2:buttonClicks>
+                        <ns2:phoneScreen>Half</ns2:phoneScreen>
+                        <ns2:backgroundLogo>Default</ns2:backgroundLogo>
+                        <ns2:personalizedRinging>Classic Tone 3</ns2:personalizedRinging>
+                        <ns2:callPickUpIndication>Visual</ns2:callPickUpIndication>
+                        <ns2:touchPanel>1</ns2:touchPanel>
+                        <ns2:language>German</ns2:language>
+                        <ns2:userPreferredLanguage>German</ns2:userPreferredLanguage>
+                        <ns2:languageFileInUse>Mlf_German.xml</ns2:languageFileInUse>
+                        <ns2:timeFormat>24 Hour</ns2:timeFormat>
+                        <ns2:awayTimer>On</ns2:awayTimer>
+                        <ns2:awayTimerValue>60</ns2:awayTimerValue>
+                    </ns2:profileSettingsData>
+                </tns:commProfile>
+                <tns:commProfile xmlns:ns2=\"http://xml.avaya.com/schema/import_csm_cm\" 
+                    xmlns:ns3=\"http://xml.avaya.com/schema/presence\">
                     <tns:commProfileType>SessionManager</tns:commProfileType>
-                </tns:XmlCommProfileType>
+                </tns:commProfile>
             </tns:commProfileList>
-        </tns:XmlCommProfileSetType>
-    </tns:XmlUser>
-</tns:Users>
+        </tns:commProfileSet>
+    </tns:user>
+</tns:users>

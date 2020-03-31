@@ -12,6 +12,7 @@ extern crate yaserde_derive;
 mod smgr;
 mod smgr_agent;
 mod smgr_presence;
+mod smgr_sm;
 mod smgr_station;
 
 #[cfg(test)]
