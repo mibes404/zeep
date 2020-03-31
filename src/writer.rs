@@ -1,7 +1,7 @@
 use crate::error::{WriterError, WriterResult};
 use inflector::cases::pascalcase::to_pascal_case;
 use inflector::cases::snakecase::to_snake_case;
-use log::{debug, warn};
+use log::warn;
 use roxmltree::Node;
 use std::cell::RefCell;
 use std::collections::HashMap;
