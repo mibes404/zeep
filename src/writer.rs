@@ -627,14 +627,19 @@ impl FileWriter {
             let maybe_part = node.children().find(|child| child.has_tag_name("part"));
 
             if let Some(part) = maybe_part {
-                self.print_part(name, &part);
+                if let Some(type_name) = self.get_some_attribute(&part, "type") {
+                    // simple type
+                    self.print_simple_part(name, &part, type_name);
+                } else {
+                    self.print_element_part(name, &part);
+                }
             }
 
             self.write("}\n\n".to_string());
         }
     }
 
-    fn print_part(&mut self, message_name: &str, node: &Node) {
+    fn print_element_part(&mut self, message_name: &str, node: &Node) {
         let element_name = match self.get_some_attribute(node, "name") {
             None => return,
             Some(n) => n,
@@ -642,17 +647,32 @@ impl FileWriter {
 
         if let Some(type_name) = self.get_some_attribute(node, "element") {
             self.write("\t#[yaserde(flatten)]\n".to_string());
-
             self.write(format!(
                 "\tpub {}: {}::{},\n",
                 self.shield_reserved_names(&to_snake_case(element_name)),
                 TYPES_MOD,
                 self.fetch_type(type_name)
             ));
-
             self.message_types
                 .insert(message_name.to_string(), type_name.to_string());
         }
+    }
+
+    fn print_simple_part(&mut self, message_name: &str, node: &Node, type_name: &str) {
+        let element_name = match self.get_some_attribute(node, "name") {
+            None => return,
+            Some(n) => n,
+        };
+
+        self.write(format!("\t#[yaserde(rename = \"{}\")]\n", element_name));
+
+        self.write(format!(
+            "\tpub {}: {},\n",
+            self.shield_reserved_names(&to_snake_case(element_name)),
+            self.fetch_type(type_name)
+        ));
+        self.message_types
+            .insert(message_name.to_string(), type_name.to_string());
     }
 
     // WSDL Port Types
