@@ -719,7 +719,7 @@ impl FileWriter {
     fn print_binding_helpers(&mut self, struct_name: &str) {
         self.write(format!(r#"
             impl {0} {{
-                async fn send_soap_request<T: YaSerialize>(&mut self, request: &T, action: &str) -> (reqwest::StatusCode, String) {{
+                async fn send_soap_request<T: YaSerialize>(&self, request: &T, action: &str) -> (reqwest::StatusCode, String) {{
                     let body = to_string(request).expect("failed to generate xml");
                     debug!("SOAP Request: {{}}", body);
                     let mut req = self
@@ -920,7 +920,7 @@ impl FileWriter {
         }
 
         self.write(format!(
-            "\tasync fn {} (&mut self, {}) {};\n",
+            "\tasync fn {} (&self, {}) {};\n",
             func_name, input_template, output_template,
         ));
 
@@ -1163,7 +1163,7 @@ impl FileWriter {
             .unwrap_or_default();
 
         self.write(format!(
-            "\tasync fn {} (&mut self, {}) {} {{\n",
+            "\tasync fn {} (&self, {}) {} {{\n",
             func_name, input_template, output_template,
         ));
 
