@@ -1,7 +1,6 @@
 use crate::error::{WriterError, WriterResult};
 use inflector::cases::pascalcase::to_pascal_case;
 use inflector::cases::snakecase::to_snake_case;
-use log::warn;
 use roxmltree::Node;
 use std::cell::RefCell;
 use std::collections::HashMap;
@@ -20,6 +19,7 @@ const SIGNATURE: &str = r#"//! THIS IS A GENERATED FILE!
 "#;
 const VERSION: &str = "0.0.2";
 const DEFAULT_NS_PREFIX: &str = "tns";
+const IMPORT_PREFIX: &str = "nsi";
 
 pub struct FileWriter {
     base_path: String,
@@ -80,7 +80,7 @@ impl Default for FileWriter {
 }
 
 impl FileWriter {
-    pub fn new_file(dest_file_name: File) -> Self {
+    pub fn new_file(dest_file_name: File, ns_prefix: Option<String>) -> Self {
         FileWriter {
             base_path: String::default(),
             current_section: Section::Root,
@@ -92,7 +92,7 @@ impl FileWriter {
             message_types: HashMap::new(),
             namespaces: HashMap::new(),
             import_count: 0,
-            ns_prefix: DEFAULT_NS_PREFIX.to_string(),
+            ns_prefix: ns_prefix.unwrap_or_else(|| DEFAULT_NS_PREFIX.to_string()),
         }
     }
 
@@ -328,7 +328,7 @@ impl FileWriter {
         };
 
         self.import_count += 1;
-        let prefix = format!("ns{}", self.import_count);
+        let prefix = format!("{}{}", IMPORT_PREFIX, self.import_count);
 
         let my_tns = self.target_name_space.replace(namespace);
         let my_prefix = self.ns_prefix.clone();
