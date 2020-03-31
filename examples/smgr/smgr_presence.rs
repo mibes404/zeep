@@ -10,7 +10,7 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-pub mod messages {
+pub mod bindings {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
@@ -26,7 +26,7 @@ pub mod ports {
     use yaserde::{YaDeserialize, YaSerialize};
 }
 
-pub mod bindings {
+pub mod messages {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
@@ -606,7 +606,12 @@ pub mod types {
         root = "tenant",
         default
     )]
-    pub struct Tenant {}
+    pub struct Tenant {
+        #[yaserde(rename = "name", attribute)]
+        pub name: String,
+        #[yaserde(rename = "createTenantIfNotAlreadyPresent", attribute)]
+        pub create_tenant_if_not_already_present: bool,
+    }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
