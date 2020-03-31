@@ -24,9 +24,24 @@ pub struct SoapFault {
     pub fault_string: Option<String>,
 }
 
+pub mod bindings {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
 pub mod types {
     use super::*;
-    use crate::smgr_station::types::XmlStationProfile;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -716,22 +731,6 @@ pub mod types {
         #[yaserde(prefix = "tns", rename = "percentAllocation", default)]
         pub percent_allocation: Option<String>,
     }
-}
-
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
-pub mod bindings {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
 }
 
 pub mod ports {

@@ -21,8 +21,7 @@ async fn main() {
     }
 
     // -- this is not giving a response at the moment; SQL error...
-    let mut w =
-        bindings::WeatherSoap::new("http://wsf.cdyne.com/WeatherWS/Weather.asmx", Option::None);
+    let w = bindings::WeatherSoap::new("http://wsf.cdyne.com/WeatherWS/Weather.asmx", Option::None);
     let w_info = w
         .get_weather_information(GetWeatherInformationSoapIn {
             parameters: GetWeatherInformation {},

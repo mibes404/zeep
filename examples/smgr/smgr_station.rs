@@ -7,14 +7,6 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-pub mod bindings {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -478,8 +470,6 @@ pub mod types {
         pub comm_profile_sub_type: Option<String>,
         #[yaserde(prefix = "ns1", rename = "jobId", default)]
         pub job_id: Option<String>,
-        #[yaserde(flatten)]
-        pub station: XmlStationProfile,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -617,6 +607,8 @@ pub mod types {
         default
     )]
     pub struct XmlStationProfile {
+        #[yaserde(flatten)]
+        pub xml_comm_profile_type: XmlCommProfileType,
         #[yaserde(prefix = "tns", rename = "cmName", default)]
         pub cm_name: String,
         #[yaserde(prefix = "tns", rename = "prefHandleId", default)]
@@ -1092,22 +1084,6 @@ pub mod types {
     }
 }
 
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
 pub mod messages {
     use super::*;
     use async_trait::async_trait;
@@ -1122,4 +1098,28 @@ pub mod ports {
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod bindings {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
 }

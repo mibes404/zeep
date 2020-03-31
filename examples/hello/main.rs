@@ -21,7 +21,7 @@ async fn main() {
         warn!("Unable to find log4rs.yml logging config. {}", err);
     }
 
-    let mut h = HelloEndpointServiceSoapBinding::new(
+    let h = HelloEndpointServiceSoapBinding::new(
         "http://www.learnwebservices.com/services/hello",
         Option::None,
     );
