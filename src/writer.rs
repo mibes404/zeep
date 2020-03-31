@@ -562,12 +562,26 @@ impl FileWriter {
             Some(n) => self.fetch_type(n),
         };
 
-        self.write(format!(
-            "#[yaserde(rename=\"{}\", attribute)]\npub {}: {},\n",
-            element_name,
-            to_snake_case(element_name),
-            element_type
-        ));
+        let optional = match self.get_some_attribute(node, "use") {
+            None => false,
+            Some(a) => a != "required",
+        };
+
+        if optional {
+            self.write(format!(
+                "#[yaserde(rename=\"{}\", attribute)]\npub {}: Option<{}>,\n",
+                element_name,
+                to_snake_case(element_name),
+                element_type
+            ));
+        } else {
+            self.write(format!(
+                "#[yaserde(rename=\"{}\", attribute)]\npub {}: {},\n",
+                element_name,
+                to_snake_case(element_name),
+                element_type
+            ));
+        }
     }
 
     fn deconstruct_simplex_element(&mut self, node: &Node) -> WriterResult<String> {
