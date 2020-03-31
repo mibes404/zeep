@@ -496,7 +496,7 @@ impl FileWriter {
         self.seen_type(name.to_string());
 
         self.inc_level();
-        self.write("#[derive(Debug, Default, YaSerialize, YaDeserialize)]\n".to_string());
+        self.write("#[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]\n".to_string());
 
         let some_tns = self.target_name_space.clone();
 
@@ -616,7 +616,9 @@ impl FileWriter {
         self.check_section(Section::Messages);
 
         if let Some(name) = self.get_some_attribute(node, "name") {
-            self.write("#[derive(Debug, Default, YaSerialize, YaDeserialize)]\n".to_string());
+            self.write(
+                "#[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]\n".to_string(),
+            );
 
             self.write(format!(
                 "#[yaserde(rename = \"{}\", default)]\npub struct {} {{\n",
