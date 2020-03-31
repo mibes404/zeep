@@ -31,14 +31,14 @@ pub mod messages {
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(rename = "SayHelloResponse", default)]
     pub struct SayHelloResponse {
         #[yaserde(flatten)]
         pub parameters: types::SayHelloResponse,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(rename = "SayHello", default)]
     pub struct SayHello {
         #[yaserde(flatten)]
@@ -53,7 +53,7 @@ pub mod types {
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://learnwebservices.com/services/hello",
@@ -65,7 +65,7 @@ pub mod types {
         pub hello_request: HelloRequest,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://learnwebservices.com/services/hello",
@@ -77,7 +77,7 @@ pub mod types {
         pub name: String,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://learnwebservices.com/services/hello",
@@ -89,7 +89,7 @@ pub mod types {
         pub hello_response: HelloResponse,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://learnwebservices.com/services/hello",

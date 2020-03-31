@@ -13,6 +13,7 @@ cargo run -- -p resources/weather -i weather.wsdl -o examples/weather/weather.rs
 cargo run -- -p resources/smgr -i userimport.xsd -o examples/smgr/smgr.rs
 cargo run -- -p resources/smgr -i agentCommProfile.xsd -o examples/smgr/smgr_agent.rs
 cargo run -- -p resources/smgr -i stationCommProfile.xsd -o examples/smgr/smgr_station.rs
+cargo run -- -p resources/smgr -i presence.xsd -o examples/smgr/smgr_presence.rs
 
 # Format the output
 rustfmt --color=always --edition=2018 examples/aic/aic_agent.rs
@@ -24,3 +25,4 @@ rustfmt --color=always --edition=2018 examples/weather/weather.rs
 rustfmt --color=always --edition=2018 examples/smgr/smgr.rs
 rustfmt --color=always --edition=2018 examples/smgr/smgr_station.rs
 rustfmt --color=always --edition=2018 examples/smgr/smgr_agent.rs
+rustfmt --color=always --edition=2018 examples/smgr/smgr_presence.rs

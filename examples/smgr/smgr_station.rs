@@ -7,6 +7,23 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -18,7 +35,7 @@ pub mod types {
 
     pub type User = XmlUser;
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -32,7 +49,7 @@ pub mod types {
         pub user: Vec<XmlUser>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -44,7 +61,7 @@ pub mod types {
         pub user_provision_rule_name: Vec<String>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -56,7 +73,7 @@ pub mod types {
         pub role: Vec<String>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -68,7 +85,7 @@ pub mod types {
         pub contact_list: XmlContactList,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -80,7 +97,7 @@ pub mod types {
         pub contact: Vec<XmlContact>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -178,7 +195,7 @@ pub mod types {
         pub comm_profile_set: Vec<XmlCommProfileSetType>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -194,7 +211,7 @@ pub mod types {
         pub rs_type: String,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -208,7 +225,7 @@ pub mod types {
         pub access: Option<String>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -220,7 +237,7 @@ pub mod types {
         pub info_type_access: Vec<XmlPresInfoTypeAccessType>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -232,7 +249,7 @@ pub mod types {
         pub xml_pres_ac_rule_type: XmlPresACRuleType,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -244,7 +261,7 @@ pub mod types {
         pub xml_pres_ac_rule_type: XmlPresACRuleType,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -256,7 +273,7 @@ pub mod types {
         pub xml_pres_ac_rule_type: XmlPresACRuleType,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -272,7 +289,7 @@ pub mod types {
         pub spec_flags: Option<String>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -292,7 +309,7 @@ pub mod types {
         pub contact_list_type: String,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -318,7 +335,7 @@ pub mod types {
         pub priority_level: Option<u64>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -338,7 +355,7 @@ pub mod types {
         pub label: Option<String>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -388,7 +405,7 @@ pub mod types {
         pub is_private: Option<bool>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -438,7 +455,7 @@ pub mod types {
         pub addresses: Vec<XmlAddress>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -456,7 +473,7 @@ pub mod types {
         pub domain_name: Option<String>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -472,7 +489,7 @@ pub mod types {
         pub job_id: Option<String>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -484,7 +501,7 @@ pub mod types {
         pub handle: Vec<XmlHandle>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -496,7 +513,7 @@ pub mod types {
         pub comm_profile: Vec<XmlCommProfileType>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -514,7 +531,7 @@ pub mod types {
         pub comm_profile_list: Option<CommProfileList>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -532,7 +549,7 @@ pub mod types {
         pub service_data: Option<String>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -546,7 +563,7 @@ pub mod types {
         pub password_encrypted: bool,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -560,7 +577,7 @@ pub mod types {
         pub name: String,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -572,7 +589,7 @@ pub mod types {
         pub localized_name: Vec<XmlLocalizedName>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -581,7 +598,7 @@ pub mod types {
     )]
     pub struct Tenant {}
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "ns1",
         namespace = "ns1: http://xml.avaya.com/schema/import",
@@ -599,7 +616,7 @@ pub mod types {
         pub organization_unit_level_three: Option<String>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import_csm_cm",
@@ -607,8 +624,6 @@ pub mod types {
         default
     )]
     pub struct XmlStationProfile {
-        #[yaserde(flatten)]
-        pub xml_comm_profile_type: XmlCommProfileType,
         #[yaserde(prefix = "tns", rename = "cmName", default)]
         pub cm_name: String,
         #[yaserde(prefix = "tns", rename = "prefHandleId", default)]
@@ -905,7 +920,7 @@ pub mod types {
         pub profile_settings_data: Option<XmlProfileSettings>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import_csm_cm",
@@ -935,7 +950,7 @@ pub mod types {
         pub set_color: Option<String>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import_csm_cm",
@@ -951,7 +966,7 @@ pub mod types {
         pub list_id: Option<u64>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import_csm_cm",
@@ -981,7 +996,7 @@ pub mod types {
         pub button_label: Option<String>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import_csm_cm",
@@ -1011,7 +1026,7 @@ pub mod types {
         pub special_dialing_abbr_dial_code: Option<String>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import_csm_cm",
@@ -1025,7 +1040,7 @@ pub mod types {
         pub hot_line_abbrev_dial_code: Option<String>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import_csm_cm",
@@ -1039,7 +1054,7 @@ pub mod types {
         pub name: Option<String>,
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         prefix = "tns",
         namespace = "tns: http://xml.avaya.com/schema/import_csm_cm",
@@ -1084,6 +1099,14 @@ pub mod types {
     }
 }
 
+pub mod bindings {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
 pub mod messages {
     use super::*;
     use async_trait::async_trait;
@@ -1098,28 +1121,4 @@ pub mod ports {
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
-}
-
-pub mod bindings {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
 }

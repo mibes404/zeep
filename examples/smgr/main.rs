@@ -1,4 +1,4 @@
-use crate::smgr::types::XmlUser;
+use crate::smgr::types::*;
 use yaserde::de::from_str;
 use yaserde::ser::to_string;
 
@@ -10,6 +10,8 @@ extern crate yaserde;
 extern crate yaserde_derive;
 
 mod smgr;
+mod smgr_agent;
+mod smgr_presence;
 mod smgr_station;
 
 #[cfg(test)]
@@ -21,18 +23,18 @@ mod tests {
     fn test_unmarshall() {
         let sample_response =
             read_to_string("resources/smgr/smgr_get_response.xml").expect("file not found");
-        let users: crate::smgr_station::types::Users =
-            from_str(&sample_response).expect("problems unmarshalling");
+        let users: Users = from_str(&sample_response).expect("problems unmarshalling");
 
         let users = resolve_comm_profiles(users);
         println!("user {:?}", users);
+
+        let xml = to_string(&users).expect("problems marshalling");
+        println!("xml {:?}", xml);
     }
 }
 
-fn resolve_comm_profiles(
-    mut input: crate::smgr_station::types::Users,
-) -> crate::smgr_station::types::Users {
-    let new_users: Vec<crate::smgr_station::types::XmlUser> = input
+fn resolve_comm_profiles(mut input: Users) -> Users {
+    let new_users: Vec<XmlUser> = input
         .user
         .iter()
         .cloned()
@@ -41,31 +43,36 @@ fn resolve_comm_profiles(
                 .comm_profile_set
                 .iter()
                 .cloned()
-                .map(
-                    |mut comm_profile_set: crate::smgr_station::types::XmlCommProfileSetType| {
-                        if let Some(profile_list) = &comm_profile_set.comm_profile_list {
-                            let mut new_profile_list = profile_list.clone();
-                            let new_list = profile_list
-                                .comm_profile
-                                .iter()
-                                .cloned()
-                                .map(|mut comm_profile_type:crate::smgr_station::types::XmlCommProfileType| {
-                                    let profile_type_str = &comm_profile_type.comm_profile_type;
-                                    match profile_type_str.as_str() {
-                                        "PS" => comm_profile_type.station = None,
-                                        "CM" => {}
-                                        "SessionManager" => comm_profile_type.station = None,
-                                        _ => println!("Unknown comm profile type {}", profile_type_str),
-                                    };
-                                    comm_profile_type
-                                })
-                                .collect();
-                            new_profile_list.comm_profile = new_list;
-                            comm_profile_set.comm_profile_list = Some(new_profile_list);
-                        }
-                        comm_profile_set
-                    },
-                )
+                .map(|mut comm_profile_set: XmlCommProfileSetType| {
+                    if let Some(profile_list) = &comm_profile_set.comm_profile_list {
+                        let mut new_profile_list = profile_list.clone();
+                        let new_list = profile_list
+                            .comm_profile
+                            .iter()
+                            .cloned()
+                            .map(|mut comm_profile_type: XmlCommProfileType| {
+                                let profile_type_str = &comm_profile_type.comm_profile_type;
+                                match profile_type_str.as_str() {
+                                    "PS" => {
+                                        comm_profile_type.station = None;
+                                    }
+                                    "CM" => {
+                                        comm_profile_type.ps = None;
+                                    }
+                                    "SessionManager" => {
+                                        comm_profile_type.station = None;
+                                        comm_profile_type.ps = None;
+                                    }
+                                    _ => println!("Unknown comm profile type {}", profile_type_str),
+                                };
+                                comm_profile_type
+                            })
+                            .collect();
+                        new_profile_list.comm_profile = new_list;
+                        comm_profile_set.comm_profile_list = Some(new_profile_list);
+                    }
+                    comm_profile_set
+                })
                 .collect();
             new_user
         })
