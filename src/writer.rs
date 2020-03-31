@@ -502,7 +502,7 @@ impl FileWriter {
 
         if let Some(tns) = some_tns {
             self.write(format!(
-                "#[yaserde(prefix = \"{3}\", namespace = \"{3}: {0}\", rename = \"{1}\", default)]\npub struct {2} {{\n",
+                "#[yaserde(prefix = \"{3}\", namespace = \"{3}: {0}\", root = \"{1}\", default)]\npub struct {2} {{\n",
                 tns,
                 name,
                 to_pascal_case(name),
@@ -510,7 +510,7 @@ impl FileWriter {
             ));
         } else {
             self.write(format!(
-                "#[yaserde(rename = \"{}\", default)]\npub struct {} {{\n",
+                "#[yaserde(root = \"{}\", default)]\npub struct {} {{\n",
                 name,
                 to_pascal_case(name)
             ));
@@ -621,7 +621,7 @@ impl FileWriter {
             );
 
             self.write(format!(
-                "#[yaserde(rename = \"{}\", default)]\npub struct {} {{\n",
+                "#[yaserde(root = \"{}\", default)]\npub struct {} {{\n",
                 name,
                 to_pascal_case(name)
             ));
