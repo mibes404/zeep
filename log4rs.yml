@@ -17,3 +17,5 @@ root:
 loggers:
   weather:
     level: debug
+  zeep:
+    level: debug

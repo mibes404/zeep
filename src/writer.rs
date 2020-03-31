@@ -1,7 +1,7 @@
 use crate::error::{WriterError, WriterResult};
 use inflector::cases::pascalcase::to_pascal_case;
 use inflector::cases::snakecase::to_snake_case;
-use log::warn;
+use log::{debug, warn};
 use roxmltree::Node;
 use std::cell::RefCell;
 use std::collections::HashMap;
@@ -19,6 +19,7 @@ const SIGNATURE: &str = r#"//! THIS IS A GENERATED FILE!
 //!
 "#;
 const VERSION: &str = "0.0.2";
+const DEFAULT_NS_PREFIX: &str = "tns";
 
 pub struct FileWriter {
     base_path: String,
@@ -29,6 +30,9 @@ pub struct FileWriter {
     target_name_space: Option<String>,
     port_types: HashMap<String, PortType>,
     message_types: HashMap<String, String>,
+    namespaces: HashMap<String, String>,
+    import_count: u32,
+    ns_prefix: String,
 }
 
 struct ModWriter {
@@ -68,6 +72,9 @@ impl Default for FileWriter {
             target_name_space: Option::None,
             port_types: HashMap::new(),
             message_types: HashMap::new(),
+            namespaces: HashMap::new(),
+            import_count: 0,
+            ns_prefix: DEFAULT_NS_PREFIX.to_string(),
         }
     }
 }
@@ -83,6 +90,9 @@ impl FileWriter {
             target_name_space: Option::None,
             port_types: HashMap::new(),
             message_types: HashMap::new(),
+            namespaces: HashMap::new(),
+            import_count: 0,
+            ns_prefix: DEFAULT_NS_PREFIX.to_string(),
         }
     }
 
@@ -275,6 +285,8 @@ impl FileWriter {
             .get_some_attribute(node, "targetNamespace")
             .map(|s| s.to_string());
 
+        self.find_namespaces(node);
+
         node.children()
             .try_for_each(|child| match child.tag_name().name() {
                 "import" => self.import_file(&child),
@@ -292,13 +304,43 @@ impl FileWriter {
         Ok(())
     }
 
+    fn find_namespaces(&mut self, node: &Node) {
+        node.namespaces().iter().for_each(|ns| {
+            if let Some(name) = ns.name() {
+                self.namespaces
+                    .insert(name.to_string(), ns.uri().to_string());
+            }
+        });
+    }
+
     fn import_file(&mut self, node: &Node) -> WriterResult<()> {
         let name = match self.get_some_attribute(node, "schemaLocation") {
             None => return Ok(()),
             Some(n) => n,
         };
 
-        self.process_file_in_path(name, false)
+        let namespace = match self.get_some_attribute(node, "namespace") {
+            None => self.target_name_space.clone().unwrap_or_default(),
+            Some(n) => n.to_string(),
+        };
+
+        self.import_count += 1;
+        let prefix = format!("ns{}", self.import_count);
+
+        let my_tns = self.target_name_space.replace(namespace);
+        let my_prefix = self.ns_prefix.clone();
+        self.ns_prefix = prefix;
+
+        self.process_file_in_path(name, false)?;
+
+        // restore old namespace from before import
+        if let Some(old_tns) = my_tns {
+            self.target_name_space.replace(old_tns);
+        }
+
+        self.ns_prefix = my_prefix;
+
+        Ok(())
     }
 
     fn format_type(&mut self, id: &str, definition: String) -> String {
@@ -371,12 +413,12 @@ impl FileWriter {
             // fields
             if let Some(_tns) = &self.target_name_space {
                 self.write(format!(
-                    "\t#[yaserde(prefix = \"tns\", rename = \"{}\", default)]\n",
-                    element_name,
+                    "\t#[yaserde(prefix = \"{1}\", rename = \"{0}\", default)]\n",
+                    element_name, self.ns_prefix
                 ));
             } else {
                 self.write(format!(
-                    "\t#[yaserde(rename = \"{}\", default)]\n",
+                    "\t#[yaserde(rename = \"{0}\", default)]\n",
                     element_name,
                 ));
             }
@@ -460,10 +502,11 @@ impl FileWriter {
 
         if let Some(tns) = some_tns {
             self.write(format!(
-                "#[yaserde(prefix = \"tns\", namespace = \"tns: {}\", rename = \"{}\", default)]\npub struct {} {{\n",
+                "#[yaserde(prefix = \"{3}\", namespace = \"{3}: {0}\", rename = \"{1}\", default)]\npub struct {2} {{\n",
                 tns,
                 name,
-                to_pascal_case(name)
+                to_pascal_case(name),
+                self.ns_prefix
             ));
         } else {
             self.write(format!(
@@ -933,7 +976,7 @@ impl FileWriter {
         pub struct {0}SoapEnvelope {{
             #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
             pub encoding_style: String,
-            #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
+            #[yaserde(rename = "{3}", prefix = "xmlns", attribute)]
             pub tnsattr: Option<String>,
             #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
             pub urnattr: Option<String>,
@@ -958,7 +1001,7 @@ impl FileWriter {
             }}
         }}        
         "#,
-            soap_name, body_type, tns
+            soap_name, body_type, tns, self.ns_prefix
         )
     }
 
