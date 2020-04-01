@@ -38,6 +38,7 @@ pub struct FileWriter {
     namespaces: HashMap<String, String>,
     import_count: u32,
     ns_prefix: String,
+    default_namespace: Option<String>,
 }
 
 struct ModWriter {
@@ -80,18 +81,24 @@ impl Default for FileWriter {
             namespaces: HashMap::new(),
             import_count: 0,
             ns_prefix: DEFAULT_NS_PREFIX.to_string(),
+            default_namespace: Option::None,
         }
     }
 }
 
 impl FileWriter {
-    pub fn new(ns_prefix: Option<String>) -> Self {
+    pub fn new(ns_prefix: Option<String>, default_namespace: Option<String>) -> Self {
         let mut fw = FileWriter::default();
         fw.ns_prefix = ns_prefix.unwrap_or_else(|| DEFAULT_NS_PREFIX.to_string());
+        fw.default_namespace = default_namespace;
         fw
     }
 
-    pub fn new_file(dest_file_name: File, ns_prefix: Option<String>) -> Self {
+    pub fn new_file(
+        dest_file_name: File,
+        ns_prefix: Option<String>,
+        default_namespace: Option<String>,
+    ) -> Self {
         FileWriter {
             base_path: String::default(),
             current_section: Section::Root,
@@ -104,11 +111,16 @@ impl FileWriter {
             namespaces: HashMap::new(),
             import_count: 0,
             ns_prefix: ns_prefix.unwrap_or_else(|| DEFAULT_NS_PREFIX.to_string()),
+            default_namespace,
         }
     }
 
-    pub fn new_buffer(ns_prefix: Option<String>, buffer: DebugBuffer) -> Self {
-        let mut fw = FileWriter::new(ns_prefix);
+    pub fn new_buffer(
+        ns_prefix: Option<String>,
+        default_namespace: Option<String>,
+        buffer: DebugBuffer,
+    ) -> Self {
+        let mut fw = FileWriter::new(ns_prefix, default_namespace);
         fw.writer = Option::Some(Box::from(buffer));
         fw
     }
@@ -310,10 +322,10 @@ impl FileWriter {
         node.children()
             .try_for_each(|child| match child.tag_name().name() {
                 "import" => self.import_file(&child),
-                "element" => self.print_element(&child),
+                "element" => self.print_element(&child, true),
                 "complexType" => {
                     if let Some(n) = self.get_some_attribute(&child, "name") {
-                        self.print_complex_element(&child, n)
+                        self.print_complex_element(&child, n, false)
                     } else {
                         Ok(())
                     }
@@ -379,7 +391,17 @@ impl FileWriter {
         }
     }
 
-    fn print_element(&mut self, node: &Node) -> WriterResult<()> {
+    fn on_default_namespace(&self) -> bool {
+        if let Some(default_namespace) = &self.default_namespace {
+            if let Some(namespace) = &self.target_name_space {
+                return default_namespace == namespace;
+            }
+        }
+
+        false
+    }
+
+    fn print_element(&mut self, node: &Node, is_top_level: bool) -> WriterResult<()> {
         let element_name = match self.get_some_attribute(node, "name") {
             None => return Ok(()),
             Some(n) => n,
@@ -418,13 +440,13 @@ impl FileWriter {
 
         if self.level == 0 {
             // top-level == type alias
-            let top_level = to_pascal_case(element_name);
+            let top_level_name = to_pascal_case(element_name);
             let alias = self.fetch_type(&type_name);
 
-            if top_level != alias {
+            if top_level_name != alias {
                 self.print_type(
-                    &top_level,
-                    format!("pub type {} = {};\n\n", top_level, alias),
+                    &top_level_name,
+                    format!("pub type {} = {};\n\n", top_level_name, alias),
                 );
 
                 return Ok(());
@@ -432,10 +454,25 @@ impl FileWriter {
         } else {
             // fields
             if let Some(_tns) = &self.target_name_space {
-                self.write(format!(
-                    "\t#[yaserde(prefix = \"{1}\", rename = \"{0}\", default)]\n",
-                    element_name, self.ns_prefix
-                ));
+                if is_top_level {
+                    // declare all namespaces
+                    self.write(format!(
+                        "\t#[yaserde(rename = \"{0}\", default, namespace=\"xsi: http://www.w3.org/2001/XMLSchema-instance\")]\n",
+                        element_name,
+                    ));
+                } else {
+                    if self.on_default_namespace() {
+                        self.write(format!(
+                            "\t#[yaserde(rename = \"{0}\", default)]\n",
+                            element_name
+                        ));
+                    } else {
+                        self.write(format!(
+                            "\t#[yaserde(prefix = \"{1}\", rename = \"{0}\", default)]\n",
+                            element_name, self.ns_prefix
+                        ));
+                    }
+                }
             } else {
                 self.write(format!(
                     "\t#[yaserde(rename = \"{0}\", default)]\n",
@@ -468,7 +505,7 @@ impl FileWriter {
         }
 
         if let Some(complex) = maybe_complex {
-            self.print_complex_element(&complex, element_name)?
+            self.print_complex_element(&complex, element_name, is_top_level)?
         }
 
         Ok(())
@@ -508,7 +545,12 @@ impl FileWriter {
         }
     }
 
-    fn print_complex_element(&mut self, node: &Node, name: &str) -> WriterResult<()> {
+    fn print_complex_element(
+        &mut self,
+        node: &Node,
+        name: &str,
+        is_top_level: bool,
+    ) -> WriterResult<()> {
         if self.have_seen_type(name) {
             return Ok(());
         }
@@ -521,13 +563,30 @@ impl FileWriter {
         let some_tns = self.target_name_space.clone();
 
         if let Some(tns) = some_tns {
-            self.write(format!(
-                "#[yaserde(prefix = \"{3}\", namespace = \"{3}: {0}\", root = \"{1}\", default)]\npub struct {2} {{\n",
-                tns,
-                name,
-                to_pascal_case(name),
-                self.ns_prefix
-            ));
+            if is_top_level {
+                // declare all namespaces
+                self.write(format!(
+                    "#[yaserde(root = \"{}\", default, namespace=\"xsi: http://www.w3.org/2001/XMLSchema-instance\")]\npub struct {} {{\n",
+                    name,
+                    to_pascal_case(name)
+                ));
+            } else {
+                if self.on_default_namespace() {
+                    self.write(format!(
+                        "#[yaserde(root = \"{0}\", default)]\npub struct {1} {{\n",
+                        name,
+                        to_pascal_case(name),
+                    ))
+                } else {
+                    self.write(format!(
+                        "#[yaserde(prefix = \"{3}\", namespace = \"{3}: {0}\", root = \"{1}\", default)]\npub struct {2} {{\n",
+                        tns,
+                        name,
+                        to_pascal_case(name),
+                        self.ns_prefix
+                    ));
+                }
+            }
         } else {
             self.write(format!(
                 "#[yaserde(root = \"{}\", default)]\npub struct {} {{\n",
@@ -557,6 +616,7 @@ impl FileWriter {
         }
 
         self.write("}\n\n".to_string());
+        self.flush_delayed_buffer();
         self.dec_level();
 
         Ok(())
@@ -619,7 +679,7 @@ impl FileWriter {
 
     fn print_sequence(&mut self, node: &Node) -> WriterResult<()> {
         node.children()
-            .try_for_each(|child| self.print_element(&child))?;
+            .try_for_each(|child| self.print_element(&child, false))?;
         Ok(())
     }
 
@@ -654,6 +714,33 @@ impl FileWriter {
             to_snake_case(&self.fetch_type(base)),
             self.fetch_type(base)
         ));
+
+        let _prefix = if self.ns_prefix != "" {
+            format!("{}:", self.ns_prefix)
+        } else {
+            "".to_string()
+        };
+
+        let type_name = self.fetch_type(base);
+        let default_function_name = to_snake_case(format!("{}String", type_name).as_str());
+
+        self.write(format!(
+            "\t#[yaserde(prefix=\"xsi\", rename=\"type\", attribute, default = \"{0}\")]\n\tpub xsi_type: String,\n",
+            default_function_name
+        ));
+
+        if !self.have_seen_type(default_function_name.as_str()) {
+            self.delayed_write(format!(
+                r#"
+        fn {}() -> String {{
+            "{}".to_string()
+        }}
+        "#,
+                default_function_name, type_name
+            ));
+
+            self.seen_type(default_function_name);
+        }
     }
 
     fn shield_reserved_names<'a>(&self, type_name: &'a str) -> &'a str {
@@ -1448,11 +1535,18 @@ mod tests {
     #[test]
     fn test_attributes() {
         let mut buffer = DebugBuffer::default();
-        let mut fw = FileWriter::new_buffer(None, buffer.clone());
-        fw.process_file("resources/smgr/", "userimport.xsd");
+        let mut fw = FileWriter::new_buffer(
+            None,
+            Some("http://xml.avaya.com/schema/import_csm_agent".to_string()),
+            buffer.clone(),
+        );
+        fw.process_file("resources/smgr/", "agentCommProfile.xsd");
 
         let mut result = String::new();
         buffer.read_to_string(&mut result);
-        assert!(result.contains("#[yaserde(rename=\"createTenantIfNotAlreadyPresent\", attribute)]"))
+        assert!(
+            result.contains("#[yaserde(rename=\"createTenantIfNotAlreadyPresent\", attribute)]")
+        );
+        println!("{}", result);
     }
 }

@@ -10,11 +10,11 @@ cargo run -- -p resources/aic -i workflow_wsdl.xml -o examples/aic/aic_workflow.
 cargo run -- -p resources/hello -i hello.wsdl -o examples/hello/hello.rs
 cargo run -- -p resources/temp_converter -i tempconverter.wsdl -o examples/temperature/tempconverter.rs
 cargo run -- -p resources/weather -i weather.wsdl -o examples/weather/weather.rs
-cargo run -- -p resources/smgr -i userimport.xsd -o examples/smgr/smgr.rs
-cargo run -- -p resources/smgr -i agentCommProfile.xsd -o examples/smgr/smgr_agent.rs -n ns1
-cargo run -- -p resources/smgr -i stationCommProfile.xsd -o examples/smgr/smgr_station.rs -n ns2
-cargo run -- -p resources/smgr -i presence.xsd -o examples/smgr/smgr_presence.rs -n ns3
-cargo run -- -p resources/smgr -i SessionManager.xsd -o examples/smgr/smgr_sm.rs -n ns7
+cargo run -- -p resources/smgr -i userimport.xsd -o examples/smgr/smgr.rs -d "http://xml.avaya.com/schema/import"
+cargo run -- -p resources/smgr -i agentCommProfile.xsd -o examples/smgr/smgr_agent.rs -n ns1 -d "http://xml.avaya.com/schema/import"
+cargo run -- -p resources/smgr -i stationCommProfile.xsd -o examples/smgr/smgr_station.rs -n ns2 -d "http://xml.avaya.com/schema/import"
+cargo run -- -p resources/smgr -i presence.xsd -o examples/smgr/smgr_presence.rs -n ns3 -d "http://xml.avaya.com/schema/import"
+cargo run -- -p resources/smgr -i SessionManager.xsd -o examples/smgr/smgr_sm.rs -n ns7 -d "http://xml.avaya.com/schema/import"
 
 # Format the output
 rustfmt --color=always --edition=2018 examples/aic/aic_agent.rs

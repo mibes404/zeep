@@ -47,6 +47,13 @@ fn main() {
                 .takes_value(true)
                 .help("Namespace prefix"),
         )
+        .arg(
+            Arg::with_name("dns")
+                .short("d")
+                .long("dns")
+                .takes_value(true)
+                .help("Default namespace (URL)"),
+        )
         .get_matches();
 
     let to_file_name = matches.value_of("to_file");
@@ -56,10 +63,11 @@ fn main() {
 
     let base_path = matches.value_of("path").unwrap_or("resources/smgr");
     let ns_prefix = matches.value_of("ns").map(|ns| ns.to_string());
+    let default_namespace = matches.value_of("dns").map(|dns| dns.to_string());
 
     if let Some(output_file) = to_file_name {
         let file = File::create(output_file).expect("can not create file");
-        let mut writer = FileWriter::new_file(file, ns_prefix);
+        let mut writer = FileWriter::new_file(file, ns_prefix, default_namespace);
         println!(
             "parsing {}/{} --> {}",
             base_path, from_file_name, output_file
@@ -68,7 +76,7 @@ fn main() {
             println!("Failed to process {}: {}", from_file_name, err.to_string())
         }
     } else {
-        let mut writer = FileWriter::new(ns_prefix);
+        let mut writer = FileWriter::new(ns_prefix, default_namespace);
         if let Err(err) = writer.process_file(base_path, from_file_name) {
             println!("Failed to process {}: {}", from_file_name, err.to_string())
         }
