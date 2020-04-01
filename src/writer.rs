@@ -1,13 +1,18 @@
+use crate::debug::DebugBuffer;
 use crate::error::{WriterError, WriterResult};
 use inflector::cases::pascalcase::to_pascal_case;
 use inflector::cases::snakecase::to_snake_case;
 use roxmltree::Node;
+use std::borrow::{Borrow, BorrowMut};
 use std::cell::RefCell;
 use std::collections::HashMap;
+use std::convert::TryInto;
 use std::fs::File;
 use std::io;
 use std::io::{stdout, Cursor, Read, Write};
 use std::mem::discriminant;
+use std::ops::Deref;
+use std::rc::Rc;
 
 const MESSAGES_MOD: &str = "messages";
 const TYPES_MOD: &str = "types";
@@ -100,6 +105,12 @@ impl FileWriter {
             import_count: 0,
             ns_prefix: ns_prefix.unwrap_or_else(|| DEFAULT_NS_PREFIX.to_string()),
         }
+    }
+
+    pub fn new_buffer(ns_prefix: Option<String>, buffer: DebugBuffer) -> Self {
+        let mut fw = FileWriter::new(ns_prefix);
+        fw.writer = Option::Some(Box::from(buffer));
+        fw
     }
 
     fn init_mod_writers() -> HashMap<Section, ModWriter> {
@@ -1425,5 +1436,23 @@ impl ModWriter {
 
     pub fn have_seen_type(&self, type_def: &str) -> bool {
         self.defined_types.contains(&type_def.to_string())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::debug::DebugBuffer;
+    use std::rc::Rc;
+
+    #[test]
+    fn test_attributes() {
+        let mut buffer = DebugBuffer::default();
+        let mut fw = FileWriter::new_buffer(None, buffer.clone());
+        fw.process_file("resources/smgr/", "userimport.xsd");
+
+        let mut result = String::new();
+        buffer.read_to_string(&mut result);
+        println!("{}", result);
     }
 }
