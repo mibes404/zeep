@@ -1,87 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tns:users xmlns:tns="http://xml.avaya.com/schema/import">
-    <tns:user>        
-        <tns:authenticationType>basic</tns:authenticationType>
-        <tns:displayName>Anselmann, Anna</tns:displayName>
-        <tns:displayNameAscii>Anselmann, Anna</tns:displayNameAscii>
-        <tns:isDuplicatedLoginAllowed>false</tns:isDuplicatedLoginAllowed>
-        <tns:isEnabled>true</tns:isEnabled>
-        <tns:isVirtualUser>false</tns:isVirtualUser>
-        <tns:givenName>Anna</tns:givenName>
-        <tns:givenNameAscii>Anna</tns:givenNameAscii>
-        <tns:loginName>h90170040@sip.avayacloud.com</tns:loginName>
-        <tns:preferredLanguage>de_DE</tns:preferredLanguage>
-        <tns:source>source.ws.xml</tns:source>
-        <tns:sourceUserKey>none</tns:sourceUserKey>
-        <tns:status>provisioned</tns:status>
-        <tns:surname>Anselmann</tns:surname>
-        <tns:surnameAscii>Anselmann</tns:surnameAscii>
-        <tns:timeZone>(+1:0)Amsterdam, Berlin, Rome, Belgrade, Prague, Brussels, Sarajevo</tns:timeZone>
-        <tns:userName>h90170040</tns:userName>
-        <tns:userPassword></tns:userPassword>
-        <tns:commPassword></tns:commPassword>
-        <tns:roles>
-            <tns:role>End-User</tns:role>
-        </tns:roles>
-        <tns:ownedContactLists>
-            <tns:contactList>
-                <tns:name>list-h90170040_sip.avayacloud.com</tns:name>
-                <tns:isPublic>false</tns:isPublic>
-                <tns:contactListType>general</tns:contactListType>
-            </tns:contactList>
-        </tns:ownedContactLists>
-        <tns:commProfileSet>
-            <tns:commProfileSetName>Primary</tns:commProfileSetName>
-            <tns:isPrimary>true</tns:isPrimary>
-            <tns:handleList>
-                <tns:handle>
-                    <tns:handleName>351686</tns:handleName>
-                    <tns:handleType>xmpp</tns:handleType>
-                    <tns:handleSubType>jabber</tns:handleSubType>
-                    <tns:domainName>sip.avayacloud.com</tns:domainName>
-                </tns:handle>
-                <tns:handle>
-                    <tns:handleName>lgarciabetti@avaya.com</tns:handleName>
-                    <tns:handleType>smtp</tns:handleType>
-                    <tns:handleSubType>msexchange</tns:handleSubType>
-                </tns:handle>
-                <tns:handle>
-                    <tns:handleName>90170040@fake.aok.de</tns:handleName>
-                    <tns:handleType>smtp</tns:handleType>
-                    <tns:handleSubType>msexchange</tns:handleSubType>
-                </tns:handle>
-                <tns:handle>
-                    <tns:handleName>351686</tns:handleName>
-                    <tns:handleType>sip</tns:handleType>
-                    <tns:handleSubType>username</tns:handleSubType>
-                    <tns:domainName>sip.avayacloud.com</tns:domainName>
-                </tns:handle>
-                <tns:handle>
-                    <tns:handleName>+49123456351686</tns:handleName>
-                    <tns:handleType>sip</tns:handleType>
-                    <tns:handleSubType>e164</tns:handleSubType>
-                    <tns:domainName>sip.avayacloud.com</tns:domainName>
-                </tns:handle>
-                <tns:handle>
-                    <tns:handleName>+49112233441686</tns:handleName>
-                    <tns:handleType>sip</tns:handleType>
-                    <tns:handleSubType>e164</tns:handleSubType>
-                    <tns:domainName>sip.avayacloud.com</tns:domainName>
-                </tns:handle>
-            </tns:handleList>
-            <tns:commProfileList>
-                <tns:commProfile xmlns:ns2="http://xml.avaya.com/schema/import_csm_cm" 
+    <tns:user>
+        <UserOrganizationDetails>
+            <tenant name="I-Hessen" createTenantIfNotAlreadyPresent="false" />
+            <organizationUnitLevelOne>Hessen</organizationUnitLevelOne>
+        </UserOrganizationDetails>
+        <authenticationType>basic</authenticationType>
+        <displayName>Anselmann, Anna</displayName>
+        <displayNameAscii>Anselmann, Anna</displayNameAscii>
+        <isDuplicatedLoginAllowed>false</isDuplicatedLoginAllowed>
+        <isEnabled>true</isEnabled>
+        <isVirtualUser>false</isVirtualUser>
+        <givenName>Anna</givenName>
+        <givenNameAscii>Anna</givenNameAscii>
+        <loginName>h90170040@sip.avayacloud.com</loginName>
+        <preferredLanguage>de_DE</preferredLanguage>
+        <source>source.ws.xml</source>
+        <sourceUserKey>none</sourceUserKey>
+        <status>provisioned</status>
+        <surname>Anselmann</surname>
+        <surnameAscii>Anselmann</surnameAscii>
+        <timeZone>(+1:0)Amsterdam, Berlin, Rome, Belgrade, Prague, Brussels, Sarajevo</timeZone>
+        <userName>h90170040</userName>
+        <userPassword></userPassword>
+        <commPassword></commPassword>
+        <roles>
+            <role>End-User</role>
+        </roles>
+        <ownedContactLists>
+            <contactList>
+                <name>list-h90170040_sip.avayacloud.com</name>
+                <isPublic>false</isPublic>
+                <contactListType>general</contactListType>
+            </contactList>
+        </ownedContactLists>
+        <commProfileSet>
+            <commProfileSetName>Primary</commProfileSetName>
+            <isPrimary>true</isPrimary>
+            <handleList>
+                <handle>
+                    <handleName>351686</handleName>
+                    <handleType>xmpp</handleType>
+                    <handleSubType>jabber</handleSubType>
+                    <domainName>sip.avayacloud.com</domainName>
+                </handle>
+                <handle>
+                    <handleName>lgarciabetti@avaya.com</handleName>
+                    <handleType>smtp</handleType>
+                    <handleSubType>msexchange</handleSubType>
+                </handle>
+                <handle>
+                    <handleName>90170040@fake.aok.de</handleName>
+                    <handleType>smtp</handleType>
+                    <handleSubType>msexchange</handleSubType>
+                </handle>
+                <handle>
+                    <handleName>351686</handleName>
+                    <handleType>sip</handleType>
+                    <handleSubType>username</handleSubType>
+                    <domainName>sip.avayacloud.com</domainName>
+                </handle>
+                <handle>
+                    <handleName>+49123456351686</handleName>
+                    <handleType>sip</handleType>
+                    <handleSubType>e164</handleSubType>
+                    <domainName>sip.avayacloud.com</domainName>
+                </handle>
+                <handle>
+                    <handleName>+49112233441686</handleName>
+                    <handleType>sip</handleType>
+                    <handleSubType>e164</handleSubType>
+                    <domainName>sip.avayacloud.com</domainName>
+                </handle>
+            </handleList>
+            <commProfileList>
+                <commProfile xmlns:ns2="http://xml.avaya.com/schema/import_csm_cm" 
                     xmlns:ns3="http://xml.avaya.com/schema/presence" 
                     xmlns:ns7="http://xml.avaya.com/schema/import_sessionmanager">
-                    <tns:commProfileType>PS</tns:commProfileType>
+                    <commProfileType>PS</commProfileType>
                     <ns3:system>ps.avayacloud.com</ns3:system>
                     <ns3:imGatewaySipEntity>ps.avayacloud.com</ns3:imGatewaySipEntity>
                     <ns3:publishViaAESCollector>SD</ns3:publishViaAESCollector>
-                </tns:commProfile>
-                <tns:commProfile xmlns:ns2="http://xml.avaya.com/schema/import_csm_cm" 
+                </commProfile>
+                <commProfile xmlns:ns2="http://xml.avaya.com/schema/import_csm_cm" 
                     xmlns:ns3="http://xml.avaya.com/schema/presence" 
                     xmlns:ns7="http://xml.avaya.com/schema/import_sessionmanager">
-                    <tns:commProfileType>CM</tns:commProfileType>
+                    <commProfileType>CM</commProfileType>
                     <ns2:cmName>cm1</ns2:cmName>
                     <ns2:prefHandleId>351686@sip.avayacloud.com</ns2:prefHandleId>
                     <ns2:useExistingExtension>false</ns2:useExistingExtension>
@@ -330,11 +334,11 @@
                         <ns2:awayTimer>On</ns2:awayTimer>
                         <ns2:awayTimerValue>60</ns2:awayTimerValue>
                     </ns2:profileSettingsData>
-                </tns:commProfile>
-                <tns:commProfile xmlns:ns2="http://xml.avaya.com/schema/import_csm_cm" 
+                </commProfile>
+                <commProfile xmlns:ns2="http://xml.avaya.com/schema/import_csm_cm" 
                     xmlns:ns3="http://xml.avaya.com/schema/presence" 
                     xmlns:ns7="http://xml.avaya.com/schema/import_sessionmanager">
-                    <tns:commProfileType>SessionManager</tns:commProfileType>
+                    <commProfileType>SessionManager</commProfileType>
                     <ns7:primarySM>SM01</ns7:primarySM>
                     <ns7:terminationAppSequence>CMAppSeq</ns7:terminationAppSequence>
                     <ns7:originationAppSequence>CMAppSeq</ns7:originationAppSequence>
@@ -342,8 +346,8 @@
                     <ns7:maxSimultaneousDevices>2</ns7:maxSimultaneousDevices>
                     <ns7:blockNewRegistrationWhenMaxActive>false</ns7:blockNewRegistrationWhenMaxActive>
                     <ns7:enabledisablecalllog>true</ns7:enabledisablecalllog>
-                </tns:commProfile>
-            </tns:commProfileList>
-        </tns:commProfileSet>
+                </commProfile>
+            </commProfileList>
+        </commProfileSet>
     </tns:user>
 </tns:users>
