@@ -1,4 +1,4 @@
-use std::fmt::{Arguments, Error, Write};
+use std::fmt::{Arguments, Write};
 use std::sync::{Arc, Mutex};
 
 #[derive(Clone)]
@@ -16,7 +16,7 @@ impl Default for DebugBuffer {
 
 impl std::io::Write for DebugBuffer {
     fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
-        self.write_all(buf);
+        self.write_all(buf)?;
         Ok(buf.len())
     }
 
@@ -24,7 +24,7 @@ impl std::io::Write for DebugBuffer {
         Ok(())
     }
 
-    fn write_all(&mut self, mut buf: &[u8]) -> std::io::Result<()> {
+    fn write_all(&mut self, buf: &[u8]) -> std::io::Result<()> {
         let mut w_buf = self.buffer.lock().expect("can not obtain lock");
         let s = std::str::from_utf8(buf).expect("invalid utf8");
         w_buf.write_str(s).expect("can not write");
@@ -39,13 +39,13 @@ impl std::io::Write for DebugBuffer {
 }
 
 impl std::io::Read for DebugBuffer {
-    fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
+    fn read(&mut self, _buf: &mut [u8]) -> std::io::Result<usize> {
         unimplemented!()
     }
 
     fn read_to_string(&mut self, buf: &mut String) -> std::io::Result<usize> {
         let w_buf = self.buffer.lock().expect("can not obtain lock");
-        buf.write_str(w_buf.as_str());
+        buf.write_str(w_buf.as_str()).expect("can not read string");
         Ok(w_buf.len())
     }
 }

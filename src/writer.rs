@@ -3,16 +3,12 @@ use crate::error::{WriterError, WriterResult};
 use inflector::cases::pascalcase::to_pascal_case;
 use inflector::cases::snakecase::to_snake_case;
 use roxmltree::Node;
-use std::borrow::{Borrow, BorrowMut};
 use std::cell::RefCell;
 use std::collections::HashMap;
-use std::convert::TryInto;
 use std::fs::File;
 use std::io;
 use std::io::{stdout, Cursor, Read, Write};
 use std::mem::discriminant;
-use std::ops::Deref;
-use std::rc::Rc;
 
 const MESSAGES_MOD: &str = "messages";
 const TYPES_MOD: &str = "types";
@@ -459,18 +455,16 @@ impl FileWriter {
                         "\t#[yaserde(rename = \"{0}\", default, namespace=\"xsi: http://www.w3.org/2001/XMLSchema-instance\")]\n",
                         element_name,
                     ));
+                } else if self.on_default_namespace() {
+                    self.write(format!(
+                        "\t#[yaserde(rename = \"{0}\", default)]\n",
+                        element_name
+                    ));
                 } else {
-                    if self.on_default_namespace() {
-                        self.write(format!(
-                            "\t#[yaserde(rename = \"{0}\", default)]\n",
-                            element_name
-                        ));
-                    } else {
-                        self.write(format!(
-                            "\t#[yaserde(prefix = \"{1}\", rename = \"{0}\", default)]\n",
-                            element_name, self.ns_prefix
-                        ));
-                    }
+                    self.write(format!(
+                        "\t#[yaserde(prefix = \"{1}\", rename = \"{0}\", default)]\n",
+                        element_name, self.ns_prefix
+                    ));
                 }
             } else {
                 self.write(format!(
@@ -571,22 +565,20 @@ impl FileWriter {
                     tns,
                     to_pascal_case(name)
                 ));
+            } else if self.on_default_namespace() {
+                self.write(format!(
+                    "#[yaserde(root = \"{0}\", default)]\npub struct {1} {{\n",
+                    name,
+                    to_pascal_case(name),
+                ))
             } else {
-                if self.on_default_namespace() {
-                    self.write(format!(
-                        "#[yaserde(root = \"{0}\", default)]\npub struct {1} {{\n",
-                        name,
-                        to_pascal_case(name),
-                    ))
-                } else {
-                    self.write(format!(
+                self.write(format!(
                         "#[yaserde(prefix = \"{3}\", namespace = \"{3}: {0}\", root = \"{1}\", default)]\npub struct {2} {{\n",
                         tns,
                         name,
                         to_pascal_case(name),
                         self.ns_prefix
                     ));
-                }
             }
         } else {
             self.write(format!(
@@ -1517,7 +1509,6 @@ impl ModWriter {
 mod tests {
     use super::*;
     use crate::debug::DebugBuffer;
-    use std::rc::Rc;
 
     fn prepare_output(ns_prefix: Option<String>, default_ns: Option<String>) -> String {
         let mut buffer = DebugBuffer::default();
