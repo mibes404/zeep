@@ -1519,9 +1519,9 @@ mod tests {
     use crate::debug::DebugBuffer;
     use std::rc::Rc;
 
-    fn prepare_output(default_ns: Option<String>) -> String {
+    fn prepare_output(ns_prefix: Option<String>, default_ns: Option<String>) -> String {
         let mut buffer = DebugBuffer::default();
-        let mut fw = FileWriter::new_buffer(None, default_ns, buffer.clone());
+        let mut fw = FileWriter::new_buffer(ns_prefix, default_ns, buffer.clone());
         fw.process_file("resources/smgr/", "agentCommProfile.xsd");
 
         let mut result = String::new();
@@ -1531,9 +1531,10 @@ mod tests {
 
     #[test]
     fn test_attributes() {
-        let result = prepare_output(Some(
-            "http://xml.avaya.com/schema/import_csm_agent".to_string(),
-        ));
+        let result = prepare_output(
+            None,
+            Some("http://xml.avaya.com/schema/import_csm_agent".to_string()),
+        );
         assert!(
             result.contains(r#"#[yaserde(rename="createTenantIfNotAlreadyPresent", attribute)]"#)
         );
@@ -1541,9 +1542,10 @@ mod tests {
 
     #[test]
     fn test_default_namespace() {
-        let result = prepare_output(Some(
-            "http://xml.avaya.com/schema/import_csm_agent".to_string(),
-        ));
+        let result = prepare_output(
+            None,
+            Some("http://xml.avaya.com/schema/import_csm_agent".to_string()),
+        );
 
         // no prefix for default namespace
         assert!(result.contains(r#"#[yaserde(root = "xmlAgentProfile", default)]"#));
@@ -1551,9 +1553,17 @@ mod tests {
 
     #[test]
     fn test_no_default_namespace() {
-        let result = prepare_output(None);
+        let result = prepare_output(None, None);
         assert!(
             result.contains(r#"#[yaserde(prefix = "tns", namespace = "tns: http://xml.avaya.com/schema/import_csm_agent", root = "xmlAgentProfile", default)]"#);
+        );
+    }
+
+    #[test]
+    fn test_ns_prefix() {
+        let result = prepare_output(Some("ns2".to_string()), None);
+        assert!(
+            result.contains(r#"#[yaserde(prefix = "ns2", namespace = "ns2: http://xml.avaya.com/schema/import_csm_agent", root = "xmlAgentProfile", default)]"#);
         );
     }
 }
