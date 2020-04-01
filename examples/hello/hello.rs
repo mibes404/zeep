@@ -27,6 +27,28 @@ pub struct SoapFault {
     pub fault_string: Option<String>,
 }
 
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "SayHelloResponse", default)]
+    pub struct SayHelloResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::SayHelloResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "SayHello", default)]
+    pub struct SayHello {
+        #[yaserde(flatten)]
+        pub parameters: types::SayHello,
+    }
+}
+
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -81,25 +103,6 @@ pub mod types {
         #[yaserde(prefix = "tns", rename = "Message", default)]
         pub message: String,
     }
-}
-
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait HelloEndpoint {
-        async fn say_hello(
-            &self,
-            say_hello: SayHello,
-        ) -> Result<SayHelloResponse, Option<SoapFault>>;
-    }
-
-    pub type SayHello = messages::SayHello;
-    pub type SayHelloResponse = messages::SayHelloResponse;
 }
 
 pub mod bindings {
@@ -266,24 +269,21 @@ pub mod bindings {
     }
 }
 
-pub mod messages {
+pub mod ports {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "SayHelloResponse", default)]
-    pub struct SayHelloResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::SayHelloResponse,
+    #[async_trait]
+    pub trait HelloEndpoint {
+        async fn say_hello(
+            &self,
+            say_hello: SayHello,
+        ) -> Result<SayHelloResponse, Option<SoapFault>>;
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "SayHello", default)]
-    pub struct SayHello {
-        #[yaserde(flatten)]
-        pub parameters: types::SayHello,
-    }
+    pub type SayHello = messages::SayHello;
+    pub type SayHelloResponse = messages::SayHelloResponse;
 }

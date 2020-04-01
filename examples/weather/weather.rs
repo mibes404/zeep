@@ -10,23 +10,6 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
 pub mod messages {
     use super::*;
     use async_trait::async_trait;
@@ -164,19 +147,17 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         root = "GetWeatherInformation",
-        default
+        default,
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct GetWeatherInformation {}
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         root = "GetWeatherInformationResponse",
-        default
+        default,
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct GetWeatherInformationResponse {
         #[yaserde(prefix = "tns", rename = "GetWeatherInformationResult", default)]
@@ -213,10 +194,9 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         root = "GetCityForecastByZIP",
-        default
+        default,
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct GetCityForecastByZIP {
         #[yaserde(prefix = "tns", rename = "ZIP", default)]
@@ -225,10 +205,9 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         root = "GetCityForecastByZIPResponse",
-        default
+        default,
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct GetCityForecastByZIPResponse {
         #[yaserde(prefix = "tns", rename = "GetCityForecastByZIPResult", default)]
@@ -319,10 +298,9 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         root = "GetCityWeatherByZIP",
-        default
+        default,
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct GetCityWeatherByZIP {
         #[yaserde(prefix = "tns", rename = "ZIP", default)]
@@ -331,10 +309,9 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         root = "GetCityWeatherByZIPResponse",
-        default
+        default,
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct GetCityWeatherByZIPResponse {
         #[yaserde(prefix = "tns", rename = "GetCityWeatherByZIPResult", default)]
@@ -378,6 +355,22 @@ pub mod types {
         #[yaserde(prefix = "tns", rename = "Remarks", default)]
         pub remarks: Option<String>,
     }
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
 }
 
 pub mod ports {

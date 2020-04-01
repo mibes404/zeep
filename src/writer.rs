@@ -722,25 +722,11 @@ impl FileWriter {
         };
 
         let type_name = self.fetch_type(base);
-        let default_function_name = to_snake_case(format!("{}String", type_name).as_str());
 
         self.write(format!(
-            "\t#[yaserde(prefix=\"xsi\", rename=\"type\", attribute, default = \"{0}\")]\n\tpub xsi_type: String,\n",
-            default_function_name
+            "\t#[yaserde(prefix=\"xsi\", rename=\"type\", attribute)]\n\tpub xsi_type: String, // {}\n",
+            type_name
         ));
-
-        if !self.have_seen_type(default_function_name.as_str()) {
-            self.delayed_write(format!(
-                r#"
-        fn {}() -> String {{
-            "{}".to_string()
-        }}
-        "#,
-                default_function_name, type_name
-            ));
-
-            self.seen_type(default_function_name);
-        }
     }
 
     fn shield_reserved_names<'a>(&self, type_name: &'a str) -> &'a str {
