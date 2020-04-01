@@ -10,6 +10,23 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
 pub mod ports {
     use super::*;
     use async_trait::async_trait;
@@ -19,6 +36,14 @@ pub mod ports {
 }
 
 pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod bindings {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
@@ -44,15 +69,15 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         root = "users",
+        default,
         namespace = "http://xml.avaya.com/schema/import",
         namespace = "tns: http://xml.avaya.com/schema/import",
-        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
-        default
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct Users {
-        #[yaserde(rename = "secureStore", prefix = "tns", default)]
+        #[yaserde(rename = "secureStore", default)]
         pub secure_store: Option<XmlSecureStore>,
-        #[yaserde(rename = "user", prefix = "tns", default)]
+        #[yaserde(rename = "user", default)]
         pub user: Vec<XmlUser>,
     }
 
@@ -399,10 +424,10 @@ pub mod types {
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlCommProfileType",
-        default,
         namespace = "ns2: http://xml.avaya.com/schema/import_csm_cm",
         namespace = "ns3: http://xml.avaya.com/schema/presence",
-        namespace = "ns7: http://xml.avaya.com/schema/import_sessionmanager"
+        namespace = "ns7: http://xml.avaya.com/schema/import_sessionmanager",
+        default
     )]
     pub struct XmlCommProfileType {
         #[yaserde(rename = "commProfileType", default)]
@@ -509,28 +534,4 @@ pub mod types {
         #[yaserde(rename = "organizationUnitLevelThree", default)]
         pub organization_unit_level_three: Option<String>,
     }
-}
-
-pub mod bindings {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
 }

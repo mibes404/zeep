@@ -10,6 +10,175 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "LookupPhoneTypesRequest", default)]
+    pub struct LookupPhoneTypesRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupPhoneTypes,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "LookupLinkGroupsRequest", default)]
+    pub struct LookupLinkGroupsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupLinkGroups,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "LookupLRMIdsResponse", default)]
+    pub struct LookupLRMIdsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupLRMIdsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "CreateRequest", default)]
+    pub struct CreateRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::Create,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "CreateResponse", default)]
+    pub struct CreateResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::CreateResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "UpdateRequest", default)]
+    pub struct UpdateRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::Update,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "LookupSitesRequest", default)]
+    pub struct LookupSitesRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupSites,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "LookupDomainsRequest", default)]
+    pub struct LookupDomainsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupDomains,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "LookupDomainsResponse", default)]
+    pub struct LookupDomainsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupDomainsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetResponse", default)]
+    pub struct GetResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::GetResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "DeleteResponse", default)]
+    pub struct DeleteResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::DeleteResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "LookupLRMIdsRequest", default)]
+    pub struct LookupLRMIdsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupLRMIds,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "LookupLinkGroupsResponse", default)]
+    pub struct LookupLinkGroupsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupLinkGroupsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "UpdateResponse", default)]
+    pub struct UpdateResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::UpdateResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetRequest", default)]
+    pub struct GetRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::Get,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "LookupAgentIdsResponse", default)]
+    pub struct LookupAgentIdsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupAgentIdsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "LookupPhoneTypesResponse", default)]
+    pub struct LookupPhoneTypesResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupPhoneTypesResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "LookupAgentIdsRequest", default)]
+    pub struct LookupAgentIdsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupAgentIds,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "LookupSitesResponse", default)]
+    pub struct LookupSitesResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupSitesResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "LookupWorkgroupsResponse", default)]
+    pub struct LookupWorkgroupsResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupWorkgroupsResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "AicServiceFault", default)]
+    pub struct AicServiceFault {
+        #[yaserde(flatten)]
+        pub fault: types::Fault,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "DeleteRequest", default)]
+    pub struct DeleteRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::Delete,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "LookupWorkgroupsRequest", default)]
+    pub struct LookupWorkgroupsRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::LookupWorkgroups,
+    }
+}
+
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -19,8 +188,11 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "Get",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct Get {
@@ -30,8 +202,11 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "GetResponse",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct GetResponse {
@@ -368,8 +543,11 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "Update",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct Update {
@@ -379,8 +557,11 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "UpdateResponse",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct UpdateResponse {
@@ -390,8 +571,11 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "Delete",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct Delete {
@@ -401,8 +585,11 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "DeleteResponse",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct DeleteResponse {
@@ -412,16 +599,22 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "LookupAgentIds",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct LookupAgentIds {}
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "LookupAgentIdsResponse",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct LookupAgentIdsResponse {
@@ -431,16 +624,22 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "LookupLRMIds",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct LookupLRMIds {}
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "LookupLRMIdsResponse",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct LookupLRMIdsResponse {
@@ -450,16 +649,22 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "LookupWorkgroups",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct LookupWorkgroups {}
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "LookupWorkgroupsResponse",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct LookupWorkgroupsResponse {
@@ -469,16 +674,22 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "LookupDomains",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct LookupDomains {}
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "LookupDomainsResponse",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct LookupDomainsResponse {
@@ -488,16 +699,22 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "LookupLinkGroups",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct LookupLinkGroups {}
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "LookupLinkGroupsResponse",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct LookupLinkGroupsResponse {
@@ -507,16 +724,22 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "LookupPhoneTypes",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct LookupPhoneTypes {}
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "LookupPhoneTypesResponse",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct LookupPhoneTypesResponse {
@@ -526,16 +749,22 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "LookupSites",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct LookupSites {}
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "LookupSitesResponse",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct LookupSitesResponse {
@@ -545,8 +774,11 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "Create",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct Create {
@@ -556,198 +788,16 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "CreateResponse",
         default,
+        namespace = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct CreateResponse {
         #[yaserde(prefix = "tns", rename = "CreateReturn", default)]
         pub create_return: bool,
-    }
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupPhoneTypesRequest", default)]
-    pub struct LookupPhoneTypesRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupPhoneTypes,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupLinkGroupsRequest", default)]
-    pub struct LookupLinkGroupsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLinkGroups,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupLRMIdsResponse", default)]
-    pub struct LookupLRMIdsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLRMIdsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "CreateRequest", default)]
-    pub struct CreateRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Create,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "CreateResponse", default)]
-    pub struct CreateResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::CreateResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "UpdateRequest", default)]
-    pub struct UpdateRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Update,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupSitesRequest", default)]
-    pub struct LookupSitesRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupSites,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupDomainsRequest", default)]
-    pub struct LookupDomainsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupDomains,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupDomainsResponse", default)]
-    pub struct LookupDomainsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupDomainsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetResponse", default)]
-    pub struct GetResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::GetResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "DeleteResponse", default)]
-    pub struct DeleteResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::DeleteResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupLRMIdsRequest", default)]
-    pub struct LookupLRMIdsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLRMIds,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupLinkGroupsResponse", default)]
-    pub struct LookupLinkGroupsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupLinkGroupsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "UpdateResponse", default)]
-    pub struct UpdateResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::UpdateResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetRequest", default)]
-    pub struct GetRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Get,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupAgentIdsResponse", default)]
-    pub struct LookupAgentIdsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupAgentIdsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupPhoneTypesResponse", default)]
-    pub struct LookupPhoneTypesResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupPhoneTypesResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupAgentIdsRequest", default)]
-    pub struct LookupAgentIdsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupAgentIds,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupSitesResponse", default)]
-    pub struct LookupSitesResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupSitesResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupWorkgroupsResponse", default)]
-    pub struct LookupWorkgroupsResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupWorkgroupsResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "AicServiceFault", default)]
-    pub struct AicServiceFault {
-        #[yaserde(flatten)]
-        pub fault: types::Fault,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "DeleteRequest", default)]
-    pub struct DeleteRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Delete,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupWorkgroupsRequest", default)]
-    pub struct LookupWorkgroupsRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::LookupWorkgroups,
     }
 }
 
@@ -844,6 +894,22 @@ pub mod ports {
     pub type LookupSitesResponse = messages::LookupSitesResponse;
     pub type CreateRequest = messages::CreateRequest;
     pub type CreateResponse = messages::CreateResponse;
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
 }
 
 pub mod bindings {

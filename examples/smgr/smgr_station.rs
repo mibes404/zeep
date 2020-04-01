@@ -10,14 +10,6 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-pub mod bindings {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
 pub mod ports {
     use super::*;
     use async_trait::async_trait;
@@ -39,8 +31,11 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "nsi1",
         root = "users",
         default,
+        namespace = "http://xml.avaya.com/schema/import",
+        namespace = "tns: http://xml.avaya.com/schema/import",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct Users {
@@ -990,6 +985,14 @@ pub struct SoapFault {
 }
 
 pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod bindings {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;

@@ -10,6 +10,327 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[async_trait]
+    pub trait WeatherSoap {
+        /// Gets Information for each WeatherID
+        async fn get_weather_information(
+            &self,
+            get_weather_information_soap_in: GetWeatherInformationSoapIn,
+        ) -> Result<GetWeatherInformationSoapOut, Option<SoapFault>>;
+        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
+        async fn get_city_forecast_by_zip(
+            &self,
+            get_city_forecast_by_zip_soap_in: GetCityForecastByZIPSoapIn,
+        ) -> Result<GetCityForecastByZIPSoapOut, Option<SoapFault>>;
+        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
+        async fn get_city_weather_by_zip(
+            &self,
+            get_city_weather_by_zip_soap_in: GetCityWeatherByZIPSoapIn,
+        ) -> Result<GetCityWeatherByZIPSoapOut, Option<SoapFault>>;
+    }
+
+    pub type GetWeatherInformationSoapIn = messages::GetWeatherInformationSoapIn;
+    pub type GetWeatherInformationSoapOut = messages::GetWeatherInformationSoapOut;
+    pub type GetCityForecastByZIPSoapIn = messages::GetCityForecastByZIPSoapIn;
+    pub type GetCityForecastByZIPSoapOut = messages::GetCityForecastByZIPSoapOut;
+    pub type GetCityWeatherByZIPSoapIn = messages::GetCityWeatherByZIPSoapIn;
+    pub type GetCityWeatherByZIPSoapOut = messages::GetCityWeatherByZIPSoapOut;
+    #[async_trait]
+    pub trait WeatherHttpGet {
+        /// Gets Information for each WeatherID
+        async fn get_weather_information(
+            &self,
+            get_weather_information_http_get_in: GetWeatherInformationHttpGetIn,
+        ) -> Result<GetWeatherInformationHttpGetOut, Option<SoapFault>>;
+        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
+        async fn get_city_forecast_by_zip(
+            &self,
+            get_city_forecast_by_zip_http_get_in: GetCityForecastByZIPHttpGetIn,
+        ) -> Result<GetCityForecastByZIPHttpGetOut, Option<SoapFault>>;
+        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
+        async fn get_city_weather_by_zip(
+            &self,
+            get_city_weather_by_zip_http_get_in: GetCityWeatherByZIPHttpGetIn,
+        ) -> Result<GetCityWeatherByZIPHttpGetOut, Option<SoapFault>>;
+    }
+
+    pub type GetWeatherInformationHttpGetIn = messages::GetWeatherInformationHttpGetIn;
+    pub type GetWeatherInformationHttpGetOut = messages::GetWeatherInformationHttpGetOut;
+    pub type GetCityForecastByZIPHttpGetIn = messages::GetCityForecastByZIPHttpGetIn;
+    pub type GetCityForecastByZIPHttpGetOut = messages::GetCityForecastByZIPHttpGetOut;
+    pub type GetCityWeatherByZIPHttpGetIn = messages::GetCityWeatherByZIPHttpGetIn;
+    pub type GetCityWeatherByZIPHttpGetOut = messages::GetCityWeatherByZIPHttpGetOut;
+    #[async_trait]
+    pub trait WeatherHttpPost {
+        /// Gets Information for each WeatherID
+        async fn get_weather_information(
+            &self,
+            get_weather_information_http_post_in: GetWeatherInformationHttpPostIn,
+        ) -> Result<GetWeatherInformationHttpPostOut, Option<SoapFault>>;
+        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
+        async fn get_city_forecast_by_zip(
+            &self,
+            get_city_forecast_by_zip_http_post_in: GetCityForecastByZIPHttpPostIn,
+        ) -> Result<GetCityForecastByZIPHttpPostOut, Option<SoapFault>>;
+        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
+        async fn get_city_weather_by_zip(
+            &self,
+            get_city_weather_by_zip_http_post_in: GetCityWeatherByZIPHttpPostIn,
+        ) -> Result<GetCityWeatherByZIPHttpPostOut, Option<SoapFault>>;
+    }
+
+    pub type GetWeatherInformationHttpPostIn = messages::GetWeatherInformationHttpPostIn;
+    pub type GetWeatherInformationHttpPostOut = messages::GetWeatherInformationHttpPostOut;
+    pub type GetCityForecastByZIPHttpPostIn = messages::GetCityForecastByZIPHttpPostIn;
+    pub type GetCityForecastByZIPHttpPostOut = messages::GetCityForecastByZIPHttpPostOut;
+    pub type GetCityWeatherByZIPHttpPostIn = messages::GetCityWeatherByZIPHttpPostIn;
+    pub type GetCityWeatherByZIPHttpPostOut = messages::GetCityWeatherByZIPHttpPostOut;
+}
+
+pub mod types {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        root = "GetWeatherInformation",
+        default,
+        namespace = "http://ws.cdyne.com/WeatherWS/",
+        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
+    )]
+    pub struct GetWeatherInformation {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        root = "GetWeatherInformationResponse",
+        default,
+        namespace = "http://ws.cdyne.com/WeatherWS/",
+        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
+    )]
+    pub struct GetWeatherInformationResponse {
+        #[yaserde(prefix = "tns", rename = "GetWeatherInformationResult", default)]
+        pub get_weather_information_result: Option<ArrayOfWeatherDescription>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
+        root = "ArrayOfWeatherDescription",
+        default
+    )]
+    pub struct ArrayOfWeatherDescription {
+        #[yaserde(prefix = "tns", rename = "WeatherDescription", default)]
+        pub weather_description: Vec<WeatherDescription>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
+        root = "WeatherDescription",
+        default
+    )]
+    pub struct WeatherDescription {
+        #[yaserde(prefix = "tns", rename = "WeatherID", default)]
+        pub weather_id: u8,
+        #[yaserde(prefix = "tns", rename = "Description", default)]
+        pub description: Option<String>,
+        #[yaserde(prefix = "tns", rename = "PictureURL", default)]
+        pub picture_url: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        root = "GetCityForecastByZIP",
+        default,
+        namespace = "http://ws.cdyne.com/WeatherWS/",
+        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
+    )]
+    pub struct GetCityForecastByZIP {
+        #[yaserde(prefix = "tns", rename = "ZIP", default)]
+        pub zip: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        root = "GetCityForecastByZIPResponse",
+        default,
+        namespace = "http://ws.cdyne.com/WeatherWS/",
+        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
+    )]
+    pub struct GetCityForecastByZIPResponse {
+        #[yaserde(prefix = "tns", rename = "GetCityForecastByZIPResult", default)]
+        pub get_city_forecast_by_zip_result: Option<ForecastReturn>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
+        root = "ForecastReturn",
+        default
+    )]
+    pub struct ForecastReturn {
+        #[yaserde(prefix = "tns", rename = "Success", default)]
+        pub success: bool,
+        #[yaserde(prefix = "tns", rename = "ResponseText", default)]
+        pub response_text: Option<String>,
+        #[yaserde(prefix = "tns", rename = "State", default)]
+        pub state: Option<String>,
+        #[yaserde(prefix = "tns", rename = "City", default)]
+        pub city: Option<String>,
+        #[yaserde(prefix = "tns", rename = "WeatherStationCity", default)]
+        pub weather_station_city: Option<String>,
+        #[yaserde(prefix = "tns", rename = "ForecastResult", default)]
+        pub forecast_result: Option<ArrayOfForecast>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
+        root = "ArrayOfForecast",
+        default
+    )]
+    pub struct ArrayOfForecast {
+        #[yaserde(prefix = "tns", rename = "Forecast", default)]
+        pub forecast: Vec<Forecast>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
+        root = "Forecast",
+        default
+    )]
+    pub struct Forecast {
+        #[yaserde(prefix = "tns", rename = "Date", default)]
+        pub date: String,
+        #[yaserde(prefix = "tns", rename = "WeatherID", default)]
+        pub weather_id: u8,
+        #[yaserde(prefix = "tns", rename = "Desciption", default)]
+        pub desciption: Option<String>,
+        #[yaserde(prefix = "tns", rename = "Temperatures", default)]
+        pub temperatures: Temp,
+        #[yaserde(prefix = "tns", rename = "ProbabilityOfPrecipiation", default)]
+        pub probability_of_precipiation: Pop,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
+        root = "temp",
+        default
+    )]
+    pub struct Temp {
+        #[yaserde(prefix = "tns", rename = "MorningLow", default)]
+        pub morning_low: Option<String>,
+        #[yaserde(prefix = "tns", rename = "DaytimeHigh", default)]
+        pub daytime_high: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
+        root = "POP",
+        default
+    )]
+    pub struct Pop {
+        #[yaserde(prefix = "tns", rename = "Nighttime", default)]
+        pub nighttime: Option<String>,
+        #[yaserde(prefix = "tns", rename = "Daytime", default)]
+        pub daytime: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        root = "GetCityWeatherByZIP",
+        default,
+        namespace = "http://ws.cdyne.com/WeatherWS/",
+        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
+    )]
+    pub struct GetCityWeatherByZIP {
+        #[yaserde(prefix = "tns", rename = "ZIP", default)]
+        pub zip: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        root = "GetCityWeatherByZIPResponse",
+        default,
+        namespace = "http://ws.cdyne.com/WeatherWS/",
+        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
+    )]
+    pub struct GetCityWeatherByZIPResponse {
+        #[yaserde(prefix = "tns", rename = "GetCityWeatherByZIPResult", default)]
+        pub get_city_weather_by_zip_result: WeatherReturn,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
+        root = "WeatherReturn",
+        default
+    )]
+    pub struct WeatherReturn {
+        #[yaserde(prefix = "tns", rename = "Success", default)]
+        pub success: bool,
+        #[yaserde(prefix = "tns", rename = "ResponseText", default)]
+        pub response_text: Option<String>,
+        #[yaserde(prefix = "tns", rename = "State", default)]
+        pub state: Option<String>,
+        #[yaserde(prefix = "tns", rename = "City", default)]
+        pub city: Option<String>,
+        #[yaserde(prefix = "tns", rename = "WeatherStationCity", default)]
+        pub weather_station_city: Option<String>,
+        #[yaserde(prefix = "tns", rename = "WeatherID", default)]
+        pub weather_id: u8,
+        #[yaserde(prefix = "tns", rename = "Description", default)]
+        pub description: Option<String>,
+        #[yaserde(prefix = "tns", rename = "Temperature", default)]
+        pub temperature: Option<String>,
+        #[yaserde(prefix = "tns", rename = "RelativeHumidity", default)]
+        pub relative_humidity: Option<String>,
+        #[yaserde(prefix = "tns", rename = "Wind", default)]
+        pub wind: Option<String>,
+        #[yaserde(prefix = "tns", rename = "Pressure", default)]
+        pub pressure: Option<String>,
+        #[yaserde(prefix = "tns", rename = "Visibility", default)]
+        pub visibility: Option<String>,
+        #[yaserde(prefix = "tns", rename = "WindChill", default)]
+        pub wind_chill: Option<String>,
+        #[yaserde(prefix = "tns", rename = "Remarks", default)]
+        pub remarks: Option<String>,
+    }
+}
+
 pub mod messages {
     use super::*;
     use async_trait::async_trait;
@@ -138,225 +459,6 @@ pub mod messages {
     }
 }
 
-pub mod types {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        root = "GetWeatherInformation",
-        default,
-        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
-    )]
-    pub struct GetWeatherInformation {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        root = "GetWeatherInformationResponse",
-        default,
-        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
-    )]
-    pub struct GetWeatherInformationResponse {
-        #[yaserde(prefix = "tns", rename = "GetWeatherInformationResult", default)]
-        pub get_weather_information_result: Option<ArrayOfWeatherDescription>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
-        root = "ArrayOfWeatherDescription",
-        default
-    )]
-    pub struct ArrayOfWeatherDescription {
-        #[yaserde(prefix = "tns", rename = "WeatherDescription", default)]
-        pub weather_description: Vec<WeatherDescription>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
-        root = "WeatherDescription",
-        default
-    )]
-    pub struct WeatherDescription {
-        #[yaserde(prefix = "tns", rename = "WeatherID", default)]
-        pub weather_id: u8,
-        #[yaserde(prefix = "tns", rename = "Description", default)]
-        pub description: Option<String>,
-        #[yaserde(prefix = "tns", rename = "PictureURL", default)]
-        pub picture_url: Option<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        root = "GetCityForecastByZIP",
-        default,
-        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
-    )]
-    pub struct GetCityForecastByZIP {
-        #[yaserde(prefix = "tns", rename = "ZIP", default)]
-        pub zip: Option<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        root = "GetCityForecastByZIPResponse",
-        default,
-        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
-    )]
-    pub struct GetCityForecastByZIPResponse {
-        #[yaserde(prefix = "tns", rename = "GetCityForecastByZIPResult", default)]
-        pub get_city_forecast_by_zip_result: Option<ForecastReturn>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
-        root = "ForecastReturn",
-        default
-    )]
-    pub struct ForecastReturn {
-        #[yaserde(prefix = "tns", rename = "Success", default)]
-        pub success: bool,
-        #[yaserde(prefix = "tns", rename = "ResponseText", default)]
-        pub response_text: Option<String>,
-        #[yaserde(prefix = "tns", rename = "State", default)]
-        pub state: Option<String>,
-        #[yaserde(prefix = "tns", rename = "City", default)]
-        pub city: Option<String>,
-        #[yaserde(prefix = "tns", rename = "WeatherStationCity", default)]
-        pub weather_station_city: Option<String>,
-        #[yaserde(prefix = "tns", rename = "ForecastResult", default)]
-        pub forecast_result: Option<ArrayOfForecast>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
-        root = "ArrayOfForecast",
-        default
-    )]
-    pub struct ArrayOfForecast {
-        #[yaserde(prefix = "tns", rename = "Forecast", default)]
-        pub forecast: Vec<Forecast>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
-        root = "Forecast",
-        default
-    )]
-    pub struct Forecast {
-        #[yaserde(prefix = "tns", rename = "Date", default)]
-        pub date: String,
-        #[yaserde(prefix = "tns", rename = "WeatherID", default)]
-        pub weather_id: u8,
-        #[yaserde(prefix = "tns", rename = "Desciption", default)]
-        pub desciption: Option<String>,
-        #[yaserde(prefix = "tns", rename = "Temperatures", default)]
-        pub temperatures: Temp,
-        #[yaserde(prefix = "tns", rename = "ProbabilityOfPrecipiation", default)]
-        pub probability_of_precipiation: Pop,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
-        root = "temp",
-        default
-    )]
-    pub struct Temp {
-        #[yaserde(prefix = "tns", rename = "MorningLow", default)]
-        pub morning_low: Option<String>,
-        #[yaserde(prefix = "tns", rename = "DaytimeHigh", default)]
-        pub daytime_high: Option<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
-        root = "POP",
-        default
-    )]
-    pub struct Pop {
-        #[yaserde(prefix = "tns", rename = "Nighttime", default)]
-        pub nighttime: Option<String>,
-        #[yaserde(prefix = "tns", rename = "Daytime", default)]
-        pub daytime: Option<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        root = "GetCityWeatherByZIP",
-        default,
-        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
-    )]
-    pub struct GetCityWeatherByZIP {
-        #[yaserde(prefix = "tns", rename = "ZIP", default)]
-        pub zip: Option<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        root = "GetCityWeatherByZIPResponse",
-        default,
-        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
-    )]
-    pub struct GetCityWeatherByZIPResponse {
-        #[yaserde(prefix = "tns", rename = "GetCityWeatherByZIPResult", default)]
-        pub get_city_weather_by_zip_result: WeatherReturn,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
-        root = "WeatherReturn",
-        default
-    )]
-    pub struct WeatherReturn {
-        #[yaserde(prefix = "tns", rename = "Success", default)]
-        pub success: bool,
-        #[yaserde(prefix = "tns", rename = "ResponseText", default)]
-        pub response_text: Option<String>,
-        #[yaserde(prefix = "tns", rename = "State", default)]
-        pub state: Option<String>,
-        #[yaserde(prefix = "tns", rename = "City", default)]
-        pub city: Option<String>,
-        #[yaserde(prefix = "tns", rename = "WeatherStationCity", default)]
-        pub weather_station_city: Option<String>,
-        #[yaserde(prefix = "tns", rename = "WeatherID", default)]
-        pub weather_id: u8,
-        #[yaserde(prefix = "tns", rename = "Description", default)]
-        pub description: Option<String>,
-        #[yaserde(prefix = "tns", rename = "Temperature", default)]
-        pub temperature: Option<String>,
-        #[yaserde(prefix = "tns", rename = "RelativeHumidity", default)]
-        pub relative_humidity: Option<String>,
-        #[yaserde(prefix = "tns", rename = "Wind", default)]
-        pub wind: Option<String>,
-        #[yaserde(prefix = "tns", rename = "Pressure", default)]
-        pub pressure: Option<String>,
-        #[yaserde(prefix = "tns", rename = "Visibility", default)]
-        pub visibility: Option<String>,
-        #[yaserde(prefix = "tns", rename = "WindChill", default)]
-        pub wind_chill: Option<String>,
-        #[yaserde(prefix = "tns", rename = "Remarks", default)]
-        pub remarks: Option<String>,
-    }
-}
-
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 pub struct Header {}
 
@@ -371,90 +473,6 @@ pub struct SoapFault {
     pub fault_code: Option<String>,
     #[yaserde(rename = "faultstring", default)]
     pub fault_string: Option<String>,
-}
-
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait WeatherSoap {
-        /// Gets Information for each WeatherID
-        async fn get_weather_information(
-            &self,
-            get_weather_information_soap_in: GetWeatherInformationSoapIn,
-        ) -> Result<GetWeatherInformationSoapOut, Option<SoapFault>>;
-        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
-        async fn get_city_forecast_by_zip(
-            &self,
-            get_city_forecast_by_zip_soap_in: GetCityForecastByZIPSoapIn,
-        ) -> Result<GetCityForecastByZIPSoapOut, Option<SoapFault>>;
-        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
-        async fn get_city_weather_by_zip(
-            &self,
-            get_city_weather_by_zip_soap_in: GetCityWeatherByZIPSoapIn,
-        ) -> Result<GetCityWeatherByZIPSoapOut, Option<SoapFault>>;
-    }
-
-    pub type GetWeatherInformationSoapIn = messages::GetWeatherInformationSoapIn;
-    pub type GetWeatherInformationSoapOut = messages::GetWeatherInformationSoapOut;
-    pub type GetCityForecastByZIPSoapIn = messages::GetCityForecastByZIPSoapIn;
-    pub type GetCityForecastByZIPSoapOut = messages::GetCityForecastByZIPSoapOut;
-    pub type GetCityWeatherByZIPSoapIn = messages::GetCityWeatherByZIPSoapIn;
-    pub type GetCityWeatherByZIPSoapOut = messages::GetCityWeatherByZIPSoapOut;
-    #[async_trait]
-    pub trait WeatherHttpGet {
-        /// Gets Information for each WeatherID
-        async fn get_weather_information(
-            &self,
-            get_weather_information_http_get_in: GetWeatherInformationHttpGetIn,
-        ) -> Result<GetWeatherInformationHttpGetOut, Option<SoapFault>>;
-        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
-        async fn get_city_forecast_by_zip(
-            &self,
-            get_city_forecast_by_zip_http_get_in: GetCityForecastByZIPHttpGetIn,
-        ) -> Result<GetCityForecastByZIPHttpGetOut, Option<SoapFault>>;
-        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
-        async fn get_city_weather_by_zip(
-            &self,
-            get_city_weather_by_zip_http_get_in: GetCityWeatherByZIPHttpGetIn,
-        ) -> Result<GetCityWeatherByZIPHttpGetOut, Option<SoapFault>>;
-    }
-
-    pub type GetWeatherInformationHttpGetIn = messages::GetWeatherInformationHttpGetIn;
-    pub type GetWeatherInformationHttpGetOut = messages::GetWeatherInformationHttpGetOut;
-    pub type GetCityForecastByZIPHttpGetIn = messages::GetCityForecastByZIPHttpGetIn;
-    pub type GetCityForecastByZIPHttpGetOut = messages::GetCityForecastByZIPHttpGetOut;
-    pub type GetCityWeatherByZIPHttpGetIn = messages::GetCityWeatherByZIPHttpGetIn;
-    pub type GetCityWeatherByZIPHttpGetOut = messages::GetCityWeatherByZIPHttpGetOut;
-    #[async_trait]
-    pub trait WeatherHttpPost {
-        /// Gets Information for each WeatherID
-        async fn get_weather_information(
-            &self,
-            get_weather_information_http_post_in: GetWeatherInformationHttpPostIn,
-        ) -> Result<GetWeatherInformationHttpPostOut, Option<SoapFault>>;
-        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
-        async fn get_city_forecast_by_zip(
-            &self,
-            get_city_forecast_by_zip_http_post_in: GetCityForecastByZIPHttpPostIn,
-        ) -> Result<GetCityForecastByZIPHttpPostOut, Option<SoapFault>>;
-        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
-        async fn get_city_weather_by_zip(
-            &self,
-            get_city_weather_by_zip_http_post_in: GetCityWeatherByZIPHttpPostIn,
-        ) -> Result<GetCityWeatherByZIPHttpPostOut, Option<SoapFault>>;
-    }
-
-    pub type GetWeatherInformationHttpPostIn = messages::GetWeatherInformationHttpPostIn;
-    pub type GetWeatherInformationHttpPostOut = messages::GetWeatherInformationHttpPostOut;
-    pub type GetCityForecastByZIPHttpPostIn = messages::GetCityForecastByZIPHttpPostIn;
-    pub type GetCityForecastByZIPHttpPostOut = messages::GetCityForecastByZIPHttpPostOut;
-    pub type GetCityWeatherByZIPHttpPostIn = messages::GetCityWeatherByZIPHttpPostIn;
-    pub type GetCityWeatherByZIPHttpPostOut = messages::GetCityWeatherByZIPHttpPostOut;
 }
 
 pub mod bindings {

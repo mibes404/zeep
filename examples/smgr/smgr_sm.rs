@@ -35,7 +35,7 @@ pub mod messages {
     use yaserde::{YaDeserialize, YaSerialize};
 }
 
-pub mod bindings {
+pub mod ports {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
@@ -56,8 +56,11 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "nsi1",
         root = "users",
         default,
+        namespace = "http://xml.avaya.com/schema/import",
+        namespace = "tns: http://xml.avaya.com/schema/import",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
     )]
     pub struct Users {
@@ -542,7 +545,7 @@ pub mod types {
     }
 }
 
-pub mod ports {
+pub mod bindings {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;

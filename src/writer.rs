@@ -455,7 +455,6 @@ impl FileWriter {
             // fields
             if let Some(_tns) = &self.target_name_space {
                 if is_top_level {
-                    // declare all namespaces
                     self.write(format!(
                         "\t#[yaserde(rename = \"{0}\", default, namespace=\"xsi: http://www.w3.org/2001/XMLSchema-instance\")]\n",
                         element_name,
@@ -566,8 +565,10 @@ impl FileWriter {
             if is_top_level {
                 // declare all namespaces
                 self.write(format!(
-                    "#[yaserde(root = \"{}\", default, namespace=\"xsi: http://www.w3.org/2001/XMLSchema-instance\")]\npub struct {} {{\n",
+                    "#[yaserde(prefix = \"{0}\", root = \"{1}\", default, namespace=\"{2}\", namespace=\"tns: {2}\", namespace=\"xsi: http://www.w3.org/2001/XMLSchema-instance\")]\npub struct {3} {{\n",
+                    self.ns_prefix,
                     name,
+                    tns,
                     to_pascal_case(name)
                 ));
             } else {
