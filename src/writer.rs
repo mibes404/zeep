@@ -1453,6 +1453,6 @@ mod tests {
 
         let mut result = String::new();
         buffer.read_to_string(&mut result);
-        println!("{}", result);
+        assert!(result.contains("#[yaserde(rename=\"createTenantIfNotAlreadyPresent\", attribute)]"))
     }
 }

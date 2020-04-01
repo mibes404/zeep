@@ -3,6 +3,7 @@ use clap::{App, Arg};
 use log::warn;
 use std::fs::File;
 
+mod debug;
 mod error;
 mod writer;
 
