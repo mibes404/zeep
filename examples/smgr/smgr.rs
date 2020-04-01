@@ -42,14 +42,17 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
+        prefix = "tns",
         root = "users",
-        default,
-        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
+        namespace = "http://xml.avaya.com/schema/import",
+        namespace = "tns: http://xml.avaya.com/schema/import",
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
+        default
     )]
     pub struct Users {
-        #[yaserde(rename = "secureStore", default)]
+        #[yaserde(rename = "secureStore", prefix = "tns", default)]
         pub secure_store: Option<XmlSecureStore>,
-        #[yaserde(rename = "user", default)]
+        #[yaserde(rename = "user", prefix = "tns", default)]
         pub user: Vec<XmlUser>,
     }
 
