@@ -1407,7 +1407,7 @@ impl FileWriter {
     // WSDL Services
 
     fn print_service(&mut self, node: &Node) {
-        self.check_section(Section::Bindings);
+        self.check_section(Section::Services);
 
         let element_name = match self.get_some_attribute(node, "name") {
             None => return,
@@ -1472,12 +1472,13 @@ impl FileWriter {
 
         self.write(format!(
             r#"
-            pub fn new_client(credentials: Option<(String, String)>) -> {1} {{
-                {1}::new("{0}", credentials)
+            pub fn new_client(credentials: Option<(String, String)>) -> {2}::{1} {{
+                {2}::{1}::new("{0}", credentials)
             }}
         "#,
             location,
             to_pascal_case(binding.as_str()),
+            BINDINGS_MOD,
         ));
 
         self.write("}\n\n".to_string());

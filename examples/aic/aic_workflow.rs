@@ -10,6 +10,23 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
 pub mod messages {
     use super::*;
     use async_trait::async_trait;
@@ -71,93 +88,6 @@ pub mod ports {
         #[yaserde(rename = "AicServiceFault", default)]
         pub detail: Option<AicServiceFault>,
     }
-}
-
-pub mod types {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        prefix = "tns",
-        root = "Execute",
-        default,
-        namespace = "http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
-        namespace = "tns: http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
-        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
-    )]
-    pub struct Execute {
-        #[yaserde(prefix = "tns", rename = "flowName", default)]
-        pub flow_name: String,
-        #[yaserde(prefix = "tns", rename = "input", default)]
-        pub input: Vec<AicCouple>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
-        root = "AicCouple",
-        default
-    )]
-    pub struct AicCouple {
-        #[yaserde(prefix = "tns", rename = "name", default)]
-        pub name: Option<String>,
-        #[yaserde(prefix = "tns", rename = "value", default)]
-        pub value: Option<String>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        prefix = "tns",
-        root = "ExecuteResponse",
-        default,
-        namespace = "http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
-        namespace = "tns: http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
-        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
-    )]
-    pub struct ExecuteResponse {
-        #[yaserde(prefix = "tns", rename = "ExecuteReturn", default)]
-        pub execute_return: Vec<AicCouple>,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        prefix = "tns",
-        namespace = "tns: http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
-        root = "AicServiceFault",
-        default
-    )]
-    pub struct AicServiceFault {}
-
-    pub type Fault = AicServiceFault;
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
-pub mod services {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
 }
 
 pub mod bindings {
@@ -328,14 +258,87 @@ pub mod bindings {
             }
         }
     }
+}
+
+pub mod types {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        root = "Execute",
+        default,
+        namespace = "http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
+    )]
+    pub struct Execute {
+        #[yaserde(prefix = "tns", rename = "flowName", default)]
+        pub flow_name: String,
+        #[yaserde(prefix = "tns", rename = "input", default)]
+        pub input: Vec<AicCouple>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
+        root = "AicCouple",
+        default
+    )]
+    pub struct AicCouple {
+        #[yaserde(prefix = "tns", rename = "name", default)]
+        pub name: Option<String>,
+        #[yaserde(prefix = "tns", rename = "value", default)]
+        pub value: Option<String>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        root = "ExecuteResponse",
+        default,
+        namespace = "http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
+        namespace = "tns: http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
+    )]
+    pub struct ExecuteResponse {
+        #[yaserde(prefix = "tns", rename = "ExecuteReturn", default)]
+        pub execute_return: Vec<AicCouple>,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        namespace = "tns: http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
+        root = "AicServiceFault",
+        default
+    )]
+    pub struct AicServiceFault {}
+
+    pub type Fault = AicServiceFault;
+}
+
+pub mod services {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
 
     /**
     Service to invoke Workflow in Avaya Interaction Center
      */
     pub struct AicWorkflowService {}
     impl AicWorkflowService {
-        pub fn new_client(credentials: Option<(String, String)>) -> AicWorkflowSoapBinding {
-            AicWorkflowSoapBinding::new(
+        pub fn new_client(
+            credentials: Option<(String, String)>,
+        ) -> bindings::AicWorkflowSoapBinding {
+            bindings::AicWorkflowSoapBinding::new(
                 "http://aiccore.avayacloud.com:9800/webservices/services/AicWorkflow",
                 credentials,
             )
