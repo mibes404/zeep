@@ -520,14 +520,23 @@ impl FileWriter {
 
     fn fetch_type(&self, node_type: &str) -> String {
         match self.split_type(node_type) {
-            "string" | "base64Binary" => "String".to_string(),
+            "byte" => "i8".to_string(),
+            "string" | "normalizedString" | "base64Binary" | "hexBinary" | "anyURI" => {
+                "String".to_string()
+            }
             "decimal" | "double" => "f64".to_string(),
-            "integer" | "int" => "i32".to_string(),
+            "float" => "f32".to_string(),
+            "integer" | "int" | "negativeInteger" | "nonNegativeInteger" | "nonPositiveInteger"
+            | "positiveInteger" => "i32".to_string(),
             "long" => "i64".to_string(),
-            "short" => "u8".to_string(),
+            "unsignedLong" => "u64".to_string(),
+            "unsignedInt" => "u32".to_string(),
+            "unsignedShort" => "u16".to_string(),
+            "unsignedByte" => "u8".to_string(),
+            "short" => "i16".to_string(),
             "boolean" => "bool".to_string(),
-            // use String for now
-            "date" | "dateTime" | "xs:time" => "String".to_string(),
+            // use String for date types
+            "date" | "dateTime" | "time" => "String".to_string(),
             v => to_pascal_case(v),
         }
     }
