@@ -10,14 +10,6 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -254,7 +246,7 @@ pub mod types {
         #[yaserde(rename = "isSpeedDial", default)]
         pub is_speed_dial: bool,
         #[yaserde(rename = "speedDialEntry", default)]
-        pub speed_dial_entry: Option<u64>,
+        pub speed_dial_entry: Option<i32>,
         #[yaserde(rename = "isPresenceBuddy", default)]
         pub is_presence_buddy: bool,
         #[yaserde(rename = "label", default)]
@@ -264,7 +256,7 @@ pub mod types {
         #[yaserde(rename = "description", default)]
         pub description: Option<String>,
         #[yaserde(rename = "priorityLevel", default)]
-        pub priority_level: Option<u64>,
+        pub priority_level: Option<i32>,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -431,7 +423,7 @@ pub mod types {
         #[yaserde(prefix = "xsi", rename = "type", attribute)]
         pub xsi_type: String, // XmlCommProfileType
         #[yaserde(rename = "csEncryptionKeyId", default)]
-        pub cs_encryption_key_id: Option<u64>,
+        pub cs_encryption_key_id: Option<i64>,
         #[yaserde(rename = "servicePassword", default)]
         pub service_password: Option<String>,
         #[yaserde(rename = "serviceData", default)]
@@ -528,11 +520,11 @@ pub mod types {
         #[yaserde(prefix = "ns2", rename = "huntToStation", default)]
         pub hunt_to_station: Option<String>,
         #[yaserde(prefix = "ns2", rename = "tn", default)]
-        pub tn: Option<u64>,
+        pub tn: Option<i32>,
         #[yaserde(prefix = "ns2", rename = "cor", default)]
-        pub cor: Option<u64>,
+        pub cor: Option<i32>,
         #[yaserde(prefix = "ns2", rename = "cos", default)]
-        pub cos: Option<u64>,
+        pub cos: Option<i32>,
         #[yaserde(prefix = "ns2", rename = "xmobileType", default)]
         pub xmobile_type: Option<String>,
         #[yaserde(prefix = "ns2", rename = "mappingMode", default)]
@@ -546,7 +538,7 @@ pub mod types {
         #[yaserde(prefix = "ns2", rename = "cellPhoneNumber", default)]
         pub cell_phone_number: Option<String>,
         #[yaserde(prefix = "ns2", rename = "musicSource", default)]
-        pub music_source: Option<u64>,
+        pub music_source: Option<i32>,
         #[yaserde(prefix = "ns2", rename = "tests", default)]
         pub tests: Option<bool>,
         #[yaserde(prefix = "ns2", rename = "dataModule", default)]
@@ -556,7 +548,7 @@ pub mod types {
         #[yaserde(prefix = "ns2", rename = "displayLanguage", default)]
         pub display_language: Option<String>,
         #[yaserde(prefix = "ns2", rename = "personalizedRingingPattern", default)]
-        pub personalized_ringing_pattern: Option<u64>,
+        pub personalized_ringing_pattern: Option<i32>,
         #[yaserde(prefix = "ns2", rename = "messageLampExt", default)]
         pub message_lamp_ext: Option<String>,
         #[yaserde(prefix = "ns2", rename = "muteButtonEnabled", default)]
@@ -698,7 +690,7 @@ pub mod types {
         #[yaserde(prefix = "ns2", rename = "nativeName", default)]
         pub native_name: Option<XmlNativeNameData>,
         #[yaserde(prefix = "ns2", rename = "buttonModules", default)]
-        pub button_modules: Option<u64>,
+        pub button_modules: Option<i32>,
         #[yaserde(prefix = "ns2", rename = "unconditionalInternalDest", default)]
         pub unconditional_internal_dest: Option<String>,
         #[yaserde(prefix = "ns2", rename = "unconditionalInternalActive", default)]
@@ -726,7 +718,7 @@ pub mod types {
         #[yaserde(prefix = "ns2", rename = "sacCfOverride", default)]
         pub sac_cf_override: Option<String>,
         #[yaserde(prefix = "ns2", rename = "lossGroup", default)]
-        pub loss_group: Option<u64>,
+        pub loss_group: Option<i32>,
         #[yaserde(prefix = "ns2", rename = "timeOfDayLockTable", default)]
         pub time_of_day_lock_table: Option<String>,
         #[yaserde(prefix = "ns2", rename = "emuLoginAllowed", default)]
@@ -814,7 +806,7 @@ pub mod types {
         #[yaserde(prefix = "ns2", rename = "mounting", default)]
         pub mounting: Option<String>,
         #[yaserde(prefix = "ns2", rename = "cordLength", default)]
-        pub cord_length: Option<u64>,
+        pub cord_length: Option<i32>,
         #[yaserde(prefix = "ns2", rename = "setColor", default)]
         pub set_color: Option<String>,
     }
@@ -830,9 +822,9 @@ pub mod types {
         #[yaserde(prefix = "ns2", rename = "listType", default)]
         pub list_type: String,
         #[yaserde(prefix = "ns2", rename = "number", default)]
-        pub number: u64,
+        pub number: i32,
         #[yaserde(prefix = "ns2", rename = "listId", default)]
-        pub list_id: Option<u64>,
+        pub list_id: Option<i32>,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -844,7 +836,7 @@ pub mod types {
     )]
     pub struct XmlButtonData {
         #[yaserde(prefix = "ns2", rename = "number", default)]
-        pub number: u64,
+        pub number: i32,
         #[yaserde(prefix = "ns2", rename = "type", default)]
         pub rs_type: String,
         #[yaserde(prefix = "ns2", rename = "data1", default)]
@@ -878,17 +870,17 @@ pub mod types {
         #[yaserde(prefix = "ns2", rename = "name", default)]
         pub name: Option<String>,
         #[yaserde(prefix = "ns2", rename = "cor", default)]
-        pub cor: u64,
+        pub cor: i32,
         #[yaserde(prefix = "ns2", rename = "cos", default)]
-        pub cos: u64,
+        pub cos: i32,
         #[yaserde(prefix = "ns2", rename = "itc", default)]
         pub itc: String,
         #[yaserde(prefix = "ns2", rename = "tn", default)]
-        pub tn: u64,
+        pub tn: i32,
         #[yaserde(prefix = "ns2", rename = "listType", default)]
         pub list_type: Option<String>,
         #[yaserde(prefix = "ns2", rename = "listId", default)]
-        pub list_id: Option<u64>,
+        pub list_id: Option<i32>,
         #[yaserde(prefix = "ns2", rename = "specialDialingOption", default)]
         pub special_dialing_option: Option<String>,
         #[yaserde(prefix = "ns2", rename = "specialDialingAbbrDialCode", default)]
@@ -904,7 +896,7 @@ pub mod types {
     )]
     pub struct XmlStationHotLineData {
         #[yaserde(prefix = "ns2", rename = "hotLineDestAbbrevList", default)]
-        pub hot_line_dest_abbrev_list: Option<u64>,
+        pub hot_line_dest_abbrev_list: Option<i32>,
         #[yaserde(prefix = "ns2", rename = "hotLineAbbrevDialCode", default)]
         pub hot_line_abbrev_dial_code: Option<String>,
     }
@@ -964,8 +956,24 @@ pub mod types {
         #[yaserde(prefix = "ns2", rename = "awayTimer", default)]
         pub away_timer: Option<String>,
         #[yaserde(prefix = "ns2", rename = "awayTimerValue", default)]
-        pub away_timer_value: Option<u64>,
+        pub away_timer_value: Option<i32>,
     }
+}
+
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod bindings {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
 }
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -985,14 +993,6 @@ pub struct SoapFault {
 }
 
 pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
-pub mod bindings {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;

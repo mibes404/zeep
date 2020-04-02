@@ -10,6 +10,23 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
 pub mod messages {
     use super::*;
     use async_trait::async_trait;
@@ -179,6 +196,101 @@ pub mod messages {
     }
 }
 
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[async_trait]
+    pub trait AicAgentAdmin {
+        async fn get(
+            &self,
+            get_request: GetRequest,
+        ) -> Result<GetResponse, Option<SoapAicServiceFault>>;
+        async fn update(
+            &self,
+            update_request: UpdateRequest,
+        ) -> Result<UpdateResponse, Option<SoapAicServiceFault>>;
+        async fn delete(
+            &self,
+            delete_request: DeleteRequest,
+        ) -> Result<DeleteResponse, Option<SoapAicServiceFault>>;
+        async fn lookup_agent_ids(
+            &self,
+            lookup_agent_ids_request: LookupAgentIdsRequest,
+        ) -> Result<LookupAgentIdsResponse, Option<SoapAicServiceFault>>;
+        async fn lookup_lrm_ids(
+            &self,
+            lookup_lrm_ids_request: LookupLRMIdsRequest,
+        ) -> Result<LookupLRMIdsResponse, Option<SoapAicServiceFault>>;
+        async fn lookup_workgroups(
+            &self,
+            lookup_workgroups_request: LookupWorkgroupsRequest,
+        ) -> Result<LookupWorkgroupsResponse, Option<SoapAicServiceFault>>;
+        async fn lookup_domains(
+            &self,
+            lookup_domains_request: LookupDomainsRequest,
+        ) -> Result<LookupDomainsResponse, Option<SoapAicServiceFault>>;
+        async fn lookup_link_groups(
+            &self,
+            lookup_link_groups_request: LookupLinkGroupsRequest,
+        ) -> Result<LookupLinkGroupsResponse, Option<SoapAicServiceFault>>;
+        async fn lookup_phone_types(
+            &self,
+            lookup_phone_types_request: LookupPhoneTypesRequest,
+        ) -> Result<LookupPhoneTypesResponse, Option<SoapAicServiceFault>>;
+        async fn lookup_sites(
+            &self,
+            lookup_sites_request: LookupSitesRequest,
+        ) -> Result<LookupSitesResponse, Option<SoapAicServiceFault>>;
+        async fn create(
+            &self,
+            create_request: CreateRequest,
+        ) -> Result<CreateResponse, Option<SoapAicServiceFault>>;
+    }
+
+    pub type GetRequest = messages::GetRequest;
+    pub type GetResponse = messages::GetResponse;
+    pub type AicServiceFault = messages::AicServiceFault;
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Fault",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct SoapAicServiceFault {
+        #[yaserde(rename = "faultcode", default)]
+        pub fault_code: Option<String>,
+        #[yaserde(rename = "faultstring", default)]
+        pub fault_string: Option<String>,
+        #[yaserde(rename = "AicServiceFault", default)]
+        pub detail: Option<AicServiceFault>,
+    }
+
+    pub type UpdateRequest = messages::UpdateRequest;
+    pub type UpdateResponse = messages::UpdateResponse;
+    pub type DeleteRequest = messages::DeleteRequest;
+    pub type DeleteResponse = messages::DeleteResponse;
+    pub type LookupAgentIdsRequest = messages::LookupAgentIdsRequest;
+    pub type LookupAgentIdsResponse = messages::LookupAgentIdsResponse;
+    pub type LookupLRMIdsRequest = messages::LookupLRMIdsRequest;
+    pub type LookupLRMIdsResponse = messages::LookupLRMIdsResponse;
+    pub type LookupWorkgroupsRequest = messages::LookupWorkgroupsRequest;
+    pub type LookupWorkgroupsResponse = messages::LookupWorkgroupsResponse;
+    pub type LookupDomainsRequest = messages::LookupDomainsRequest;
+    pub type LookupDomainsResponse = messages::LookupDomainsResponse;
+    pub type LookupLinkGroupsRequest = messages::LookupLinkGroupsRequest;
+    pub type LookupLinkGroupsResponse = messages::LookupLinkGroupsResponse;
+    pub type LookupPhoneTypesRequest = messages::LookupPhoneTypesRequest;
+    pub type LookupPhoneTypesResponse = messages::LookupPhoneTypesResponse;
+    pub type LookupSitesRequest = messages::LookupSitesRequest;
+    pub type LookupSitesResponse = messages::LookupSitesResponse;
+    pub type CreateRequest = messages::CreateRequest;
+    pub type CreateResponse = messages::CreateResponse;
+}
+
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -289,9 +401,9 @@ pub mod types {
         #[yaserde(prefix = "tns", rename = "enabled", default)]
         pub enabled: bool,
         #[yaserde(prefix = "tns", rename = "taskCeiling", default)]
-        pub task_ceiling: u8,
+        pub task_ceiling: i16,
         #[yaserde(prefix = "tns", rename = "taskLoad", default)]
-        pub task_load: u8,
+        pub task_load: i16,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -309,9 +421,9 @@ pub mod types {
         #[yaserde(prefix = "tns", rename = "showFullHeader", default)]
         pub show_full_header: bool,
         #[yaserde(prefix = "tns", rename = "taskCeiling", default)]
-        pub task_ceiling: u8,
+        pub task_ceiling: i16,
         #[yaserde(prefix = "tns", rename = "taskLoad", default)]
-        pub task_load: u8,
+        pub task_load: i16,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -471,9 +583,9 @@ pub mod types {
     )]
     pub struct AgentTaskLoad {
         #[yaserde(prefix = "tns", rename = "taskCeiling", default)]
-        pub task_ceiling: u8,
+        pub task_ceiling: i16,
         #[yaserde(prefix = "tns", rename = "taskLoad", default)]
-        pub task_load: u8,
+        pub task_load: i16,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -497,9 +609,9 @@ pub mod types {
         #[yaserde(prefix = "tns", rename = "queue", default)]
         pub queue: Option<String>,
         #[yaserde(prefix = "tns", rename = "taskCeiling", default)]
-        pub task_ceiling: u8,
+        pub task_ceiling: i16,
         #[yaserde(prefix = "tns", rename = "taskLoad", default)]
-        pub task_load: u8,
+        pub task_load: i16,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -799,117 +911,6 @@ pub mod types {
         #[yaserde(prefix = "tns", rename = "CreateReturn", default)]
         pub create_return: bool,
     }
-}
-
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait AicAgentAdmin {
-        async fn get(
-            &self,
-            get_request: GetRequest,
-        ) -> Result<GetResponse, Option<SoapAicServiceFault>>;
-        async fn update(
-            &self,
-            update_request: UpdateRequest,
-        ) -> Result<UpdateResponse, Option<SoapAicServiceFault>>;
-        async fn delete(
-            &self,
-            delete_request: DeleteRequest,
-        ) -> Result<DeleteResponse, Option<SoapAicServiceFault>>;
-        async fn lookup_agent_ids(
-            &self,
-            lookup_agent_ids_request: LookupAgentIdsRequest,
-        ) -> Result<LookupAgentIdsResponse, Option<SoapAicServiceFault>>;
-        async fn lookup_lrm_ids(
-            &self,
-            lookup_lrm_ids_request: LookupLRMIdsRequest,
-        ) -> Result<LookupLRMIdsResponse, Option<SoapAicServiceFault>>;
-        async fn lookup_workgroups(
-            &self,
-            lookup_workgroups_request: LookupWorkgroupsRequest,
-        ) -> Result<LookupWorkgroupsResponse, Option<SoapAicServiceFault>>;
-        async fn lookup_domains(
-            &self,
-            lookup_domains_request: LookupDomainsRequest,
-        ) -> Result<LookupDomainsResponse, Option<SoapAicServiceFault>>;
-        async fn lookup_link_groups(
-            &self,
-            lookup_link_groups_request: LookupLinkGroupsRequest,
-        ) -> Result<LookupLinkGroupsResponse, Option<SoapAicServiceFault>>;
-        async fn lookup_phone_types(
-            &self,
-            lookup_phone_types_request: LookupPhoneTypesRequest,
-        ) -> Result<LookupPhoneTypesResponse, Option<SoapAicServiceFault>>;
-        async fn lookup_sites(
-            &self,
-            lookup_sites_request: LookupSitesRequest,
-        ) -> Result<LookupSitesResponse, Option<SoapAicServiceFault>>;
-        async fn create(
-            &self,
-            create_request: CreateRequest,
-        ) -> Result<CreateResponse, Option<SoapAicServiceFault>>;
-    }
-
-    pub type GetRequest = messages::GetRequest;
-    pub type GetResponse = messages::GetResponse;
-    pub type AicServiceFault = messages::AicServiceFault;
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Fault",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct SoapAicServiceFault {
-        #[yaserde(rename = "faultcode", default)]
-        pub fault_code: Option<String>,
-        #[yaserde(rename = "faultstring", default)]
-        pub fault_string: Option<String>,
-        #[yaserde(rename = "AicServiceFault", default)]
-        pub detail: Option<AicServiceFault>,
-    }
-
-    pub type UpdateRequest = messages::UpdateRequest;
-    pub type UpdateResponse = messages::UpdateResponse;
-    pub type DeleteRequest = messages::DeleteRequest;
-    pub type DeleteResponse = messages::DeleteResponse;
-    pub type LookupAgentIdsRequest = messages::LookupAgentIdsRequest;
-    pub type LookupAgentIdsResponse = messages::LookupAgentIdsResponse;
-    pub type LookupLRMIdsRequest = messages::LookupLRMIdsRequest;
-    pub type LookupLRMIdsResponse = messages::LookupLRMIdsResponse;
-    pub type LookupWorkgroupsRequest = messages::LookupWorkgroupsRequest;
-    pub type LookupWorkgroupsResponse = messages::LookupWorkgroupsResponse;
-    pub type LookupDomainsRequest = messages::LookupDomainsRequest;
-    pub type LookupDomainsResponse = messages::LookupDomainsResponse;
-    pub type LookupLinkGroupsRequest = messages::LookupLinkGroupsRequest;
-    pub type LookupLinkGroupsResponse = messages::LookupLinkGroupsResponse;
-    pub type LookupPhoneTypesRequest = messages::LookupPhoneTypesRequest;
-    pub type LookupPhoneTypesResponse = messages::LookupPhoneTypesResponse;
-    pub type LookupSitesRequest = messages::LookupSitesRequest;
-    pub type LookupSitesResponse = messages::LookupSitesResponse;
-    pub type CreateRequest = messages::CreateRequest;
-    pub type CreateResponse = messages::CreateResponse;
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
 }
 
 pub mod bindings {

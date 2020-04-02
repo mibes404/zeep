@@ -10,6 +10,30 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+pub mod bindings {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
 pub mod messages {
     use super::*;
     use async_trait::async_trait;
@@ -254,7 +278,7 @@ pub mod types {
         #[yaserde(rename = "isSpeedDial", default)]
         pub is_speed_dial: bool,
         #[yaserde(rename = "speedDialEntry", default)]
-        pub speed_dial_entry: Option<u64>,
+        pub speed_dial_entry: Option<i32>,
         #[yaserde(rename = "isPresenceBuddy", default)]
         pub is_presence_buddy: bool,
         #[yaserde(rename = "label", default)]
@@ -264,7 +288,7 @@ pub mod types {
         #[yaserde(rename = "description", default)]
         pub description: Option<String>,
         #[yaserde(rename = "priorityLevel", default)]
-        pub priority_level: Option<u64>,
+        pub priority_level: Option<i32>,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -431,7 +455,7 @@ pub mod types {
         #[yaserde(prefix = "xsi", rename = "type", attribute)]
         pub xsi_type: String, // XmlCommProfileType
         #[yaserde(rename = "csEncryptionKeyId", default)]
-        pub cs_encryption_key_id: Option<u64>,
+        pub cs_encryption_key_id: Option<i64>,
         #[yaserde(rename = "servicePassword", default)]
         pub service_password: Option<String>,
         #[yaserde(rename = "serviceData", default)]
@@ -503,30 +527,6 @@ pub mod types {
 }
 
 pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
-pub mod bindings {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;

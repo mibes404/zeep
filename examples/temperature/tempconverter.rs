@@ -10,83 +10,6 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "CelsiusToFahrenheit", default)]
-    pub struct CelsiusToFahrenheit {
-        #[yaserde(flatten)]
-        pub celsius_to_fahrenheit_request: types::CelsiusToFahrenheitRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "FahrenheitToCelsius", default)]
-    pub struct FahrenheitToCelsius {
-        #[yaserde(flatten)]
-        pub fahrenheit_to_celsius_request: types::FahrenheitToCelsiusRequest,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "CelsiusToFahrenheitResponse", default)]
-    pub struct CelsiusToFahrenheitResponse {
-        #[yaserde(flatten)]
-        pub celsius_to_fahrenheit_response: types::CelsiusToFahrenheitResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "FahrenheitToCelsiusResponse", default)]
-    pub struct FahrenheitToCelsiusResponse {
-        #[yaserde(flatten)]
-        pub fahrenheit_to_celsius_response: types::FahrenheitToCelsiusResponse,
-    }
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait TempConverterEndpoint {
-        async fn celsius_to_fahrenheit(
-            &self,
-            celsius_to_fahrenheit: CelsiusToFahrenheit,
-        ) -> Result<CelsiusToFahrenheitResponse, Option<SoapFault>>;
-        async fn fahrenheit_to_celsius(
-            &self,
-            fahrenheit_to_celsius: FahrenheitToCelsius,
-        ) -> Result<FahrenheitToCelsiusResponse, Option<SoapFault>>;
-    }
-
-    pub type CelsiusToFahrenheit = messages::CelsiusToFahrenheit;
-    pub type CelsiusToFahrenheitResponse = messages::CelsiusToFahrenheitResponse;
-    pub type FahrenheitToCelsius = messages::FahrenheitToCelsius;
-    pub type FahrenheitToCelsiusResponse = messages::FahrenheitToCelsiusResponse;
-}
-
 pub mod bindings {
     use super::*;
     use async_trait::async_trait;
@@ -365,6 +288,58 @@ pub mod bindings {
     }
 }
 
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "CelsiusToFahrenheit", default)]
+    pub struct CelsiusToFahrenheit {
+        #[yaserde(flatten)]
+        pub celsius_to_fahrenheit_request: types::CelsiusToFahrenheitRequest,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "FahrenheitToCelsius", default)]
+    pub struct FahrenheitToCelsius {
+        #[yaserde(flatten)]
+        pub fahrenheit_to_celsius_request: types::FahrenheitToCelsiusRequest,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "CelsiusToFahrenheitResponse", default)]
+    pub struct CelsiusToFahrenheitResponse {
+        #[yaserde(flatten)]
+        pub celsius_to_fahrenheit_response: types::CelsiusToFahrenheitResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "FahrenheitToCelsiusResponse", default)]
+    pub struct FahrenheitToCelsiusResponse {
+        #[yaserde(flatten)]
+        pub fahrenheit_to_celsius_response: types::FahrenheitToCelsiusResponse,
+    }
+}
+
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -419,4 +394,29 @@ pub mod types {
         #[yaserde(prefix = "tns", rename = "TemperatureInCelsius", default)]
         pub temperature_in_celsius: f64,
     }
+}
+
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[async_trait]
+    pub trait TempConverterEndpoint {
+        async fn celsius_to_fahrenheit(
+            &self,
+            celsius_to_fahrenheit: CelsiusToFahrenheit,
+        ) -> Result<CelsiusToFahrenheitResponse, Option<SoapFault>>;
+        async fn fahrenheit_to_celsius(
+            &self,
+            fahrenheit_to_celsius: FahrenheitToCelsius,
+        ) -> Result<FahrenheitToCelsiusResponse, Option<SoapFault>>;
+    }
+
+    pub type CelsiusToFahrenheit = messages::CelsiusToFahrenheit;
+    pub type CelsiusToFahrenheitResponse = messages::CelsiusToFahrenheitResponse;
+    pub type FahrenheitToCelsius = messages::FahrenheitToCelsius;
+    pub type FahrenheitToCelsiusResponse = messages::FahrenheitToCelsiusResponse;
 }
