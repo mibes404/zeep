@@ -39,6 +39,40 @@ pub mod messages {
     }
 }
 
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[async_trait]
+    pub trait AicWorkflow {
+        async fn execute(
+            &self,
+            execute_request: ExecuteRequest,
+        ) -> Result<ExecuteResponse, Option<SoapAicServiceFault>>;
+    }
+
+    pub type ExecuteRequest = messages::ExecuteRequest;
+    pub type ExecuteResponse = messages::ExecuteResponse;
+    pub type AicServiceFault = messages::AicServiceFault;
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Fault",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct SoapAicServiceFault {
+        #[yaserde(rename = "faultcode", default)]
+        pub fault_code: Option<String>,
+        #[yaserde(rename = "faultstring", default)]
+        pub fault_string: Option<String>,
+        #[yaserde(rename = "AicServiceFault", default)]
+        pub detail: Option<AicServiceFault>,
+    }
+}
+
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -100,6 +134,30 @@ pub mod types {
     pub struct AicServiceFault {}
 
     pub type Fault = AicServiceFault;
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+pub mod services {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
 }
 
 pub mod bindings {
@@ -270,54 +328,17 @@ pub mod bindings {
             }
         }
     }
-}
 
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait AicWorkflow {
-        async fn execute(
-            &self,
-            execute_request: ExecuteRequest,
-        ) -> Result<ExecuteResponse, Option<SoapAicServiceFault>>;
+    /**
+    Service to invoke Workflow in Avaya Interaction Center
+     */
+    pub struct AicWorkflowService {}
+    impl AicWorkflowService {
+        pub fn new_client(credentials: Option<(String, String)>) -> AicWorkflowSoapBinding {
+            AicWorkflowSoapBinding::new(
+                "http://aiccore.avayacloud.com:9800/webservices/services/AicWorkflow",
+                credentials,
+            )
+        }
     }
-
-    pub type ExecuteRequest = messages::ExecuteRequest;
-    pub type ExecuteResponse = messages::ExecuteResponse;
-    pub type AicServiceFault = messages::AicServiceFault;
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Fault",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct SoapAicServiceFault {
-        #[yaserde(rename = "faultcode", default)]
-        pub fault_code: Option<String>,
-        #[yaserde(rename = "faultstring", default)]
-        pub fault_string: Option<String>,
-        #[yaserde(rename = "AicServiceFault", default)]
-        pub detail: Option<AicServiceFault>,
-    }
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
 }

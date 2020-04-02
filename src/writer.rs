@@ -14,6 +14,8 @@ const MESSAGES_MOD: &str = "messages";
 const TYPES_MOD: &str = "types";
 const PORTS_MOD: &str = "ports";
 const BINDINGS_MOD: &str = "bindings";
+const SERVICES_MOD: &str = "services";
+
 const SIGNATURE: &str = r#"//! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
@@ -61,6 +63,7 @@ enum Section {
     Messages,
     PortTypes,
     Bindings,
+    Services,
 }
 
 impl Default for FileWriter {
@@ -128,6 +131,7 @@ impl FileWriter {
         mod_writers.insert(Section::Types, ModWriter::new(Section::Types));
         mod_writers.insert(Section::PortTypes, ModWriter::new(Section::PortTypes));
         mod_writers.insert(Section::Bindings, ModWriter::new(Section::Bindings));
+        mod_writers.insert(Section::Services, ModWriter::new(Section::Services));
         mod_writers
     }
 
@@ -294,6 +298,10 @@ impl FileWriter {
         node.children()
             .filter(|child| child.tag_name().name() == "binding")
             .for_each(|node| self.print_binding(&node));
+
+        node.children()
+            .filter(|child| child.tag_name().name() == "service")
+            .for_each(|node| self.print_service(&node));
 
         Ok(())
     }
@@ -1073,7 +1081,7 @@ impl FileWriter {
         );
 
         if let Some(doc) = some_documentation {
-            self.write(format!("\t/// {}\n", doc))
+            self.write(format!("\t//* {}\n */\n", doc))
         }
 
         self.write(format!(
@@ -1395,6 +1403,86 @@ impl FileWriter {
             .to_string(),
         );
     }
+
+    // WSDL Services
+
+    fn print_service(&mut self, node: &Node) {
+        self.check_section(Section::Bindings);
+
+        let element_name = match self.get_some_attribute(node, "name") {
+            None => return,
+            Some(n) => n,
+        };
+
+        let some_documentation = node
+            .children()
+            .find(|c| c.has_tag_name("documentation"))
+            .map(|c| c.text().unwrap_or_default());
+
+        let some_port = node.children().find(|c| c.has_tag_name("port"));
+
+        let port = match some_port {
+            None => return,
+            Some(p) => p,
+        };
+
+        let some_binding = port
+            .attributes()
+            .iter()
+            .find(|a| a.name() == "binding")
+            .map(|a| self.fetch_type(a.value()));
+
+        let binding = match some_binding {
+            None => return,
+            Some(b) => b,
+        };
+
+        let some_address = port.children().find(|c| c.has_tag_name("address"));
+
+        let address = match some_address {
+            None => return,
+            Some(a) => a,
+        };
+
+        let location = address
+            .attributes()
+            .iter()
+            .find(|a| a.name() == "location")
+            .map(|a| a.value())
+            .unwrap_or_default();
+
+        let struct_name = to_pascal_case(element_name);
+
+        if self.have_seen_type(&struct_name) {
+            return;
+        }
+
+        self.seen_type(struct_name.clone());
+
+        if let Some(doc) = some_documentation {
+            self.write(format!("/** {}\n */\n", doc))
+        }
+
+        self.write(format!(
+            r#"pub struct {0} {{}}
+               impl {0} {{
+                "#,
+            struct_name,
+        ));
+
+        self.write(format!(
+            r#"
+            pub fn new_client(credentials: Option<(String, String)>) -> {1} {{
+                {1}::new("{0}", credentials)
+            }}
+        "#,
+            location,
+            to_pascal_case(binding.as_str()),
+        ));
+
+        self.write("}\n\n".to_string());
+        self.flush_delayed_buffer();
+    }
 }
 
 impl ModWriter {
@@ -1414,6 +1502,7 @@ impl ModWriter {
             Section::Messages => mw.print_mod_header(MESSAGES_MOD),
             Section::PortTypes => mw.print_mod_header(PORTS_MOD),
             Section::Bindings => mw.print_mod_header(BINDINGS_MOD),
+            Section::Services => mw.print_mod_header(SERVICES_MOD),
         }
 
         mw

@@ -10,7 +10,26 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-pub mod types {
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[async_trait]
+    pub trait Version {
+        async fn get_version(
+            &self,
+            get_version_request: GetVersionRequest,
+        ) -> Result<GetVersionResponse, Option<SoapFault>>;
+    }
+
+    pub type GetVersionRequest = messages::GetVersionRequest;
+    pub type GetVersionResponse = messages::GetVersionResponse;
+}
+
+pub mod services {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
@@ -180,6 +199,16 @@ pub mod bindings {
             }
         }
     }
+
+    pub struct VersionService {}
+    impl VersionService {
+        pub fn new_client(credentials: Option<(String, String)>) -> VersionSoapBinding {
+            VersionSoapBinding::new(
+                "http://aiccore.avayacloud.com:9800/webservices/services/Version",
+                credentials,
+            )
+        }
+    }
 }
 
 pub mod messages {
@@ -201,6 +230,14 @@ pub mod messages {
     }
 }
 
+pub mod types {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 pub struct Header {}
 
@@ -215,23 +252,4 @@ pub struct SoapFault {
     pub fault_code: Option<String>,
     #[yaserde(rename = "faultstring", default)]
     pub fault_string: Option<String>,
-}
-
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait Version {
-        async fn get_version(
-            &self,
-            get_version_request: GetVersionRequest,
-        ) -> Result<GetVersionResponse, Option<SoapFault>>;
-    }
-
-    pub type GetVersionRequest = messages::GetVersionRequest;
-    pub type GetVersionResponse = messages::GetVersionResponse;
 }
