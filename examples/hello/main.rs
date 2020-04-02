@@ -1,6 +1,7 @@
 use crate::hello::bindings::HelloEndpointServiceSoapBinding;
 use crate::hello::messages::SayHello;
 use crate::hello::ports::HelloEndpoint;
+use crate::hello::services::HelloEndpointService;
 use crate::hello::types;
 use crate::hello::types::HelloRequest;
 use yaserde::de::from_str;
@@ -21,10 +22,7 @@ async fn main() {
         warn!("Unable to find log4rs.yml logging config. {}", err);
     }
 
-    let h = HelloEndpointServiceSoapBinding::new(
-        "http://www.learnwebservices.com/services/hello",
-        Option::None,
-    );
+    let h = HelloEndpointService::new_client(Option::None);
 
     let hi = h
         .say_hello(SayHello {

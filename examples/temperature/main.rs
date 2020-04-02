@@ -1,6 +1,7 @@
 use crate::tempconverter::bindings::TempConverterEndpointServiceSoapBinding;
 use crate::tempconverter::messages::CelsiusToFahrenheit;
 use crate::tempconverter::ports::TempConverterEndpoint;
+use crate::tempconverter::services::TempConverterEndpointService;
 use crate::tempconverter::types::CelsiusToFahrenheitRequest;
 use yaserde::de::from_str;
 use yaserde::ser::to_string;
@@ -20,10 +21,8 @@ async fn main() {
         warn!("Unable to find log4rs.yml logging config. {}", err);
     }
 
-    let tc = TempConverterEndpointServiceSoapBinding::new(
-        "http://www.learnwebservices.com/services/tempconverter",
-        Option::None,
-    );
+    let tc = TempConverterEndpointService::new_client(Option::None);
+
     let fahrenheit = tc
         .celsius_to_fahrenheit(CelsiusToFahrenheit {
             celsius_to_fahrenheit_request: CelsiusToFahrenheitRequest {
