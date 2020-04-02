@@ -77,7 +77,7 @@ pub mod types {
     pub struct Users {
         #[yaserde(rename = "secureStore", default)]
         pub secure_store: Option<XmlSecureStore>,
-        #[yaserde(rename = "user", default)]
+        #[yaserde(prefix = "tns", rename = "user", default)]
         pub user: Vec<XmlUser>,
     }
 

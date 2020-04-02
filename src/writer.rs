@@ -522,7 +522,8 @@ impl FileWriter {
         match self.split_type(node_type) {
             "string" | "base64Binary" => "String".to_string(),
             "decimal" | "double" => "f64".to_string(),
-            "integer" | "int" | "long" => "u64".to_string(),
+            "integer" | "int" => "i32".to_string(),
+            "long" => "i64".to_string(),
             "short" => "u8".to_string(),
             "boolean" => "bool".to_string(),
             // use String for now
