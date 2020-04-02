@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ ! -f ./target/release/xsd_gen ]; then
+if [ ! -f ./target/release/zeep ]; then
   cargo build --release
 fi
 
