@@ -1,15 +1,16 @@
+use std::cell::RefCell;
 use std::fmt::{Arguments, Write};
-use std::sync::{Arc, Mutex};
+use std::rc::Rc;
 
 #[derive(Clone)]
 pub struct DebugBuffer {
-    buffer: Arc<Mutex<String>>,
+    buffer: Rc<RefCell<String>>,
 }
 
 impl Default for DebugBuffer {
     fn default() -> Self {
         DebugBuffer {
-            buffer: Arc::new(Mutex::new(String::new())),
+            buffer: Rc::new(RefCell::new(String::new())),
         }
     }
 }
@@ -25,15 +26,15 @@ impl std::io::Write for DebugBuffer {
     }
 
     fn write_all(&mut self, buf: &[u8]) -> std::io::Result<()> {
-        let mut w_buf = self.buffer.lock().expect("can not obtain lock");
+        let buffer = &mut *self.buffer.borrow_mut();
         let s = std::str::from_utf8(buf).expect("invalid utf8");
-        w_buf.write_str(s).expect("can not write");
+        buffer.write_str(s).expect("can not write");
         Ok(())
     }
 
     fn write_fmt(&mut self, fmt: Arguments<'_>) -> std::io::Result<()> {
-        let mut w_buf = self.buffer.lock().expect("can not obtain lock");
-        w_buf.write_fmt(fmt).expect("can not write");
+        let buffer = &mut *self.buffer.borrow_mut();
+        buffer.write_fmt(fmt).expect("can not write");
         Ok(())
     }
 }
@@ -44,8 +45,8 @@ impl std::io::Read for DebugBuffer {
     }
 
     fn read_to_string(&mut self, buf: &mut String) -> std::io::Result<usize> {
-        let w_buf = self.buffer.lock().expect("can not obtain lock");
-        buf.write_str(w_buf.as_str()).expect("can not read string");
-        Ok(w_buf.len())
+        let buffer = &*self.buffer.borrow_mut();
+        buf.write_str(buffer.as_str()).expect("can not read string");
+        Ok(buffer.len())
     }
 }
