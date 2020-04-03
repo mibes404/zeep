@@ -7,6 +7,14 @@ The generated code does *not* have any dependencies on this library.
  
 Check the examples and the Cargo.toml for a complete list of dependencies.
 
+## Installation
+
+1. Clone this repository
+2. Build: `cargo build --release`
+3. Copy the binary to a directory on your path, for example: `cp ./target/release/zeep /usr/local/bin`
+
+## Usage
+
 ```shell script
 USAGE:
     zeep [OPTIONS] --input <from_file> --path <path>
@@ -58,6 +66,7 @@ zeep -p resources/hello -i hello.wsdl -o examples/hello/hello.rs -n ns1
 
 * [ ] Remove the dependency on customized yaserde version, once the renaming of a vector of structs is fixed
 * [ ] Allow network imports 
+* [ ] Enable cargo install
 
 ## DISCLAIMER
 
