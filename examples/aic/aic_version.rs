@@ -10,6 +10,25 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[async_trait]
+    pub trait Version {
+        async fn get_version(
+            &self,
+            get_version_request: GetVersionRequest,
+        ) -> Result<GetVersionResponse, Option<SoapFault>>;
+    }
+
+    pub type GetVersionRequest = messages::GetVersionRequest;
+    pub type GetVersionResponse = messages::GetVersionResponse;
+}
+
 pub mod services {
     use super::*;
     use async_trait::async_trait;
@@ -107,7 +126,10 @@ pub mod bindings {
                         None
                     })?;
 
-            let r: GetVersionResponseSoapEnvelope = from_str(&response).expect("can not unmarshal");
+            let r: GetVersionResponseSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -215,25 +237,6 @@ pub mod bindings {
             }
         }
     }
-}
-
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait Version {
-        async fn get_version(
-            &self,
-            get_version_request: GetVersionRequest,
-        ) -> Result<GetVersionResponse, Option<SoapFault>>;
-    }
-
-    pub type GetVersionRequest = messages::GetVersionRequest;
-    pub type GetVersionResponse = messages::GetVersionResponse;
 }
 
 pub mod types {

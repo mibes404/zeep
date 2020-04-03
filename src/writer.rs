@@ -1397,7 +1397,10 @@ impl FileWriter {
                         None
                     }})?;
 
-        let r: {2}SoapEnvelope = from_str(&response).expect("can not unmarshal");
+        let r: {2}SoapEnvelope = from_str(&response).map_err(|err| {{
+                        warn!("Failed to unmarshal SOAP response: {{:?}}", err);
+                        None
+                    }})?;
         "#,
             input_variable, input_type, output_type, action, xmlns
         ));
