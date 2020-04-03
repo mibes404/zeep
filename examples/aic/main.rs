@@ -120,8 +120,12 @@ async fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::aic_agent::bindings::LookupAgentIdsResponseSoapEnvelope;
+    use crate::aic_agent::bindings::{
+        LookupAgentIdsResponseSoapEnvelope, SoapLookupAgentIdsResponse,
+    };
+    use crate::aic_agent::ports::LookupAgentIdsResponse;
     use crate::aic_agent::types;
+    use yaserde::de::from_str;
 
     #[test]
     fn test_unmarshal() {
@@ -169,7 +173,7 @@ mod tests {
         let b3 = to_string(&t2).expect("failed to generate xml");
         println!("{:?}", b3);
 
-        let b: LookupAgentIdsResponse = from_str(&body).expect("can not unmarshal");
+        let _b: LookupAgentIdsResponse = from_str(&body).expect("can not unmarshal");
         let r: LookupAgentIdsResponseSoapEnvelope = from_str(&xml).expect("can not unmarshal");
 
         println!("{:?}", r);

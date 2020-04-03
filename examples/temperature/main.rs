@@ -43,6 +43,7 @@ mod tests {
     use crate::tempconverter::bindings::{
         CelsiusToFahrenheitSoapEnvelope, SoapCelsiusToFahrenheit,
     };
+    use yaserde::ser::to_string;
 
     #[test]
     fn test_celsius_to_fahrenheit_req() {
