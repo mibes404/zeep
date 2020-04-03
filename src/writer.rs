@@ -114,6 +114,7 @@ impl FileWriter {
         }
     }
 
+    #[allow(dead_code)]
     pub fn new_buffer(
         ns_prefix: Option<String>,
         default_namespace: Option<String>,

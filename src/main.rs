@@ -15,7 +15,7 @@ fn main() {
         warn!("Unable to find log4rs.yml logging config. {}", err);
     }
 
-    let matches = App::new("XSD Generator")
+    let matches = App::new("Zeep - XSD/WSDL client generator for Rust")
         .version("0.1.0")
         .author("Marcel Ibes <mibes@avaya.com>")
         .about("Generate Yaserde annotated Rust structs from XSD or WSDL")
@@ -31,6 +31,7 @@ fn main() {
                 .short("i")
                 .long("input")
                 .takes_value(true)
+                .required(true)
                 .help("Input from XSD/WSDL file"),
         )
         .arg(
@@ -38,6 +39,7 @@ fn main() {
                 .short("p")
                 .long("path")
                 .takes_value(true)
+                .required(true)
                 .help("Base path for the XSD file(s)"),
         )
         .arg(
@@ -57,11 +59,8 @@ fn main() {
         .get_matches();
 
     let to_file_name = matches.value_of("to_file");
-    let from_file_name = matches
-        .value_of("from_file")
-        .unwrap_or("agentCommProfile.xsd");
-
-    let base_path = matches.value_of("path").unwrap_or("resources/smgr");
+    let from_file_name = matches.value_of("from_file").unwrap_or_default();
+    let base_path = matches.value_of("path").unwrap_or_default();
     let ns_prefix = matches.value_of("ns").map(|ns| ns.to_string());
     let default_namespace = matches.value_of("dns").map(|dns| dns.to_string());
 
