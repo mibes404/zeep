@@ -1606,7 +1606,7 @@ impl ModWriter {
 }
 
 #[cfg(test)]
-mod tests {
+mod test_xsd {
     use super::*;
     use crate::debug::DebugBuffer;
 
@@ -1656,5 +1656,34 @@ mod tests {
         assert!(
             result.contains(r#"#[yaserde(prefix = "ns2", namespace = "ns2: http://xml.avaya.com/schema/import_csm_agent", root = "xmlAgentProfile", default)]"#);
         );
+    }
+
+    #[test]
+    fn test_import() {
+        let result = prepare_output(None, None);
+        assert!(
+            result.contains(r#"xmlContact"#);
+        );
+    }
+}
+
+#[cfg(test)]
+mod test_wsdl {
+    use super::*;
+
+    fn prepare_output(ns_prefix: Option<String>, default_ns: Option<String>) -> String {
+        let mut buffer = DebugBuffer::default();
+        let mut fw = FileWriter::new_buffer(ns_prefix, default_ns, buffer.clone());
+        fw.process_file("resources/temp_converter/", "tempconverter.wsdl");
+
+        let mut result = String::new();
+        buffer.read_to_string(&mut result);
+        result
+    }
+
+    #[test]
+    fn test_service() {
+        let result = prepare_output(None, None);
+        assert!(result.contains(r#"bindings::TempConverterEndpointServiceSoapBinding::new("http://www.learnwebservices.com/services/tempconverter", credentials)"#));
     }
 }
