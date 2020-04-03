@@ -1,4 +1,4 @@
-# Zeep  - XSD/WSDL client generator for Rust
+# Zeep  - XSD/WSDL client code generator for Rust
 
 Generate yaserde annotated structs for Rust based on XSD/WSDL. For WSDL input, client code is generated as well.
 
