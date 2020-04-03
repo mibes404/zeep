@@ -2,8 +2,10 @@
 
 Generate yaserde annotated structs for Rust based on XSD/WSDL. For WSDL input, client code is generated as well.
 
-The generated code depends on yaserde for the XSD-types. The SOAP client needs tokio and reqwest.  
-
+The generated code depends on yaserde for the XSD-generated types. The SOAP client needs tokio and reqwest in addition. 
+The generated code does *not* have any dependencies on this library.
+ 
+Check the examples and the Cargo.toml for a complete list of dependencies.
 
 ```shell script
 USAGE:
