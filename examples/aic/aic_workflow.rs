@@ -10,86 +10,6 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "ExecuteRequest", default)]
-    pub struct ExecuteRequest {
-        #[yaserde(flatten)]
-        pub parameters: types::Execute,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "AicServiceFault", default)]
-    pub struct AicServiceFault {
-        #[yaserde(flatten)]
-        pub fault: types::Fault,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "ExecuteResponse", default)]
-    pub struct ExecuteResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::ExecuteResponse,
-    }
-}
-
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait AicWorkflow {
-        async fn execute(
-            &self,
-            execute_request: ExecuteRequest,
-        ) -> Result<ExecuteResponse, Option<SoapAicServiceFault>>;
-    }
-
-    pub type ExecuteRequest = messages::ExecuteRequest;
-    pub type ExecuteResponse = messages::ExecuteResponse;
-    pub type AicServiceFault = messages::AicServiceFault;
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Fault",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct SoapAicServiceFault {
-        #[yaserde(rename = "faultcode", default)]
-        pub fault_code: Option<String>,
-        #[yaserde(rename = "faultstring", default)]
-        pub fault_string: Option<String>,
-        #[yaserde(rename = "AicServiceFault", default)]
-        pub detail: Option<AicServiceFault>,
-    }
-}
-
 pub mod bindings {
     use super::*;
     use async_trait::async_trait;
@@ -102,7 +22,7 @@ pub mod bindings {
             &self,
             request: &T,
             action: &str,
-        ) -> (reqwest::StatusCode, String) {
+        ) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -117,12 +37,12 @@ pub mod bindings {
                     Option::from(credentials.1.to_string()),
                 );
             }
-            let res = req.send().await.expect("can not send request");
+            let res = req.send().await?;
             let status = res.status();
             debug!("SOAP Status: {}", status);
             let txt = res.text().await.unwrap_or_default();
             debug!("SOAP Response: {}", txt);
-            (status, txt)
+            Ok((status, txt))
         }
     }
     pub struct AicWorkflowSoapBinding {
@@ -144,7 +64,13 @@ pub mod bindings {
                 ),
             });
 
-            let (status, response) = self.send_soap_request(&__request, "").await;
+            let (status, response) =
+                self.send_soap_request(&__request, "")
+                    .await
+                    .map_err(|err| {
+                        warn!("Failed to send SOAP request: {:?}", err);
+                        None
+                    })?;
 
             let r: ExecuteResponseSoapEnvelope = from_str(&response).expect("can not unmarshal");
             if status.is_success() {
@@ -260,6 +186,76 @@ pub mod bindings {
     }
 }
 
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
+
+pub mod services {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    /**
+    Service to invoke Workflow in Avaya Interaction Center
+     */
+    pub struct AicWorkflowService {}
+    impl AicWorkflowService {
+        pub fn new_client(
+            credentials: Option<(String, String)>,
+        ) -> bindings::AicWorkflowSoapBinding {
+            bindings::AicWorkflowSoapBinding::new(
+                "http://aiccore.avayacloud.com:9800/webservices/services/AicWorkflow",
+                credentials,
+            )
+        }
+    }
+}
+
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "ExecuteRequest", default)]
+    pub struct ExecuteRequest {
+        #[yaserde(flatten)]
+        pub parameters: types::Execute,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "AicServiceFault", default)]
+    pub struct AicServiceFault {
+        #[yaserde(flatten)]
+        pub fault: types::Fault,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "ExecuteResponse", default)]
+    pub struct ExecuteResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::ExecuteResponse,
+    }
+}
+
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -323,25 +319,36 @@ pub mod types {
     pub type Fault = AicServiceFault;
 }
 
-pub mod services {
+pub mod ports {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
 
-    /**
-    Service to invoke Workflow in Avaya Interaction Center
-     */
-    pub struct AicWorkflowService {}
-    impl AicWorkflowService {
-        pub fn new_client(
-            credentials: Option<(String, String)>,
-        ) -> bindings::AicWorkflowSoapBinding {
-            bindings::AicWorkflowSoapBinding::new(
-                "http://aiccore.avayacloud.com:9800/webservices/services/AicWorkflow",
-                credentials,
-            )
-        }
+    #[async_trait]
+    pub trait AicWorkflow {
+        async fn execute(
+            &self,
+            execute_request: ExecuteRequest,
+        ) -> Result<ExecuteResponse, Option<SoapAicServiceFault>>;
+    }
+
+    pub type ExecuteRequest = messages::ExecuteRequest;
+    pub type ExecuteResponse = messages::ExecuteResponse;
+    pub type AicServiceFault = messages::AicServiceFault;
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(
+        root = "Fault",
+        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+        prefix = "soapenv"
+    )]
+    pub struct SoapAicServiceFault {
+        #[yaserde(rename = "faultcode", default)]
+        pub fault_code: Option<String>,
+        #[yaserde(rename = "faultstring", default)]
+        pub fault_string: Option<String>,
+        #[yaserde(rename = "AicServiceFault", default)]
+        pub detail: Option<AicServiceFault>,
     }
 }

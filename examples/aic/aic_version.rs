@@ -47,14 +47,6 @@ pub mod messages {
     }
 }
 
-pub mod types {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
 pub mod bindings {
     use super::*;
     use async_trait::async_trait;
@@ -67,7 +59,7 @@ pub mod bindings {
             &self,
             request: &T,
             action: &str,
-        ) -> (reqwest::StatusCode, String) {
+        ) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -82,12 +74,12 @@ pub mod bindings {
                     Option::from(credentials.1.to_string()),
                 );
             }
-            let res = req.send().await.expect("can not send request");
+            let res = req.send().await?;
             let status = res.status();
             debug!("SOAP Status: {}", status);
             let txt = res.text().await.unwrap_or_default();
             debug!("SOAP Response: {}", txt);
-            (status, txt)
+            Ok((status, txt))
         }
     }
     pub struct VersionSoapBinding {
@@ -107,7 +99,13 @@ pub mod bindings {
                 xmlns: Option::None,
             });
 
-            let (status, response) = self.send_soap_request(&__request, "").await;
+            let (status, response) =
+                self.send_soap_request(&__request, "")
+                    .await
+                    .map_err(|err| {
+                        warn!("Failed to send SOAP request: {:?}", err);
+                        None
+                    })?;
 
             let r: GetVersionResponseSoapEnvelope = from_str(&response).expect("can not unmarshal");
             if status.is_success() {
@@ -219,22 +217,6 @@ pub mod bindings {
     }
 }
 
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
 pub mod ports {
     use super::*;
     use async_trait::async_trait;
@@ -253,3 +235,29 @@ pub mod ports {
     pub type GetVersionRequest = messages::GetVersionRequest;
     pub type GetVersionResponse = messages::GetVersionResponse;
 }
+
+pub mod types {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;

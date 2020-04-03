@@ -264,6 +264,8 @@ impl FileWriter {
         pub fault_string: Option<String>,
     }
         
+    type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
+
     "#
             .to_string(),
         );
@@ -885,7 +887,7 @@ impl FileWriter {
     fn print_binding_helpers(&mut self, struct_name: &str) {
         self.write(format!(r#"
             impl {0} {{
-                async fn send_soap_request<T: YaSerialize>(&self, request: &T, action: &str) -> (reqwest::StatusCode, String) {{
+                async fn send_soap_request<T: YaSerialize>(&self, request: &T, action: &str) -> SoapResponse {{
                     let body = to_string(request).expect("failed to generate xml");
                     debug!("SOAP Request: {{}}", body);
                     let mut req = self
@@ -900,12 +902,12 @@ impl FileWriter {
                             Option::from(credentials.1.to_string()),
                         );
                     }}
-                    let res = req.send().await.expect("can not send request");
+                    let res = req.send().await?;
                     let status = res.status();
                     debug!("SOAP Status: {{}}", status);
                     let txt = res.text().await.unwrap_or_default();
                     debug!("SOAP Response: {{}}", txt);
-                    (status, txt)
+                    Ok((status, txt))
                 }}
             }}
             "#, struct_name))
@@ -1388,7 +1390,12 @@ impl FileWriter {
             xmlns: {4},
         }});            
         
-        let (status, response) = self.send_soap_request(&__request, "{3}").await;
+        let (status, response) = self.send_soap_request(&__request, "{3}")
+                    .await
+                    .map_err(|err| {{
+                        warn!("Failed to send SOAP request: {{:?}}", err);
+                        None
+                    }})?;
 
         let r: {2}SoapEnvelope = from_str(&response).expect("can not unmarshal");
         "#,

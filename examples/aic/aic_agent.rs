@@ -10,6 +10,25 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
+
 pub mod messages {
     use super::*;
     use async_trait::async_trait;
@@ -801,22 +820,6 @@ pub mod types {
     }
 }
 
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
 pub mod ports {
     use super::*;
     use async_trait::async_trait;
@@ -924,7 +927,7 @@ pub mod bindings {
             &self,
             request: &T,
             action: &str,
-        ) -> (reqwest::StatusCode, String) {
+        ) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -939,12 +942,12 @@ pub mod bindings {
                     Option::from(credentials.1.to_string()),
                 );
             }
-            let res = req.send().await.expect("can not send request");
+            let res = req.send().await?;
             let status = res.status();
             debug!("SOAP Status: {}", status);
             let txt = res.text().await.unwrap_or_default();
             debug!("SOAP Response: {}", txt);
-            (status, txt)
+            Ok((status, txt))
         }
     }
     pub struct AicAgentAdminSoapBinding {
@@ -966,7 +969,13 @@ pub mod bindings {
                 ),
             });
 
-            let (status, response) = self.send_soap_request(&__request, "").await;
+            let (status, response) =
+                self.send_soap_request(&__request, "")
+                    .await
+                    .map_err(|err| {
+                        warn!("Failed to send SOAP request: {:?}", err);
+                        None
+                    })?;
 
             let r: GetResponseSoapEnvelope = from_str(&response).expect("can not unmarshal");
             if status.is_success() {
@@ -986,7 +995,13 @@ pub mod bindings {
                 ),
             });
 
-            let (status, response) = self.send_soap_request(&__request, "").await;
+            let (status, response) =
+                self.send_soap_request(&__request, "")
+                    .await
+                    .map_err(|err| {
+                        warn!("Failed to send SOAP request: {:?}", err);
+                        None
+                    })?;
 
             let r: UpdateResponseSoapEnvelope = from_str(&response).expect("can not unmarshal");
             if status.is_success() {
@@ -1006,7 +1021,13 @@ pub mod bindings {
                 ),
             });
 
-            let (status, response) = self.send_soap_request(&__request, "").await;
+            let (status, response) =
+                self.send_soap_request(&__request, "")
+                    .await
+                    .map_err(|err| {
+                        warn!("Failed to send SOAP request: {:?}", err);
+                        None
+                    })?;
 
             let r: DeleteResponseSoapEnvelope = from_str(&response).expect("can not unmarshal");
             if status.is_success() {
@@ -1026,7 +1047,13 @@ pub mod bindings {
                 ),
             });
 
-            let (status, response) = self.send_soap_request(&__request, "").await;
+            let (status, response) =
+                self.send_soap_request(&__request, "")
+                    .await
+                    .map_err(|err| {
+                        warn!("Failed to send SOAP request: {:?}", err);
+                        None
+                    })?;
 
             let r: LookupAgentIdsResponseSoapEnvelope =
                 from_str(&response).expect("can not unmarshal");
@@ -1047,7 +1074,13 @@ pub mod bindings {
                 ),
             });
 
-            let (status, response) = self.send_soap_request(&__request, "").await;
+            let (status, response) =
+                self.send_soap_request(&__request, "")
+                    .await
+                    .map_err(|err| {
+                        warn!("Failed to send SOAP request: {:?}", err);
+                        None
+                    })?;
 
             let r: LookupLRMIdsResponseSoapEnvelope =
                 from_str(&response).expect("can not unmarshal");
@@ -1068,7 +1101,13 @@ pub mod bindings {
                 ),
             });
 
-            let (status, response) = self.send_soap_request(&__request, "").await;
+            let (status, response) =
+                self.send_soap_request(&__request, "")
+                    .await
+                    .map_err(|err| {
+                        warn!("Failed to send SOAP request: {:?}", err);
+                        None
+                    })?;
 
             let r: LookupWorkgroupsResponseSoapEnvelope =
                 from_str(&response).expect("can not unmarshal");
@@ -1089,7 +1128,13 @@ pub mod bindings {
                 ),
             });
 
-            let (status, response) = self.send_soap_request(&__request, "").await;
+            let (status, response) =
+                self.send_soap_request(&__request, "")
+                    .await
+                    .map_err(|err| {
+                        warn!("Failed to send SOAP request: {:?}", err);
+                        None
+                    })?;
 
             let r: LookupDomainsResponseSoapEnvelope =
                 from_str(&response).expect("can not unmarshal");
@@ -1110,7 +1155,13 @@ pub mod bindings {
                 ),
             });
 
-            let (status, response) = self.send_soap_request(&__request, "").await;
+            let (status, response) =
+                self.send_soap_request(&__request, "")
+                    .await
+                    .map_err(|err| {
+                        warn!("Failed to send SOAP request: {:?}", err);
+                        None
+                    })?;
 
             let r: LookupLinkGroupsResponseSoapEnvelope =
                 from_str(&response).expect("can not unmarshal");
@@ -1131,7 +1182,13 @@ pub mod bindings {
                 ),
             });
 
-            let (status, response) = self.send_soap_request(&__request, "").await;
+            let (status, response) =
+                self.send_soap_request(&__request, "")
+                    .await
+                    .map_err(|err| {
+                        warn!("Failed to send SOAP request: {:?}", err);
+                        None
+                    })?;
 
             let r: LookupPhoneTypesResponseSoapEnvelope =
                 from_str(&response).expect("can not unmarshal");
@@ -1152,7 +1209,13 @@ pub mod bindings {
                 ),
             });
 
-            let (status, response) = self.send_soap_request(&__request, "").await;
+            let (status, response) =
+                self.send_soap_request(&__request, "")
+                    .await
+                    .map_err(|err| {
+                        warn!("Failed to send SOAP request: {:?}", err);
+                        None
+                    })?;
 
             let r: LookupSitesResponseSoapEnvelope =
                 from_str(&response).expect("can not unmarshal");
@@ -1173,7 +1236,13 @@ pub mod bindings {
                 ),
             });
 
-            let (status, response) = self.send_soap_request(&__request, "").await;
+            let (status, response) =
+                self.send_soap_request(&__request, "")
+                    .await
+                    .map_err(|err| {
+                        warn!("Failed to send SOAP request: {:?}", err);
+                        None
+                    })?;
 
             let r: CreateResponseSoapEnvelope = from_str(&response).expect("can not unmarshal");
             if status.is_success() {
