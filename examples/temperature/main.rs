@@ -1,10 +1,7 @@
-use crate::tempconverter::bindings::TempConverterEndpointServiceSoapBinding;
 use crate::tempconverter::messages::CelsiusToFahrenheit;
 use crate::tempconverter::ports::TempConverterEndpoint;
 use crate::tempconverter::services::TempConverterEndpointService;
 use crate::tempconverter::types::CelsiusToFahrenheitRequest;
-use yaserde::de::from_str;
-use yaserde::ser::to_string;
 
 #[macro_use]
 extern crate log;

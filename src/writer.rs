@@ -1613,10 +1613,13 @@ mod test_xsd {
     fn prepare_output(ns_prefix: Option<String>, default_ns: Option<String>) -> String {
         let mut buffer = DebugBuffer::default();
         let mut fw = FileWriter::new_buffer(ns_prefix, default_ns, buffer.clone());
-        fw.process_file("resources/smgr/", "agentCommProfile.xsd");
+        fw.process_file("resources/smgr/", "agentCommProfile.xsd")
+            .expect("can not open xsd");
 
         let mut result = String::new();
-        buffer.read_to_string(&mut result);
+        buffer
+            .read_to_string(&mut result)
+            .expect("failed to get content");
         result
     }
 
@@ -1646,7 +1649,7 @@ mod test_xsd {
     fn test_no_default_namespace() {
         let result = prepare_output(None, None);
         assert!(
-            result.contains(r#"#[yaserde(prefix = "tns", namespace = "tns: http://xml.avaya.com/schema/import_csm_agent", root = "xmlAgentProfile", default)]"#);
+            result.contains(r#"#[yaserde(prefix = "tns", namespace = "tns: http://xml.avaya.com/schema/import_csm_agent", root = "xmlAgentProfile", default)]"#)
         );
     }
 
@@ -1654,16 +1657,14 @@ mod test_xsd {
     fn test_ns_prefix() {
         let result = prepare_output(Some("ns2".to_string()), None);
         assert!(
-            result.contains(r#"#[yaserde(prefix = "ns2", namespace = "ns2: http://xml.avaya.com/schema/import_csm_agent", root = "xmlAgentProfile", default)]"#);
+            result.contains(r#"#[yaserde(prefix = "ns2", namespace = "ns2: http://xml.avaya.com/schema/import_csm_agent", root = "xmlAgentProfile", default)]"#)
         );
     }
 
     #[test]
     fn test_import() {
         let result = prepare_output(None, None);
-        assert!(
-            result.contains(r#"xmlContact"#);
-        );
+        assert!(result.contains(r#"xmlContact"#));
     }
 }
 
@@ -1674,10 +1675,13 @@ mod test_wsdl {
     fn prepare_output(ns_prefix: Option<String>, default_ns: Option<String>) -> String {
         let mut buffer = DebugBuffer::default();
         let mut fw = FileWriter::new_buffer(ns_prefix, default_ns, buffer.clone());
-        fw.process_file("resources/temp_converter/", "tempconverter.wsdl");
+        fw.process_file("resources/temp_converter/", "tempconverter.wsdl")
+            .expect("can not open wsdl");
 
         let mut result = String::new();
-        buffer.read_to_string(&mut result);
+        buffer
+            .read_to_string(&mut result)
+            .expect("failed to get content");
         result
     }
 

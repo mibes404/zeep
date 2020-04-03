@@ -1,11 +1,8 @@
-use crate::hello::bindings::HelloEndpointServiceSoapBinding;
 use crate::hello::messages::SayHello;
 use crate::hello::ports::HelloEndpoint;
 use crate::hello::services::HelloEndpointService;
 use crate::hello::types;
 use crate::hello::types::HelloRequest;
-use yaserde::de::from_str;
-use yaserde::ser::to_string;
 
 #[macro_use]
 extern crate log;

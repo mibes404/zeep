@@ -2,8 +2,6 @@ use crate::weather::bindings;
 use crate::weather::messages::GetWeatherInformationSoapIn;
 use crate::weather::ports::WeatherSoap;
 use crate::weather::types::GetWeatherInformation;
-use yaserde::de::from_str;
-use yaserde::ser::to_string;
 
 #[macro_use]
 extern crate log;

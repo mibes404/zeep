@@ -1,16 +1,10 @@
 use crate::aic_agent::bindings::{
     AicAgentAdminSoapBinding, CreateRequestSoapEnvelope, LookupAgentIdsRequestSoapEnvelope,
-    SoapCreateRequest, SoapLookupAgentIdsRequest, SoapLookupAgentIdsResponse,
+    SoapCreateRequest, SoapLookupAgentIdsRequest,
 };
-use crate::aic_agent::messages::{GetRequest, UpdateRequest};
-use crate::aic_agent::ports::{
-    AicAgentAdmin, CreateRequest, LookupAgentIdsRequest, LookupAgentIdsResponse,
-};
-use crate::aic_agent::types::{
-    Agent, AgentAdvocateInfo, AgentBasicProfile, AgentChatChannel, Create, Get, LookupAgentIds,
-    Update,
-};
-use yaserde::de::from_str;
+use crate::aic_agent::messages::GetRequest;
+use crate::aic_agent::ports::{AicAgentAdmin, CreateRequest, LookupAgentIdsRequest};
+use crate::aic_agent::types::{Agent, AgentChatChannel, Create, Get, LookupAgentIds};
 use yaserde::ser::to_string;
 
 #[macro_use]
