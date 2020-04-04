@@ -1,4 +1,5 @@
 use crate::debug::DebugBuffer;
+use crate::element::{root, Element, ElementType, ParentElement, StaticElement};
 use crate::error::{WriterError, WriterResult};
 use inflector::cases::pascalcase::to_pascal_case;
 use inflector::cases::snakecase::to_snake_case;
@@ -37,6 +38,7 @@ pub struct FileWriter {
     import_count: u32,
     ns_prefix: String,
     default_namespace: Option<String>,
+    root: Element,
 }
 
 struct ModWriter {
@@ -81,6 +83,7 @@ impl Default for FileWriter {
             import_count: 0,
             ns_prefix: DEFAULT_NS_PREFIX.to_string(),
             default_namespace: Option::None,
+            root: root(),
         }
     }
 }
@@ -111,6 +114,7 @@ impl FileWriter {
             import_count: 0,
             ns_prefix: ns_prefix.unwrap_or_else(|| DEFAULT_NS_PREFIX.to_string()),
             default_namespace,
+            root: root(),
         }
     }
 
@@ -230,9 +234,10 @@ impl FileWriter {
     }
 
     fn print_global_header(&mut self) {
-        self.direct_write(SIGNATURE.to_string());
-        self.direct_write(format!("//! version: {}\n//!\n", VERSION));
-        self.direct_write(
+        let mut global_header = Element::new("global_header", ElementType::Static);
+        global_header.set_content(SIGNATURE);
+        global_header.append_content(format!("//! version: {}\n//!\n", VERSION).as_str());
+        global_header.append_content(
             r#"
             #![allow(dead_code)]           
             #![allow(unused_imports)]
@@ -240,37 +245,37 @@ impl FileWriter {
             use std::io::{Read, Write};
             
             pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-            "#
-            .to_string(),
+            "#,
         );
+
+        self.root.add(global_header);
     }
 
     fn print_common_structs(&mut self) {
-        self.write(
-            r#"
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct Header {}
+        let header = Element::new("Header", ElementType::Struct);
+        let mut soap_fault = Element::new("SoapFault", ElementType::Struct);
+        soap_fault.xml_name = Option::from("Fault".to_string());
+        soap_fault.namespace =
+            Option::from("soapenv: http://schemas.xmlsoap.org/soap/envelope/".to_string());
+        soap_fault.prefix = Option::from("soapenv".to_string());
+        soap_fault.add(Element::new_field(
+            "fault_code",
+            "faultcode",
+            "String",
+            true,
+        ));
+        soap_fault.add(Element::new_field(
+            "fault_string",
+            "faultstring",
+            "String",
+            true,
+        ));
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        root = "Fault",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct SoapFault {
-        #[yaserde(rename = "faultcode", default)]
-        pub fault_code: Option<String>,
-        #[yaserde(rename = "faultstring", default)]
-        pub fault_string: Option<String>,
-    }
-        
-    type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
-
-    "#
-            .to_string(),
-        );
+        self.root.add(header);
+        self.root.add(soap_fault);
     }
 
+    /// print parses the root of the XML file
     fn print(&mut self, node: &Node) -> WriterResult<()> {
         if !node.is_element() {
             return Ok(());
@@ -399,10 +404,10 @@ impl FileWriter {
     }
 
     fn on_default_namespace(&self) -> bool {
-        if let Some(default_namespace) = &self.default_namespace {
-            if let Some(namespace) = &self.target_name_space {
-                return default_namespace == namespace;
-            }
+        if let (Some(default_namespace), Some(namespace)) =
+            (&self.default_namespace, &self.target_name_space)
+        {
+            return default_namespace == namespace;
         }
 
         false
@@ -728,12 +733,6 @@ impl FileWriter {
             to_snake_case(&self.fetch_type(base)),
             self.fetch_type(base)
         ));
-
-        let _prefix = if self.ns_prefix != "" {
-            format!("{}:", self.ns_prefix)
-        } else {
-            "".to_string()
-        };
 
         let type_name = self.fetch_type(base);
 
