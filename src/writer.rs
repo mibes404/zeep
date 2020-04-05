@@ -1,5 +1,7 @@
 use crate::debug::DebugBuffer;
-use crate::element::{root, Element, ElementType, ParentElement, StaticElement};
+use crate::element::{
+    root, Element, ElementType, NamespacedElement, ParentElement, StaticElement, WritableElement,
+};
 use crate::error::{WriterError, WriterResult};
 use inflector::cases::pascalcase::to_pascal_case;
 use inflector::cases::snakecase::to_snake_case;
@@ -25,10 +27,9 @@ const VERSION: &str = "0.0.2";
 const DEFAULT_NS_PREFIX: &str = "tns";
 const IMPORT_PREFIX: &str = "nsi";
 
-pub struct FileWriter {
+pub struct FileWriter<'a> {
     base_path: String,
-    current_section: Section,
-    mod_writers: HashMap<Section, ModWriter>,
+    current_section: Option<&'a Element>,
     level: usize,
     writer: Option<Box<dyn std::io::Write>>,
     target_name_space: Option<String>,
@@ -58,22 +59,11 @@ struct PortType {
     fault_type: Option<(String, Option<String>)>,
 }
 
-#[derive(Debug, PartialEq, Eq, Hash)]
-enum Section {
-    Root,
-    Types,
-    Messages,
-    PortTypes,
-    Bindings,
-    Services,
-}
-
 impl Default for FileWriter {
     fn default() -> Self {
         FileWriter {
             base_path: String::default(),
-            current_section: Section::Root,
-            mod_writers: FileWriter::init_mod_writers(),
+            current_section: None,
             level: 0,
             writer: Option::Some(Box::new(stdout())),
             target_name_space: Option::None,
@@ -103,8 +93,7 @@ impl FileWriter {
     ) -> Self {
         FileWriter {
             base_path: String::default(),
-            current_section: Section::Root,
-            mod_writers: FileWriter::init_mod_writers(),
+            current_section: None,
             level: 0,
             writer: Option::Some(Box::new(dest_file_name)),
             target_name_space: Option::None,
@@ -129,19 +118,21 @@ impl FileWriter {
         fw
     }
 
-    fn init_mod_writers() -> HashMap<Section, ModWriter> {
-        let mut mod_writers = HashMap::new();
-        mod_writers.insert(Section::Root, ModWriter::new(Section::Root));
-        mod_writers.insert(Section::Messages, ModWriter::new(Section::Messages));
-        mod_writers.insert(Section::Types, ModWriter::new(Section::Types));
-        mod_writers.insert(Section::PortTypes, ModWriter::new(Section::PortTypes));
-        mod_writers.insert(Section::Bindings, ModWriter::new(Section::Bindings));
-        mod_writers.insert(Section::Services, ModWriter::new(Section::Services));
-        mod_writers
+    fn init_modules(&mut self) {
+        self.root.add(Element::new_module(MESSAGES_MOD));
+        self.root.add(Element::new_module(TYPES_MOD));
+        self.root.add(Element::new_module(PORTS_MOD));
+        self.root.add(Element::new_module(BINDINGS_MOD));
+        self.root.add(Element::new_module(SERVICES_MOD));
+    }
+
+    fn get_module(&mut self, name: &str) -> Option<&mut Element> {
+        self.root.child(name)
     }
 
     pub fn process_file(&mut self, base_path: &str, file_name: &str) -> WriterResult<()> {
         self.base_path = base_path.to_string();
+        self.init_modules();
         self.print_global_header();
         self.print_common_structs();
         self.process_file_in_path(file_name, true)?;
@@ -159,78 +150,19 @@ impl FileWriter {
         }
 
         // once all elements are processed, write them to output
-        for (_section, mw) in self.mod_writers.iter_mut() {
-            let reader_ref = mw.read_for_output();
-            let mut reader = reader_ref.into_inner();
-
-            if let Some(mut writer) = self.writer.take() {
-                if let Err(err) = io::copy(&mut reader, &mut writer) {
-                    warn!("Failed to flush final stage to output: {:?}", err);
-                }
-
-                // return writer for next loop
-                self.writer.replace(writer);
-            }
+        if let Some(mut writer) = &self.writer {
+            writer.write(self.root.render().as_bytes());
         }
 
         Ok(())
     }
 
-    fn write(&mut self, buf: String) {
-        if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
-            mw.write(buf, self.level)
-        }
-    }
-
-    fn direct_write(&mut self, buf: String) {
-        if let Some(mut writer) = self.writer.take() {
-            if let Err(err) = writer.write_all(buf.as_bytes()) {
-                warn!("Failed to write directly to output: {:?}", err);
-            }
-
-            self.writer.replace(writer);
-        }
-    }
-
-    fn delayed_write(&mut self, buf: String) {
-        if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
-            mw.delayed_write(buf)
-        }
-    }
-
-    fn flush_delayed_buffer(&mut self) {
-        if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
-            mw.flush_delayed_buffer()
-        }
-    }
-
-    pub fn seen_type(&mut self, type_def: String) {
-        if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
-            mw.seen_type(type_def);
-        }
-    }
-
     pub fn have_seen_type(&mut self, type_def: &str) -> bool {
-        if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
-            mw.have_seen_type(type_def)
+        if let Some(module) = self.current_section {
+            module.has_child(type_def)
         } else {
             false
         }
-    }
-
-    fn set_level(&mut self, level: usize) {
-        self.level = level;
-        if let Some(mw) = self.mod_writers.get_mut(&self.current_section) {
-            mw.set_level(level);
-        }
-    }
-
-    fn inc_level(&mut self) {
-        self.set_level(self.level + 1);
-    }
-
-    fn dec_level(&mut self) {
-        self.set_level(self.level - 1);
     }
 
     fn print_global_header(&mut self) {
@@ -282,47 +214,47 @@ impl FileWriter {
         }
 
         match node.tag_name().name() {
-            "definitions" => self.print_definitions(node)?,
-            "schema" => self.print_xsd(node)?,
+            "definitions" => self.print_definitions(node, &mut self.root)?,
+            "schema" => self.print_xsd(node, &mut self.root)?,
             _ => {}
         }
 
         Ok(())
     }
 
-    fn print_definitions(&mut self, node: &Node) -> WriterResult<()> {
+    fn print_definitions(&mut self, node: &Node, parent: &mut Element) -> WriterResult<()> {
         node.children()
             .filter(|child| child.tag_name().name() == "types")
-            .try_for_each(|node| self.print_types(&node))?;
+            .try_for_each(|node| self.print_types(&node, parent))?;
 
         node.children()
             .filter(|child| child.tag_name().name() == "message")
-            .for_each(|node| self.print_message(&node));
+            .for_each(|node| self.print_message(&node, parent));
 
         node.children()
             .filter(|child| child.tag_name().name() == "portType")
-            .for_each(|node| self.print_port_type(&node));
+            .for_each(|node| self.print_port_type(&node, parent));
 
         node.children()
             .filter(|child| child.tag_name().name() == "binding")
-            .for_each(|node| self.print_binding(&node));
+            .for_each(|node| self.print_binding(&node, parent));
 
         node.children()
             .filter(|child| child.tag_name().name() == "service")
-            .for_each(|node| self.print_service(&node));
+            .for_each(|node| self.print_service(&node, parent));
 
         Ok(())
     }
 
-    fn print_types(&mut self, node: &Node) -> WriterResult<()> {
+    fn print_types(&mut self, node: &Node, parent: &mut Element) -> WriterResult<()> {
         node.children()
             .filter(|c| c.has_tag_name("schema"))
-            .try_for_each(|c| self.print_xsd(&c))?;
+            .try_for_each(|c| self.print_xsd(&c, parent))?;
 
         Ok(())
     }
 
-    fn print_xsd(&mut self, node: &Node) -> WriterResult<()> {
+    fn print_xsd(&mut self, node: &Node, parent: &mut Element) -> WriterResult<()> {
         self.check_section(Section::Types);
 
         self.target_name_space = self
@@ -334,10 +266,10 @@ impl FileWriter {
         node.children()
             .try_for_each(|child| match child.tag_name().name() {
                 "import" => self.import_file(&child),
-                "element" => self.print_element(&child, true),
+                "element" => self.print_element(&child, true, parent),
                 "complexType" => {
                     if let Some(n) = self.get_some_attribute(&child, "name") {
-                        self.print_complex_element(&child, n, false)
+                        self.print_complex_element(&child, n, false, parent)
                     } else {
                         Ok(())
                     }
@@ -387,22 +319,6 @@ impl FileWriter {
         Ok(())
     }
 
-    fn format_type(&mut self, id: &str, definition: String) -> String {
-        if !self.have_seen_type(&id.to_string()) {
-            self.seen_type(id.to_string());
-            definition
-        } else {
-            String::new()
-        }
-    }
-
-    fn print_type(&mut self, id: &str, definition: String) {
-        let out = self.format_type(id, definition);
-        if !out.is_empty() {
-            self.write(out);
-        }
-    }
-
     fn on_default_namespace(&self) -> bool {
         if let (Some(default_namespace), Some(namespace)) =
             (&self.default_namespace, &self.target_name_space)
@@ -413,7 +329,12 @@ impl FileWriter {
         false
     }
 
-    fn print_element(&mut self, node: &Node, is_top_level: bool) -> WriterResult<()> {
+    fn print_element(
+        &mut self,
+        node: &Node,
+        is_top_level: bool,
+        parent: &mut Element,
+    ) -> WriterResult<()> {
         let element_name = match self.get_some_attribute(node, "name") {
             None => return Ok(()),
             Some(n) => n,
@@ -456,38 +377,35 @@ impl FileWriter {
             let alias = self.fetch_type(&type_name);
 
             if top_level_name != alias {
-                self.print_type(
-                    &top_level_name,
-                    format!("pub type {} = {};\n\n", top_level_name, alias),
-                );
-
+                let mut alias_element = Element::new(top_level_name.as_str(), ElementType::Alias);
+                alias_element.field_type = Option::from(alias);
+                parent.add(alias_element);
                 return Ok(());
             }
         } else {
+            let field_name = self.shield_reserved_names(&to_snake_case(element_name));
+
             // fields
-            if let Some(_tns) = &self.target_name_space {
+            let mut element = if let Some(_tns) = &self.target_name_space {
                 if is_top_level {
-                    self.write(format!(
-                        "\t#[yaserde(rename = \"{0}\", default, namespace=\"xsi: http://www.w3.org/2001/XMLSchema-instance\")]\n",
-                        element_name,
-                    ));
+                    let mut e = Element::new(field_name, ElementType::Field);
+                    e.xml_name = Option::from(element_name.to_string());
+                    e.namespace =
+                        Option::from("xsi: http://www.w3.org/2001/XMLSchema-instance".to_string());
+                    e
                 } else if self.on_default_namespace() {
-                    self.write(format!(
-                        "\t#[yaserde(rename = \"{0}\", default)]\n",
-                        element_name
-                    ));
+                    let mut e = Element::new(field_name, ElementType::Field);
+                    e.xml_name = Option::from(element_name.to_string());
+                    e
                 } else {
-                    self.write(format!(
-                        "\t#[yaserde(prefix = \"{1}\", rename = \"{0}\", default)]\n",
-                        element_name, self.ns_prefix
-                    ));
+                    let mut e = Element::new(field_name, ElementType::Field);
+                    e.xml_name = Option::from(element_name.to_string());
+                    e.prefix = Option::from(self.ns_prefix.to_string());
+                    e
                 }
             } else {
-                self.write(format!(
-                    "\t#[yaserde(rename = \"{0}\", default)]\n",
-                    element_name,
-                ));
-            }
+                Element::new(field_name, ElementType::Field)
+            };
 
             if let Some(simple) = maybe_simplex {
                 type_name = match self.deconstruct_simplex_element(&simple) {
@@ -497,24 +415,14 @@ impl FileWriter {
             }
 
             // add the element to the owning structure
-            if as_vec || as_option {
-                self.write(format!(
-                    "\tpub {}: {}<{}>,\n",
-                    self.shield_reserved_names(&to_snake_case(element_name)),
-                    if as_vec { "Vec" } else { "Option" },
-                    self.fetch_type(&type_name)
-                ));
-            } else {
-                self.write(format!(
-                    "\tpub {}: {},\n",
-                    self.shield_reserved_names(&to_snake_case(element_name)),
-                    self.fetch_type(&type_name)
-                ));
-            }
+            element.field_type = Option::from(self.fetch_type(&type_name));
+            element.vector = as_vec;
+            element.optional = as_option;
+            parent.add(element);
         }
 
         if let Some(complex) = maybe_complex {
-            self.print_complex_element(&complex, element_name, is_top_level)?
+            self.print_complex_element(&complex, element_name, is_top_level, &mut element)?
         }
 
         Ok(())
@@ -569,50 +477,41 @@ impl FileWriter {
         node: &Node,
         name: &str,
         is_top_level: bool,
+        parent: &mut Element,
     ) -> WriterResult<()> {
         if self.have_seen_type(name) {
             return Ok(());
         }
 
-        self.seen_type(name.to_string());
-
-        self.inc_level();
-        self.write("#[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]\n".to_string());
-
         let some_tns = self.target_name_space.clone();
 
-        if let Some(tns) = some_tns {
+        let mut element = if let Some(tns) = some_tns {
+            let element_name = to_pascal_case(name);
+            let mut e = Element::new(&element_name, ElementType::Struct);
+
             if is_top_level {
+                e.prefix = Option::from(self.ns_prefix.to_string());
+                e.xml_name = Option::from(name.to_string());
+
                 // declare all namespaces
-                self.write(format!(
-                    "#[yaserde(prefix = \"{0}\", root = \"{1}\", default, namespace=\"{2}\", namespace=\"tns: {2}\", namespace=\"xsi: http://www.w3.org/2001/XMLSchema-instance\")]\npub struct {3} {{\n",
-                    self.ns_prefix,
-                    name,
-                    tns,
-                    to_pascal_case(name)
-                ));
+                e.add_ns("tns", &tns);
+                e.add_ns("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+                e
             } else if self.on_default_namespace() {
-                self.write(format!(
-                    "#[yaserde(root = \"{0}\", default)]\npub struct {1} {{\n",
-                    name,
-                    to_pascal_case(name),
-                ))
+                e.xml_name = Option::from(name.to_string());
+                e
             } else {
-                self.write(format!(
-                        "#[yaserde(prefix = \"{3}\", namespace = \"{3}: {0}\", root = \"{1}\", default)]\npub struct {2} {{\n",
-                        tns,
-                        name,
-                        to_pascal_case(name),
-                        self.ns_prefix
-                    ));
+                e.prefix = Option::from(self.ns_prefix.to_string());
+                e.xml_name = Option::from(name.to_string());
+                e.add_ns(&self.ns_prefix, &tns);
+                e
             }
         } else {
-            self.write(format!(
-                "#[yaserde(root = \"{}\", default)]\npub struct {} {{\n",
-                name,
-                to_pascal_case(name)
-            ));
-        }
+            e.xml_name = Option::from(name.to_string());
+            e
+        };
+
+        parent.add(element);
 
         let maybe_sequence = node.children().find(|child| child.has_tag_name("sequence"));
 
@@ -641,7 +540,7 @@ impl FileWriter {
         Ok(())
     }
 
-    fn print_attribute(&mut self, node: &Node) {
+    fn print_attribute(&mut self, node: &Node, parent: &mut Element) {
         let element_name = match self.get_some_attribute(node, "name") {
             None => return,
             Some(n) => n,
@@ -657,21 +556,13 @@ impl FileWriter {
             Some(a) => a != "required",
         };
 
-        if optional {
-            self.write(format!(
-                "#[yaserde(rename=\"{}\", attribute)]\npub {}: Option<{}>,\n",
-                element_name,
-                to_snake_case(element_name),
-                element_type
-            ));
-        } else {
-            self.write(format!(
-                "#[yaserde(rename=\"{}\", attribute)]\npub {}: {},\n",
-                element_name,
-                to_snake_case(element_name),
-                element_type
-            ));
-        }
+        let mut element =
+            Element::new(to_snake_case(element_name).as_str(), ElementType::Attribute);
+
+        element.xml_name = Option::from(element_name.to_string());
+        element.field_type = Option::from(element_type);
+        element.optional = optional;
+        parent.add(element)
     }
 
     fn deconstruct_simplex_element(&mut self, node: &Node) -> WriterResult<String> {
@@ -696,13 +587,13 @@ impl FileWriter {
         Ok(base.to_string())
     }
 
-    fn print_sequence(&mut self, node: &Node) -> WriterResult<()> {
+    fn print_sequence(&mut self, node: &Node, parent: &mut Element) -> WriterResult<()> {
         node.children()
-            .try_for_each(|child| self.print_element(&child, false))?;
+            .try_for_each(|child| self.print_element(&child, false, parent))?;
         Ok(())
     }
 
-    fn print_complex_content(&mut self, node: &Node) -> WriterResult<()> {
+    fn print_complex_content(&mut self, node: &Node, parent: &mut Element) -> WriterResult<()> {
         if let Some(extension) = node
             .children()
             .find(|child| child.has_tag_name("extension"))
@@ -722,24 +613,27 @@ impl FileWriter {
         self.print_sequence(node)
     }
 
-    fn print_extension(&mut self, node: &Node) {
+    fn print_extension(&mut self, node: &Node, parent: &mut Element) {
         let base = match self.get_some_attribute(node, "base") {
             None => return,
             Some(n) => n,
         };
 
-        self.write(format!(
-            "\tpub {}: {},\n",
-            to_snake_case(&self.fetch_type(base)),
-            self.fetch_type(base)
-        ));
+        let mut element = Element::new(
+            to_snake_case(&self.fetch_type(base)).as_str(),
+            ElementType::Field,
+        );
+        element.flatten = true;
+        element.field_type = Option::from(self.fetch_type(base));
+        parent.add(element);
 
         let type_name = self.fetch_type(base);
-
-        self.write(format!(
-            "\t#[yaserde(prefix=\"xsi\", rename=\"type\", attribute)]\n\tpub xsi_type: String, // {}\n",
-            type_name
-        ));
+        let mut xsi = Element::new("xsi_type", ElementType::Attribute);
+        xsi.field_type = Option::from("String".to_string());
+        xsi.prefix = Option::from("xsi".to_string());
+        xsi.xml_name = Option::from("type".to_string());
+        xsi.comment = Option::from(type_name);
+        parent.add(xsi);
     }
 
     fn shield_reserved_names<'a>(&self, type_name: &'a str) -> &'a str {
@@ -757,7 +651,7 @@ impl FileWriter {
 
     // WSDL Messages
 
-    fn print_message(&mut self, node: &Node) {
+    fn print_message(&mut self, node: &Node, parent: &mut Element) {
         self.check_section(Section::Messages);
 
         if let Some(name) = self.get_some_attribute(node, "name") {
@@ -823,7 +717,7 @@ impl FileWriter {
     }
 
     // WSDL Port Types
-    fn print_port_type(&mut self, node: &Node) {
+    fn print_port_type(&mut self, node: &Node, parent: &mut Element) {
         self.check_section(Section::PortTypes);
         let element_name = match self.get_some_attribute(node, "name") {
             None => return,
@@ -840,7 +734,7 @@ impl FileWriter {
 
     // WSDL bindings
 
-    fn print_binding(&mut self, node: &Node) {
+    fn print_binding(&mut self, node: &Node, parent: &mut Element) {
         self.check_section(Section::Bindings);
 
         let element_name = match self.get_some_attribute(node, "name") {
@@ -1416,7 +1310,7 @@ impl FileWriter {
 
     // WSDL Services
 
-    fn print_service(&mut self, node: &Node) {
+    fn print_service(&mut self, node: &Node, parent: &mut Element) {
         self.check_section(Section::Services);
 
         let element_name = match self.get_some_attribute(node, "name") {

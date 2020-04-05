@@ -5,19 +5,25 @@ pub enum ElementType {
     Struct,
     Field,
     Static,
+    Alias,
+    Module,
+    Attribute,
 }
 
 pub struct Element {
     pub element_type: ElementType,
     pub prefix: Option<String>,
     pub xml_name: Option<String>,
-    pub namespace: Option<String>,
+    pub namespaces: Vec<String>,
     pub name: String,
     pub children: Vec<Element>,
     pub children_idx: HashMap<String, usize>,
     static_content: Option<String>,
     pub optional: bool,
     pub field_type: Option<String>,
+    pub vector: bool,
+    pub flatten: bool,
+    pub comment: Option<String>,
 }
 
 pub fn root() -> Element {
@@ -29,9 +35,12 @@ pub fn root() -> Element {
         children: vec![],
         children_idx: HashMap::new(),
         static_content: None,
-        namespace: None,
+        namespaces: vec![],
         optional: false,
         field_type: None,
+        vector: false,
+        flatten: false,
+        comment: None,
     }
 }
 
@@ -46,18 +55,32 @@ pub trait StaticElement {
 
 pub trait ParentElement {
     fn add(&mut self, child: Element);
-    fn child(&mut self, name: String) -> Option<&mut Element>;
+    fn child(&mut self, name: &str) -> Option<&mut Element>;
     fn has_children(&self) -> bool;
+    fn has_child(&self, name: &str) -> bool;
+}
+
+pub trait NamespacedElement {
+    fn add_ns(&mut self, prefix: &str, ns: &str);
 }
 
 impl WritableElement for Element {
     fn render(&self) -> String {
         match self.element_type {
-            ElementType::Root => "".to_string(),
+            ElementType::Root => self.render_root(),
             ElementType::Struct => self.render_struct(),
             ElementType::Field => self.render_field(),
             ElementType::Static => self.render_static(),
+            ElementType::Alias => self.render_alias(),
+            ElementType::Module => self.render_module(),
+            ElementType::Attribute => self.render_atribute(),
         }
+    }
+}
+
+impl NamespacedElement for Element {
+    fn add_ns(&mut self, prefix: &str, ns: &str) {
+        self.namespaces.push(format!("{}: {}", prefix, ns))
     }
 }
 
@@ -82,8 +105,8 @@ impl ParentElement for Element {
         self.children_idx.insert(name, pos);
     }
 
-    fn child(&mut self, name: String) -> Option<&mut Element> {
-        if let Some(pos) = self.children_idx.get(&name) {
+    fn child(&mut self, name: &str) -> Option<&mut Element> {
+        if let Some(pos) = self.children_idx.get(name) {
             self.children.get_mut(*pos)
         } else {
             None
@@ -92,6 +115,14 @@ impl ParentElement for Element {
 
     fn has_children(&self) -> bool {
         !self.children.is_empty()
+    }
+
+    fn has_child(&self, name: &str) -> bool {
+        if let Some(pos) = self.children_idx.get(name) {
+            true
+        } else {
+            false
+        }
     }
 }
 
@@ -105,9 +136,12 @@ impl Element {
             static_content: None,
             children: vec![],
             children_idx: HashMap::new(),
-            namespace: None,
+            namespaces: vec![],
             optional: false,
             field_type: None,
+            vector: false,
+            flatten: false,
+            comment: None,
         }
     }
 
@@ -116,18 +150,35 @@ impl Element {
             element_type: ElementType::Field,
             prefix: None,
             xml_name: Option::from(xml_name.to_string()),
-            namespace: None,
+            namespaces: vec![],
             name: field_name.to_string(),
             children: vec![],
             children_idx: HashMap::new(),
             static_content: None,
             optional,
             field_type: Option::from(field_type.to_string()),
+            vector: false,
+            flatten: false,
+            comment: None,
         }
     }
 
+    pub fn new_module(module_name: &str) -> Self {
+        Element::new(module_name, ElementType::Module)
+    }
+
+    fn render_root(&self) -> String {
+        self.children.iter().map(|c| c.render()).collect()
+    }
+
     fn render_struct(&self) -> String {
-        let mut result = "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\n".to_string();
+        let mut result = if let Some(comment) = &self.comment {
+            format!("//* {}\n */", comment)
+        } else {
+            "".to_string()
+        };
+
+        result.push_str("#[derive(Debug, Default, YaSerialize, YaDeserialize)]\n");
 
         let mut has_options = false;
 
@@ -138,13 +189,18 @@ impl Element {
             has_options = true;
         }
 
-        if let Some(namespace) = &self.namespace {
+        for namespace in self.namespaces {
             options.push_str(&format!("\tnamespace = \"{}\",\n", namespace));
             has_options = true;
         }
 
         if let Some(prefix) = &self.prefix {
             options.push_str(&format!("\tprefix = \"{}\",\n", prefix));
+            has_options = true;
+        }
+
+        if self.flatten {
+            options.push_str("\tflatten, \n");
             has_options = true;
         }
 
@@ -166,18 +222,42 @@ impl Element {
     }
 
     fn render_field(&self) -> String {
+        let flatten = if self.flatten { ", flatten" } else { "" };
+        let comment = match &self.comment {
+            None => "".to_string(),
+            Some(c) => format!("// {}", c),
+        };
+
         if let Some(xml_name) = &self.xml_name {
             format!(
-                "\t#[yaserde(rename = \"{0}\", default)]\n\tpub {1}: {2},\n",
+                "\t#[yaserde(rename = \"{0}\", default{3})]\n\tpub {1}: {2}, {4}\n",
                 xml_name,
                 self.name,
-                self.render_field_type()
+                self.render_field_type(),
+                flatten,
+                comment,
             )
         } else {
             format!(
-                "\t#[yaserde(default)]\n\tpub {0}: {1},\n",
+                "\t#[yaserde(default{2})]\n\tpub {0}: {1}, {3}\n",
                 self.name,
-                self.render_field_type()
+                self.render_field_type(),
+                flatten,
+                comment
+            )
+        }
+    }
+
+    fn render_atribute(&self) -> String {
+        if self.optional {
+            format!(
+                "#[yaserde(rename=\"{}\", attribute)]\npub {}: Option<{}>,\n",
+                self.xml_name, self.name, self.field_type
+            )
+        } else {
+            format!(
+                "#[yaserde(rename=\"{}\", attribute)]\npub {}: {},\n",
+                self.xml_name, self.name, self.field_type
             )
         }
     }
@@ -199,6 +279,31 @@ impl Element {
             None => String::new(),
             Some(c) => c.clone(),
         }
+    }
+
+    fn render_alias(&self) -> String {
+        if let Some(field_type) = &self.field_type {
+            format!("pub type {} = {};\n\n", self.name, field_type)
+        } else {
+            String::new()
+        }
+    }
+
+    fn render_module(&self) -> String {
+        let mut result = format!("pub mod {} {{\n", self.name);
+        result.push_str(
+            r#"use yaserde::{{YaSerialize, YaDeserialize}};
+            use yaserde::de::from_str;
+            use async_trait::async_trait;
+            use yaserde::ser::to_string;
+            "#,
+        );
+
+        let child_content: String = self.children.iter().map(|c| c.render()).collect();
+        result.push_str(child_content.as_str());
+
+        result.push_str("}\n\n");
+        result
     }
 }
 
@@ -278,5 +383,13 @@ pub struct SoapFault {
         );
 
         assert_eq!(global_header.render(), expected);
+    }
+
+    #[test]
+    fn test_alias() {
+        let expected = r#"pub type SomeElement = other_mod::SomeElement;\n\n"#.to_string();
+        let mut alias_element = Element::new("SomeElement", ElementType::Alias);
+        alias_element.field_type = Option::from("other_mod::SomeElement".to_string());
+        assert_eq!(alias_element.render(), expected)
     }
 }
