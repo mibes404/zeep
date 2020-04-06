@@ -1084,7 +1084,7 @@ impl FileWriter {
         );
 
         if let Some(doc) = some_documentation {
-            self.write(format!("\t//* {}\n */\n", doc))
+            self.write(format!("\t/// {}\n", doc.replace("\n", "\n///")))
         }
 
         self.write(format!(
@@ -1471,7 +1471,7 @@ impl FileWriter {
         self.seen_type(struct_name.clone());
 
         if let Some(doc) = some_documentation {
-            self.write(format!("/** {}\n */\n", doc))
+            self.write(format!("/// {}\n", doc.replace("\n", "\n///")))
         }
 
         self.write(format!(
