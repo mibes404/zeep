@@ -35,139 +35,139 @@ pub mod messages {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "LookupPhoneTypesRequest")]
     pub struct LookupPhoneTypesRequest {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::LookupPhoneTypes,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "LookupLinkGroupsRequest")]
     pub struct LookupLinkGroupsRequest {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::LookupLinkGroups,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "LookupLRMIdsResponse")]
     pub struct LookupLRMIdsResponse {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::LookupLRMIdsResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "CreateRequest")]
     pub struct CreateRequest {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::Create,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "CreateResponse")]
     pub struct CreateResponse {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::CreateResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "UpdateRequest")]
     pub struct UpdateRequest {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::Update,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "LookupSitesRequest")]
     pub struct LookupSitesRequest {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::LookupSites,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "LookupDomainsRequest")]
     pub struct LookupDomainsRequest {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::LookupDomains,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "LookupDomainsResponse")]
     pub struct LookupDomainsResponse {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::LookupDomainsResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "GetResponse")]
     pub struct GetResponse {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::GetResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "DeleteResponse")]
     pub struct DeleteResponse {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::DeleteResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "LookupLRMIdsRequest")]
     pub struct LookupLRMIdsRequest {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::LookupLRMIds,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "LookupLinkGroupsResponse")]
     pub struct LookupLinkGroupsResponse {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::LookupLinkGroupsResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "UpdateResponse")]
     pub struct UpdateResponse {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::UpdateResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "GetRequest")]
     pub struct GetRequest {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::Get,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "LookupAgentIdsResponse")]
     pub struct LookupAgentIdsResponse {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::LookupAgentIdsResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "LookupPhoneTypesResponse")]
     pub struct LookupPhoneTypesResponse {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::LookupPhoneTypesResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "LookupAgentIdsRequest")]
     pub struct LookupAgentIdsRequest {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::LookupAgentIds,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "LookupSitesResponse")]
     pub struct LookupSitesResponse {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::LookupSitesResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "LookupWorkgroupsResponse")]
     pub struct LookupWorkgroupsResponse {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::LookupWorkgroupsResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "AicServiceFault")]
     pub struct AicServiceFault {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub fault: types::Fault,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "DeleteRequest")]
     pub struct DeleteRequest {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::Delete,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(root = "LookupWorkgroupsRequest")]
     pub struct LookupWorkgroupsRequest {
-        #[yaserde(default, flatten)]
+        #[yaserde(flatten, default)]
         pub parameters: types::LookupWorkgroups,
     }
 }
@@ -186,7 +186,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct Get {
-        #[yaserde(rename = "loginId", default)]
+        #[yaserde(rename = "loginId", prefix = "tns", default)]
         pub login_id: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -197,7 +197,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct GetResponse {
-        #[yaserde(rename = "GetReturn", default)]
+        #[yaserde(rename = "GetReturn", prefix = "tns", default)]
         pub get_return: Agent,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -207,11 +207,11 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AgentAdvocateInfo {
-        #[yaserde(rename = "LRMID", default)]
+        #[yaserde(rename = "LRMID", prefix = "tns", default)]
         pub lrmid: Option<String>,
-        #[yaserde(rename = "enabled", default)]
+        #[yaserde(rename = "enabled", prefix = "tns", default)]
         pub enabled: bool,
-        #[yaserde(rename = "telephonyLinkGroup", default)]
+        #[yaserde(rename = "telephonyLinkGroup", prefix = "tns", default)]
         pub telephony_link_group: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -221,7 +221,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct ArrayOfXsdString {
-        #[yaserde(rename = "item", default)]
+        #[yaserde(rename = "item", prefix = "tns", default)]
         pub item: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -231,31 +231,31 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AgentBasicProfile {
-        #[yaserde(rename = "domain", default)]
+        #[yaserde(rename = "domain", prefix = "tns", default)]
         pub domain: Option<String>,
-        #[yaserde(rename = "employeeId", default)]
+        #[yaserde(rename = "employeeId", prefix = "tns", default)]
         pub employee_id: Option<String>,
-        #[yaserde(rename = "externalAgent", default)]
+        #[yaserde(rename = "externalAgent", prefix = "tns", default)]
         pub external_agent: bool,
-        #[yaserde(rename = "firstName", default)]
+        #[yaserde(rename = "firstName", prefix = "tns", default)]
         pub first_name: Option<String>,
-        #[yaserde(rename = "lastName", default)]
+        #[yaserde(rename = "lastName", prefix = "tns", default)]
         pub last_name: Option<String>,
-        #[yaserde(rename = "middleName", default)]
+        #[yaserde(rename = "middleName", prefix = "tns", default)]
         pub middle_name: Option<String>,
-        #[yaserde(rename = "outOfOffice", default)]
+        #[yaserde(rename = "outOfOffice", prefix = "tns", default)]
         pub out_of_office: bool,
-        #[yaserde(rename = "preferredName", default)]
+        #[yaserde(rename = "preferredName", prefix = "tns", default)]
         pub preferred_name: Option<String>,
-        #[yaserde(rename = "site", default)]
+        #[yaserde(rename = "site", prefix = "tns", default)]
         pub site: Option<String>,
-        #[yaserde(rename = "softwareAgent", default)]
+        #[yaserde(rename = "softwareAgent", prefix = "tns", default)]
         pub software_agent: bool,
-        #[yaserde(rename = "title", default)]
+        #[yaserde(rename = "title", prefix = "tns", default)]
         pub title: Option<String>,
-        #[yaserde(rename = "userAddressable", default)]
+        #[yaserde(rename = "userAddressable", prefix = "tns", default)]
         pub user_addressable: bool,
-        #[yaserde(rename = "workgroups", default)]
+        #[yaserde(rename = "workgroups", prefix = "tns", default)]
         pub workgroups: Option<ArrayOfXsdString>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -265,11 +265,11 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AgentChatChannel {
-        #[yaserde(rename = "enabled", default)]
+        #[yaserde(rename = "enabled", prefix = "tns", default)]
         pub enabled: bool,
-        #[yaserde(rename = "taskCeiling", default)]
+        #[yaserde(rename = "taskCeiling", prefix = "tns", default)]
         pub task_ceiling: i16,
-        #[yaserde(rename = "taskLoad", default)]
+        #[yaserde(rename = "taskLoad", prefix = "tns", default)]
         pub task_load: i16,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -279,15 +279,15 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AgentEmailChannel {
-        #[yaserde(rename = "enabled", default)]
+        #[yaserde(rename = "enabled", prefix = "tns", default)]
         pub enabled: bool,
-        #[yaserde(rename = "fromAddress", default)]
+        #[yaserde(rename = "fromAddress", prefix = "tns", default)]
         pub from_address: Option<String>,
-        #[yaserde(rename = "showFullHeader", default)]
+        #[yaserde(rename = "showFullHeader", prefix = "tns", default)]
         pub show_full_header: bool,
-        #[yaserde(rename = "taskCeiling", default)]
+        #[yaserde(rename = "taskCeiling", prefix = "tns", default)]
         pub task_ceiling: i16,
-        #[yaserde(rename = "taskLoad", default)]
+        #[yaserde(rename = "taskLoad", prefix = "tns", default)]
         pub task_load: i16,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -297,25 +297,25 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AgentAddressInfo {
-        #[yaserde(rename = "POBox", default)]
+        #[yaserde(rename = "POBox", prefix = "tns", default)]
         pub po_box: Option<String>,
-        #[yaserde(rename = "address1", default)]
+        #[yaserde(rename = "address1", prefix = "tns", default)]
         pub address_1: Option<String>,
-        #[yaserde(rename = "address2", default)]
+        #[yaserde(rename = "address2", prefix = "tns", default)]
         pub address_2: Option<String>,
-        #[yaserde(rename = "building", default)]
+        #[yaserde(rename = "building", prefix = "tns", default)]
         pub building: Option<String>,
-        #[yaserde(rename = "city", default)]
+        #[yaserde(rename = "city", prefix = "tns", default)]
         pub city: Option<String>,
-        #[yaserde(rename = "company", default)]
+        #[yaserde(rename = "company", prefix = "tns", default)]
         pub company: Option<String>,
-        #[yaserde(rename = "countryOrRegion", default)]
+        #[yaserde(rename = "countryOrRegion", prefix = "tns", default)]
         pub country_or_region: Option<String>,
-        #[yaserde(rename = "mailStop", default)]
+        #[yaserde(rename = "mailStop", prefix = "tns", default)]
         pub mail_stop: Option<String>,
-        #[yaserde(rename = "stateOrProvince", default)]
+        #[yaserde(rename = "stateOrProvince", prefix = "tns", default)]
         pub state_or_province: Option<String>,
-        #[yaserde(rename = "zipOrPostalCode", default)]
+        #[yaserde(rename = "zipOrPostalCode", prefix = "tns", default)]
         pub zip_or_postal_code: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -325,11 +325,11 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AgentAddress {
-        #[yaserde(rename = "home", default)]
+        #[yaserde(rename = "home", prefix = "tns", default)]
         pub home: Option<AgentAddressInfo>,
-        #[yaserde(rename = "office", default)]
+        #[yaserde(rename = "office", prefix = "tns", default)]
         pub office: Option<AgentAddressInfo>,
-        #[yaserde(rename = "other", default)]
+        #[yaserde(rename = "other", prefix = "tns", default)]
         pub other: Option<AgentAddressInfo>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -339,13 +339,13 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AgentEmail {
-        #[yaserde(rename = "internal", default)]
+        #[yaserde(rename = "internal", prefix = "tns", default)]
         pub internal: Option<String>,
-        #[yaserde(rename = "mobileDevice", default)]
+        #[yaserde(rename = "mobileDevice", prefix = "tns", default)]
         pub mobile_device: Option<String>,
-        #[yaserde(rename = "personal", default)]
+        #[yaserde(rename = "personal", prefix = "tns", default)]
         pub personal: Option<String>,
-        #[yaserde(rename = "primary", default)]
+        #[yaserde(rename = "primary", prefix = "tns", default)]
         pub primary: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -355,9 +355,9 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AgentPhoneInfo {
-        #[yaserde(rename = "extension", default)]
+        #[yaserde(rename = "extension", prefix = "tns", default)]
         pub extension: Option<String>,
-        #[yaserde(rename = "phoneNumber", default)]
+        #[yaserde(rename = "phoneNumber", prefix = "tns", default)]
         pub phone_number: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -367,17 +367,17 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AgentPhone {
-        #[yaserde(rename = "fax", default)]
+        #[yaserde(rename = "fax", prefix = "tns", default)]
         pub fax: Option<AgentPhoneInfo>,
-        #[yaserde(rename = "home", default)]
+        #[yaserde(rename = "home", prefix = "tns", default)]
         pub home: Option<AgentPhoneInfo>,
-        #[yaserde(rename = "mobile", default)]
+        #[yaserde(rename = "mobile", prefix = "tns", default)]
         pub mobile: Option<AgentPhoneInfo>,
-        #[yaserde(rename = "pager", default)]
+        #[yaserde(rename = "pager", prefix = "tns", default)]
         pub pager: Option<AgentPhoneInfo>,
-        #[yaserde(rename = "primary", default)]
+        #[yaserde(rename = "primary", prefix = "tns", default)]
         pub primary: Option<AgentPhoneInfo>,
-        #[yaserde(rename = "secondary", default)]
+        #[yaserde(rename = "secondary", prefix = "tns", default)]
         pub secondary: Option<AgentPhoneInfo>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -387,11 +387,11 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AgentExtendedProfile {
-        #[yaserde(rename = "address", default)]
+        #[yaserde(rename = "address", prefix = "tns", default)]
         pub address: Option<AgentAddress>,
-        #[yaserde(rename = "email", default)]
+        #[yaserde(rename = "email", prefix = "tns", default)]
         pub email: Option<AgentEmail>,
-        #[yaserde(rename = "phone", default)]
+        #[yaserde(rename = "phone", prefix = "tns", default)]
         pub phone: Option<AgentPhone>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -401,27 +401,27 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AgentSecurity {
-        #[yaserde(rename = "disableLogin", default)]
+        #[yaserde(rename = "disableLogin", prefix = "tns", default)]
         pub disable_login: bool,
-        #[yaserde(rename = "forcePwdChange", default)]
+        #[yaserde(rename = "forcePwdChange", prefix = "tns", default)]
         pub force_pwd_change: bool,
-        #[yaserde(rename = "password", default)]
+        #[yaserde(rename = "password", prefix = "tns", default)]
         pub password: Option<String>,
-        #[yaserde(rename = "roleAdmin", default)]
+        #[yaserde(rename = "roleAdmin", prefix = "tns", default)]
         pub role_admin: bool,
-        #[yaserde(rename = "roleAgent", default)]
+        #[yaserde(rename = "roleAgent", prefix = "tns", default)]
         pub role_agent: bool,
-        #[yaserde(rename = "roleClerk", default)]
+        #[yaserde(rename = "roleClerk", prefix = "tns", default)]
         pub role_clerk: bool,
-        #[yaserde(rename = "roleEditor", default)]
+        #[yaserde(rename = "roleEditor", prefix = "tns", default)]
         pub role_editor: bool,
-        #[yaserde(rename = "roleOperator", default)]
+        #[yaserde(rename = "roleOperator", prefix = "tns", default)]
         pub role_operator: bool,
-        #[yaserde(rename = "rolePostmaster", default)]
+        #[yaserde(rename = "rolePostmaster", prefix = "tns", default)]
         pub role_postmaster: bool,
-        #[yaserde(rename = "roleSupervisor", default)]
+        #[yaserde(rename = "roleSupervisor", prefix = "tns", default)]
         pub role_supervisor: bool,
-        #[yaserde(rename = "roleSupport", default)]
+        #[yaserde(rename = "roleSupport", prefix = "tns", default)]
         pub role_support: bool,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -431,9 +431,9 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AgentTaskLoad {
-        #[yaserde(rename = "taskCeiling", default)]
+        #[yaserde(rename = "taskCeiling", prefix = "tns", default)]
         pub task_ceiling: i16,
-        #[yaserde(rename = "taskLoad", default)]
+        #[yaserde(rename = "taskLoad", prefix = "tns", default)]
         pub task_load: i16,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -443,21 +443,21 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AgentVoiceChannel {
-        #[yaserde(rename = "enabled", default)]
+        #[yaserde(rename = "enabled", prefix = "tns", default)]
         pub enabled: bool,
-        #[yaserde(rename = "equipment", default)]
+        #[yaserde(rename = "equipment", prefix = "tns", default)]
         pub equipment: Option<String>,
-        #[yaserde(rename = "password", default)]
+        #[yaserde(rename = "password", prefix = "tns", default)]
         pub password: Option<String>,
-        #[yaserde(rename = "phoneId", default)]
+        #[yaserde(rename = "phoneId", prefix = "tns", default)]
         pub phone_id: Option<String>,
-        #[yaserde(rename = "phoneType", default)]
+        #[yaserde(rename = "phoneType", prefix = "tns", default)]
         pub phone_type: Option<String>,
-        #[yaserde(rename = "queue", default)]
+        #[yaserde(rename = "queue", prefix = "tns", default)]
         pub queue: Option<String>,
-        #[yaserde(rename = "taskCeiling", default)]
+        #[yaserde(rename = "taskCeiling", prefix = "tns", default)]
         pub task_ceiling: i16,
-        #[yaserde(rename = "taskLoad", default)]
+        #[yaserde(rename = "taskLoad", prefix = "tns", default)]
         pub task_load: i16,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -467,23 +467,23 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct Agent {
-        #[yaserde(rename = "advocateInfo", default)]
+        #[yaserde(rename = "advocateInfo", prefix = "tns", default)]
         pub advocate_info: Option<AgentAdvocateInfo>,
-        #[yaserde(rename = "basicProfile", default)]
+        #[yaserde(rename = "basicProfile", prefix = "tns", default)]
         pub basic_profile: Option<AgentBasicProfile>,
-        #[yaserde(rename = "chatChannel", default)]
+        #[yaserde(rename = "chatChannel", prefix = "tns", default)]
         pub chat_channel: Option<AgentChatChannel>,
-        #[yaserde(rename = "emailChannel", default)]
+        #[yaserde(rename = "emailChannel", prefix = "tns", default)]
         pub email_channel: Option<AgentEmailChannel>,
-        #[yaserde(rename = "extendedProfile", default)]
+        #[yaserde(rename = "extendedProfile", prefix = "tns", default)]
         pub extended_profile: Option<AgentExtendedProfile>,
-        #[yaserde(rename = "loginId", default)]
+        #[yaserde(rename = "loginId", prefix = "tns", default)]
         pub login_id: Option<String>,
-        #[yaserde(rename = "security", default)]
+        #[yaserde(rename = "security", prefix = "tns", default)]
         pub security: Option<AgentSecurity>,
-        #[yaserde(rename = "taskLoad", default)]
+        #[yaserde(rename = "taskLoad", prefix = "tns", default)]
         pub task_load: Option<AgentTaskLoad>,
-        #[yaserde(rename = "voiceChannel", default)]
+        #[yaserde(rename = "voiceChannel", prefix = "tns", default)]
         pub voice_channel: Option<AgentVoiceChannel>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -503,7 +503,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct Update {
-        #[yaserde(rename = "agent", default)]
+        #[yaserde(rename = "agent", prefix = "tns", default)]
         pub agent: Agent,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -514,7 +514,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct UpdateResponse {
-        #[yaserde(rename = "UpdateReturn", default)]
+        #[yaserde(rename = "UpdateReturn", prefix = "tns", default)]
         pub update_return: bool,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -525,7 +525,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct Delete {
-        #[yaserde(rename = "loginId", default)]
+        #[yaserde(rename = "loginId", prefix = "tns", default)]
         pub login_id: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -536,7 +536,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct DeleteResponse {
-        #[yaserde(rename = "DeleteReturn", default)]
+        #[yaserde(rename = "DeleteReturn", prefix = "tns", default)]
         pub delete_return: bool,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -555,7 +555,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct LookupAgentIdsResponse {
-        #[yaserde(rename = "LookupAgentIdsReturn", default)]
+        #[yaserde(rename = "LookupAgentIdsReturn", prefix = "tns", default)]
         pub lookup_agent_ids_return: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -574,7 +574,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct LookupLRMIdsResponse {
-        #[yaserde(rename = "LookupLRMIdsReturn", default)]
+        #[yaserde(rename = "LookupLRMIdsReturn", prefix = "tns", default)]
         pub lookup_lrm_ids_return: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -593,7 +593,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct LookupWorkgroupsResponse {
-        #[yaserde(rename = "LookupWorkgroupsReturn", default)]
+        #[yaserde(rename = "LookupWorkgroupsReturn", prefix = "tns", default)]
         pub lookup_workgroups_return: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -612,7 +612,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct LookupDomainsResponse {
-        #[yaserde(rename = "LookupDomainsReturn", default)]
+        #[yaserde(rename = "LookupDomainsReturn", prefix = "tns", default)]
         pub lookup_domains_return: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -631,7 +631,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct LookupLinkGroupsResponse {
-        #[yaserde(rename = "LookupLinkGroupsReturn", default)]
+        #[yaserde(rename = "LookupLinkGroupsReturn", prefix = "tns", default)]
         pub lookup_link_groups_return: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -650,7 +650,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct LookupPhoneTypesResponse {
-        #[yaserde(rename = "LookupPhoneTypesReturn", default)]
+        #[yaserde(rename = "LookupPhoneTypesReturn", prefix = "tns", default)]
         pub lookup_phone_types_return: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -669,7 +669,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct LookupSitesResponse {
-        #[yaserde(rename = "LookupSitesReturn", default)]
+        #[yaserde(rename = "LookupSitesReturn", prefix = "tns", default)]
         pub lookup_sites_return: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -680,7 +680,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct Create {
-        #[yaserde(rename = "agent", default)]
+        #[yaserde(rename = "agent", prefix = "tns", default)]
         pub agent: Agent,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -691,7 +691,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct CreateResponse {
-        #[yaserde(rename = "CreateReturn", default)]
+        #[yaserde(rename = "CreateReturn", prefix = "tns", default)]
         pub create_return: bool,
     }
 }
