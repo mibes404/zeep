@@ -237,6 +237,9 @@ impl FileWriter {
     }
 
     fn print_xsd(&mut self, node: &Node) -> WriterResult<()> {
+        let parent = self.pick_section(TYPES_MOD);
+        let mut _parent = &mut *parent.deref().borrow_mut();
+
         self.target_name_space = self
             .get_some_attribute(node, "targetNamespace")
             .map(|s| s.to_string());
@@ -246,17 +249,9 @@ impl FileWriter {
         node.children()
             .try_for_each(|child| match child.tag_name().name() {
                 "import" => self.import_file(&child),
-                "element" => {
-                    let parent = self.pick_section(TYPES_MOD);
-                    let mut _parent = &mut *parent.deref().borrow_mut();
-
-                    self.print_element(&child, true, _parent, true)
-                }
+                "element" => self.print_element(&child, true, _parent),
                 "complexType" => {
                     if let Some(n) = self.get_some_attribute(&child, "name") {
-                        let parent = self.pick_section(TYPES_MOD);
-                        let mut _parent = &mut *parent.deref().borrow_mut();
-
                         self.print_complex_element(&child, n, false, _parent)
                     } else {
                         Ok(())
@@ -322,7 +317,6 @@ impl FileWriter {
         node: &Node,
         is_top_level: bool,
         parent: &mut Element,
-        top_level: bool,
     ) -> WriterResult<()> {
         let element_name = match self.get_some_attribute(node, "name") {
             None => return Ok(()),
@@ -360,7 +354,7 @@ impl FileWriter {
             Some(t) => t.to_string(),
         };
 
-        if top_level {
+        if is_top_level {
             // top-level == type alias
             let top_level_name = to_pascal_case(element_name);
             let alias = self.fetch_type(&type_name);
@@ -576,7 +570,7 @@ impl FileWriter {
 
     fn print_sequence(&mut self, node: &Node, parent: &mut Element) -> WriterResult<()> {
         node.children()
-            .try_for_each(|child| self.print_element(&child, false, parent, false))?;
+            .try_for_each(|child| self.print_element(&child, false, parent))?;
         Ok(())
     }
 
