@@ -13,6 +13,8 @@ use std::fs::File;
 use std::io;
 use std::io::{stdout, Cursor, Read, Write};
 use std::mem::discriminant;
+use std::ops::Deref;
+use std::rc::Rc;
 
 const MESSAGES_MOD: &str = "messages";
 const TYPES_MOD: &str = "types";
@@ -118,7 +120,7 @@ impl FileWriter<'_> {
         self.root.add(Element::new_module(SERVICES_MOD));
     }
 
-    fn get_module(&mut self, name: &str) -> Option<&mut Element> {
+    fn get_module(&mut self, name: &str) -> Option<Rc<RefCell<Element>>> {
         self.root.child(name)
     }
 
@@ -247,7 +249,8 @@ impl FileWriter<'_> {
     }
 
     fn print_xsd(&mut self, node: &Node) -> WriterResult<()> {
-        self.pick_section(TYPES_MOD);
+        let mut parent = self.pick_section(TYPES_MOD);
+        let mut _parent = &mut *parent.deref().borrow_mut();
 
         self.target_name_space = self
             .get_some_attribute(node, "targetNamespace")
@@ -255,15 +258,13 @@ impl FileWriter<'_> {
 
         self.find_namespaces(node);
 
-        let mut parent = self.current_section.expect("section not found");
-
         node.children()
             .try_for_each(|child| match child.tag_name().name() {
                 "import" => self.import_file(&child),
-                "element" => self.print_element(&child, true, &mut parent),
+                "element" => self.print_element(&child, true, _parent),
                 "complexType" => {
                     if let Some(n) = self.get_some_attribute(&child, "name") {
-                        self.print_complex_element(&child, n, false, &mut parent)
+                        self.print_complex_element(&child, n, false, _parent)
                     } else {
                         Ok(())
                     }
@@ -377,7 +378,8 @@ impl FileWriter<'_> {
                 return Ok(());
             }
         } else {
-            let field_name = self.shield_reserved_names(&to_snake_case(element_name));
+            let snake_name = to_snake_case(element_name);
+            let field_name = self.shield_reserved_names(&snake_name);
 
             // fields
             let mut element = if let Some(_tns) = &self.target_name_space {
@@ -411,6 +413,7 @@ impl FileWriter<'_> {
             element.field_type = Option::Some(self.fetch_type(&type_name));
             element.vector = as_vec;
             element.optional = as_option;
+
             parent.add(element);
         }
 
@@ -632,18 +635,17 @@ impl FileWriter<'_> {
         }
     }
 
-    fn pick_section(&mut self, target: &str) {
-        self.current_section = Option::Some(
-            self.root
-                .child(target)
-                .expect("modules have not been initialized properly"),
-        );
+    fn pick_section(&mut self, target: &str) -> Rc<RefCell<Element>> {
+        self.root
+            .child(target)
+            .expect("modules have not been initialized properly")
     }
 
     // WSDL Messages
 
     fn print_message(&mut self, node: &Node) {
         let mut parent = self.pick_section(MESSAGES_MOD);
+        let mut _parent = &mut *parent.deref().borrow_mut();
 
         if let Some(name) = self.get_some_attribute(node, "name") {
             let mut element = Element::new(to_pascal_case(name).as_str(), ElementType::Struct);
@@ -660,7 +662,7 @@ impl FileWriter<'_> {
                 }
             }
 
-            parent.add(element);
+            _parent.add(element);
         }
     }
 
@@ -711,6 +713,7 @@ impl FileWriter<'_> {
     // WSDL Port Types
     fn print_port_type(&mut self, node: &Node) {
         let mut parent = self.pick_section(PORTS_MOD);
+        let mut _parent = &mut *parent.deref().borrow_mut();
 
         let element_name = match self.get_some_attribute(node, "name") {
             None => return,
@@ -724,13 +727,14 @@ impl FileWriter<'_> {
             self.print_operation(to_pascal_case(element_name).as_str(), &child, &mut element)
         });
 
-        parent.add(element);
+        _parent.add(element);
     }
 
     // WSDL bindings
 
     fn print_binding(&mut self, node: &Node) {
         let mut parent = self.pick_section(BINDINGS_MOD);
+        let mut _parent = &mut *parent.deref().borrow_mut();
 
         let element_name = match self.get_some_attribute(node, "name") {
             None => return,
@@ -746,7 +750,7 @@ impl FileWriter<'_> {
         let trait_name = self.fetch_type(type_name);
 
         if !self.have_seen_type(&struct_name) {
-            self.print_binding_helpers(&struct_name, parent);
+            self.print_binding_helpers(&struct_name, _parent);
         }
 
         let mut client = Element::new(&struct_name, ElementType::Static);
@@ -769,8 +773,10 @@ impl FileWriter<'_> {
         node.children()
             .for_each(|child| self.print_binding_operation(&trait_name, &child, &mut t_impl));
 
-        self.print_default_constructor(struct_name.as_str(), parent);
-        self.print_constructor(struct_name.as_str(), parent);
+        self.print_default_constructor(struct_name.as_str(), _parent);
+        self.print_constructor(struct_name.as_str(), _parent);
+
+        _parent.add(t_impl);
     }
 
     fn print_binding_helpers(&mut self, struct_name: &str, parent: &mut Element) {
@@ -1218,7 +1224,7 @@ impl FileWriter<'_> {
                 },
                 &operation_name,
                 some_soap_action,
-                &mut e,
+                parent,
             )
         }
 
@@ -1298,6 +1304,7 @@ impl FileWriter<'_> {
 
     fn print_service(&mut self, node: &Node) {
         let mut parent = self.pick_section(SERVICES_MOD);
+        let mut _parent = &mut *parent.deref().borrow_mut();
 
         let element_name = match self.get_some_attribute(node, "name") {
             None => return,
@@ -1377,7 +1384,7 @@ impl FileWriter<'_> {
             .as_str(),
         );
 
-        parent.add(e);
+        _parent.add(e);
     }
 }
 

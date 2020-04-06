@@ -1,4 +1,6 @@
+use std::cell::RefCell;
 use std::collections::HashMap;
+use std::rc::Rc;
 
 pub enum ElementType {
     Root,
@@ -19,7 +21,7 @@ pub struct Element {
     pub xml_name: Option<String>,
     pub namespaces: Vec<String>,
     pub name: String,
-    pub children: Vec<Element>,
+    pub children: Vec<Rc<RefCell<Element>>>,
     pub children_idx: HashMap<String, usize>,
     static_content: Option<String>,
     pub optional: bool,
@@ -68,7 +70,7 @@ pub trait StaticElement {
 
 pub trait ParentElement {
     fn add(&mut self, child: Element);
-    fn child(&mut self, name: &str) -> Option<&mut Element>;
+    fn child(&self, name: &str) -> Option<Rc<RefCell<Element>>>;
     fn has_children(&self) -> bool;
     fn has_child(&self, name: &str) -> bool;
 }
@@ -117,13 +119,13 @@ impl ParentElement for Element {
     fn add(&mut self, child: Element) {
         let name = child.name.clone();
         let pos = self.children.len();
-        self.children.push(child);
+        self.children.push(Rc::new(RefCell::new(child)));
         self.children_idx.insert(name, pos);
     }
 
-    fn child(&mut self, name: &str) -> Option<&mut Element> {
+    fn child(&self, name: &str) -> Option<Rc<RefCell<Element>>> {
         if let Some(pos) = self.children_idx.get(name) {
-            self.children.get_mut(*pos)
+            self.children.get(*pos).cloned()
         } else {
             None
         }
@@ -198,7 +200,7 @@ impl Element {
     }
 
     fn render_root(&self) -> String {
-        self.children.iter().map(|c| c.render()).collect()
+        self.children.iter().map(|c| c.borrow().render()).collect()
     }
 
     fn render_struct(&self) -> String {
@@ -243,7 +245,7 @@ impl Element {
         result.push_str(&format!("pub struct {} {{\n", self.name));
 
         if self.has_children() {
-            let r: String = self.children.iter().map(|c| c.render()).collect();
+            let r: String = self.children.iter().map(|c| c.borrow().render()).collect();
             result.push_str(&r);
         }
 
@@ -253,7 +255,7 @@ impl Element {
 
     fn render_trait(&self) -> String {
         let mut result = format!("#[async_trait]\npub trait {0} {{\n", self.name);
-        let r: String = self.children.iter().map(|c| c.render()).collect();
+        let r: String = self.children.iter().map(|c| c.borrow().render()).collect();
         result.push_str(&r);
         result.push_str("}\n");
         result
@@ -270,7 +272,7 @@ impl Element {
             field_type, self.name
         );
 
-        let r: String = self.children.iter().map(|c| c.render()).collect();
+        let r: String = self.children.iter().map(|c| c.borrow().render()).collect();
         result.push_str(&r);
         result.push_str("}\n");
         result
@@ -370,7 +372,7 @@ impl Element {
             "#,
         );
 
-        let child_content: String = self.children.iter().map(|c| c.render()).collect();
+        let child_content: String = self.children.iter().map(|c| c.borrow().render()).collect();
         result.push_str(child_content.as_str());
 
         result.push_str("}\n\n");
