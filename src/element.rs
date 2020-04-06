@@ -285,22 +285,29 @@ impl Element {
             Some(c) => format!("// {}", c),
         };
 
+        let prefix = match &self.prefix {
+            Some(p) => format!("prefix = \"{}\", ", p),
+            None => "".to_string(),
+        };
+
         if let Some(xml_name) = &self.xml_name {
             format!(
-                "\t#[yaserde(rename = \"{0}\", {3}default)]\n\tpub {1}: {2}, {4}\n",
+                "\t#[yaserde(rename = \"{0}\", {3}{5}default)]\n\tpub {1}: {2}, {4}\n",
                 xml_name,
                 self.name,
                 self.render_field_type(),
                 flatten,
                 comment,
+                prefix,
             )
         } else {
             format!(
-                "\t#[yaserde({2}default)]\n\tpub {0}: {1}, {3}\n",
+                "\t#[yaserde({2}{4}default)]\n\tpub {0}: {1}, {3}\n",
                 self.name,
                 self.render_field_type(),
                 flatten,
-                comment
+                comment,
+                prefix
             )
         }
     }

@@ -71,7 +71,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct CelsiusToFahrenheitRequest {
-        #[yaserde(rename = "TemperatureInCelsius", default)]
+        #[yaserde(rename = "TemperatureInCelsius", prefix = "tns", default)]
         pub temperature_in_celsius: f64,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -81,7 +81,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct CelsiusToFahrenheitResponse {
-        #[yaserde(rename = "TemperatureInFahrenheit", default)]
+        #[yaserde(rename = "TemperatureInFahrenheit", prefix = "tns", default)]
         pub temperature_in_fahrenheit: f64,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -91,7 +91,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct FahrenheitToCelsiusRequest {
-        #[yaserde(rename = "TemperatureInFahrenheit", default)]
+        #[yaserde(rename = "TemperatureInFahrenheit", prefix = "tns", default)]
         pub temperature_in_fahrenheit: f64,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -101,7 +101,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct FahrenheitToCelsiusResponse {
-        #[yaserde(rename = "TemperatureInCelsius", default)]
+        #[yaserde(rename = "TemperatureInCelsius", prefix = "tns", default)]
         pub temperature_in_celsius: f64,
     }
 }
