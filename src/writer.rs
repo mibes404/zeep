@@ -237,9 +237,6 @@ impl FileWriter {
     }
 
     fn print_xsd(&mut self, node: &Node) -> WriterResult<()> {
-        let parent = self.pick_section(TYPES_MOD);
-        let mut _parent = &mut *parent.deref().borrow_mut();
-
         self.target_name_space = self
             .get_some_attribute(node, "targetNamespace")
             .map(|s| s.to_string());
@@ -249,9 +246,17 @@ impl FileWriter {
         node.children()
             .try_for_each(|child| match child.tag_name().name() {
                 "import" => self.import_file(&child),
-                "element" => self.print_element(&child, true, _parent, true),
+                "element" => {
+                    let parent = self.pick_section(TYPES_MOD);
+                    let mut _parent = &mut *parent.deref().borrow_mut();
+
+                    self.print_element(&child, true, _parent, true)
+                }
                 "complexType" => {
                     if let Some(n) = self.get_some_attribute(&child, "name") {
+                        let parent = self.pick_section(TYPES_MOD);
+                        let mut _parent = &mut *parent.deref().borrow_mut();
+
                         self.print_complex_element(&child, n, false, _parent)
                     } else {
                         Ok(())
