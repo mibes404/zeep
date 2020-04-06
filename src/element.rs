@@ -343,7 +343,9 @@ impl Element {
 
     fn render_field_type(&self) -> String {
         if let Some(field_type) = &self.field_type {
-            if self.optional {
+            if self.vector {
+                format!("Vec<{}>", field_type)
+            } else if self.optional {
                 format!("Option<{}>", field_type)
             } else {
                 field_type.to_string()
