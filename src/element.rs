@@ -8,6 +8,9 @@ pub enum ElementType {
     Alias,
     Module,
     Attribute,
+    Trait,
+    TraitImpl,
+    Function,
 }
 
 pub struct Element {
@@ -23,6 +26,15 @@ pub struct Element {
     pub field_type: Option<String>,
     pub vector: bool,
     pub flatten: bool,
+    pub comment: Option<String>,
+    pub function_args: Option<FunctionArgs>,
+}
+
+pub struct FunctionArgs {
+    pub input_type: String,
+    pub input_name: String,
+    pub output_type: Option<String>,
+    pub fault_type: Option<String>,
     pub comment: Option<String>,
 }
 
@@ -41,6 +53,7 @@ pub fn root() -> Element {
         vector: false,
         flatten: false,
         comment: None,
+        function_args: None,
     }
 }
 
@@ -74,6 +87,9 @@ impl WritableElement for Element {
             ElementType::Alias => self.render_alias(),
             ElementType::Module => self.render_module(),
             ElementType::Attribute => self.render_atribute(),
+            ElementType::Trait => self.render_trait(),
+            ElementType::TraitImpl => self.render_trait_impl(),
+            ElementType::Function => self.render_function(),
         }
     }
 }
@@ -86,7 +102,7 @@ impl NamespacedElement for Element {
 
 impl StaticElement for Element {
     fn set_content(&mut self, content: &str) {
-        self.static_content = Option::from(content.to_string());
+        self.static_content = Option::Some(content.to_string());
     }
 
     fn append_content(&mut self, additional_content: &str) {
@@ -142,6 +158,7 @@ impl Element {
             vector: false,
             flatten: false,
             comment: None,
+            function_args: None,
         }
     }
 
@@ -149,22 +166,35 @@ impl Element {
         Element {
             element_type: ElementType::Field,
             prefix: None,
-            xml_name: Option::from(xml_name.to_string()),
+            xml_name: Option::Some(xml_name.to_string()),
             namespaces: vec![],
             name: field_name.to_string(),
             children: vec![],
             children_idx: HashMap::new(),
             static_content: None,
             optional,
-            field_type: Option::from(field_type.to_string()),
+            field_type: Option::Some(field_type.to_string()),
             vector: false,
             flatten: false,
             comment: None,
+            function_args: None,
         }
     }
 
     pub fn new_module(module_name: &str) -> Self {
         Element::new(module_name, ElementType::Module)
+    }
+
+    pub fn new_function(function_name: &str, input_name: &str, input_type: &str) -> Self {
+        let mut e = Element::new(function_name, ElementType::Function);
+        e.function_args = Option::Some(FunctionArgs {
+            input_type: input_type.to_string(),
+            input_name: input_name.to_string(),
+            output_type: None,
+            fault_type: None,
+            comment: None,
+        });
+        e
     }
 
     fn render_root(&self) -> String {
@@ -189,7 +219,7 @@ impl Element {
             has_options = true;
         }
 
-        for namespace in self.namespaces {
+        for namespace in &self.namespaces {
             options.push_str(&format!("\tnamespace = \"{}\",\n", namespace));
             has_options = true;
         }
@@ -217,6 +247,31 @@ impl Element {
             result.push_str(&r);
         }
 
+        result.push_str("}\n");
+        result
+    }
+
+    fn render_trait(&self) -> String {
+        let mut result = format!("#[async_trait]\npub trait {0} {{\n", self.name);
+        let r: String = self.children.iter().map(|c| c.render()).collect();
+        result.push_str(&r);
+        result.push_str("}\n");
+        result
+    }
+
+    fn render_trait_impl(&self) -> String {
+        let field_type = match &self.field_type {
+            None => return String::new(),
+            Some(ft) => ft,
+        };
+
+        let mut result = format!(
+            "#[async_trait]\n\timpl {0} for {1} {{\n",
+            field_type, self.name
+        );
+
+        let r: String = self.children.iter().map(|c| c.render()).collect();
+        result.push_str(&r);
         result.push_str("}\n");
         result
     }
@@ -249,15 +304,25 @@ impl Element {
     }
 
     fn render_atribute(&self) -> String {
+        let field_type = match &self.field_type {
+            None => return String::new(),
+            Some(ft) => ft,
+        };
+
+        let xml_name = match &self.xml_name {
+            None => return String::new(),
+            Some(xn) => xn,
+        };
+
         if self.optional {
             format!(
                 "#[yaserde(rename=\"{}\", attribute)]\npub {}: Option<{}>,\n",
-                self.xml_name, self.name, self.field_type
+                xml_name, self.name, field_type
             )
         } else {
             format!(
                 "#[yaserde(rename=\"{}\", attribute)]\npub {}: {},\n",
-                self.xml_name, self.name, self.field_type
+                xml_name, self.name, field_type
             )
         }
     }
@@ -277,7 +342,13 @@ impl Element {
     fn render_static(&self) -> String {
         match &self.static_content {
             None => String::new(),
-            Some(c) => c.clone(),
+            Some(c) => {
+                if let Some(comment) = &self.comment {
+                    format!("/** {}\n */\n{}", comment, c)
+                } else {
+                    c.clone()
+                }
+            }
         }
     }
 
@@ -304,6 +375,31 @@ impl Element {
 
         result.push_str("}\n\n");
         result
+    }
+
+    fn render_function(&self) -> String {
+        let args = match &self.function_args {
+            None => return String::new(),
+            Some(a) => a,
+        };
+
+        let function_result = match &args.fault_type {
+            None => match &args.output_type {
+                None => String::new(),
+                Some(o) => format!("-> {}", o),
+            },
+            Some(fault) => match &args.output_type {
+                None => format!("-> {}", fault),
+                Some(o) => format!("-> Result<{},{}>", o, fault),
+            },
+        };
+
+        let function_input = format!("{}: {}", args.input_name, args.input_type);
+
+        format!(
+            "\tasync fn {} (&self, {}) {};\n",
+            self.name, function_input, function_result
+        )
     }
 }
 
@@ -338,10 +434,10 @@ pub struct SoapFault {
 "#;
 
         let mut soap_fault = Element::new("SoapFault", ElementType::Struct);
-        soap_fault.xml_name = Option::from("Fault".to_string());
+        soap_fault.xml_name = Option::Some("Fault".to_string());
         soap_fault.namespace =
-            Option::from("soapenv: http://schemas.xmlsoap.org/soap/envelope/".to_string());
-        soap_fault.prefix = Option::from("soapenv".to_string());
+            Option::Some("soapenv: http://schemas.xmlsoap.org/soap/envelope/".to_string());
+        soap_fault.prefix = Option::Some("soapenv".to_string());
         soap_fault.add(Element::new_field(
             "fault_code",
             "faultcode",
@@ -389,7 +485,7 @@ pub struct SoapFault {
     fn test_alias() {
         let expected = r#"pub type SomeElement = other_mod::SomeElement;\n\n"#.to_string();
         let mut alias_element = Element::new("SomeElement", ElementType::Alias);
-        alias_element.field_type = Option::from("other_mod::SomeElement".to_string());
+        alias_element.field_type = Option::Some("other_mod::SomeElement".to_string());
         assert_eq!(alias_element.render(), expected)
     }
 }
