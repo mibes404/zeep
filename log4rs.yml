@@ -15,7 +15,11 @@ root:
     - stdout
 
 loggers:
+  aic:
+    level: debug
   weather:
     level: debug
   zeep:
+    level: debug
+  temperature:
     level: debug

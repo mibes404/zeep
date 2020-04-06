@@ -279,7 +279,7 @@ impl Element {
     }
 
     fn render_field(&self) -> String {
-        let flatten = if self.flatten { ", flatten" } else { "" };
+        let flatten = if self.flatten { "flatten, " } else { "" };
         let comment = match &self.comment {
             None => "".to_string(),
             Some(c) => format!("// {}", c),
@@ -287,7 +287,7 @@ impl Element {
 
         if let Some(xml_name) = &self.xml_name {
             format!(
-                "\t#[yaserde(rename = \"{0}\", default{3})]\n\tpub {1}: {2}, {4}\n",
+                "\t#[yaserde(rename = \"{0}\", {3}default)]\n\tpub {1}: {2}, {4}\n",
                 xml_name,
                 self.name,
                 self.render_field_type(),
@@ -296,7 +296,7 @@ impl Element {
             )
         } else {
             format!(
-                "\t#[yaserde(default{2})]\n\tpub {0}: {1}, {3}\n",
+                "\t#[yaserde({2}default)]\n\tpub {0}: {1}, {3}\n",
                 self.name,
                 self.render_field_type(),
                 flatten,
@@ -365,10 +365,11 @@ impl Element {
     fn render_module(&self) -> String {
         let mut result = format!("pub mod {} {{\n", self.name);
         result.push_str(
-            r#"use yaserde::{{YaSerialize, YaDeserialize}};
+            r#"use yaserde::{YaSerialize, YaDeserialize};
             use yaserde::de::from_str;
             use async_trait::async_trait;
             use yaserde::ser::to_string;
+            use super::*;
             "#,
         );
 
@@ -460,7 +461,7 @@ pub struct SoapFault {
         let expected = r#"
             #![allow(dead_code)]           
             #![allow(unused_imports)]
-            use yaserde::{{YaSerialize, YaDeserialize}};
+            use yaserde::{YaSerialize, YaDeserialize};
             use std::io::{Read, Write};
             
             pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
@@ -473,7 +474,7 @@ pub struct SoapFault {
             r#"
             #![allow(dead_code)]           
             #![allow(unused_imports)]
-            use yaserde::{{YaSerialize, YaDeserialize}};
+            use yaserde::{YaSerialize, YaDeserialize};
             use std::io::{Read, Write};
             
             pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";

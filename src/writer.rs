@@ -27,10 +27,8 @@ const VERSION: &str = "0.0.2";
 const DEFAULT_NS_PREFIX: &str = "tns";
 const IMPORT_PREFIX: &str = "nsi";
 
-pub struct FileWriter<'a> {
+pub struct FileWriter {
     base_path: String,
-    current_section: Option<&'a Element>,
-    level: usize,
     writer: Option<Box<dyn std::io::Write>>,
     target_name_space: Option<String>,
     port_types: HashMap<String, PortType>,
@@ -50,12 +48,10 @@ struct PortType {
     fault_type: Option<(String, Option<String>)>,
 }
 
-impl Default for FileWriter<'_> {
+impl Default for FileWriter {
     fn default() -> Self {
         FileWriter {
             base_path: String::default(),
-            current_section: None,
-            level: 0,
             writer: Option::Some(Box::new(stdout())),
             target_name_space: Option::None,
             port_types: HashMap::new(),
@@ -69,7 +65,7 @@ impl Default for FileWriter<'_> {
     }
 }
 
-impl FileWriter<'_> {
+impl FileWriter {
     pub fn new(ns_prefix: Option<String>, default_namespace: Option<String>) -> Self {
         let mut fw = FileWriter::default();
         fw.ns_prefix = ns_prefix.unwrap_or_else(|| DEFAULT_NS_PREFIX.to_string());
@@ -84,8 +80,6 @@ impl FileWriter<'_> {
     ) -> Self {
         FileWriter {
             base_path: String::default(),
-            current_section: None,
-            level: 0,
             writer: Option::Some(Box::new(dest_file_name)),
             target_name_space: Option::None,
             port_types: HashMap::new(),
@@ -119,9 +113,9 @@ impl FileWriter<'_> {
 
     pub fn process_file(&mut self, base_path: &str, file_name: &str) -> WriterResult<()> {
         self.base_path = base_path.to_string();
-        self.init_modules();
         self.print_global_header();
         self.print_common_structs();
+        self.init_modules();
         self.process_file_in_path(file_name, true)?;
         Ok(())
     }
@@ -145,12 +139,8 @@ impl FileWriter<'_> {
         Ok(())
     }
 
-    pub fn have_seen_type(&mut self, type_def: &str) -> bool {
-        if let Some(module) = self.current_section {
-            module.has_child(type_def)
-        } else {
-            false
-        }
+    pub fn have_seen_type(&mut self, type_def: &str, module: &Element) -> bool {
+        module.has_child(type_def)
     }
 
     fn print_global_header(&mut self) {
@@ -190,8 +180,13 @@ impl FileWriter<'_> {
             true,
         ));
 
+        let mut soap_response = Element::new("SoapResponse", ElementType::Alias);
+        soap_response.field_type =
+            Option::Some("Result<(reqwest::StatusCode, String), reqwest::Error>".to_string());
+
         self.root.add(header);
         self.root.add(soap_fault);
+        self.root.add(soap_response);
     }
 
     /// print parses the root of the XML file
@@ -254,7 +249,7 @@ impl FileWriter<'_> {
         node.children()
             .try_for_each(|child| match child.tag_name().name() {
                 "import" => self.import_file(&child),
-                "element" => self.print_element(&child, true, _parent),
+                "element" => self.print_element(&child, true, _parent, true),
                 "complexType" => {
                     if let Some(n) = self.get_some_attribute(&child, "name") {
                         self.print_complex_element(&child, n, false, _parent)
@@ -322,6 +317,7 @@ impl FileWriter<'_> {
         node: &Node,
         is_top_level: bool,
         parent: &mut Element,
+        top_level: bool,
     ) -> WriterResult<()> {
         let element_name = match self.get_some_attribute(node, "name") {
             None => return Ok(()),
@@ -359,7 +355,7 @@ impl FileWriter<'_> {
             Some(t) => t.to_string(),
         };
 
-        if self.level == 0 {
+        if top_level {
             // top-level == type alias
             let top_level_name = to_pascal_case(element_name);
             let alias = self.fetch_type(&type_name);
@@ -468,7 +464,7 @@ impl FileWriter<'_> {
         is_top_level: bool,
         parent: &mut Element,
     ) -> WriterResult<()> {
-        if self.have_seen_type(name) {
+        if self.have_seen_type(name, parent) {
             return Ok(());
         }
 
@@ -575,7 +571,7 @@ impl FileWriter<'_> {
 
     fn print_sequence(&mut self, node: &Node, parent: &mut Element) -> WriterResult<()> {
         node.children()
-            .try_for_each(|child| self.print_element(&child, false, parent))?;
+            .try_for_each(|child| self.print_element(&child, false, parent, false))?;
         Ok(())
     }
 
@@ -720,7 +716,12 @@ impl FileWriter<'_> {
         let mut element = Element::new(struct_name.as_str(), ElementType::Trait);
 
         node.children().for_each(|child| {
-            self.print_operation(to_pascal_case(element_name).as_str(), &child, &mut element)
+            self.print_operation(
+                to_pascal_case(element_name).as_str(),
+                &child,
+                &mut element,
+                &mut _parent,
+            )
         });
 
         _parent.add(element);
@@ -745,7 +746,7 @@ impl FileWriter<'_> {
         let struct_name = to_pascal_case(element_name);
         let trait_name = self.fetch_type(type_name);
 
-        if !self.have_seen_type(&struct_name) {
+        if !self.have_seen_type(&struct_name, _parent) {
             self.print_binding_helpers(&struct_name, _parent);
         }
 
@@ -766,12 +767,14 @@ impl FileWriter<'_> {
         let mut t_impl = Element::new(&struct_name, ElementType::TraitImpl);
         t_impl.field_type = Option::Some(format!("{1}::{0}", trait_name, PORTS_MOD));
 
-        node.children()
-            .for_each(|child| self.print_binding_operation(&trait_name, &child, &mut t_impl));
+        node.children().for_each(|child| {
+            self.print_binding_operation(&trait_name, &child, &mut t_impl, &mut _parent)
+        });
 
         self.print_default_constructor(struct_name.as_str(), _parent);
         self.print_constructor(struct_name.as_str(), _parent);
 
+        _parent.add(client);
         _parent.add(t_impl);
     }
 
@@ -874,7 +877,13 @@ impl FileWriter<'_> {
         (name, msg)
     }
 
-    fn print_operation(&mut self, port_type_name: &str, node: &Node, parent: &mut Element) {
+    fn print_operation(
+        &mut self,
+        port_type_name: &str,
+        node: &Node,
+        parent: &mut Element,
+        module: &mut Element,
+    ) {
         let element_name = match self.get_some_attribute(node, "name") {
             None => return,
             Some(n) => n,
@@ -937,11 +946,14 @@ impl FileWriter<'_> {
                     let mut f = Element::new(fault_name.as_str(), ElementType::Alias);
                     f.field_type = Option::Some(format!("{}::{}", MESSAGES_MOD, fault_type,));
 
-                    self.fault_soap_wrapper(fault_name, fault_type, parent);
+                    if !self.have_seen_type(fault_name, module) {
+                        self.fault_soap_wrapper(fault_name, fault_type, module);
+                    }
 
                     if let Some(mut args) = function_element.function_args.take() {
                         args.output_type = Option::Some(to_pascal_case(type_name));
-                        args.fault_type = Option::Some(to_pascal_case(fault_name.as_str()));
+                        args.fault_type =
+                            Option::Some(format!("Option<Soap{}>", to_pascal_case(fault_name)));
                         function_element.function_args.replace(args);
                     }
 
@@ -960,15 +972,21 @@ impl FileWriter<'_> {
         };
 
         if let Some(input_type_element) = input_type_element {
-            parent.add(input_type_element);
+            if !self.have_seen_type(&input_type_element.name, module) {
+                module.add(input_type_element);
+            }
         }
 
         if let Some(output_type_element) = output_type_element {
-            parent.add(output_type_element);
+            if !self.have_seen_type(&output_type_element.name, module) {
+                module.add(output_type_element);
+            }
         }
 
         if let Some(fault_type_element) = fault_type_element {
-            parent.add(fault_type_element);
+            if !self.have_seen_type(&fault_type_element.name, module) {
+                module.add(fault_type_element);
+            }
         }
 
         if let Some(doc) = some_documentation {
@@ -1043,7 +1061,13 @@ impl FileWriter<'_> {
         )
     }
 
-    fn print_binding_operation(&mut self, bind_type_name: &str, node: &Node, parent: &mut Element) {
+    fn print_binding_operation(
+        &mut self,
+        bind_type_name: &str,
+        node: &Node,
+        parent: &mut Element,
+        module: &mut Element,
+    ) {
         let operation_name = match self.get_some_attribute(node, "name") {
             None => return,
             Some(n) => n,
@@ -1090,7 +1114,7 @@ impl FileWriter<'_> {
         };
 
         let soap_wrapper_in = if has_input {
-            if !self.have_seen_type(&input_soap_name) {
+            if !self.have_seen_type(&input_soap_name, parent) {
                 Option::Some(format!(
                     r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
                     pub struct {0} {{
@@ -1152,7 +1176,7 @@ impl FileWriter<'_> {
         };
 
         let soap_wrapper_out = if has_output {
-            if !self.have_seen_type(&output_soap_name) {
+            if !self.have_seen_type(&output_soap_name, parent) {
                 Option::Some(format!(
                     r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
                     pub struct {0} {{
@@ -1215,22 +1239,23 @@ impl FileWriter<'_> {
                 output_type.as_str(),
                 &operation_name,
                 some_soap_action,
-                parent,
+                &mut e,
             )
         }
 
+        e.append_content("}");
         parent.add(e);
 
         if let Some(soap_wrapper_in) = soap_wrapper_in {
             let mut e_in = Element::new(&input_soap_name, ElementType::Static);
             e_in.set_content(&soap_wrapper_in);
-            parent.add(e_in);
+            module.add(e_in);
         }
 
         if let Some(soap_wrapper_out) = soap_wrapper_out {
             let mut e_out = Element::new(&output_soap_name, ElementType::Static);
             e_out.set_content(&soap_wrapper_out);
-            parent.add(e_out);
+            module.add(e_out);
         }
     }
 
@@ -1340,7 +1365,7 @@ impl FileWriter<'_> {
 
         let struct_name = to_pascal_case(element_name);
 
-        if self.have_seen_type(&struct_name) {
+        if self.have_seen_type(&struct_name, _parent) {
             return;
         }
 
@@ -1373,6 +1398,8 @@ impl FileWriter<'_> {
             )
             .as_str(),
         );
+
+        e.append_content("}\n");
 
         _parent.add(e);
     }
