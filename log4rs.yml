@@ -19,3 +19,5 @@ loggers:
     level: debug
   zeep:
     level: debug
+  aic:
+    level: debug
