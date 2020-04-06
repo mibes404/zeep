@@ -18,23 +18,7 @@ pub mod bindings {
     use yaserde::{YaDeserialize, YaSerialize};
 }
 
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
-pub mod messages {
+pub mod services {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
@@ -517,6 +501,10 @@ pub mod types {
         default
     )]
     pub struct XmlPsCommProfile {
+        #[yaserde(flatten)]
+        pub xml_comm_profile_type: XmlCommProfileType,
+        #[yaserde(prefix = "xsi", rename = "type", attribute)]
+        pub xsi_type: String, // XmlCommProfileType
         #[yaserde(prefix = "ns3", rename = "system", default)]
         pub system: String,
         #[yaserde(prefix = "ns3", rename = "imGatewaySipEntity", default)]
@@ -527,6 +515,32 @@ pub mod types {
 }
 
 pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
+
+pub mod messages {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;

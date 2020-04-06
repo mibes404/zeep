@@ -10,15 +10,7 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
-pub mod bindings {
+pub mod ports {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
@@ -501,6 +493,10 @@ pub mod types {
         default
     )]
     pub struct SessionManagerCommProfXML {
+        #[yaserde(flatten)]
+        pub xml_comm_profile_type: XmlCommProfileType,
+        #[yaserde(prefix = "xsi", rename = "type", attribute)]
+        pub xsi_type: String, // XmlCommProfileType
         #[yaserde(prefix = "ns7", rename = "primarySM", default)]
         pub primary_sm: String,
         #[yaserde(prefix = "ns7", rename = "secondarySM", default)]
@@ -528,6 +524,14 @@ pub mod types {
     }
 }
 
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 pub struct Header {}
 
@@ -544,7 +548,17 @@ pub struct SoapFault {
     pub fault_string: Option<String>,
 }
 
-pub mod ports {
+type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
+
+pub mod bindings {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod services {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;

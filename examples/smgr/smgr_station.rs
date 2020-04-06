@@ -485,6 +485,10 @@ pub mod types {
         default
     )]
     pub struct XmlStationProfile {
+        #[yaserde(flatten)]
+        pub xml_comm_profile_type: XmlCommProfileType,
+        #[yaserde(prefix = "xsi", rename = "type", attribute)]
+        pub xsi_type: String, // XmlCommProfileType
         #[yaserde(prefix = "ns2", rename = "cmName", default)]
         pub cm_name: String,
         #[yaserde(prefix = "ns2", rename = "prefHandleId", default)]
@@ -960,7 +964,7 @@ pub mod types {
     }
 }
 
-pub mod ports {
+pub mod bindings {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
@@ -968,7 +972,7 @@ pub mod ports {
     use yaserde::{YaDeserialize, YaSerialize};
 }
 
-pub mod bindings {
+pub mod ports {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
@@ -992,7 +996,17 @@ pub struct SoapFault {
     pub fault_string: Option<String>,
 }
 
+type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
+
 pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod services {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;

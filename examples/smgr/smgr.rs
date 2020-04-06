@@ -10,11 +10,58 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod bindings {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod services {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
+
 pub mod types {
     use super::*;
-    use crate::smgr_presence::types::XmlPsCommProfile;
-    use crate::smgr_sm::types::SessionManagerCommProfXML;
-    use crate::smgr_station::types::XmlStationProfile;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -36,7 +83,7 @@ pub mod types {
     pub struct Users {
         #[yaserde(rename = "secureStore", default)]
         pub secure_store: Option<XmlSecureStore>,
-        #[yaserde(rename = "user", prefix = "tns", default)]
+        #[yaserde(rename = "user", default)]
         pub user: Vec<XmlUser>,
     }
 
@@ -381,13 +428,7 @@ pub mod types {
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        root = "xmlCommProfileType",
-        namespace = "ns2: http://xml.avaya.com/schema/import_csm_cm",
-        namespace = "ns3: http://xml.avaya.com/schema/presence",
-        namespace = "ns7: http://xml.avaya.com/schema/import_sessionmanager",
-        default
-    )]
+    #[yaserde(root = "xmlCommProfileType", default)]
     pub struct XmlCommProfileType {
         #[yaserde(rename = "commProfileType", default)]
         pub comm_profile_type: String,
@@ -395,14 +436,6 @@ pub mod types {
         pub comm_profile_sub_type: Option<String>,
         #[yaserde(rename = "jobId", default)]
         pub job_id: Option<String>,
-        #[yaserde(prefix = "xsi", rename = "type", attribute)]
-        pub xsi_type: String, // XmlCommProfileType
-        #[yaserde(flatten)]
-        pub station: Option<XmlStationProfile>,
-        #[yaserde(flatten)]
-        pub ps: Option<XmlPsCommProfile>,
-        #[yaserde(flatten)]
-        pub sm: Option<SessionManagerCommProfXML>,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -493,44 +526,4 @@ pub mod types {
         #[yaserde(rename = "organizationUnitLevelThree", default)]
         pub organization_unit_level_three: Option<String>,
     }
-}
-
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
-pub mod bindings {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
 }
