@@ -139,7 +139,7 @@ impl FileWriter {
         Ok(())
     }
 
-    pub fn have_seen_type(&mut self, type_def: &str, module: &Element) -> bool {
+    pub fn have_seen_type(&self, type_def: &str, module: &Element) -> bool {
         module.has_child(type_def)
     }
 
@@ -523,7 +523,10 @@ impl FileWriter {
             self.print_complex_content(&complex, &mut Some(&mut element), module)?;
         }
 
-        module.add(element);
+        if !self.have_seen_type(&element.name, module) {
+            module.add(element);
+        }
+
         Ok(())
     }
 
@@ -673,7 +676,9 @@ impl FileWriter {
                 }
             }
 
-            _parent.add(element);
+            if !self.have_seen_type(&element.name, _parent) {
+                _parent.add(element);
+            }
         }
     }
 
@@ -1035,7 +1040,9 @@ impl FileWriter {
         e.add(fault_string);
         e.add(detail);
 
-        parent.add(e);
+        if !self.have_seen_type(&e.name, parent) {
+            parent.add(e);
+        }
     }
 
     fn construct_soap_wrapper(&self, soap_name: &str, body_type: &str) -> String {
@@ -1266,18 +1273,25 @@ impl FileWriter {
         }
 
         e.append_content("}");
-        parent.add(e);
+
+        if !self.have_seen_type(&e.name, parent) {
+            parent.add(e);
+        }
 
         if let Some(soap_wrapper_in) = soap_wrapper_in {
-            let mut e_in = Element::new(&input_soap_name, ElementType::Static);
-            e_in.set_content(&soap_wrapper_in);
-            module.add(e_in);
+            if !self.have_seen_type(&input_soap_name, module) {
+                let mut e_in = Element::new(&input_soap_name, ElementType::Static);
+                e_in.set_content(&soap_wrapper_in);
+                module.add(e_in);
+            }
         }
 
         if let Some(soap_wrapper_out) = soap_wrapper_out {
-            let mut e_out = Element::new(&output_soap_name, ElementType::Static);
-            e_out.set_content(&soap_wrapper_out);
-            module.add(e_out);
+            if !self.have_seen_type(&output_soap_name, module) {
+                let mut e_out = Element::new(&output_soap_name, ElementType::Static);
+                e_out.set_content(&soap_wrapper_out);
+                module.add(e_out);
+            }
         }
     }
 
