@@ -4,6 +4,7 @@ use log::warn;
 use std::fs::File;
 
 mod debug;
+mod element;
 mod error;
 mod writer;
 

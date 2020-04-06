@@ -86,7 +86,7 @@ async fn main() {
 
     let r = aic
         .lookup_agent_ids(LookupAgentIdsRequest {
-            parameters: Default::default(),
+            parameters: LookupAgentIds::default(),
         })
         .await
         .expect("can not lookup agents");
