@@ -6,13 +6,10 @@ use crate::error::{WriterError, WriterResult};
 use inflector::cases::pascalcase::to_pascal_case;
 use inflector::cases::snakecase::to_snake_case;
 use roxmltree::Node;
-use std::borrow::BorrowMut;
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::fs::File;
-use std::io;
-use std::io::{stdout, Cursor, Read, Write};
-use std::mem::discriminant;
+use std::io::{stdout, Write};
 use std::ops::Deref;
 use std::rc::Rc;
 
@@ -120,10 +117,6 @@ impl FileWriter<'_> {
         self.root.add(Element::new_module(SERVICES_MOD));
     }
 
-    fn get_module(&mut self, name: &str) -> Option<Rc<RefCell<Element>>> {
-        self.root.child(name)
-    }
-
     pub fn process_file(&mut self, base_path: &str, file_name: &str) -> WriterResult<()> {
         self.base_path = base_path.to_string();
         self.init_modules();
@@ -145,7 +138,7 @@ impl FileWriter<'_> {
 
         // once all elements are processed, write them to output
         if let Some(mut writer) = self.writer.take() {
-            writer.write(self.root.render().as_bytes());
+            writer.write_all(self.root.render().as_bytes())?;
             self.writer.replace(writer);
         }
 
@@ -249,7 +242,7 @@ impl FileWriter<'_> {
     }
 
     fn print_xsd(&mut self, node: &Node) -> WriterResult<()> {
-        let mut parent = self.pick_section(TYPES_MOD);
+        let parent = self.pick_section(TYPES_MOD);
         let mut _parent = &mut *parent.deref().borrow_mut();
 
         self.target_name_space = self
@@ -644,7 +637,7 @@ impl FileWriter<'_> {
     // WSDL Messages
 
     fn print_message(&mut self, node: &Node) {
-        let mut parent = self.pick_section(MESSAGES_MOD);
+        let parent = self.pick_section(MESSAGES_MOD);
         let mut _parent = &mut *parent.deref().borrow_mut();
 
         if let Some(name) = self.get_some_attribute(node, "name") {
@@ -680,8 +673,11 @@ impl FileWriter<'_> {
                 ElementType::Field,
             );
             element.flatten = true;
-            element.field_type = Option::Some(type_name);
+            element.field_type = Option::Some(type_name.clone());
             parent.add(element);
+
+            self.message_types
+                .insert(message_name.to_string(), type_name);
         }
     }
 
@@ -712,7 +708,7 @@ impl FileWriter<'_> {
 
     // WSDL Port Types
     fn print_port_type(&mut self, node: &Node) {
-        let mut parent = self.pick_section(PORTS_MOD);
+        let parent = self.pick_section(PORTS_MOD);
         let mut _parent = &mut *parent.deref().borrow_mut();
 
         let element_name = match self.get_some_attribute(node, "name") {
@@ -733,7 +729,7 @@ impl FileWriter<'_> {
     // WSDL bindings
 
     fn print_binding(&mut self, node: &Node) {
-        let mut parent = self.pick_section(BINDINGS_MOD);
+        let parent = self.pick_section(BINDINGS_MOD);
         let mut _parent = &mut *parent.deref().borrow_mut();
 
         let element_name = match self.get_some_attribute(node, "name") {
@@ -1127,7 +1123,7 @@ impl FileWriter<'_> {
                 _ => (String::new(), String::new(), String::new(), false),
             };
 
-        let (fault_type, _fault_xml_type, fault_soap_name, has_fault) = match &port_type.fault_type
+        let (_fault_type, _fault_xml_type, fault_soap_name, has_fault) = match &port_type.fault_type
         {
             Some((fault_name, Some(fault_type))) => {
                 let soap_name = format!("Soap{}", fault_type);
@@ -1217,11 +1213,6 @@ impl FileWriter<'_> {
                 input_name.as_str(),
                 input_type.as_str(),
                 output_type.as_str(),
-                if has_fault {
-                    Option::Some(&fault_type)
-                } else {
-                    Option::None
-                },
                 &operation_name,
                 some_soap_action,
                 parent,
@@ -1248,7 +1239,6 @@ impl FileWriter<'_> {
         input_variable: &str,
         input_type: &str,
         output_type: &str,
-        _fault_type: Option<&String>,
         operation_name: &str,
         soap_action: Option<&str>,
         parent: &mut Element,
@@ -1303,7 +1293,7 @@ impl FileWriter<'_> {
     // WSDL Services
 
     fn print_service(&mut self, node: &Node) {
-        let mut parent = self.pick_section(SERVICES_MOD);
+        let parent = self.pick_section(SERVICES_MOD);
         let mut _parent = &mut *parent.deref().borrow_mut();
 
         let element_name = match self.get_some_attribute(node, "name") {
