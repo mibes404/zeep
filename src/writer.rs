@@ -581,12 +581,15 @@ impl FileWriter {
         parent: &mut Option<&mut Element>,
         module: &mut Element,
     ) -> WriterResult<()> {
-        node.children().for_each(|child| {
+        node.children().try_for_each(|child| {
             if let Some(p) = parent.take() {
-                self.print_element(&child, false, Some(p), module);
+                let result = self.print_element(&child, false, Some(p), module);
                 parent.replace(p);
+                result
+            } else {
+                Ok(())
             }
-        });
+        })?;
         Ok(())
     }
 
