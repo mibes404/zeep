@@ -134,6 +134,7 @@ mod tests {
                                 job_id: None,
                                 station: None,
                                 ps: None,
+                                agent: None,
                                 sm: Some(SessionManagerCommProfXML {
                                     primary_sm: "SM01a".to_string(),
                                     secondary_sm: None,
@@ -307,6 +308,7 @@ mod tests {
                                 }),
                                 ps: None,
                                 sm: None,
+                                agent: None,
                             },
                         ],
                     }),
@@ -448,6 +450,7 @@ async fn main() {
                             publish_via_aes_collector: "".to_string(),
                         }),
                         sm: None,
+                        agent: None,
                     }],
                 }),
             }],

@@ -34,32 +34,6 @@ pub mod services {
     use yaserde::{YaDeserialize, YaSerialize};
 }
 
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
-type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
-
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -468,6 +442,8 @@ pub mod types {
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(root = "ForgeinCommProfileType", default)]
     pub struct ForgeinCommProfileType {
+        #[yaserde(flatten)]
+        pub xml_comm_profile_type: XmlCommProfileType,
         #[yaserde(prefix = "xsi", rename = "type", attribute)]
         pub xsi_type: String, // XmlCommProfileType
         #[yaserde(rename = "csEncryptionKeyId", default)]
@@ -533,8 +509,6 @@ pub mod types {
         default
     )]
     pub struct XmlAgentProfile {
-        #[yaserde(prefix = "xsi", rename = "type", attribute)]
-        pub xsi_type: String, // XmlCommProfileType
         #[yaserde(prefix = "ns1", rename = "cmName", default)]
         pub cm_name: String,
         #[yaserde(prefix = "ns1", rename = "useExistingAgent", default)]
@@ -625,3 +599,29 @@ pub mod types {
         pub percent_allocation: Option<String>,
     }
 }
+
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
+}
+
+type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
