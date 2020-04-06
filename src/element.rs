@@ -210,7 +210,7 @@ impl Element {
             "".to_string()
         };
 
-        result.push_str("#[derive(Debug, Default, YaSerialize, YaDeserialize)]\n");
+        result.push_str("#[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]\n");
 
         let mut has_options = false;
 
@@ -323,15 +323,20 @@ impl Element {
             Some(xn) => xn,
         };
 
+        let prefix = match &self.prefix {
+            Some(p) => format!("prefix = \"{}\", ", p),
+            None => "".to_string(),
+        };
+
         if self.optional {
             format!(
-                "#[yaserde(rename=\"{}\", attribute)]\npub {}: Option<{}>,\n",
-                xml_name, self.name, field_type
+                "#[yaserde({}rename=\"{}\", attribute)]\npub {}: Option<{}>,\n",
+                prefix, xml_name, self.name, field_type
             )
         } else {
             format!(
-                "#[yaserde(rename=\"{}\", attribute)]\npub {}: {},\n",
-                xml_name, self.name, field_type
+                "#[yaserde({}rename=\"{}\", attribute)]\npub {}: {},\n",
+                prefix, xml_name, self.name, field_type
             )
         }
     }
