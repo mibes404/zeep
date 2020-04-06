@@ -237,9 +237,6 @@ impl FileWriter {
     }
 
     fn print_xsd(&mut self, node: &Node) -> WriterResult<()> {
-        let parent = self.pick_section(TYPES_MOD);
-        let mut _parent = &mut *parent.deref().borrow_mut();
-
         self.target_name_space = self
             .get_some_attribute(node, "targetNamespace")
             .map(|s| s.to_string());
@@ -249,10 +246,16 @@ impl FileWriter {
         node.children()
             .try_for_each(|child| match child.tag_name().name() {
                 "import" => self.import_file(&child),
-                "element" => self.print_element(&child, true, _parent),
+                "element" => {
+                    let module = self.pick_section(TYPES_MOD);
+                    let mut _module = &mut *module.deref().borrow_mut();
+                    self.print_element(&child, true, None, _module)
+                }
                 "complexType" => {
                     if let Some(n) = self.get_some_attribute(&child, "name") {
-                        self.print_complex_element(&child, n, false, _parent)
+                        let module = self.pick_section(TYPES_MOD);
+                        let mut _module = &mut *module.deref().borrow_mut();
+                        self.print_complex_element(&child, n, false, _module)
                     } else {
                         Ok(())
                     }
@@ -316,7 +319,8 @@ impl FileWriter {
         &mut self,
         node: &Node,
         is_top_level: bool,
-        parent: &mut Element,
+        mut parent: Option<&mut Element>,
+        module: &mut Element,
     ) -> WriterResult<()> {
         let element_name = match self.get_some_attribute(node, "name") {
             None => return Ok(()),
@@ -362,7 +366,7 @@ impl FileWriter {
             if top_level_name != alias {
                 let mut alias_element = Element::new(top_level_name.as_str(), ElementType::Alias);
                 alias_element.field_type = Option::Some(alias);
-                parent.add(alias_element);
+                module.add(alias_element);
                 return Ok(());
             }
         } else {
@@ -402,11 +406,14 @@ impl FileWriter {
             element.vector = as_vec;
             element.optional = as_option;
 
-            parent.add(element);
+            if let Some(p) = parent.take() {
+                p.add(element);
+                parent.replace(p);
+            }
         }
 
         if let Some(complex) = maybe_complex {
-            self.print_complex_element(&complex, element_name, is_top_level, parent)?
+            self.print_complex_element(&complex, element_name, is_top_level, module)?
         }
 
         Ok(())
@@ -461,9 +468,9 @@ impl FileWriter {
         node: &Node,
         name: &str,
         is_top_level: bool,
-        parent: &mut Element,
+        module: &mut Element,
     ) -> WriterResult<()> {
-        if self.have_seen_type(name, parent) {
+        if self.have_seen_type(name, module) {
             return Ok(());
         }
 
@@ -510,14 +517,14 @@ impl FileWriter {
             });
 
         if let Some(sequence) = maybe_sequence {
-            self.print_sequence(&sequence, &mut element)?;
+            self.print_sequence(&sequence, &mut Some(&mut element), module)?;
         }
 
         if let Some(complex) = maybe_complex {
-            self.print_complex_content(&complex, &mut element)?;
+            self.print_complex_content(&complex, &mut Some(&mut element), module)?;
         }
 
-        parent.add(element);
+        module.add(element);
         Ok(())
     }
 
@@ -568,13 +575,27 @@ impl FileWriter {
         Ok(base.to_string())
     }
 
-    fn print_sequence(&mut self, node: &Node, parent: &mut Element) -> WriterResult<()> {
-        node.children()
-            .try_for_each(|child| self.print_element(&child, false, parent))?;
+    fn print_sequence(
+        &mut self,
+        node: &Node,
+        parent: &mut Option<&mut Element>,
+        module: &mut Element,
+    ) -> WriterResult<()> {
+        node.children().for_each(|child| {
+            if let Some(p) = parent.take() {
+                self.print_element(&child, false, Some(p), module);
+                parent.replace(p);
+            }
+        });
         Ok(())
     }
 
-    fn print_complex_content(&mut self, node: &Node, parent: &mut Element) -> WriterResult<()> {
+    fn print_complex_content(
+        &mut self,
+        node: &Node,
+        parent: &mut Option<&mut Element>,
+        module: &mut Element,
+    ) -> WriterResult<()> {
         if let Some(extension) = node
             .children()
             .find(|child| child.has_tag_name("extension"))
@@ -586,34 +607,38 @@ impl FileWriter {
                 .find(|ext_child| ext_child.has_tag_name("sequence"));
 
             if let Some(sequence) = maybe_sequence {
-                self.print_sequence(&sequence, parent)?;
+                self.print_sequence(&sequence, parent, module)?;
             }
         }
 
-        self.print_sequence(node, parent)
+        self.print_sequence(node, parent, module)
     }
 
-    fn print_extension(&mut self, node: &Node, parent: &mut Element) {
-        let base = match self.get_some_attribute(node, "base") {
-            None => return,
-            Some(n) => n,
-        };
+    fn print_extension(&mut self, node: &Node, parent: &mut Option<&mut Element>) {
+        if let Some(p) = parent.take() {
+            let base = match self.get_some_attribute(node, "base") {
+                None => return,
+                Some(n) => n,
+            };
 
-        let mut element = Element::new(
-            to_snake_case(&self.fetch_type(base)).as_str(),
-            ElementType::Field,
-        );
-        element.flatten = true;
-        element.field_type = Option::Some(self.fetch_type(base));
-        parent.add(element);
+            let mut element = Element::new(
+                to_snake_case(&self.fetch_type(base)).as_str(),
+                ElementType::Field,
+            );
+            element.flatten = true;
+            element.field_type = Option::Some(self.fetch_type(base));
+            p.add(element);
 
-        let type_name = self.fetch_type(base);
-        let mut xsi = Element::new("xsi_type", ElementType::Attribute);
-        xsi.field_type = Option::Some("String".to_string());
-        xsi.prefix = Option::Some("xsi".to_string());
-        xsi.xml_name = Option::Some("type".to_string());
-        xsi.comment = Option::Some(type_name);
-        parent.add(xsi);
+            let type_name = self.fetch_type(base);
+            let mut xsi = Element::new("xsi_type", ElementType::Attribute);
+            xsi.field_type = Option::Some("String".to_string());
+            xsi.prefix = Option::Some("xsi".to_string());
+            xsi.xml_name = Option::Some("type".to_string());
+            xsi.comment = Option::Some(type_name);
+            p.add(xsi);
+
+            parent.replace(p);
+        }
     }
 
     fn shield_reserved_names<'a>(&self, type_name: &'a str) -> &'a str {
