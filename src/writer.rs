@@ -23,7 +23,7 @@ const SIGNATURE: &str = r#"//! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
 "#;
-const VERSION: &str = "0.0.2";
+const VERSION: &str = "0.1.1";
 const DEFAULT_NS_PREFIX: &str = "tns";
 const IMPORT_PREFIX: &str = "nsi";
 
