@@ -18,14 +18,6 @@ pub mod ports {
     use yaserde::{YaDeserialize, YaSerialize};
 }
 
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 pub struct Header {}
 
@@ -43,6 +35,14 @@ pub struct SoapFault {
 }
 
 type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
+
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
 
 pub mod bindings {
     use super::*;
@@ -62,6 +62,7 @@ pub mod services {
 
 pub mod types {
     use super::*;
+    use crate::smgr_agent::types::XmlAgentProfile;
     use crate::smgr_presence::types::XmlPsCommProfile;
     use crate::smgr_sm::types::SessionManagerCommProfXML;
     use crate::smgr_station::types::XmlStationProfile;
@@ -78,19 +79,19 @@ pub mod types {
     #[yaserde(
         prefix = "tns",
         root = "users",
+        default,
         namespace = "http://xml.avaya.com/schema/import",
         namespace = "tns: http://xml.avaya.com/schema/import",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
         namespace = "ns1: http://xml.avaya.com/schema/import_csm_agent",
         namespace = "ns2: http://xml.avaya.com/schema/import_csm_cm",
         namespace = "ns3: http://xml.avaya.com/schema/presence",
-        namespace = "ns7: http://xml.avaya.com/schema/import_sessionmanager",
-        default,
+        namespace = "ns7: http://xml.avaya.com/schema/import_sessionmanager",    
     )]
     pub struct Users {
         #[yaserde(rename = "secureStore", default)]
         pub secure_store: Option<XmlSecureStore>,
-        #[yaserde(rename = "user", prefix = "tns", default)]
+        #[yaserde(rename = "user", default)]
         pub user: Vec<XmlUser>,
     }
 
@@ -123,7 +124,7 @@ pub mod types {
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlUser", prefix = "tns", default)]
+    #[yaserde(root = "xmlUser", default)]
     pub struct XmlUser {
         #[yaserde(rename = "UserOrganizationDetails", default)]
         pub user_organization_details: Option<UserOrganizationDetailsType>,
@@ -437,12 +438,12 @@ pub mod types {
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(root = "xmlCommProfileType", default)]
     pub struct XmlCommProfileType {
+        #[yaserde(prefix = "xsi", rename = "type", attribute)]
+        pub xsi_type: String, // XmlCommProfileType
         #[yaserde(rename = "commProfileType", default)]
         pub comm_profile_type: String,
         #[yaserde(rename = "commProfileSubType", default)]
         pub comm_profile_sub_type: Option<String>,
-        #[yaserde(prefix = "xsi", rename = "type", attribute)]
-        pub xsi_type: String, // XmlCommProfileType
         #[yaserde(rename = "jobId", default)]
         pub job_id: Option<String>,
         #[yaserde(flatten)]
@@ -451,6 +452,8 @@ pub mod types {
         pub ps: Option<XmlPsCommProfile>,
         #[yaserde(flatten)]
         pub sm: Option<SessionManagerCommProfXML>,
+        #[yaserde(flatten)]
+        pub agent: Option<XmlAgentProfile>,
     }
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]

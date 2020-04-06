@@ -10,6 +10,29 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
+pub mod services {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
+
+pub mod bindings {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+}
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 pub struct Header {}
@@ -437,6 +460,8 @@ pub mod types {
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(root = "ForgeinCommProfileType", default)]
     pub struct ForgeinCommProfileType {
+        #[yaserde(flatten)]
+        pub xml_comm_profile_type: XmlCommProfileType,
         #[yaserde(prefix = "xsi", rename = "type", attribute)]
         pub xsi_type: String, // XmlCommProfileType
         #[yaserde(rename = "csEncryptionKeyId", default)]
@@ -511,31 +536,7 @@ pub mod types {
     }
 }
 
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
 pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
-pub mod bindings {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-}
-
-pub mod services {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;

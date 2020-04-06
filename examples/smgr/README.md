@@ -3,6 +3,23 @@
 * Add optional fields in XmlCommProfileType for each XmlCommProfileType extension.
 E.g.
 
+Before
+
+```
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "xmlCommProfileType", default)]
+    pub struct XmlCommProfileType {
+        #[yaserde(rename = "commProfileType", default)]
+        pub comm_profile_type: String,
+        #[yaserde(rename = "commProfileSubType", default)]
+        pub comm_profile_sub_type: Option<String>,
+        #[yaserde(rename = "jobId", default)]
+        pub job_id: Option<String>,
+    }
+```
+
+after 
+
 ```
  
     #[yaserde(flatten)]
@@ -11,26 +28,70 @@ E.g.
     pub ps: Option<XmlPsCommProfile>,
     #[yaserde(flatten)]
     pub sm: Option<SessionManagerCommProfXML>,
-
-```
-
-* Move xsi_type field from on XmlCommProfileType extension (e.g. XmlStationProfile) to XmlCommProfileType to indicate which extension instance we're dealing with
-
-```
-    #[yaserde(prefix = "xsi", rename = "type", attribute)]
-    pub xsi_type: String, // XmlCommProfileType
-```
-
-* Remove "back-reference" from extension (e.g. XmlStationProfile) to main XmlCommProfileType
-
-```
-
     #[yaserde(flatten)]
-    pub xml_comm_profile_type: XmlCommProfileType,
+    pub agent: Option<XmlAgentProfile>,
 
 ```
 
+* Remove xsi_type field and xml_comm_profile_type "back-reference" from extension (e.g. XmlStationProfile) to main XmlCommProfileType
+
+before
+```
+    pub struct XmlStationProfile {
+        #[yaserde(flatten)]
+        pub xml_comm_profile_type: XmlCommProfileType,
+        #[yaserde(prefix = "xsi", rename = "type", attribute)]
+        pub xsi_type: String, // XmlCommProfileType
+        #[yaserde(prefix = "ns2", rename = "cmName", default)]
+        pub cm_name: String,
+        
+    ... 
+```
+    
+after 
+```
+    pub struct XmlStationProfile {
+        #[yaserde(prefix = "ns2", rename = "cmName", default)]
+        pub cm_name: String,
+
+
+```
+
+* Add xsi_type field to XmlCommProfileType
+
+before:
+```
+    pub struct XmlCommProfileType {
+        #[yaserde(rename = "commProfileType", default)]
+        pub comm_profile_type: String,
+ 
+```
+
+after
+
+```
+    pub struct XmlCommProfileType {
+        #[yaserde(prefix = "xsi", rename = "type", attribute)]
+        pub xsi_type: String, // XmlCommProfileType
+        #[yaserde(rename = "commProfileType", default)]
+        pub comm_profile_type: String,
+
+```
 * Add all namespaces used by extensions to Users type. You may need to delete existing namespaces if they already use same prefix
+before:
+
+```
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        prefix = "tns",
+        root = "users",
+        default,
+        namespace = "http://xml.avaya.com/schema/import",
+        namespace = "tns: http://xml.avaya.com/schema/import",
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance"
+    )]
+    pub struct Users { 
+```
 ```
 
     namespace = "ns1: http://xml.avaya.com/schema/import_csm_agent",
