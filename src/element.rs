@@ -424,7 +424,7 @@ mod tests {
 
     #[test]
     fn test_base_struct() {
-        let expected = r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+        let expected = r#"#[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 pub struct Header {
 }
 "#;
@@ -434,7 +434,7 @@ pub struct Header {
 
     #[test]
     fn test_struct_with_fields() {
-        let expected = r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+        let expected = r#"#[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 #[yaserde(
 	root = "Fault",
 	namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
@@ -442,16 +442,15 @@ pub struct Header {
 )]
 pub struct SoapFault {
 	#[yaserde(rename = "faultcode", default)]
-	pub fault_code: Option<String>,
+	pub fault_code: Option<String>, 
 	#[yaserde(rename = "faultstring", default)]
-	pub fault_string: Option<String>,
+	pub fault_string: Option<String>, 
 }
 "#;
 
         let mut soap_fault = Element::new("SoapFault", ElementType::Struct);
         soap_fault.xml_name = Option::Some("Fault".to_string());
-        soap_fault.namespace =
-            Option::Some("soapenv: http://schemas.xmlsoap.org/soap/envelope/".to_string());
+        soap_fault.add_ns("soapenv", "http://schemas.xmlsoap.org/soap/envelope/");
         soap_fault.prefix = Option::Some("soapenv".to_string());
         soap_fault.add(Element::new_field(
             "fault_code",
@@ -498,7 +497,10 @@ pub struct SoapFault {
 
     #[test]
     fn test_alias() {
-        let expected = r#"pub type SomeElement = other_mod::SomeElement;\n\n"#.to_string();
+        let expected = r#"pub type SomeElement = other_mod::SomeElement;
+
+"#
+        .to_string();
         let mut alias_element = Element::new("SomeElement", ElementType::Alias);
         alias_element.field_type = Option::Some("other_mod::SomeElement".to_string());
         assert_eq!(alias_element.render(), expected)

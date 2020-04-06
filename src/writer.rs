@@ -1436,6 +1436,7 @@ impl FileWriter {
 mod test_xsd {
     use super::*;
     use crate::debug::DebugBuffer;
+    use std::io::Read;
 
     fn prepare_output(ns_prefix: Option<String>, default_ns: Option<String>) -> String {
         let mut buffer = DebugBuffer::default();
@@ -1469,23 +1470,37 @@ mod test_xsd {
         );
 
         // no prefix for default namespace
-        assert!(result.contains(r#"#[yaserde(root = "xmlAgentProfile", default)]"#));
+        assert!(result.contains(
+            r#"#[yaserde(
+	root = "xmlAgentProfile",
+)]"#
+        ));
     }
 
     #[test]
     fn test_no_default_namespace() {
         let result = prepare_output(None, None);
-        assert!(
-            result.contains(r#"#[yaserde(prefix = "tns", namespace = "tns: http://xml.avaya.com/schema/import_csm_agent", root = "xmlAgentProfile", default)]"#)
-        );
+
+        assert!(result.contains(
+            r#"#[yaserde(
+	root = "xmlAgentProfile",
+	namespace = "tns: http://xml.avaya.com/schema/import_csm_agent",
+	prefix = "tns",
+)]"#
+        ));
     }
 
     #[test]
     fn test_ns_prefix() {
         let result = prepare_output(Some("ns2".to_string()), None);
-        assert!(
-            result.contains(r#"#[yaserde(prefix = "ns2", namespace = "ns2: http://xml.avaya.com/schema/import_csm_agent", root = "xmlAgentProfile", default)]"#)
-        );
+
+        assert!(result.contains(
+            r#"#[yaserde(
+	root = "xmlAgentProfile",
+	namespace = "ns2: http://xml.avaya.com/schema/import_csm_agent",
+	prefix = "ns2",
+)]"#
+        ));
     }
 
     #[test]
@@ -1498,6 +1513,7 @@ mod test_xsd {
 #[cfg(test)]
 mod test_wsdl {
     use super::*;
+    use std::io::Read;
 
     fn prepare_output(ns_prefix: Option<String>, default_ns: Option<String>) -> String {
         let mut buffer = DebugBuffer::default();
