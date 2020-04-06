@@ -319,7 +319,7 @@ impl FileWriter {
         &mut self,
         node: &Node,
         is_top_level: bool,
-        mut parent: Option<&mut Element>,
+        parent: Option<&mut Element>,
         module: &mut Element,
     ) -> WriterResult<()> {
         let element_name = match self.get_some_attribute(node, "name") {
@@ -406,9 +406,8 @@ impl FileWriter {
             element.vector = as_vec;
             element.optional = as_option;
 
-            if let Some(p) = parent.take() {
+            if let Some(p) = parent {
                 p.add(element);
-                parent.replace(p);
             }
         }
 
@@ -582,10 +581,8 @@ impl FileWriter {
         module: &mut Element,
     ) -> WriterResult<()> {
         node.children().try_for_each(|child| {
-            if let Some(p) = parent.take() {
-                let result = self.print_element(&child, false, Some(p), module);
-                parent.replace(p);
-                result
+            if let Some(p) = parent {
+                self.print_element(&child, false, Some(p), module)
             } else {
                 Ok(())
             }
@@ -618,7 +615,7 @@ impl FileWriter {
     }
 
     fn print_extension(&mut self, node: &Node, parent: &mut Option<&mut Element>) {
-        if let Some(p) = parent.take() {
+        if let Some(p) = parent {
             let base = match self.get_some_attribute(node, "base") {
                 None => return,
                 Some(n) => n,
@@ -639,8 +636,6 @@ impl FileWriter {
             xsi.xml_name = Option::Some("type".to_string());
             xsi.comment = Option::Some(type_name);
             p.add(xsi);
-
-            parent.replace(p);
         }
     }
 
