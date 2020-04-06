@@ -10,23 +10,6 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Header {}
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(
-    root = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -83,25 +66,23 @@ pub mod types {
     }
 }
 
-pub mod services {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+pub struct Header {}
 
-    pub struct HelloEndpointService {}
-    impl HelloEndpointService {
-        pub fn new_client(
-            credentials: Option<(String, String)>,
-        ) -> bindings::HelloEndpointServiceSoapBinding {
-            bindings::HelloEndpointServiceSoapBinding::new(
-                "http://www.learnwebservices.com/services/hello",
-                credentials,
-            )
-        }
-    }
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(
+    root = "Fault",
+    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
+    prefix = "soapenv"
+)]
+pub struct SoapFault {
+    #[yaserde(rename = "faultcode", default)]
+    pub fault_code: Option<String>,
+    #[yaserde(rename = "faultstring", default)]
+    pub fault_string: Option<String>,
 }
+
+type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
 
 pub mod ports {
     use super::*;
@@ -122,25 +103,23 @@ pub mod ports {
     pub type SayHelloResponse = messages::SayHelloResponse;
 }
 
-pub mod messages {
+pub mod services {
     use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "SayHelloResponse", default)]
-    pub struct SayHelloResponse {
-        #[yaserde(flatten)]
-        pub parameters: types::SayHelloResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "SayHello", default)]
-    pub struct SayHello {
-        #[yaserde(flatten)]
-        pub parameters: types::SayHello,
+    pub struct HelloEndpointService {}
+    impl HelloEndpointService {
+        pub fn new_client(
+            credentials: Option<(String, String)>,
+        ) -> bindings::HelloEndpointServiceSoapBinding {
+            bindings::HelloEndpointServiceSoapBinding::new(
+                "http://www.learnwebservices.com/services/hello",
+                credentials,
+            )
+        }
     }
 }
 
@@ -156,7 +135,7 @@ pub mod bindings {
             &self,
             request: &T,
             action: &str,
-        ) -> (reqwest::StatusCode, String) {
+        ) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -171,12 +150,12 @@ pub mod bindings {
                     Option::from(credentials.1.to_string()),
                 );
             }
-            let res = req.send().await.expect("can not send request");
+            let res = req.send().await?;
             let status = res.status();
             debug!("SOAP Status: {}", status);
             let txt = res.text().await.unwrap_or_default();
             debug!("SOAP Response: {}", txt);
-            (status, txt)
+            Ok((status, txt))
         }
     }
     pub struct HelloEndpointServiceSoapBinding {
@@ -196,9 +175,18 @@ pub mod bindings {
                 xmlns: Option::from("http://learnwebservices.com/services/hello".to_string()),
             });
 
-            let (status, response) = self.send_soap_request(&__request, "").await;
+            let (status, response) =
+                self.send_soap_request(&__request, "")
+                    .await
+                    .map_err(|err| {
+                        warn!("Failed to send SOAP request: {:?}", err);
+                        None
+                    })?;
 
-            let r: SayHelloResponseSoapEnvelope = from_str(&response).expect("can not unmarshal");
+            let r: SayHelloResponseSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -305,5 +293,27 @@ pub mod bindings {
                 header: None,
             }
         }
+    }
+}
+
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "SayHelloResponse", default)]
+    pub struct SayHelloResponse {
+        #[yaserde(flatten)]
+        pub parameters: types::SayHelloResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "SayHello", default)]
+    pub struct SayHello {
+        #[yaserde(flatten)]
+        pub parameters: types::SayHello,
     }
 }

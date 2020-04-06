@@ -10,134 +10,6 @@ use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-pub mod messages {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetWeatherInformationSoapIn", default)]
-    pub struct GetWeatherInformationSoapIn {
-        #[yaserde(flatten)]
-        pub parameters: types::GetWeatherInformation,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetWeatherInformationSoapOut", default)]
-    pub struct GetWeatherInformationSoapOut {
-        #[yaserde(flatten)]
-        pub parameters: types::GetWeatherInformationResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityForecastByZIPSoapIn", default)]
-    pub struct GetCityForecastByZIPSoapIn {
-        #[yaserde(flatten)]
-        pub parameters: types::GetCityForecastByZIP,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityForecastByZIPSoapOut", default)]
-    pub struct GetCityForecastByZIPSoapOut {
-        #[yaserde(flatten)]
-        pub parameters: types::GetCityForecastByZIPResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityWeatherByZIPSoapIn", default)]
-    pub struct GetCityWeatherByZIPSoapIn {
-        #[yaserde(flatten)]
-        pub parameters: types::GetCityWeatherByZIP,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityWeatherByZIPSoapOut", default)]
-    pub struct GetCityWeatherByZIPSoapOut {
-        #[yaserde(flatten)]
-        pub parameters: types::GetCityWeatherByZIPResponse,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetWeatherInformationHttpGetIn", default)]
-    pub struct GetWeatherInformationHttpGetIn {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetWeatherInformationHttpGetOut", default)]
-    pub struct GetWeatherInformationHttpGetOut {
-        #[yaserde(flatten)]
-        pub body: types::ArrayOfWeatherDescription,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityForecastByZIPHttpGetIn", default)]
-    pub struct GetCityForecastByZIPHttpGetIn {
-        #[yaserde(rename = "ZIP")]
-        pub zip: String,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityForecastByZIPHttpGetOut", default)]
-    pub struct GetCityForecastByZIPHttpGetOut {
-        #[yaserde(flatten)]
-        pub body: types::ForecastReturn,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityWeatherByZIPHttpGetIn", default)]
-    pub struct GetCityWeatherByZIPHttpGetIn {
-        #[yaserde(rename = "ZIP")]
-        pub zip: String,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityWeatherByZIPHttpGetOut", default)]
-    pub struct GetCityWeatherByZIPHttpGetOut {
-        #[yaserde(flatten)]
-        pub body: types::WeatherReturn,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetWeatherInformationHttpPostIn", default)]
-    pub struct GetWeatherInformationHttpPostIn {}
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetWeatherInformationHttpPostOut", default)]
-    pub struct GetWeatherInformationHttpPostOut {
-        #[yaserde(flatten)]
-        pub body: types::ArrayOfWeatherDescription,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityForecastByZIPHttpPostIn", default)]
-    pub struct GetCityForecastByZIPHttpPostIn {
-        #[yaserde(rename = "ZIP")]
-        pub zip: String,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityForecastByZIPHttpPostOut", default)]
-    pub struct GetCityForecastByZIPHttpPostOut {
-        #[yaserde(flatten)]
-        pub body: types::ForecastReturn,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityWeatherByZIPHttpPostIn", default)]
-    pub struct GetCityWeatherByZIPHttpPostIn {
-        #[yaserde(rename = "ZIP")]
-        pub zip: String,
-    }
-
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityWeatherByZIPHttpPostOut", default)]
-    pub struct GetCityWeatherByZIPHttpPostOut {
-        #[yaserde(flatten)]
-        pub body: types::WeatherReturn,
-    }
-}
-
 pub mod types {
     use super::*;
     use async_trait::async_trait;
@@ -375,90 +247,6 @@ pub mod types {
     }
 }
 
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
-
-    #[async_trait]
-    pub trait WeatherSoap {
-        /// Gets Information for each WeatherID
-        async fn get_weather_information(
-            &self,
-            get_weather_information_soap_in: GetWeatherInformationSoapIn,
-        ) -> Result<GetWeatherInformationSoapOut, Option<SoapFault>>;
-        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
-        async fn get_city_forecast_by_zip(
-            &self,
-            get_city_forecast_by_zip_soap_in: GetCityForecastByZIPSoapIn,
-        ) -> Result<GetCityForecastByZIPSoapOut, Option<SoapFault>>;
-        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
-        async fn get_city_weather_by_zip(
-            &self,
-            get_city_weather_by_zip_soap_in: GetCityWeatherByZIPSoapIn,
-        ) -> Result<GetCityWeatherByZIPSoapOut, Option<SoapFault>>;
-    }
-
-    pub type GetWeatherInformationSoapIn = messages::GetWeatherInformationSoapIn;
-    pub type GetWeatherInformationSoapOut = messages::GetWeatherInformationSoapOut;
-    pub type GetCityForecastByZIPSoapIn = messages::GetCityForecastByZIPSoapIn;
-    pub type GetCityForecastByZIPSoapOut = messages::GetCityForecastByZIPSoapOut;
-    pub type GetCityWeatherByZIPSoapIn = messages::GetCityWeatherByZIPSoapIn;
-    pub type GetCityWeatherByZIPSoapOut = messages::GetCityWeatherByZIPSoapOut;
-    #[async_trait]
-    pub trait WeatherHttpGet {
-        /// Gets Information for each WeatherID
-        async fn get_weather_information(
-            &self,
-            get_weather_information_http_get_in: GetWeatherInformationHttpGetIn,
-        ) -> Result<GetWeatherInformationHttpGetOut, Option<SoapFault>>;
-        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
-        async fn get_city_forecast_by_zip(
-            &self,
-            get_city_forecast_by_zip_http_get_in: GetCityForecastByZIPHttpGetIn,
-        ) -> Result<GetCityForecastByZIPHttpGetOut, Option<SoapFault>>;
-        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
-        async fn get_city_weather_by_zip(
-            &self,
-            get_city_weather_by_zip_http_get_in: GetCityWeatherByZIPHttpGetIn,
-        ) -> Result<GetCityWeatherByZIPHttpGetOut, Option<SoapFault>>;
-    }
-
-    pub type GetWeatherInformationHttpGetIn = messages::GetWeatherInformationHttpGetIn;
-    pub type GetWeatherInformationHttpGetOut = messages::GetWeatherInformationHttpGetOut;
-    pub type GetCityForecastByZIPHttpGetIn = messages::GetCityForecastByZIPHttpGetIn;
-    pub type GetCityForecastByZIPHttpGetOut = messages::GetCityForecastByZIPHttpGetOut;
-    pub type GetCityWeatherByZIPHttpGetIn = messages::GetCityWeatherByZIPHttpGetIn;
-    pub type GetCityWeatherByZIPHttpGetOut = messages::GetCityWeatherByZIPHttpGetOut;
-    #[async_trait]
-    pub trait WeatherHttpPost {
-        /// Gets Information for each WeatherID
-        async fn get_weather_information(
-            &self,
-            get_weather_information_http_post_in: GetWeatherInformationHttpPostIn,
-        ) -> Result<GetWeatherInformationHttpPostOut, Option<SoapFault>>;
-        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
-        async fn get_city_forecast_by_zip(
-            &self,
-            get_city_forecast_by_zip_http_post_in: GetCityForecastByZIPHttpPostIn,
-        ) -> Result<GetCityForecastByZIPHttpPostOut, Option<SoapFault>>;
-        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
-        async fn get_city_weather_by_zip(
-            &self,
-            get_city_weather_by_zip_http_post_in: GetCityWeatherByZIPHttpPostIn,
-        ) -> Result<GetCityWeatherByZIPHttpPostOut, Option<SoapFault>>;
-    }
-
-    pub type GetWeatherInformationHttpPostIn = messages::GetWeatherInformationHttpPostIn;
-    pub type GetWeatherInformationHttpPostOut = messages::GetWeatherInformationHttpPostOut;
-    pub type GetCityForecastByZIPHttpPostIn = messages::GetCityForecastByZIPHttpPostIn;
-    pub type GetCityForecastByZIPHttpPostOut = messages::GetCityForecastByZIPHttpPostOut;
-    pub type GetCityWeatherByZIPHttpPostIn = messages::GetCityWeatherByZIPHttpPostIn;
-    pub type GetCityWeatherByZIPHttpPostOut = messages::GetCityWeatherByZIPHttpPostOut;
-}
-
 pub mod bindings {
     use super::*;
     use async_trait::async_trait;
@@ -471,7 +259,7 @@ pub mod bindings {
             &self,
             request: &T,
             action: &str,
-        ) -> (reqwest::StatusCode, String) {
+        ) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -486,12 +274,12 @@ pub mod bindings {
                     Option::from(credentials.1.to_string()),
                 );
             }
-            let res = req.send().await.expect("can not send request");
+            let res = req.send().await?;
             let status = res.status();
             debug!("SOAP Status: {}", status);
             let txt = res.text().await.unwrap_or_default();
             debug!("SOAP Response: {}", txt);
-            (status, txt)
+            Ok((status, txt))
         }
     }
     pub struct WeatherSoap {
@@ -517,10 +305,17 @@ pub mod bindings {
                     &__request,
                     "http://ws.cdyne.com/WeatherWS/GetWeatherInformation",
                 )
-                .await;
+                .await
+                .map_err(|err| {
+                    warn!("Failed to send SOAP request: {:?}", err);
+                    None
+                })?;
 
             let r: GetWeatherInformationSoapOutSoapEnvelope =
-                from_str(&response).expect("can not unmarshal");
+                from_str(&response).map_err(|err| {
+                    warn!("Failed to unmarshal SOAP response: {:?}", err);
+                    None
+                })?;
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -542,10 +337,17 @@ pub mod bindings {
                     &__request,
                     "http://ws.cdyne.com/WeatherWS/GetCityForecastByZIP",
                 )
-                .await;
+                .await
+                .map_err(|err| {
+                    warn!("Failed to send SOAP request: {:?}", err);
+                    None
+                })?;
 
             let r: GetCityForecastByZIPSoapOutSoapEnvelope =
-                from_str(&response).expect("can not unmarshal");
+                from_str(&response).map_err(|err| {
+                    warn!("Failed to unmarshal SOAP response: {:?}", err);
+                    None
+                })?;
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -567,10 +369,16 @@ pub mod bindings {
                     &__request,
                     "http://ws.cdyne.com/WeatherWS/GetCityWeatherByZIP",
                 )
-                .await;
+                .await
+                .map_err(|err| {
+                    warn!("Failed to send SOAP request: {:?}", err);
+                    None
+                })?;
 
-            let r: GetCityWeatherByZIPSoapOutSoapEnvelope =
-                from_str(&response).expect("can not unmarshal");
+            let r: GetCityWeatherByZIPSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -848,7 +656,7 @@ pub mod bindings {
             &self,
             request: &T,
             action: &str,
-        ) -> (reqwest::StatusCode, String) {
+        ) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -863,12 +671,12 @@ pub mod bindings {
                     Option::from(credentials.1.to_string()),
                 );
             }
-            let res = req.send().await.expect("can not send request");
+            let res = req.send().await?;
             let status = res.status();
             debug!("SOAP Status: {}", status);
             let txt = res.text().await.unwrap_or_default();
             debug!("SOAP Response: {}", txt);
-            (status, txt)
+            Ok((status, txt))
         }
     }
     pub struct WeatherSoap12 {
@@ -894,10 +702,17 @@ pub mod bindings {
                     &__request,
                     "http://ws.cdyne.com/WeatherWS/GetWeatherInformation",
                 )
-                .await;
+                .await
+                .map_err(|err| {
+                    warn!("Failed to send SOAP request: {:?}", err);
+                    None
+                })?;
 
             let r: GetWeatherInformationSoapOutSoapEnvelope =
-                from_str(&response).expect("can not unmarshal");
+                from_str(&response).map_err(|err| {
+                    warn!("Failed to unmarshal SOAP response: {:?}", err);
+                    None
+                })?;
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -919,10 +734,17 @@ pub mod bindings {
                     &__request,
                     "http://ws.cdyne.com/WeatherWS/GetCityForecastByZIP",
                 )
-                .await;
+                .await
+                .map_err(|err| {
+                    warn!("Failed to send SOAP request: {:?}", err);
+                    None
+                })?;
 
             let r: GetCityForecastByZIPSoapOutSoapEnvelope =
-                from_str(&response).expect("can not unmarshal");
+                from_str(&response).map_err(|err| {
+                    warn!("Failed to unmarshal SOAP response: {:?}", err);
+                    None
+                })?;
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -944,10 +766,16 @@ pub mod bindings {
                     &__request,
                     "http://ws.cdyne.com/WeatherWS/GetCityWeatherByZIP",
                 )
-                .await;
+                .await
+                .map_err(|err| {
+                    warn!("Failed to send SOAP request: {:?}", err);
+                    None
+                })?;
 
-            let r: GetCityWeatherByZIPSoapOutSoapEnvelope =
-                from_str(&response).expect("can not unmarshal");
+            let r: GetCityWeatherByZIPSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -980,7 +808,7 @@ pub mod bindings {
             &self,
             request: &T,
             action: &str,
-        ) -> (reqwest::StatusCode, String) {
+        ) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -995,12 +823,12 @@ pub mod bindings {
                     Option::from(credentials.1.to_string()),
                 );
             }
-            let res = req.send().await.expect("can not send request");
+            let res = req.send().await?;
             let status = res.status();
             debug!("SOAP Status: {}", status);
             let txt = res.text().await.unwrap_or_default();
             debug!("SOAP Response: {}", txt);
-            (status, txt)
+            Ok((status, txt))
         }
     }
     pub struct WeatherHttpGet {
@@ -1027,10 +855,17 @@ pub mod bindings {
                     &__request,
                     "http://ws.cdyne.com/WeatherWS//GetWeatherInformation",
                 )
-                .await;
+                .await
+                .map_err(|err| {
+                    warn!("Failed to send SOAP request: {:?}", err);
+                    None
+                })?;
 
             let r: GetWeatherInformationHttpGetOutSoapEnvelope =
-                from_str(&response).expect("can not unmarshal");
+                from_str(&response).map_err(|err| {
+                    warn!("Failed to unmarshal SOAP response: {:?}", err);
+                    None
+                })?;
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -1052,10 +887,17 @@ pub mod bindings {
                     &__request,
                     "http://ws.cdyne.com/WeatherWS//GetCityForecastByZIP",
                 )
-                .await;
+                .await
+                .map_err(|err| {
+                    warn!("Failed to send SOAP request: {:?}", err);
+                    None
+                })?;
 
             let r: GetCityForecastByZIPHttpGetOutSoapEnvelope =
-                from_str(&response).expect("can not unmarshal");
+                from_str(&response).map_err(|err| {
+                    warn!("Failed to unmarshal SOAP response: {:?}", err);
+                    None
+                })?;
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -1077,10 +919,17 @@ pub mod bindings {
                     &__request,
                     "http://ws.cdyne.com/WeatherWS//GetCityWeatherByZIP",
                 )
-                .await;
+                .await
+                .map_err(|err| {
+                    warn!("Failed to send SOAP request: {:?}", err);
+                    None
+                })?;
 
             let r: GetCityWeatherByZIPHttpGetOutSoapEnvelope =
-                from_str(&response).expect("can not unmarshal");
+                from_str(&response).map_err(|err| {
+                    warn!("Failed to unmarshal SOAP response: {:?}", err);
+                    None
+                })?;
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -1358,7 +1207,7 @@ pub mod bindings {
             &self,
             request: &T,
             action: &str,
-        ) -> (reqwest::StatusCode, String) {
+        ) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -1373,12 +1222,12 @@ pub mod bindings {
                     Option::from(credentials.1.to_string()),
                 );
             }
-            let res = req.send().await.expect("can not send request");
+            let res = req.send().await?;
             let status = res.status();
             debug!("SOAP Status: {}", status);
             let txt = res.text().await.unwrap_or_default();
             debug!("SOAP Response: {}", txt);
-            (status, txt)
+            Ok((status, txt))
         }
     }
     pub struct WeatherHttpPost {
@@ -1405,10 +1254,17 @@ pub mod bindings {
                     &__request,
                     "http://ws.cdyne.com/WeatherWS//GetWeatherInformation",
                 )
-                .await;
+                .await
+                .map_err(|err| {
+                    warn!("Failed to send SOAP request: {:?}", err);
+                    None
+                })?;
 
             let r: GetWeatherInformationHttpPostOutSoapEnvelope =
-                from_str(&response).expect("can not unmarshal");
+                from_str(&response).map_err(|err| {
+                    warn!("Failed to unmarshal SOAP response: {:?}", err);
+                    None
+                })?;
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -1431,10 +1287,17 @@ pub mod bindings {
                     &__request,
                     "http://ws.cdyne.com/WeatherWS//GetCityForecastByZIP",
                 )
-                .await;
+                .await
+                .map_err(|err| {
+                    warn!("Failed to send SOAP request: {:?}", err);
+                    None
+                })?;
 
             let r: GetCityForecastByZIPHttpPostOutSoapEnvelope =
-                from_str(&response).expect("can not unmarshal");
+                from_str(&response).map_err(|err| {
+                    warn!("Failed to unmarshal SOAP response: {:?}", err);
+                    None
+                })?;
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -1456,10 +1319,17 @@ pub mod bindings {
                     &__request,
                     "http://ws.cdyne.com/WeatherWS//GetCityWeatherByZIP",
                 )
-                .await;
+                .await
+                .map_err(|err| {
+                    warn!("Failed to send SOAP request: {:?}", err);
+                    None
+                })?;
 
             let r: GetCityWeatherByZIPHttpPostOutSoapEnvelope =
-                from_str(&response).expect("can not unmarshal");
+                from_str(&response).map_err(|err| {
+                    warn!("Failed to unmarshal SOAP response: {:?}", err);
+                    None
+                })?;
             if status.is_success() {
                 Ok(r.body.body)
             } else {
@@ -1733,6 +1603,233 @@ pub mod bindings {
     }
 }
 
+pub mod ports {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[async_trait]
+    pub trait WeatherSoap {
+        /// Gets Information for each WeatherID
+        async fn get_weather_information(
+            &self,
+            get_weather_information_soap_in: GetWeatherInformationSoapIn,
+        ) -> Result<GetWeatherInformationSoapOut, Option<SoapFault>>;
+        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
+        async fn get_city_forecast_by_zip(
+            &self,
+            get_city_forecast_by_zip_soap_in: GetCityForecastByZIPSoapIn,
+        ) -> Result<GetCityForecastByZIPSoapOut, Option<SoapFault>>;
+        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
+        async fn get_city_weather_by_zip(
+            &self,
+            get_city_weather_by_zip_soap_in: GetCityWeatherByZIPSoapIn,
+        ) -> Result<GetCityWeatherByZIPSoapOut, Option<SoapFault>>;
+    }
+
+    pub type GetWeatherInformationSoapIn = messages::GetWeatherInformationSoapIn;
+    pub type GetWeatherInformationSoapOut = messages::GetWeatherInformationSoapOut;
+    pub type GetCityForecastByZIPSoapIn = messages::GetCityForecastByZIPSoapIn;
+    pub type GetCityForecastByZIPSoapOut = messages::GetCityForecastByZIPSoapOut;
+    pub type GetCityWeatherByZIPSoapIn = messages::GetCityWeatherByZIPSoapIn;
+    pub type GetCityWeatherByZIPSoapOut = messages::GetCityWeatherByZIPSoapOut;
+    #[async_trait]
+    pub trait WeatherHttpGet {
+        /// Gets Information for each WeatherID
+        async fn get_weather_information(
+            &self,
+            get_weather_information_http_get_in: GetWeatherInformationHttpGetIn,
+        ) -> Result<GetWeatherInformationHttpGetOut, Option<SoapFault>>;
+        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
+        async fn get_city_forecast_by_zip(
+            &self,
+            get_city_forecast_by_zip_http_get_in: GetCityForecastByZIPHttpGetIn,
+        ) -> Result<GetCityForecastByZIPHttpGetOut, Option<SoapFault>>;
+        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
+        async fn get_city_weather_by_zip(
+            &self,
+            get_city_weather_by_zip_http_get_in: GetCityWeatherByZIPHttpGetIn,
+        ) -> Result<GetCityWeatherByZIPHttpGetOut, Option<SoapFault>>;
+    }
+
+    pub type GetWeatherInformationHttpGetIn = messages::GetWeatherInformationHttpGetIn;
+    pub type GetWeatherInformationHttpGetOut = messages::GetWeatherInformationHttpGetOut;
+    pub type GetCityForecastByZIPHttpGetIn = messages::GetCityForecastByZIPHttpGetIn;
+    pub type GetCityForecastByZIPHttpGetOut = messages::GetCityForecastByZIPHttpGetOut;
+    pub type GetCityWeatherByZIPHttpGetIn = messages::GetCityWeatherByZIPHttpGetIn;
+    pub type GetCityWeatherByZIPHttpGetOut = messages::GetCityWeatherByZIPHttpGetOut;
+    #[async_trait]
+    pub trait WeatherHttpPost {
+        /// Gets Information for each WeatherID
+        async fn get_weather_information(
+            &self,
+            get_weather_information_http_post_in: GetWeatherInformationHttpPostIn,
+        ) -> Result<GetWeatherInformationHttpPostOut, Option<SoapFault>>;
+        /// Allows you to get your City Forecast Over the Next 7 Days, which is updated hourly. U.S. Only
+        async fn get_city_forecast_by_zip(
+            &self,
+            get_city_forecast_by_zip_http_post_in: GetCityForecastByZIPHttpPostIn,
+        ) -> Result<GetCityForecastByZIPHttpPostOut, Option<SoapFault>>;
+        /// Allows you to get your City's Weather, which is updated hourly. U.S. Only
+        async fn get_city_weather_by_zip(
+            &self,
+            get_city_weather_by_zip_http_post_in: GetCityWeatherByZIPHttpPostIn,
+        ) -> Result<GetCityWeatherByZIPHttpPostOut, Option<SoapFault>>;
+    }
+
+    pub type GetWeatherInformationHttpPostIn = messages::GetWeatherInformationHttpPostIn;
+    pub type GetWeatherInformationHttpPostOut = messages::GetWeatherInformationHttpPostOut;
+    pub type GetCityForecastByZIPHttpPostIn = messages::GetCityForecastByZIPHttpPostIn;
+    pub type GetCityForecastByZIPHttpPostOut = messages::GetCityForecastByZIPHttpPostOut;
+    pub type GetCityWeatherByZIPHttpPostIn = messages::GetCityWeatherByZIPHttpPostIn;
+    pub type GetCityWeatherByZIPHttpPostOut = messages::GetCityWeatherByZIPHttpPostOut;
+}
+
+pub mod messages {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetWeatherInformationSoapIn", default)]
+    pub struct GetWeatherInformationSoapIn {
+        #[yaserde(flatten)]
+        pub parameters: types::GetWeatherInformation,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetWeatherInformationSoapOut", default)]
+    pub struct GetWeatherInformationSoapOut {
+        #[yaserde(flatten)]
+        pub parameters: types::GetWeatherInformationResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetCityForecastByZIPSoapIn", default)]
+    pub struct GetCityForecastByZIPSoapIn {
+        #[yaserde(flatten)]
+        pub parameters: types::GetCityForecastByZIP,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetCityForecastByZIPSoapOut", default)]
+    pub struct GetCityForecastByZIPSoapOut {
+        #[yaserde(flatten)]
+        pub parameters: types::GetCityForecastByZIPResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetCityWeatherByZIPSoapIn", default)]
+    pub struct GetCityWeatherByZIPSoapIn {
+        #[yaserde(flatten)]
+        pub parameters: types::GetCityWeatherByZIP,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetCityWeatherByZIPSoapOut", default)]
+    pub struct GetCityWeatherByZIPSoapOut {
+        #[yaserde(flatten)]
+        pub parameters: types::GetCityWeatherByZIPResponse,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetWeatherInformationHttpGetIn", default)]
+    pub struct GetWeatherInformationHttpGetIn {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetWeatherInformationHttpGetOut", default)]
+    pub struct GetWeatherInformationHttpGetOut {
+        #[yaserde(flatten)]
+        pub body: types::ArrayOfWeatherDescription,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetCityForecastByZIPHttpGetIn", default)]
+    pub struct GetCityForecastByZIPHttpGetIn {
+        #[yaserde(rename = "ZIP")]
+        pub zip: String,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetCityForecastByZIPHttpGetOut", default)]
+    pub struct GetCityForecastByZIPHttpGetOut {
+        #[yaserde(flatten)]
+        pub body: types::ForecastReturn,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetCityWeatherByZIPHttpGetIn", default)]
+    pub struct GetCityWeatherByZIPHttpGetIn {
+        #[yaserde(rename = "ZIP")]
+        pub zip: String,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetCityWeatherByZIPHttpGetOut", default)]
+    pub struct GetCityWeatherByZIPHttpGetOut {
+        #[yaserde(flatten)]
+        pub body: types::WeatherReturn,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetWeatherInformationHttpPostIn", default)]
+    pub struct GetWeatherInformationHttpPostIn {}
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetWeatherInformationHttpPostOut", default)]
+    pub struct GetWeatherInformationHttpPostOut {
+        #[yaserde(flatten)]
+        pub body: types::ArrayOfWeatherDescription,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetCityForecastByZIPHttpPostIn", default)]
+    pub struct GetCityForecastByZIPHttpPostIn {
+        #[yaserde(rename = "ZIP")]
+        pub zip: String,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetCityForecastByZIPHttpPostOut", default)]
+    pub struct GetCityForecastByZIPHttpPostOut {
+        #[yaserde(flatten)]
+        pub body: types::ForecastReturn,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetCityWeatherByZIPHttpPostIn", default)]
+    pub struct GetCityWeatherByZIPHttpPostIn {
+        #[yaserde(rename = "ZIP")]
+        pub zip: String,
+    }
+
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "GetCityWeatherByZIPHttpPostOut", default)]
+    pub struct GetCityWeatherByZIPHttpPostOut {
+        #[yaserde(flatten)]
+        pub body: types::WeatherReturn,
+    }
+}
+
+pub mod services {
+    use super::*;
+    use async_trait::async_trait;
+    use yaserde::de::from_str;
+    use yaserde::ser::to_string;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    pub struct Weather {}
+    impl Weather {
+        pub fn new_client(credentials: Option<(String, String)>) -> bindings::WeatherSoap {
+            bindings::WeatherSoap::new("http://wsf.cdyne.com/WeatherWS/Weather.asmx", credentials)
+        }
+    }
+}
+
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 pub struct Header {}
 
@@ -1748,3 +1845,5 @@ pub struct SoapFault {
     #[yaserde(rename = "faultstring", default)]
     pub fault_string: Option<String>,
 }
+
+type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
