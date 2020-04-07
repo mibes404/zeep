@@ -21,7 +21,8 @@ Before
 after 
 
 ```
- 
+    #[yaserde(rename = "jobId", default)]
+    pub job_id: Option<String>, 
     #[yaserde(flatten)]
     pub station: Option<XmlStationProfile>,
     #[yaserde(flatten)]
@@ -92,12 +93,23 @@ before:
     )]
     pub struct Users { 
 ```
+
+after
+
 ```
 
-    namespace = "ns1: http://xml.avaya.com/schema/import_csm_agent",
-    namespace = "ns2: http://xml.avaya.com/schema/import_csm_cm",
-    namespace = "ns3: http://xml.avaya.com/schema/presence",
-    namespace = "ns7: http://xml.avaya.com/schema/import_sessionmanager",
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(
+        root = "users",
+        namespace = "tns: http://xml.avaya.com/schema/import",
+        namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
+        namespace = "ns1: http://xml.avaya.com/schema/import_csm_agent",
+        namespace = "ns2: http://xml.avaya.com/schema/import_csm_cm",
+        namespace = "ns3: http://xml.avaya.com/schema/presence",
+        namespace = "ns7: http://xml.avaya.com/schema/import_sessionmanager",
+        prefix = "tns"
+    )]
+    pub struct Users {
 
 ```
 
@@ -109,6 +121,7 @@ before
     #[yaserde(rename = "user", default)]
     pub user: Vec<XmlUser>,
 ```
+
 after
 
 ```
