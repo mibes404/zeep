@@ -1,3 +1,6 @@
+//! # Element
+//! Responsible for rendering elements to Rust code
+//!
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -59,10 +62,12 @@ pub fn root() -> Element {
     }
 }
 
+/// This trait renders the element to Rust code
 pub trait WritableElement {
     fn render(&self) -> String;
 }
 
+/// An element that has a statically defined Rust code. There is no interpretation during rendering.
 pub trait StaticElement {
     fn set_content(&mut self, content: &str);
     fn append_content(&mut self, content: &str);
@@ -79,6 +84,7 @@ pub trait NamespacedElement {
     fn add_ns(&mut self, prefix: &str, ns: &str);
 }
 
+/// Various render functions for the different Element types.
 impl WritableElement for Element {
     fn render(&self) -> String {
         match self.element_type {
