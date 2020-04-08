@@ -220,6 +220,10 @@ pub mod types {
         pub xml_pres_ac_rule_type: XmlPresACRuleType,
         #[yaserde(prefix = "xsi", rename = "type", attribute)]
         pub xsi_type: String,
+        #[yaserde(rename = "watcherLoginName", default)]
+        pub watcher_login_name: Option<String>,
+        #[yaserde(rename = "watcherDisplayName", default)]
+        pub watcher_display_name: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(root = "xmlPresInfoTypeType")]
@@ -248,6 +252,14 @@ pub mod types {
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(root = "xmlContactListMember")]
     pub struct XmlContactListMember {
+        #[yaserde(rename = "memberContact", default)]
+        pub member_contact: Option<String>,
+        #[yaserde(rename = "speedDialContactAddress", default)]
+        pub speed_dial_contact_address: Option<XmlContactAddress>,
+        #[yaserde(rename = "memberUser", default)]
+        pub member_user: Option<String>,
+        #[yaserde(rename = "speedDialHandle", default)]
+        pub speed_dial_handle: Option<XmlHandle>,
         #[yaserde(rename = "isFavorite", default)]
         pub is_favorite: bool,
         #[yaserde(rename = "isSpeedDial", default)]

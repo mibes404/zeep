@@ -1,6 +1,5 @@
 use crate::smgr::types::*;
 use crate::smgr_presence::types::XmlPsCommProfile;
-use yaserde::de::from_str;
 use yaserde::ser::to_string;
 
 #[macro_use]
@@ -22,6 +21,7 @@ mod tests {
     use crate::smgr_sm::types::SessionManagerCommProfXML;
     use crate::smgr_station::types::XmlStationProfile;
     use std::fs::read_to_string;
+    use yaserde::de::from_str;
 
     #[test]
     fn test_unmarshall() {

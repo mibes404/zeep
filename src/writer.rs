@@ -249,7 +249,7 @@ impl FileWriter {
                 "element" => {
                     let module = self.pick_section(TYPES_MOD);
                     let mut _module = &mut *module.deref().borrow_mut();
-                    self.print_element(&child, true, None, _module)
+                    self.print_element(&child, true, &mut None, _module)
                 }
                 "complexType" => {
                     if let Some(n) = self.get_some_attribute(&child, "name") {
@@ -319,7 +319,7 @@ impl FileWriter {
         &mut self,
         node: &Node,
         is_top_level: bool,
-        mut parent: Option<&mut Element>,
+        parent: &mut Option<&mut Element>,
         module: &mut Element,
     ) -> WriterResult<()> {
         let as_enum = node.has_tag_name("choice");
@@ -330,7 +330,16 @@ impl FileWriter {
                 .collect();
 
             for node in seq {
-                self.print_sequence(&node, &mut parent, module)?
+                self.print_sequence(&node, parent, module)?
+            }
+
+            let elements: Vec<Node> = node
+                .children()
+                .filter(|child| child.has_tag_name("element"))
+                .collect();
+
+            for node in elements {
+                self.print_element(&node, false, parent, module)?
             }
         }
 
@@ -597,7 +606,7 @@ impl FileWriter {
     ) -> WriterResult<()> {
         node.children().try_for_each(|child| {
             if let Some(p) = parent {
-                self.print_element(&child, false, Some(p), module)
+                self.print_element(&child, false, &mut Some(p), module)
             } else {
                 Ok(())
             }
