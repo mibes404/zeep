@@ -319,9 +319,21 @@ impl FileWriter {
         &mut self,
         node: &Node,
         is_top_level: bool,
-        parent: Option<&mut Element>,
+        mut parent: Option<&mut Element>,
         module: &mut Element,
     ) -> WriterResult<()> {
+        let as_enum = node.has_tag_name("choice");
+        if as_enum {
+            let seq: Vec<Node> = node
+                .children()
+                .filter(|child| child.has_tag_name("sequence"))
+                .collect();
+
+            for node in seq {
+                self.print_sequence(&node, &mut parent, module)?
+            }
+        }
+
         let element_name = match self.get_some_attribute(node, "name") {
             None => return Ok(()),
             Some(n) => n,
