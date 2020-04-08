@@ -1,6 +1,7 @@
 use crate::weather::bindings;
 use crate::weather::messages::GetWeatherInformationSoapIn;
 use crate::weather::ports::WeatherSoap;
+use crate::weather::services::Weather;
 use crate::weather::types::GetWeatherInformation;
 
 #[macro_use]
@@ -19,7 +20,7 @@ async fn main() {
     }
 
     // -- this is not giving a response at the moment; SQL error...
-    let w = bindings::WeatherSoap::new("http://wsf.cdyne.com/WeatherWS/Weather.asmx", Option::None);
+    let w = Weather::new_client(Option::None);
     let w_info = w
         .get_weather_information(GetWeatherInformationSoapIn {
             parameters: GetWeatherInformation {},
