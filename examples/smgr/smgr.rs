@@ -58,6 +58,8 @@ pub mod types {
         namespace = "ns2: http://xml.avaya.com/schema/import_csm_cm",
         namespace = "ns3: http://xml.avaya.com/schema/presence",
         namespace = "ns7: http://xml.avaya.com/schema/import_sessionmanager",
+        namespace = "ns11: http://xml.avaya.com/schema/import_mem_officelinx",
+        namespace = "ns15: http://xml.avaya.com/schema/deltaImport",
         prefix = "tns"
     )]
     pub struct Users {
