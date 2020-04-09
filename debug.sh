@@ -15,6 +15,7 @@ cargo run -- -p resources/smgr -i agentCommProfile.xsd -o examples/smgr/smgr_age
 cargo run -- -p resources/smgr -i stationCommProfile.xsd -o examples/smgr/smgr_station.rs -n ns2 -d "http://xml.avaya.com/schema/import"
 cargo run -- -p resources/smgr -i presence.xsd -o examples/smgr/smgr_presence.rs -n ns3 -d "http://xml.avaya.com/schema/import"
 cargo run -- -p resources/smgr -i SessionManager.xsd -o examples/smgr/smgr_sm.rs -n ns7 -d "http://xml.avaya.com/schema/import"
+cargo run -- -p resources/smgr -i officelinxProfile.xsd -o examples/smgr/smgr_officelinx.rs -n ns11 -d "http://xml.avaya.com/schema/import_mem_officelinx"
 
 # Format the output
 rustfmt --color=always --edition=2018 examples/aic/aic_agent.rs
@@ -28,3 +29,4 @@ rustfmt --color=always --edition=2018 examples/smgr/smgr_station.rs
 rustfmt --color=always --edition=2018 examples/smgr/smgr_agent.rs
 rustfmt --color=always --edition=2018 examples/smgr/smgr_presence.rs
 rustfmt --color=always --edition=2018 examples/smgr/smgr_sm.rs
+rustfmt --color=always --edition=2018 examples/smgr/smgr_officelinx.rs

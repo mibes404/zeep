@@ -488,6 +488,10 @@ pub mod types {
         prefix = "ns1"
     )]
     pub struct XmlAgentProfile {
+        #[yaserde(flatten, default)]
+        pub xml_comm_profile_type: XmlCommProfileType,
+        #[yaserde(prefix = "xsi", rename = "type", attribute)]
+        pub xsi_type: String,
         #[yaserde(rename = "cmName", prefix = "ns1", default)]
         pub cm_name: String,
         #[yaserde(rename = "useExistingAgent", prefix = "ns1", default)]

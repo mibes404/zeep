@@ -11,6 +11,7 @@ extern crate yaserde_derive;
 
 mod smgr;
 mod smgr_agent;
+mod smgr_officelinx;
 mod smgr_presence;
 mod smgr_sm;
 mod smgr_station;
@@ -26,7 +27,7 @@ mod tests {
     #[test]
     fn test_unmarshall() {
         let sample_response =
-            read_to_string("resources/smgr/smgr_get_response.xml").expect("file not found");
+            read_to_string("resources/smgr/sample_response.xml").expect("file not found");
         let users: Users = from_str(&sample_response).expect("problems unmarshalling");
 
         let users = resolve_comm_profiles(users);
@@ -321,7 +322,7 @@ mod tests {
     }
 }
 
-fn resolve_comm_profiles(mut input: Users) -> Users {
+pub fn resolve_comm_profiles(mut input: Users) -> Users {
     let new_users: Vec<XmlUser> = input
         .user
         .iter()
@@ -344,22 +345,33 @@ fn resolve_comm_profiles(mut input: Users) -> Users {
                                     "PS" => {
                                         comm_profile_type.station = None;
                                         comm_profile_type.sm = None;
+                                        comm_profile_type.agent = None;
                                         comm_profile_type.xsi_type =
                                             "ns3:XmlPsCommProfile".to_string();
                                     }
                                     "CM" => {
                                         comm_profile_type.ps = None;
                                         comm_profile_type.sm = None;
+                                        comm_profile_type.agent = None;
                                         comm_profile_type.xsi_type =
                                             "ns2:xmlStationProfile".to_string();
                                     }
                                     "SessionManager" => {
                                         comm_profile_type.station = None;
                                         comm_profile_type.ps = None;
+                                        comm_profile_type.agent = None;
                                         comm_profile_type.xsi_type =
                                             "ns7:SessionManagerCommProfXML".to_string();
                                     }
-                                    _ => println!("Unknown comm profile type {}", profile_type_str),
+                                    // TODO: "Agent" => {}
+                                    _ => {
+                                        comm_profile_type.station = None;
+                                        comm_profile_type.ps = None;
+                                        comm_profile_type.agent = None;
+                                        comm_profile_type.sm = None;
+
+                                        println!("Unknown comm profile type {}", profile_type_str)
+                                    }
                                 };
 
                                 comm_profile_type

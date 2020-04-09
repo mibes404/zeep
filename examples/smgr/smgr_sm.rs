@@ -488,6 +488,10 @@ pub mod types {
         prefix = "ns7"
     )]
     pub struct SessionManagerCommProfXML {
+        #[yaserde(flatten, default)]
+        pub xml_comm_profile_type: XmlCommProfileType,
+        #[yaserde(prefix = "xsi", rename = "type", attribute)]
+        pub xsi_type: String,
         #[yaserde(rename = "primarySM", prefix = "ns7", default)]
         pub primary_sm: String,
         #[yaserde(rename = "secondarySM", prefix = "ns7", default)]
