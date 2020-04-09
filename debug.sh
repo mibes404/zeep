@@ -11,11 +11,11 @@ cargo run -- -p resources/hello -i hello.wsdl -o examples/hello/hello.rs
 cargo run -- -p resources/temp_converter -i tempconverter.wsdl -o examples/temperature/tempconverter.rs
 cargo run -- -p resources/weather -i weather.wsdl -o examples/weather/weather.rs
 cargo run -- -p resources/smgr -i userimport.xsd -o examples/smgr/smgr.rs -d "http://xml.avaya.com/schema/import"
-cargo run -- -p resources/smgr -i agentCommProfile.xsd -o examples/smgr/smgr_agent.rs -n ns1 -d "http://xml.avaya.com/schema/import"
-cargo run -- -p resources/smgr -i stationCommProfile.xsd -o examples/smgr/smgr_station.rs -n ns2 -d "http://xml.avaya.com/schema/import"
-cargo run -- -p resources/smgr -i presence.xsd -o examples/smgr/smgr_presence.rs -n ns3 -d "http://xml.avaya.com/schema/import"
-cargo run -- -p resources/smgr -i SessionManager.xsd -o examples/smgr/smgr_sm.rs -n ns7 -d "http://xml.avaya.com/schema/import"
-cargo run -- -p resources/smgr -i officelinxProfile.xsd -o examples/smgr/smgr_officelinx.rs -n ns11 -d "http://xml.avaya.com/schema/import_mem_officelinx"
+cargo run -- -p resources/smgr -i agentCommProfile.xsd -o examples/smgr/smgr_agent.rs -n agent -d "http://xml.avaya.com/schema/import"
+cargo run -- -p resources/smgr -i stationCommProfile.xsd -o examples/smgr/smgr_station.rs -n csm -d "http://xml.avaya.com/schema/import"
+cargo run -- -p resources/smgr -i presence.xsd -o examples/smgr/smgr_presence.rs -n ps -d "http://xml.avaya.com/schema/import"
+cargo run -- -p resources/smgr -i SessionManager.xsd -o examples/smgr/smgr_sm.rs -n asm -d "http://xml.avaya.com/schema/import"
+cargo run -- -p resources/smgr -i officelinxProfile.xsd -o examples/smgr/smgr_officelinx.rs -n ol -d "http://xml.avaya.com/schema/import_mem_officelinx"
 cargo run -- -p resources/smgr -i userdeltaimport.xsd -o examples/smgr/smgr_delta_import.rs -n delta -d "http://xml.avaya.com/schema/deltaImport"
 
 # Format the output
