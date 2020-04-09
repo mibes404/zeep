@@ -488,6 +488,10 @@ pub mod types {
         prefix = "ns2"
     )]
     pub struct XmlStationProfile {
+        #[yaserde(flatten, default)]
+        pub xml_comm_profile_type: XmlCommProfileType,
+        #[yaserde(prefix = "xsi", rename = "type", attribute)]
+        pub xsi_type: String,
         #[yaserde(rename = "cmName", prefix = "ns2", default)]
         pub cm_name: String,
         #[yaserde(rename = "prefHandleId", prefix = "ns2", default)]

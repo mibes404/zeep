@@ -21,3 +21,5 @@ loggers:
     level: debug
   aic:
     level: debug
+  temperature:
+    level: debug

@@ -520,6 +520,10 @@ pub mod types {
         prefix = "nsi1"
     )]
     pub struct ForgeinCommProfileType {
+        #[yaserde(flatten, default)]
+        pub xml_comm_profile_type: XmlCommProfileType,
+        #[yaserde(prefix = "xsi", rename = "type", attribute)]
+        pub xsi_type: String,
         #[yaserde(rename = "csEncryptionKeyId", prefix = "nsi1", default)]
         pub cs_encryption_key_id: Option<i64>,
         #[yaserde(rename = "servicePassword", prefix = "nsi1", default)]

@@ -488,6 +488,10 @@ pub mod types {
         prefix = "ns3"
     )]
     pub struct XmlPsCommProfile {
+        #[yaserde(flatten, default)]
+        pub xml_comm_profile_type: XmlCommProfileType,
+        #[yaserde(prefix = "xsi", rename = "type", attribute)]
+        pub xsi_type: String,
         #[yaserde(rename = "system", prefix = "ns3", default)]
         pub system: String,
         #[yaserde(rename = "imGatewaySipEntity", prefix = "ns3", default)]

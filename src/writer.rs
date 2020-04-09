@@ -26,7 +26,6 @@ const SIGNATURE: &str = r#"//! THIS IS A GENERATED FILE!
 const VERSION: &str = "0.1.1";
 const DEFAULT_NS_PREFIX: &str = "tns";
 const IMPORT_PREFIX: &str = "nsi";
-const XS_SCHEMA: &str = "http://www.w3.org/2001/XMLSchema";
 
 pub struct FileWriter {
     base_path: String,
@@ -35,12 +34,10 @@ pub struct FileWriter {
     port_types: HashMap<String, PortType>,
     message_types: HashMap<String, String>,
     namespaces: HashMap<String, String>,
-    reverse_ns_lookup: HashMap<String, String>,
     import_count: u32,
     ns_prefix: String,
     default_namespace: Option<String>,
     root: Element,
-    xs_prefix: String,
 }
 
 #[derive(Clone)]
@@ -60,12 +57,10 @@ impl Default for FileWriter {
             port_types: HashMap::new(),
             message_types: HashMap::new(),
             namespaces: HashMap::new(),
-            reverse_ns_lookup: HashMap::new(),
             import_count: 0,
             ns_prefix: DEFAULT_NS_PREFIX.to_string(),
             default_namespace: Option::None,
             root: root(),
-            xs_prefix: "xs".to_string(),
         }
     }
 }
@@ -92,10 +87,8 @@ impl FileWriter {
             namespaces: HashMap::new(),
             import_count: 0,
             ns_prefix: ns_prefix.unwrap_or_else(|| DEFAULT_NS_PREFIX.to_string()),
-            reverse_ns_lookup: HashMap::new(),
             default_namespace,
             root: root(),
-            xs_prefix: "xs".to_string(),
         }
     }
 
@@ -278,17 +271,8 @@ impl FileWriter {
             if let Some(name) = ns.name() {
                 self.namespaces
                     .insert(name.to_string(), ns.uri().to_string());
-                self.reverse_ns_lookup
-                    .insert(ns.uri().to_string(), name.to_string());
             }
         });
-
-        if self.namespaces.get("xs").is_none() {
-            if let Some(xs_prefix) = self.reverse_ns_lookup.get(XS_SCHEMA) {
-                debug!("Setting xs prefix to: {}", xs_prefix);
-                self.xs_prefix = xs_prefix.to_string()
-            }
-        }
     }
 
     fn import_file(&mut self, node: &Node) -> WriterResult<()> {
@@ -303,11 +287,7 @@ impl FileWriter {
         };
 
         self.import_count += 1;
-
-        let prefix = match self.reverse_ns_lookup.get(&namespace) {
-            None => format!("{}{}", IMPORT_PREFIX, self.import_count),
-            Some(prefix) => prefix.clone(),
-        };
+        let prefix = format!("{}{}", IMPORT_PREFIX, self.import_count);
 
         let my_tns = self.target_name_space.replace(namespace);
         let my_prefix = self.ns_prefix.clone();
@@ -402,7 +382,7 @@ impl FileWriter {
         if is_top_level {
             // top-level == type alias
             let top_level_name = to_pascal_case(element_name);
-            let (_, alias) = self.fetch_type(&type_name);
+            let alias = self.fetch_type(&type_name);
 
             if top_level_name != alias {
                 let mut alias_element = Element::new(top_level_name.as_str(), ElementType::Alias);
@@ -443,10 +423,7 @@ impl FileWriter {
             }
 
             // add the element to the owning structure
-            let (prefix, field_type) = self.fetch_type(&type_name);
-
-            element.prefix = prefix;
-            element.field_type = Option::Some(field_type);
+            element.field_type = Option::Some(self.fetch_type(&type_name));
             element.vector = as_vec;
             element.optional = as_option;
 
@@ -476,10 +453,8 @@ impl FileWriter {
         }
     }
 
-    fn fetch_type(&self, node_type: &str) -> (Option<String>, String) {
-        let (prefix, type_name) = self.split_type(node_type);
-
-        let type_name = match type_name {
+    fn fetch_type(&self, node_type: &str) -> String {
+        match self.split_type(node_type) {
             "byte" => "i8".to_string(),
             "string" | "normalizedString" | "base64Binary" | "hexBinary" | "anyURI" => {
                 "String".to_string()
@@ -498,52 +473,14 @@ impl FileWriter {
             // use String for date types
             "date" | "dateTime" | "time" => "String".to_string(),
             v => to_pascal_case(v),
-        };
-
-        let prefix = if prefix.is_empty() {
-            None
-        } else {
-            Some(prefix.to_string())
-        };
-        (prefix, type_name)
-    }
-
-    fn get_message_type<'a>(&self, node_type: &'a str) -> &'a str {
-        let splitted = node_type.split("::");
-        splitted.last().unwrap_or_default()
-    }
-
-    fn split_type<'a>(&self, node_type: &'a str) -> (&'a str, &'a str) {
-        let mut splitted = node_type.split(':');
-        let first = splitted.next();
-        let mut last = splitted.next();
-        let only_one_part = first.is_some() && last.is_none();
-
-        let prefix = if only_one_part {
-            ""
-        } else {
-            match first {
-                None => "",
-                Some(prefix) => {
-                    if prefix == self.ns_prefix || prefix == self.xs_prefix {
-                        ""
-                    } else {
-                        prefix
-                    }
-                }
-            }
-        };
-
-        if only_one_part {
-            last = first
         }
+    }
 
-        let type_name = match last {
+    fn split_type<'a>(&self, node_type: &'a str) -> &'a str {
+        match node_type.split(':').last() {
             None => "String",
             Some(v) => v,
-        };
-
-        (prefix, type_name)
+        }
     }
 
     fn print_complex_element(
@@ -620,7 +557,7 @@ impl FileWriter {
             Some(n) => n,
         };
 
-        let (_, element_type) = match self.get_some_attribute(node, "type") {
+        let element_type = match self.get_some_attribute(node, "type") {
             None => return,
             Some(n) => self.fetch_type(n),
         };
@@ -708,14 +645,15 @@ impl FileWriter {
                 Some(n) => n,
             };
 
-            let (_, type_name) = self.fetch_type(base);
-
-            let mut element = Element::new(to_snake_case(&type_name).as_str(), ElementType::Field);
+            let mut element = Element::new(
+                to_snake_case(&self.fetch_type(base)).as_str(),
+                ElementType::Field,
+            );
             element.flatten = true;
-            element.field_type = Option::Some(type_name);
+            element.field_type = Option::Some(self.fetch_type(base));
             p.add(element);
 
-            let (_, type_name) = self.fetch_type(base);
+            let type_name = self.fetch_type(base);
             let mut xsi = Element::new("xsi_type", ElementType::Attribute);
             xsi.field_type = Option::Some("String".to_string());
             xsi.prefix = Option::Some("xsi".to_string());
@@ -772,15 +710,12 @@ impl FileWriter {
         };
 
         if let Some(type_name) = self.get_some_attribute(node, "element") {
-            let (prefix, type_name) = self.fetch_type(type_name);
-            let type_name = format!("{}::{}", TYPES_MOD, type_name);
+            let type_name = format!("{}::{}", TYPES_MOD, self.fetch_type(type_name));
 
             let mut element = Element::new(
                 self.shield_reserved_names(&to_snake_case(element_name)),
                 ElementType::Field,
             );
-
-            element.prefix = prefix;
             element.flatten = true;
             element.field_type = Option::Some(type_name.clone());
             parent.add(element);
@@ -802,19 +737,17 @@ impl FileWriter {
             Some(n) => n,
         };
 
-        let (_, type_name) = self.fetch_type(type_name);
-
         let element = Element::new_field(
             self.shield_reserved_names(&to_snake_case(element_name)),
             element_name,
-            type_name.as_str(),
+            self.fetch_type(type_name).as_str(),
             false,
         );
 
         parent.add(element);
 
         self.message_types
-            .insert(message_name.to_string(), type_name);
+            .insert(message_name.to_string(), type_name.to_string());
     }
 
     // WSDL Port Types
@@ -859,7 +792,7 @@ impl FileWriter {
         };
 
         let struct_name = to_pascal_case(element_name);
-        let (_, trait_name) = self.fetch_type(type_name);
+        let trait_name = self.fetch_type(type_name);
 
         if !self.have_seen_type(&struct_name, _parent) {
             self.print_binding_helpers(&struct_name, _parent);
@@ -977,7 +910,7 @@ impl FileWriter {
     fn map_name_message(&self, node: &Node) -> (String, Option<String>) {
         let msg = self
             .get_some_attribute_as_string(node, "message")
-            .map(|m| self.fetch_type(&m).1);
+            .map(|m| self.fetch_type(&m));
 
         let name = self.get_some_attribute_as_string(node, "name");
 
@@ -1192,7 +1125,7 @@ impl FileWriter {
 
         let message_type_name = match self.message_types.get(operation_name) {
             None => operation_name.to_string(),
-            Some(mt) => self.get_message_type(mt).to_string(),
+            Some(mt) => self.split_type(mt).to_string(),
         };
 
         let port_type_name = format!("{}::{}", bind_type_name, operation_name);
@@ -1470,7 +1403,7 @@ impl FileWriter {
 
         let binding = match some_binding {
             None => return,
-            Some(b) => b.1,
+            Some(b) => b,
         };
 
         let some_address = port.children().find(|c| c.has_tag_name("address"));
@@ -1629,26 +1562,5 @@ mod test_wsdl {
     fn test_service() {
         let result = prepare_output(None, None);
         assert!(result.contains(r#"bindings::TempConverterEndpointServiceSoapBinding::new("http://www.learnwebservices.com/services/tempconverter", credentials)"#));
-    }
-
-    #[test]
-    fn test_split() {
-        let mut buffer = DebugBuffer::default();
-        let mut fw = FileWriter::new_buffer(Some("tns".to_string()), None, buffer.clone());
-        let (prefix, type_name) = fw.split_type("xs:MyType");
-        assert_eq!("", prefix);
-        assert_eq!("MyType", type_name);
-
-        let (prefix, type_name) = fw.split_type("base:MyType");
-        assert_eq!("base", prefix);
-        assert_eq!("MyType", type_name);
-
-        let (prefix, type_name) = fw.split_type("tns:MyType");
-        assert_eq!("", prefix);
-        assert_eq!("MyType", type_name);
-
-        let (prefix, type_name) = fw.split_type("MyType");
-        assert_eq!("", prefix);
-        assert_eq!("MyType", type_name);
     }
 }
