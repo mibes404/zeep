@@ -283,11 +283,11 @@ impl FileWriter {
             }
         });
 
-        if let Some(xs_prefix) = self.reverse_ns_lookup.get(XS_SCHEMA) {
-            if xs_prefix != "xs" {
+        if self.namespaces.get("xs").is_none() {
+            if let Some(xs_prefix) = self.reverse_ns_lookup.get(XS_SCHEMA) {
                 debug!("Setting xs prefix to: {}", xs_prefix);
+                self.xs_prefix = xs_prefix.to_string()
             }
-            self.xs_prefix = xs_prefix.to_string()
         }
     }
 
@@ -506,6 +506,11 @@ impl FileWriter {
             Some(prefix.to_string())
         };
         (prefix, type_name)
+    }
+
+    fn get_message_type<'a>(&self, node_type: &'a str) -> &'a str {
+        let splitted = node_type.split("::");
+        splitted.last().unwrap_or_default()
     }
 
     fn split_type<'a>(&self, node_type: &'a str) -> (&'a str, &'a str) {
@@ -1187,7 +1192,7 @@ impl FileWriter {
 
         let message_type_name = match self.message_types.get(operation_name) {
             None => operation_name.to_string(),
-            Some(mt) => self.split_type(mt).1.to_string(),
+            Some(mt) => self.get_message_type(mt).to_string(),
         };
 
         let port_type_name = format!("{}::{}", bind_type_name, operation_name);
