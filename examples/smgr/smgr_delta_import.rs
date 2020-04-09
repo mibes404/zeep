@@ -49,191 +49,191 @@ pub mod types {
         root = "users",
         namespace = "tns: http://xml.avaya.com/schema/import",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
-        prefix = "nsi1"
+        prefix = "base"
     )]
     pub struct Users {
-        #[yaserde(rename = "secureStore", prefix = "nsi1", default)]
+        #[yaserde(rename = "secureStore", prefix = "tns", default)]
         pub secure_store: Option<XmlSecureStore>,
-        #[yaserde(rename = "user", prefix = "nsi1", default)]
+        #[yaserde(rename = "user", prefix = "tns", default)]
         pub user: Vec<XmlUser>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "UserProvisionRules",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct UserProvisionRules {
-        #[yaserde(rename = "UserProvisionRuleName", prefix = "nsi1", default)]
+        #[yaserde(rename = "UserProvisionRuleName", default)]
         pub user_provision_rule_name: Vec<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "roles",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct Roles {
-        #[yaserde(rename = "role", prefix = "nsi1", default)]
+        #[yaserde(rename = "role", default)]
         pub role: Vec<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "ownedContactLists",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct OwnedContactLists {
-        #[yaserde(rename = "contactList", prefix = "nsi1", default)]
+        #[yaserde(rename = "contactList", prefix = "tns", default)]
         pub contact_list: XmlContactList,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "ownedContacts",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct OwnedContacts {
-        #[yaserde(rename = "contact", prefix = "nsi1", default)]
+        #[yaserde(rename = "contact", prefix = "tns", default)]
         pub contact: Vec<XmlContact>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlUser",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlUser {
-        #[yaserde(rename = "UserOrganizationDetails", prefix = "nsi1", default)]
+        #[yaserde(rename = "UserOrganizationDetails", prefix = "tns", default)]
         pub user_organization_details: Option<UserOrganizationDetailsType>,
-        #[yaserde(rename = "UserProvisionRules", prefix = "nsi1", default)]
+        #[yaserde(rename = "UserProvisionRules", default)]
         pub user_provision_rules: Option<UserProvisionRules>,
-        #[yaserde(rename = "authenticationType", prefix = "nsi1", default)]
+        #[yaserde(rename = "authenticationType", default)]
         pub authentication_type: String,
-        #[yaserde(rename = "description", prefix = "nsi1", default)]
+        #[yaserde(rename = "description", default)]
         pub description: Option<String>,
-        #[yaserde(rename = "displayName", prefix = "nsi1", default)]
+        #[yaserde(rename = "displayName", default)]
         pub display_name: Option<String>,
-        #[yaserde(rename = "displayNameAscii", prefix = "nsi1", default)]
+        #[yaserde(rename = "displayNameAscii", default)]
         pub display_name_ascii: Option<String>,
-        #[yaserde(rename = "dn", prefix = "nsi1", default)]
+        #[yaserde(rename = "dn", default)]
         pub dn: Option<String>,
-        #[yaserde(rename = "isDuplicatedLoginAllowed", prefix = "nsi1", default)]
+        #[yaserde(rename = "isDuplicatedLoginAllowed", default)]
         pub is_duplicated_login_allowed: Option<bool>,
-        #[yaserde(rename = "isEnabled", prefix = "nsi1", default)]
+        #[yaserde(rename = "isEnabled", default)]
         pub is_enabled: Option<bool>,
-        #[yaserde(rename = "isVirtualUser", prefix = "nsi1", default)]
+        #[yaserde(rename = "isVirtualUser", default)]
         pub is_virtual_user: Option<bool>,
-        #[yaserde(rename = "givenName", prefix = "nsi1", default)]
+        #[yaserde(rename = "givenName", default)]
         pub given_name: String,
-        #[yaserde(rename = "givenNameAscii", prefix = "nsi1", default)]
+        #[yaserde(rename = "givenNameAscii", default)]
         pub given_name_ascii: Option<String>,
-        #[yaserde(rename = "honorific", prefix = "nsi1", default)]
+        #[yaserde(rename = "honorific", default)]
         pub honorific: Option<String>,
-        #[yaserde(rename = "loginName", prefix = "nsi1", default)]
+        #[yaserde(rename = "loginName", default)]
         pub login_name: String,
-        #[yaserde(rename = "newLoginName", prefix = "nsi1", default)]
+        #[yaserde(rename = "newLoginName", default)]
         pub new_login_name: Option<String>,
-        #[yaserde(rename = "employeeNo", prefix = "nsi1", default)]
+        #[yaserde(rename = "employeeNo", default)]
         pub employee_no: Option<String>,
-        #[yaserde(rename = "department", prefix = "nsi1", default)]
+        #[yaserde(rename = "department", default)]
         pub department: Option<String>,
-        #[yaserde(rename = "organization", prefix = "nsi1", default)]
+        #[yaserde(rename = "organization", default)]
         pub organization: Option<String>,
-        #[yaserde(rename = "middleName", prefix = "nsi1", default)]
+        #[yaserde(rename = "middleName", default)]
         pub middle_name: Option<String>,
-        #[yaserde(rename = "managerName", prefix = "nsi1", default)]
+        #[yaserde(rename = "managerName", default)]
         pub manager_name: Option<String>,
-        #[yaserde(rename = "preferredGivenName", prefix = "nsi1", default)]
+        #[yaserde(rename = "preferredGivenName", default)]
         pub preferred_given_name: Option<String>,
-        #[yaserde(rename = "preferredLanguage", prefix = "nsi1", default)]
+        #[yaserde(rename = "preferredLanguage", default)]
         pub preferred_language: Option<String>,
-        #[yaserde(rename = "source", prefix = "nsi1", default)]
+        #[yaserde(rename = "source", default)]
         pub source: Option<String>,
-        #[yaserde(rename = "sourceUserKey", prefix = "nsi1", default)]
+        #[yaserde(rename = "sourceUserKey", default)]
         pub source_user_key: Option<String>,
-        #[yaserde(rename = "status", prefix = "nsi1", default)]
+        #[yaserde(rename = "status", default)]
         pub status: Option<String>,
-        #[yaserde(rename = "suffix", prefix = "nsi1", default)]
+        #[yaserde(rename = "suffix", default)]
         pub suffix: Option<String>,
-        #[yaserde(rename = "surname", prefix = "nsi1", default)]
+        #[yaserde(rename = "surname", default)]
         pub surname: String,
-        #[yaserde(rename = "surnameAscii", prefix = "nsi1", default)]
+        #[yaserde(rename = "surnameAscii", default)]
         pub surname_ascii: Option<String>,
-        #[yaserde(rename = "timeZone", prefix = "nsi1", default)]
+        #[yaserde(rename = "timeZone", default)]
         pub time_zone: Option<String>,
-        #[yaserde(rename = "title", prefix = "nsi1", default)]
+        #[yaserde(rename = "title", default)]
         pub title: Option<String>,
-        #[yaserde(rename = "userName", prefix = "nsi1", default)]
+        #[yaserde(rename = "userName", default)]
         pub user_name: Option<String>,
-        #[yaserde(rename = "userPassword", prefix = "nsi1", default)]
+        #[yaserde(rename = "userPassword", default)]
         pub user_password: Option<String>,
-        #[yaserde(rename = "commPassword", prefix = "nsi1", default)]
+        #[yaserde(rename = "commPassword", default)]
         pub comm_password: Option<String>,
-        #[yaserde(rename = "userType", prefix = "nsi1", default)]
+        #[yaserde(rename = "userType", default)]
         pub user_type: Vec<String>,
-        #[yaserde(rename = "roles", prefix = "nsi1", default)]
+        #[yaserde(rename = "roles", default)]
         pub roles: Option<Roles>,
-        #[yaserde(rename = "localizedNames", prefix = "nsi1", default)]
+        #[yaserde(rename = "localizedNames", prefix = "tns", default)]
         pub localized_names: Option<XmLocalizedNames>,
-        #[yaserde(rename = "address", prefix = "nsi1", default)]
+        #[yaserde(rename = "address", prefix = "tns", default)]
         pub address: Vec<XmlAddress>,
-        #[yaserde(rename = "securityIdentity", prefix = "nsi1", default)]
+        #[yaserde(rename = "securityIdentity", prefix = "tns", default)]
         pub security_identity: Vec<XmlSecurityIdentity>,
-        #[yaserde(rename = "ownedContactLists", prefix = "nsi1", default)]
+        #[yaserde(rename = "ownedContactLists", default)]
         pub owned_contact_lists: Option<OwnedContactLists>,
-        #[yaserde(rename = "ownedContacts", prefix = "nsi1", default)]
+        #[yaserde(rename = "ownedContacts", default)]
         pub owned_contacts: Option<OwnedContacts>,
-        #[yaserde(rename = "presenceUserDefault", prefix = "nsi1", default)]
+        #[yaserde(rename = "presenceUserDefault", prefix = "tns", default)]
         pub presence_user_default: Option<XmlPresUserDefaultType>,
-        #[yaserde(rename = "presenceUserACL", prefix = "nsi1", default)]
+        #[yaserde(rename = "presenceUserACL", prefix = "tns", default)]
         pub presence_user_acl: Vec<XmlPresUserACLEntryType>,
-        #[yaserde(rename = "presenceUserCLDefault", prefix = "nsi1", default)]
+        #[yaserde(rename = "presenceUserCLDefault", prefix = "tns", default)]
         pub presence_user_cl_default: Option<XmlPresUserCLDefaultType>,
-        #[yaserde(rename = "commProfileSet", prefix = "nsi1", default)]
+        #[yaserde(rename = "commProfileSet", prefix = "tns", default)]
         pub comm_profile_set: Vec<XmlCommProfileSetType>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlSecurityIdentity",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlSecurityIdentity {
-        #[yaserde(rename = "identity", prefix = "nsi1", default)]
+        #[yaserde(rename = "identity", default)]
         pub identity: String,
-        #[yaserde(rename = "realm", prefix = "nsi1", default)]
+        #[yaserde(rename = "realm", default)]
         pub realm: Option<String>,
-        #[yaserde(rename = "type", prefix = "nsi1", default)]
+        #[yaserde(rename = "type", default)]
         pub rs_type: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlPresInfoTypeAccessType",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlPresInfoTypeAccessType {
-        #[yaserde(rename = "infoType", prefix = "nsi1", default)]
+        #[yaserde(rename = "infoType", prefix = "tns", default)]
         pub info_type: XmlPresInfoTypeType,
-        #[yaserde(rename = "access", prefix = "nsi1", default)]
+        #[yaserde(rename = "access", default)]
         pub access: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlPresACRuleType",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlPresACRuleType {
-        #[yaserde(rename = "infoTypeAccess", prefix = "nsi1", default)]
+        #[yaserde(rename = "infoTypeAccess", prefix = "tns", default)]
         pub info_type_access: Vec<XmlPresInfoTypeAccessType>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlPresUserDefaultType",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlPresUserDefaultType {
         #[yaserde(flatten, default)]
@@ -244,8 +244,8 @@ pub mod types {
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlPresUserCLDefaultType",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlPresUserCLDefaultType {
         #[yaserde(flatten, default)]
@@ -256,320 +256,320 @@ pub mod types {
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlPresUserACLEntryType",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlPresUserACLEntryType {
         #[yaserde(flatten, default)]
         pub xml_pres_ac_rule_type: XmlPresACRuleType,
         #[yaserde(prefix = "xsi", rename = "type", attribute)]
         pub xsi_type: String,
-        #[yaserde(rename = "watcherLoginName", prefix = "nsi1", default)]
+        #[yaserde(rename = "watcherLoginName", default)]
         pub watcher_login_name: Option<String>,
-        #[yaserde(rename = "watcherDisplayName", prefix = "nsi1", default)]
+        #[yaserde(rename = "watcherDisplayName", default)]
         pub watcher_display_name: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlPresInfoTypeType",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlPresInfoTypeType {
-        #[yaserde(rename = "label", prefix = "nsi1", default)]
+        #[yaserde(rename = "label", default)]
         pub label: String,
-        #[yaserde(rename = "filter", prefix = "nsi1", default)]
+        #[yaserde(rename = "filter", default)]
         pub filter: String,
-        #[yaserde(rename = "specFlags", prefix = "nsi1", default)]
+        #[yaserde(rename = "specFlags", default)]
         pub spec_flags: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlContactList",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlContactList {
-        #[yaserde(rename = "name", prefix = "nsi1", default)]
+        #[yaserde(rename = "name", default)]
         pub name: String,
-        #[yaserde(rename = "description", prefix = "nsi1", default)]
+        #[yaserde(rename = "description", default)]
         pub description: Option<String>,
-        #[yaserde(rename = "isPublic", prefix = "nsi1", default)]
+        #[yaserde(rename = "isPublic", default)]
         pub is_public: bool,
-        #[yaserde(rename = "members", prefix = "nsi1", default)]
+        #[yaserde(rename = "members", prefix = "tns", default)]
         pub members: Vec<XmlContactListMember>,
-        #[yaserde(rename = "contactListType", prefix = "nsi1", default)]
+        #[yaserde(rename = "contactListType", default)]
         pub contact_list_type: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlContactListMember",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlContactListMember {
-        #[yaserde(rename = "memberContact", prefix = "nsi1", default)]
+        #[yaserde(rename = "memberContact", default)]
         pub member_contact: Option<String>,
-        #[yaserde(rename = "speedDialContactAddress", prefix = "nsi1", default)]
+        #[yaserde(rename = "speedDialContactAddress", prefix = "tns", default)]
         pub speed_dial_contact_address: Option<XmlContactAddress>,
-        #[yaserde(rename = "memberUser", prefix = "nsi1", default)]
+        #[yaserde(rename = "memberUser", default)]
         pub member_user: Option<String>,
-        #[yaserde(rename = "speedDialHandle", prefix = "nsi1", default)]
+        #[yaserde(rename = "speedDialHandle", prefix = "tns", default)]
         pub speed_dial_handle: Option<XmlHandle>,
-        #[yaserde(rename = "isFavorite", prefix = "nsi1", default)]
+        #[yaserde(rename = "isFavorite", default)]
         pub is_favorite: bool,
-        #[yaserde(rename = "isSpeedDial", prefix = "nsi1", default)]
+        #[yaserde(rename = "isSpeedDial", default)]
         pub is_speed_dial: bool,
-        #[yaserde(rename = "speedDialEntry", prefix = "nsi1", default)]
+        #[yaserde(rename = "speedDialEntry", default)]
         pub speed_dial_entry: Option<i32>,
-        #[yaserde(rename = "isPresenceBuddy", prefix = "nsi1", default)]
+        #[yaserde(rename = "isPresenceBuddy", default)]
         pub is_presence_buddy: bool,
-        #[yaserde(rename = "label", prefix = "nsi1", default)]
+        #[yaserde(rename = "label", default)]
         pub label: Option<String>,
-        #[yaserde(rename = "altLabel", prefix = "nsi1", default)]
+        #[yaserde(rename = "altLabel", default)]
         pub alt_label: Option<String>,
-        #[yaserde(rename = "description", prefix = "nsi1", default)]
+        #[yaserde(rename = "description", default)]
         pub description: Option<String>,
-        #[yaserde(rename = "priorityLevel", prefix = "nsi1", default)]
+        #[yaserde(rename = "priorityLevel", default)]
         pub priority_level: Option<i32>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlContactAddress",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlContactAddress {
-        #[yaserde(rename = "address", prefix = "nsi1", default)]
+        #[yaserde(rename = "address", default)]
         pub address: String,
-        #[yaserde(rename = "altLabel", prefix = "nsi1", default)]
+        #[yaserde(rename = "altLabel", default)]
         pub alt_label: Option<String>,
-        #[yaserde(rename = "contactCategory", prefix = "nsi1", default)]
+        #[yaserde(rename = "contactCategory", default)]
         pub contact_category: String,
-        #[yaserde(rename = "contactType", prefix = "nsi1", default)]
+        #[yaserde(rename = "contactType", default)]
         pub contact_type: String,
-        #[yaserde(rename = "label", prefix = "nsi1", default)]
+        #[yaserde(rename = "label", default)]
         pub label: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlAddress",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlAddress {
-        #[yaserde(rename = "addressType", prefix = "nsi1", default)]
+        #[yaserde(rename = "addressType", default)]
         pub address_type: String,
-        #[yaserde(rename = "name", prefix = "nsi1", default)]
+        #[yaserde(rename = "name", default)]
         pub name: String,
-        #[yaserde(rename = "building", prefix = "nsi1", default)]
+        #[yaserde(rename = "building", default)]
         pub building: Option<String>,
-        #[yaserde(rename = "localityName", prefix = "nsi1", default)]
+        #[yaserde(rename = "localityName", default)]
         pub locality_name: Option<String>,
-        #[yaserde(rename = "postalCode", prefix = "nsi1", default)]
+        #[yaserde(rename = "postalCode", default)]
         pub postal_code: Option<String>,
-        #[yaserde(rename = "room", prefix = "nsi1", default)]
+        #[yaserde(rename = "room", default)]
         pub room: Option<String>,
-        #[yaserde(rename = "stateOrProvince", prefix = "nsi1", default)]
+        #[yaserde(rename = "stateOrProvince", default)]
         pub state_or_province: Option<String>,
-        #[yaserde(rename = "country", prefix = "nsi1", default)]
+        #[yaserde(rename = "country", default)]
         pub country: Option<String>,
-        #[yaserde(rename = "street", prefix = "nsi1", default)]
+        #[yaserde(rename = "street", default)]
         pub street: Option<String>,
-        #[yaserde(rename = "businessphone", prefix = "nsi1", default)]
+        #[yaserde(rename = "businessphone", default)]
         pub businessphone: Option<String>,
-        #[yaserde(rename = "otherbusinessphone", prefix = "nsi1", default)]
+        #[yaserde(rename = "otherbusinessphone", default)]
         pub otherbusinessphone: Option<String>,
-        #[yaserde(rename = "fax", prefix = "nsi1", default)]
+        #[yaserde(rename = "fax", default)]
         pub fax: Option<String>,
-        #[yaserde(rename = "homephone", prefix = "nsi1", default)]
+        #[yaserde(rename = "homephone", default)]
         pub homephone: Option<String>,
-        #[yaserde(rename = "otherhomephone", prefix = "nsi1", default)]
+        #[yaserde(rename = "otherhomephone", default)]
         pub otherhomephone: Option<String>,
-        #[yaserde(rename = "mobilephone", prefix = "nsi1", default)]
+        #[yaserde(rename = "mobilephone", default)]
         pub mobilephone: Option<String>,
-        #[yaserde(rename = "othermobilephone", prefix = "nsi1", default)]
+        #[yaserde(rename = "othermobilephone", default)]
         pub othermobilephone: Option<String>,
-        #[yaserde(rename = "pager", prefix = "nsi1", default)]
+        #[yaserde(rename = "pager", default)]
         pub pager: Option<String>,
-        #[yaserde(rename = "pager2", prefix = "nsi1", default)]
+        #[yaserde(rename = "pager2", default)]
         pub pager_2: Option<String>,
-        #[yaserde(rename = "postalAddress", prefix = "nsi1", default)]
+        #[yaserde(rename = "postalAddress", default)]
         pub postal_address: Option<String>,
-        #[yaserde(rename = "isPrivate", prefix = "nsi1", default)]
+        #[yaserde(rename = "isPrivate", default)]
         pub is_private: Option<bool>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlContact",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlContact {
-        #[yaserde(rename = "company", prefix = "nsi1", default)]
+        #[yaserde(rename = "company", default)]
         pub company: Option<String>,
-        #[yaserde(rename = "description", prefix = "nsi1", default)]
+        #[yaserde(rename = "description", default)]
         pub description: Option<String>,
-        #[yaserde(rename = "displayName", prefix = "nsi1", default)]
+        #[yaserde(rename = "displayName", default)]
         pub display_name: String,
-        #[yaserde(rename = "displayNameAscii", prefix = "nsi1", default)]
+        #[yaserde(rename = "displayNameAscii", default)]
         pub display_name_ascii: String,
-        #[yaserde(rename = "dn", prefix = "nsi1", default)]
+        #[yaserde(rename = "dn", default)]
         pub dn: Option<String>,
-        #[yaserde(rename = "givenName", prefix = "nsi1", default)]
+        #[yaserde(rename = "givenName", default)]
         pub given_name: String,
-        #[yaserde(rename = "givenNameAscii", prefix = "nsi1", default)]
+        #[yaserde(rename = "givenNameAscii", default)]
         pub given_name_ascii: Option<String>,
-        #[yaserde(rename = "initials", prefix = "nsi1", default)]
+        #[yaserde(rename = "initials", default)]
         pub initials: Option<String>,
-        #[yaserde(rename = "middleName", prefix = "nsi1", default)]
+        #[yaserde(rename = "middleName", default)]
         pub middle_name: Option<String>,
-        #[yaserde(rename = "preferredGivenName", prefix = "nsi1", default)]
+        #[yaserde(rename = "preferredGivenName", default)]
         pub preferred_given_name: Option<String>,
-        #[yaserde(rename = "preferredLanguage", prefix = "nsi1", default)]
+        #[yaserde(rename = "preferredLanguage", default)]
         pub preferred_language: Option<String>,
-        #[yaserde(rename = "isPublic", prefix = "nsi1", default)]
+        #[yaserde(rename = "isPublic", default)]
         pub is_public: bool,
-        #[yaserde(rename = "source", prefix = "nsi1", default)]
+        #[yaserde(rename = "source", default)]
         pub source: String,
-        #[yaserde(rename = "sourceUserKey", prefix = "nsi1", default)]
+        #[yaserde(rename = "sourceUserKey", default)]
         pub source_user_key: String,
-        #[yaserde(rename = "suffix", prefix = "nsi1", default)]
+        #[yaserde(rename = "suffix", default)]
         pub suffix: Option<String>,
-        #[yaserde(rename = "surname", prefix = "nsi1", default)]
+        #[yaserde(rename = "surname", default)]
         pub surname: String,
-        #[yaserde(rename = "surnameAscii", prefix = "nsi1", default)]
+        #[yaserde(rename = "surnameAscii", default)]
         pub surname_ascii: Option<String>,
-        #[yaserde(rename = "title", prefix = "nsi1", default)]
+        #[yaserde(rename = "title", default)]
         pub title: Option<String>,
-        #[yaserde(rename = "ContactAddress", prefix = "nsi1", default)]
+        #[yaserde(rename = "ContactAddress", prefix = "tns", default)]
         pub contact_address: Vec<XmlContactAddress>,
-        #[yaserde(rename = "addresses", prefix = "nsi1", default)]
+        #[yaserde(rename = "addresses", prefix = "tns", default)]
         pub addresses: Vec<XmlAddress>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlHandle",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlHandle {
-        #[yaserde(rename = "handleName", prefix = "nsi1", default)]
+        #[yaserde(rename = "handleName", default)]
         pub handle_name: String,
-        #[yaserde(rename = "handleType", prefix = "nsi1", default)]
+        #[yaserde(rename = "handleType", default)]
         pub handle_type: String,
-        #[yaserde(rename = "handleSubType", prefix = "nsi1", default)]
+        #[yaserde(rename = "handleSubType", default)]
         pub handle_sub_type: Option<String>,
-        #[yaserde(rename = "domainName", prefix = "nsi1", default)]
+        #[yaserde(rename = "domainName", default)]
         pub domain_name: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlCommProfileType",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlCommProfileType {
-        #[yaserde(rename = "commProfileType", prefix = "nsi1", default)]
+        #[yaserde(rename = "commProfileType", default)]
         pub comm_profile_type: String,
-        #[yaserde(rename = "commProfileSubType", prefix = "nsi1", default)]
+        #[yaserde(rename = "commProfileSubType", default)]
         pub comm_profile_sub_type: Option<String>,
-        #[yaserde(rename = "jobId", prefix = "nsi1", default)]
+        #[yaserde(rename = "jobId", default)]
         pub job_id: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "handleList",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct HandleList {
-        #[yaserde(rename = "handle", prefix = "nsi1", default)]
+        #[yaserde(rename = "handle", prefix = "tns", default)]
         pub handle: Vec<XmlHandle>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "commProfileList",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct CommProfileList {
-        #[yaserde(rename = "commProfile", prefix = "nsi1", default)]
+        #[yaserde(rename = "commProfile", prefix = "tns", default)]
         pub comm_profile: Vec<XmlCommProfileType>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlCommProfileSetType",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlCommProfileSetType {
-        #[yaserde(rename = "commProfileSetName", prefix = "nsi1", default)]
+        #[yaserde(rename = "commProfileSetName", default)]
         pub comm_profile_set_name: String,
-        #[yaserde(rename = "isPrimary", prefix = "nsi1", default)]
+        #[yaserde(rename = "isPrimary", default)]
         pub is_primary: bool,
-        #[yaserde(rename = "handleList", prefix = "nsi1", default)]
+        #[yaserde(rename = "handleList", default)]
         pub handle_list: Option<HandleList>,
-        #[yaserde(rename = "commProfileList", prefix = "nsi1", default)]
+        #[yaserde(rename = "commProfileList", default)]
         pub comm_profile_list: Option<CommProfileList>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "ForgeinCommProfileType",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct ForgeinCommProfileType {
         #[yaserde(flatten, default)]
         pub xml_comm_profile_type: XmlCommProfileType,
         #[yaserde(prefix = "xsi", rename = "type", attribute)]
         pub xsi_type: String,
-        #[yaserde(rename = "csEncryptionKeyId", prefix = "nsi1", default)]
+        #[yaserde(rename = "csEncryptionKeyId", default)]
         pub cs_encryption_key_id: Option<i64>,
-        #[yaserde(rename = "servicePassword", prefix = "nsi1", default)]
+        #[yaserde(rename = "servicePassword", default)]
         pub service_password: Option<String>,
-        #[yaserde(rename = "serviceData", prefix = "nsi1", default)]
+        #[yaserde(rename = "serviceData", default)]
         pub service_data: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlSecureStore",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlSecureStore {
-        #[yaserde(rename = "secureStoreData", prefix = "nsi1", default)]
+        #[yaserde(rename = "secureStoreData", default)]
         pub secure_store_data: String,
-        #[yaserde(rename = "passwordEncrypted", prefix = "nsi1", default)]
+        #[yaserde(rename = "passwordEncrypted", default)]
         pub password_encrypted: bool,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlLocalizedName",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmlLocalizedName {
-        #[yaserde(rename = "locale", prefix = "nsi1", default)]
+        #[yaserde(rename = "locale", default)]
         pub locale: String,
-        #[yaserde(rename = "name", prefix = "nsi1", default)]
+        #[yaserde(rename = "name", default)]
         pub name: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmLocalizedNames",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct XmLocalizedNames {
-        #[yaserde(rename = "localizedName", prefix = "nsi1", default)]
+        #[yaserde(rename = "localizedName", prefix = "tns", default)]
         pub localized_name: Vec<XmlLocalizedName>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "tenant",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct Tenant {
         #[yaserde(rename = "name", attribute)]
@@ -580,17 +580,17 @@ pub mod types {
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "UserOrganizationDetailsType",
-        namespace = "nsi1: http://xml.avaya.com/schema/import",
-        prefix = "nsi1"
+        namespace = "base: http://xml.avaya.com/schema/import",
+        prefix = "base"
     )]
     pub struct UserOrganizationDetailsType {
-        #[yaserde(rename = "tenant", prefix = "nsi1", default)]
+        #[yaserde(rename = "tenant", default)]
         pub tenant: Tenant,
-        #[yaserde(rename = "organizationUnitLevelOne", prefix = "nsi1", default)]
+        #[yaserde(rename = "organizationUnitLevelOne", default)]
         pub organization_unit_level_one: Option<String>,
-        #[yaserde(rename = "organizationUnitLevelTwo", prefix = "nsi1", default)]
+        #[yaserde(rename = "organizationUnitLevelTwo", default)]
         pub organization_unit_level_two: Option<String>,
-        #[yaserde(rename = "organizationUnitLevelThree", prefix = "nsi1", default)]
+        #[yaserde(rename = "organizationUnitLevelThree", default)]
         pub organization_unit_level_three: Option<String>,
     }
     pub type UserDelta = XmlUserDelta;
@@ -600,7 +600,7 @@ pub mod types {
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(root = "xmlDeltaUserList")]
     pub struct XmlDeltaUserList {
-        #[yaserde(rename = "secureStore", default)]
+        #[yaserde(rename = "secureStore", prefix = "base", default)]
         pub secure_store: XmlSecureStore,
         #[yaserde(rename = "userDelta", default)]
         pub user_delta: Vec<XmlUserDelta>,
@@ -608,7 +608,7 @@ pub mod types {
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(root = "xmlUserDelta")]
     pub struct XmlUserDelta {
-        #[yaserde(rename = "UserOrganizationDetails", default)]
+        #[yaserde(rename = "UserOrganizationDetails", prefix = "base", default)]
         pub user_organization_details: Option<UserOrganizationDetailsType>,
         #[yaserde(rename = "UserProvisionRules", default)]
         pub user_provision_rules: Option<UserProvisionRules>,
@@ -678,23 +678,23 @@ pub mod types {
         pub user_type: Vec<String>,
         #[yaserde(rename = "roles", default)]
         pub roles: Option<Roles>,
-        #[yaserde(rename = "localizedNames", default)]
+        #[yaserde(rename = "localizedNames", prefix = "base", default)]
         pub localized_names: Option<XmLocalizedNames>,
-        #[yaserde(rename = "address", default)]
+        #[yaserde(rename = "address", prefix = "base", default)]
         pub address: Vec<XmlAddress>,
-        #[yaserde(rename = "securityIdentity", default)]
+        #[yaserde(rename = "securityIdentity", prefix = "base", default)]
         pub security_identity: Vec<XmlSecurityIdentity>,
         #[yaserde(rename = "ownedContactLists", default)]
         pub owned_contact_lists: Option<OwnedContactLists>,
         #[yaserde(rename = "ownedContacts", default)]
         pub owned_contacts: Option<OwnedContacts>,
-        #[yaserde(rename = "presenceUserDefault", default)]
+        #[yaserde(rename = "presenceUserDefault", prefix = "base", default)]
         pub presence_user_default: Option<XmlPresUserDefaultType>,
-        #[yaserde(rename = "presenceUserACL", default)]
+        #[yaserde(rename = "presenceUserACL", prefix = "base", default)]
         pub presence_user_acl: Vec<XmlPresUserACLEntryType>,
-        #[yaserde(rename = "presenceUserCLDefault", default)]
+        #[yaserde(rename = "presenceUserCLDefault", prefix = "base", default)]
         pub presence_user_cl_default: Option<XmlPresUserCLDefaultType>,
-        #[yaserde(rename = "commProfileSet", default)]
+        #[yaserde(rename = "commProfileSet", prefix = "base", default)]
         pub comm_profile_set: Vec<XmlCommProfileSetType>,
     }
 }
