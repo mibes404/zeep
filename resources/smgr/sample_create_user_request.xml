@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tns:users xsi:schemaLocation="http://xml.avaya.com/schema/import userimport.xsd"
+           xmlns:ce="http://xml.avaya.com/schema/import_ce" xmlns:agent="http://xml.avaya.com/schema/import_csm_agent"
+           xmlns:mmcs="http://xml.avaya.com/schema/import_mmcs" xmlns:ps="http://xml.avaya.com/schema/presence"
+           xmlns:acnt="http://xml.avaya.com/schema/import1" xmlns:delta="http://xml.avaya.com/schema/deltaImport"
+           xmlns:ipo="http://xml.avaya.com/schema/import_csm_b5800"
+           xmlns:ipt="http://xml.avaya.com/schema/import_csm_cm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:ns12="http://xml.avaya.com/schema/bulkdelete" xmlns:tns="http://xml.avaya.com/schema/import"
+           xmlns:asm="http://xml.avaya.com/schema/import_sessionmanager"
+           xmlns:csm="http://xml.avaya.com/schema/import_csm_mm"
+           xmlns:ol="http://xml.avaya.com/schema/import_mem_officelinx">
+    <tns:user>
+        <UserOrganizationDetails>
+            <tenant name="I-Hessen" createTenantIfNotAlreadyPresent="false"/>
+            <organizationUnitLevelOne>Hessen</organizationUnitLevelOne>
+        </UserOrganizationDetails>
+        <authenticationType>BASIC</authenticationType>
+        <displayName>ae22, Aaaaa</displayName>
+        <displayNameAscii>ae22, Aaaaa</displayNameAscii>
+        <givenName>Aaaaa</givenName>
+        <givenNameAscii>Aaaaa</givenNameAscii>
+        <loginName>vm-20200409-1@sip.avayacloud.com</loginName>
+        <preferredLanguage>de_DE</preferredLanguage>
+        <surname>ae22</surname>
+        <surnameAscii>ae22</surnameAscii>
+        <timeZone>(+2:0)Amsterdam, Berlin, Rome, Belgrade, Prague, Brussels, Sarajevo</timeZone>
+        <userPassword>KP_pw_454847</userPassword>
+        <commPassword>454847</commPassword>
+        <localizedNames>
+            <localizedName>
+                <locale>German</locale>
+                <name>ae22, Aaaaa</name>
+            </localizedName>
+        </localizedNames>
+        <commProfileSet>
+            <commProfileSetName>Primary</commProfileSetName>
+            <isPrimary>true</isPrimary>
+            <handleList>
+                <handle>
+                    <handleName>300170</handleName>
+                    <handleType>xmpp</handleType>
+                    <handleSubType>jabber</handleSubType>
+                    <domainName>sip.avayacloud.com</domainName>
+                </handle>
+                <handle>
+                    <handleName>+4980033322300170</handleName>
+                    <handleType>sip</handleType>
+                    <handleSubType>e164</handleSubType>
+                    <domainName>sip.avayacloud.com</domainName>
+                </handle>
+                <handle>
+                    <handleName>300170</handleName>
+                    <handleType>sip</handleType>
+                    <handleSubType>username</handleSubType>
+                    <domainName>sip.avayacloud.com</domainName>
+                </handle>
+                <handle>
+                    <handleName>vm-20200409-1@simulator.amazonses.com</handleName>
+                    <handleType>smtp</handleType>
+                    <handleSubType>msexchange</handleSubType>
+                </handle>
+            </handleList>
+            <commProfileList>
+                <commProfile xsi:type="asm:SessionManagerCommProfXML"
+                             xmlns:asm="http://xml.avaya.com/schema/import_sessionmanager">
+                    <commProfileType>SessionManager</commProfileType>
+                    <asm:primarySM>SM01a</asm:primarySM>
+                    <asm:terminationAppSequence>CMAppSeq</asm:terminationAppSequence>
+                    <asm:originationAppSequence>CMAppSeq</asm:originationAppSequence>
+                    <asm:homeLocation>Neubrandenburg</asm:homeLocation>
+                    <asm:maxSimultaneousDevices>9</asm:maxSimultaneousDevices>
+                    <asm:blockNewRegistrationWhenMaxActive>false</asm:blockNewRegistrationWhenMaxActive>
+                    <asm:enabledisablecalllog>true</asm:enabledisablecalllog>
+                </commProfile>
+                <commProfile xsi:type="ipt:xmlStationProfile" xmlns:ipt="http://xml.avaya.com/schema/import_csm_cm">
+                    <commProfileType>CM</commProfileType>
+                    <ipt:cmName>cm1</ipt:cmName>
+                    <ipt:prefHandleId>300170@sip.avayacloud.com</ipt:prefHandleId>
+                    <ipt:useExistingExtension>false</ipt:useExistingExtension>
+                    <ipt:extension>300170</ipt:extension>
+                    <ipt:template>BVT_9608_STD</ipt:template>
+                    <ipt:deleteOnUnassign>true</ipt:deleteOnUnassign>
+                    <ipt:lockMessages>true</ipt:lockMessages>
+                    <ipt:coveragePath1></ipt:coveragePath1>
+                    <ipt:cor>1</ipt:cor>
+                    <ipt:cos>1</ipt:cos>
+                    <ipt:tests>false</ipt:tests>
+                    <ipt:dataModule>false</ipt:dataModule>
+                    <ipt:displayLanguage>unicode</ipt:displayLanguage>
+                    <ipt:personalizedRingingPattern>1</ipt:personalizedRingingPattern>
+                    <ipt:messageLampExt>300170</ipt:messageLampExt>
+                    <ipt:muteButtonEnabled>true</ipt:muteButtonEnabled>
+                    <ipt:ipSoftphone>true</ipt:ipSoftphone>
+                    <ipt:survivableCOR>internal</ipt:survivableCOR>
+                    <ipt:survivableTrunkDest>true</ipt:survivableTrunkDest>
+                    <ipt:voiceMailNumber>9879800</ipt:voiceMailNumber>
+                    <ipt:offPremisesStation>false</ipt:offPremisesStation>
+                    <ipt:displayModule>false</ipt:displayModule>
+                    <ipt:remoteOfficePhone>false</ipt:remoteOfficePhone>
+                    <ipt:lwcReception>spe</ipt:lwcReception>
+                    <ipt:lwcActivation>true</ipt:lwcActivation>
+                    <ipt:lwcLogExternalCalls>false</ipt:lwcLogExternalCalls>
+                    <ipt:cdrPrivacy>false</ipt:cdrPrivacy>
+                    <ipt:redirectNotification>true</ipt:redirectNotification>
+                    <ipt:perButtonRingControl>true</ipt:perButtonRingControl>
+                    <ipt:bridgedCallAlerting>false</ipt:bridgedCallAlerting>
+                    <ipt:bridgedIdleLinePreference>false</ipt:bridgedIdleLinePreference>
+                    <ipt:customizableLabels>true</ipt:customizableLabels>
+                    <ipt:expansionModule>false</ipt:expansionModule>
+                    <ipt:ipVideoSoftphone>true</ipt:ipVideoSoftphone>
+                    <ipt:activeStationRinging>single</ipt:activeStationRinging>
+                    <ipt:switchhookFlash>false</ipt:switchhookFlash>
+                    <ipt:ignoreRotaryDigits>false</ipt:ignoreRotaryDigits>
+                    <ipt:h320Conversion>false</ipt:h320Conversion>
+                    <ipt:mwiServedUserType>sip-adjunct</ipt:mwiServedUserType>
+                    <ipt:remoteSoftphoneEmergencyCalls>as-on-local</ipt:remoteSoftphoneEmergencyCalls>
+                    <ipt:emergencyLocationExt>300170</ipt:emergencyLocationExt>
+                </commProfile>
+                <commProfile xsi:type="ps:XmlPsCommProfile" xmlns:ps="http://xml.avaya.com/schema/presence">
+                    <commProfileType>PS</commProfileType>
+                    <ps:system>ps.avayacloud.com</ps:system>
+                    <ps:imGatewaySipEntity>ps.avayacloud.com</ps:imGatewaySipEntity>
+                    <ps:publishViaAESCollector>SD</ps:publishViaAESCollector>
+                </commProfile>
+            </commProfileList>
+        </commProfileSet>
+    </tns:user>
+</tns:users>

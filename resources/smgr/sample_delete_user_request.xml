@@ -1,0 +1,6 @@
+<tns:deleteUsers xsi:schemaLocation="http://xml.avaya.com/schema/bulkdelete bulkdelete.xsd" xmlns:tns="http://xml.avaya.com/schema/bulkdelete" xmlns:ns2="tns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <tns:deleteType>permanent</tns:deleteType>
+    <tns:user>
+        <tns:loginName>goTestngVicko1@sip.avayacloud.com</tns:loginName>
+    </tns:user>
+</tns:deleteUsers>
