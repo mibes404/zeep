@@ -484,99 +484,95 @@ pub mod types {
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlAgentProfile",
-        namespace = "ns1: http://xml.avaya.com/schema/import_csm_agent",
-        prefix = "ns1"
+        namespace = "agent: http://xml.avaya.com/schema/import_csm_agent",
+        prefix = "agent"
     )]
     pub struct XmlAgentProfile {
-        #[yaserde(flatten, default)]
-        pub xml_comm_profile_type: XmlCommProfileType,
-        #[yaserde(prefix = "xsi", rename = "type", attribute)]
-        pub xsi_type: String,
-        #[yaserde(rename = "cmName", prefix = "ns1", default)]
+        #[yaserde(rename = "cmName", prefix = "agent", default)]
         pub cm_name: String,
-        #[yaserde(rename = "useExistingAgent", prefix = "ns1", default)]
+        #[yaserde(rename = "useExistingAgent", prefix = "agent", default)]
         pub use_existing_agent: Option<bool>,
-        #[yaserde(rename = "loginIdExtension", prefix = "ns1", default)]
+        #[yaserde(rename = "loginIdExtension", prefix = "agent", default)]
         pub login_id_extension: String,
-        #[yaserde(rename = "template", prefix = "ns1", default)]
+        #[yaserde(rename = "template", prefix = "agent", default)]
         pub template: Option<String>,
-        #[yaserde(rename = "securityCode", prefix = "ns1", default)]
+        #[yaserde(rename = "securityCode", prefix = "agent", default)]
         pub security_code: Option<String>,
-        #[yaserde(rename = "aas", prefix = "ns1", default)]
+        #[yaserde(rename = "aas", prefix = "agent", default)]
         pub aas: Option<bool>,
-        #[yaserde(rename = "audix", prefix = "ns1", default)]
+        #[yaserde(rename = "audix", prefix = "agent", default)]
         pub audix: Option<bool>,
-        #[yaserde(rename = "password", prefix = "ns1", default)]
+        #[yaserde(rename = "password", prefix = "agent", default)]
         pub password: Option<String>,
-        #[yaserde(rename = "portExtension", prefix = "ns1", default)]
+        #[yaserde(rename = "portExtension", prefix = "agent", default)]
         pub port_extension: Option<String>,
-        #[yaserde(rename = "deleteOnUnassign", prefix = "ns1", default)]
+        #[yaserde(rename = "deleteOnUnassign", prefix = "agent", default)]
         pub delete_on_unassign: Option<bool>,
-        #[yaserde(rename = "tn", prefix = "ns1", default)]
+        #[yaserde(rename = "tn", prefix = "agent", default)]
         pub tn: Option<i32>,
-        #[yaserde(rename = "cor", prefix = "ns1", default)]
+        #[yaserde(rename = "cor", prefix = "agent", default)]
         pub cor: Option<i32>,
-        #[yaserde(rename = "coveragePath", prefix = "ns1", default)]
+        #[yaserde(rename = "coveragePath", prefix = "agent", default)]
         pub coverage_path: Option<String>,
-        #[yaserde(rename = "lwcReception", prefix = "ns1", default)]
+        #[yaserde(rename = "lwcReception", prefix = "agent", default)]
         pub lwc_reception: Option<String>,
-        #[yaserde(rename = "lwcLogExternalCalls", prefix = "ns1", default)]
+        #[yaserde(rename = "lwcLogExternalCalls", prefix = "agent", default)]
         pub lwc_log_external_calls: Option<bool>,
-        #[yaserde(rename = "audixNameforMessaging", prefix = "ns1", default)]
+        #[yaserde(rename = "audixNameforMessaging", prefix = "agent", default)]
         pub audix_namefor_messaging: Option<String>,
-        #[yaserde(rename = "hearsServiceObservingTone", prefix = "ns1", default)]
+        #[yaserde(rename = "hearsServiceObservingTone", prefix = "agent", default)]
         pub hears_service_observing_tone: Option<bool>,
-        #[yaserde(rename = "loginIDforISDNSIPDisplay", prefix = "ns1", default)]
+        #[yaserde(rename = "loginIDforISDNSIPDisplay", prefix = "agent", default)]
         pub login_i_dfor_isdnsip_display: Option<bool>,
-        #[yaserde(rename = "autoAnswer", prefix = "ns1", default)]
+        #[yaserde(rename = "autoAnswer", prefix = "agent", default)]
         pub auto_answer: Option<String>,
-        #[yaserde(rename = "miaAcrossSkills", prefix = "ns1", default)]
+        #[yaserde(rename = "miaAcrossSkills", prefix = "agent", default)]
         pub mia_across_skills: Option<String>,
-        #[yaserde(rename = "acwAgentConsideredIdle", prefix = "ns1", default)]
+        #[yaserde(rename = "acwAgentConsideredIdle", prefix = "agent", default)]
         pub acw_agent_considered_idle: Option<String>,
-        #[yaserde(rename = "auxWorkReasonCodeType", prefix = "ns1", default)]
+        #[yaserde(rename = "auxWorkReasonCodeType", prefix = "agent", default)]
         pub aux_work_reason_code_type: Option<String>,
-        #[yaserde(rename = "logoutReasonCodeType", prefix = "ns1", default)]
+        #[yaserde(rename = "logoutReasonCodeType", prefix = "agent", default)]
         pub logout_reason_code_type: Option<String>,
         #[yaserde(
             rename = "maximumTimeAgentInAcwBeforeLogoutSec",
-            prefix = "ns1",
+            prefix = "agent",
             default
         )]
         pub maximum_time_agent_in_acw_before_logout_sec: Option<String>,
-        #[yaserde(rename = "forcedAgentLogoutTimeHr", prefix = "ns1", default)]
+        #[yaserde(rename = "forcedAgentLogoutTimeHr", prefix = "agent", default)]
         pub forced_agent_logout_time_hr: Option<String>,
-        #[yaserde(rename = "forcedAgentLogoutTimeSec", prefix = "ns1", default)]
+        #[yaserde(rename = "forcedAgentLogoutTimeSec", prefix = "agent", default)]
         pub forced_agent_logout_time_sec: Option<String>,
-        #[yaserde(rename = "directAgentSkill", prefix = "ns1", default)]
+        #[yaserde(rename = "directAgentSkill", prefix = "agent", default)]
         pub direct_agent_skill: Option<String>,
-        #[yaserde(rename = "callHandlingPreference", prefix = "ns1", default)]
+        #[yaserde(rename = "callHandlingPreference", prefix = "agent", default)]
         pub call_handling_preference: Option<String>,
-        #[yaserde(rename = "serviceObjective", prefix = "ns1", default)]
+        #[yaserde(rename = "serviceObjective", prefix = "agent", default)]
         pub service_objective: Option<bool>,
-        #[yaserde(rename = "directAgentCallsFirst", prefix = "ns1", default)]
+        #[yaserde(rename = "directAgentCallsFirst", prefix = "agent", default)]
         pub direct_agent_calls_first: Option<bool>,
-        #[yaserde(rename = "localCallPreference", prefix = "ns1", default)]
+        #[yaserde(rename = "localCallPreference", prefix = "agent", default)]
         pub local_call_preference: Option<bool>,
-        #[yaserde(rename = "skills", prefix = "ns1", default)]
+        #[yaserde(rename = "skills", prefix = "agent", default)]
         pub skills: Vec<XmlAgentLoginIdSkillsData>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "xmlAgentLoginIdSkillsData",
-        namespace = "ns1: http://xml.avaya.com/schema/import_csm_agent",
-        prefix = "ns1"
+        namespace = "agent: http://xml.avaya.com/schema/import_csm_agent",
+        prefix = "agent"
     )]
     pub struct XmlAgentLoginIdSkillsData {
-        #[yaserde(rename = "number", prefix = "ns1", default)]
+        #[yaserde(rename = "number", prefix = "agent", default)]
         pub number: String,
-        #[yaserde(rename = "skillNumber", prefix = "ns1", default)]
+        #[yaserde(rename = "skillNumber", prefix = "agent", default)]
         pub skill_number: String,
-        #[yaserde(rename = "reserveLevel", prefix = "ns1", default)]
+        #[yaserde(rename = "reserveLevel", prefix = "agent", default)]
         pub reserve_level: Option<String>,
-        #[yaserde(rename = "skillLevel", prefix = "ns1", default)]
+        #[yaserde(rename = "skillLevel", prefix = "agent", default)]
         pub skill_level: Option<String>,
-        #[yaserde(rename = "percentAllocation", prefix = "ns1", default)]
+        #[yaserde(rename = "percentAllocation", prefix = "agent", default)]
         pub percent_allocation: Option<String>,
     }
 }

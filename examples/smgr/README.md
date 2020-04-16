@@ -103,12 +103,12 @@ after
         root = "users",
         namespace = "tns: http://xml.avaya.com/schema/import",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
-        namespace = "ns1: http://xml.avaya.com/schema/import_csm_agent",
-        namespace = "ns2: http://xml.avaya.com/schema/import_csm_cm",
-        namespace = "ns3: http://xml.avaya.com/schema/presence",
-        namespace = "ns7: http://xml.avaya.com/schema/import_sessionmanager",
-        namespace = "ns11: http://xml.avaya.com/schema/import_mem_officelinx",
-        namespace = "ns15: http://xml.avaya.com/schema/deltaImport",
+        namespace = "agent: http://xml.avaya.com/schema/import_csm_agent",
+        namespace = "csm: http://xml.avaya.com/schema/import_csm_cm",
+        namespace = "ps: http://xml.avaya.com/schema/presence",
+        namespace = "asm: http://xml.avaya.com/schema/import_sessionmanager",
+        namespace = "ol: http://xml.avaya.com/schema/import_mem_officelinx",
+        namespace = "delta: http://xml.avaya.com/schema/deltaImport",
         prefix = "tns"
     )]
     pub struct Users {
