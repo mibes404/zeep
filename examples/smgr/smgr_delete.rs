@@ -65,7 +65,12 @@ pub mod types {
         #[yaserde(rename = "id", default)]
         pub id: Option<String>,
     }
-    pub type XmlDeleteType = String;
+    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+    #[yaserde(root = "xmlDeleteType")]
+    pub struct XmlDeleteType {
+        #[yaserde(text, default)]
+        pub body: String,
+    }
 }
 
 pub mod ports {

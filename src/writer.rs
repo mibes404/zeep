@@ -492,12 +492,12 @@ impl FileWriter {
         }
     }
 
-    fn init_element(&self, name: &str, is_top_level: bool, element_type: ElementType) -> Element {
+    fn init_element(&self, name: &str, is_top_level: bool) -> Element {
         let some_tns = self.target_name_space.clone();
 
         if let Some(tns) = some_tns {
             let element_name = to_pascal_case(name);
-            let mut e = Element::new(&element_name, element_type);
+            let mut e = Element::new(&element_name, ElementType::Struct);
 
             if is_top_level {
                 e.prefix = Option::Some(self.ns_prefix.to_string());
@@ -518,7 +518,7 @@ impl FileWriter {
             }
         } else {
             let element_name = to_pascal_case(name);
-            let mut e = Element::new(&element_name, element_type);
+            let mut e = Element::new(&element_name, ElementType::Struct);
             e.xml_name = Option::Some(name.to_string());
             e
         }
@@ -534,16 +534,25 @@ impl FileWriter {
             return Ok(());
         }
 
-        let mut element = self.init_element(name, false, ElementType::Alias);
+        let mut parent_element = self.init_element(name, false);
         let type_name = match self.deconstruct_simplex_element(&node) {
             Ok(tn) => tn,
             Err(_) => to_pascal_case(name),
         };
 
-        element.field_type = Option::Some(self.fetch_type(&type_name));
+        let mut field = Element::new("body", ElementType::Field);
+        let field_type = self.fetch_type(&type_name);
+        field.text_field = field_type == "String";
+        field.field_type = Option::Some(field_type);
+        field.xml_name = None;
 
-        if !self.have_seen_type(&element.name, module) {
-            module.add(element);
+        // text fields are automatically "flattened"
+        field.flatten = !field.text_field;
+
+        parent_element.add(field);
+
+        if !self.have_seen_type(&parent_element.name, module) {
+            module.add(parent_element);
         }
 
         Ok(())
@@ -560,7 +569,7 @@ impl FileWriter {
             return Ok(());
         }
 
-        let mut element = self.init_element(name, is_top_level, ElementType::Struct);
+        let mut element = self.init_element(name, is_top_level);
 
         let maybe_sequence = node.children().find(|child| child.has_tag_name("sequence"));
 

@@ -33,6 +33,7 @@ pub struct Element {
     pub flatten: bool,
     pub comment: Option<String>,
     pub function_args: Option<FunctionArgs>,
+    pub text_field: bool,
 }
 
 pub struct FunctionArgs {
@@ -59,6 +60,7 @@ pub fn root() -> Element {
         flatten: false,
         comment: None,
         function_args: None,
+        text_field: false,
     }
 }
 
@@ -167,6 +169,7 @@ impl Element {
             flatten: false,
             comment: None,
             function_args: None,
+            text_field: false,
         }
     }
 
@@ -186,6 +189,7 @@ impl Element {
             flatten: false,
             comment: None,
             function_args: None,
+            text_field: false,
         }
     }
 
@@ -285,7 +289,16 @@ impl Element {
     }
 
     fn render_field(&self) -> String {
-        let flatten = if self.flatten { "flatten, " } else { "" };
+        let mut bool_options = if self.flatten {
+            "flatten, ".to_string()
+        } else {
+            "".to_string()
+        };
+
+        if self.text_field {
+            bool_options.push_str("text, ")
+        }
+
         let comment = match &self.comment {
             None => "".to_string(),
             Some(c) => format!("// {}", c),
@@ -302,7 +315,7 @@ impl Element {
                 xml_name,
                 self.name,
                 self.render_field_type(),
-                flatten,
+                bool_options,
                 comment,
                 prefix,
             )
@@ -311,7 +324,7 @@ impl Element {
                 "\t#[yaserde({2}{4}default)]\n\tpub {0}: {1}, {3}\n",
                 self.name,
                 self.render_field_type(),
-                flatten,
+                bool_options,
                 comment,
                 prefix
             )
