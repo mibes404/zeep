@@ -65,6 +65,7 @@ pub mod types {
         #[yaserde(rename = "id", default)]
         pub id: Option<String>,
     }
+    pub type XmlDeleteType = String;
 }
 
 pub mod ports {

@@ -260,6 +260,15 @@ impl FileWriter {
                         Ok(())
                     }
                 }
+                "simpleType" => {
+                    if let Some(n) = self.get_some_attribute(&child, "name") {
+                        let module = self.pick_section(TYPES_MOD);
+                        let mut _module = &mut *module.deref().borrow_mut();
+                        self.print_simplex_element(&child, n, _module)
+                    } else {
+                        Ok(())
+                    }
+                }
                 _ => Ok(()),
             })?;
 
@@ -483,22 +492,12 @@ impl FileWriter {
         }
     }
 
-    fn print_complex_element(
-        &mut self,
-        node: &Node,
-        name: &str,
-        is_top_level: bool,
-        module: &mut Element,
-    ) -> WriterResult<()> {
-        if self.have_seen_type(name, module) {
-            return Ok(());
-        }
-
+    fn init_element(&self, name: &str, is_top_level: bool, element_type: ElementType) -> Element {
         let some_tns = self.target_name_space.clone();
 
-        let mut element = if let Some(tns) = some_tns {
+        if let Some(tns) = some_tns {
             let element_name = to_pascal_case(name);
-            let mut e = Element::new(&element_name, ElementType::Struct);
+            let mut e = Element::new(&element_name, element_type);
 
             if is_top_level {
                 e.prefix = Option::Some(self.ns_prefix.to_string());
@@ -519,10 +518,49 @@ impl FileWriter {
             }
         } else {
             let element_name = to_pascal_case(name);
-            let mut e = Element::new(&element_name, ElementType::Struct);
+            let mut e = Element::new(&element_name, element_type);
             e.xml_name = Option::Some(name.to_string());
             e
+        }
+    }
+
+    fn print_simplex_element(
+        &mut self,
+        node: &Node,
+        name: &str,
+        module: &mut Element,
+    ) -> WriterResult<()> {
+        if self.have_seen_type(name, module) {
+            return Ok(());
+        }
+
+        let mut element = self.init_element(name, false, ElementType::Alias);
+        let type_name = match self.deconstruct_simplex_element(&node) {
+            Ok(tn) => tn,
+            Err(_) => to_pascal_case(name),
         };
+
+        element.field_type = Option::Some(self.fetch_type(&type_name));
+
+        if !self.have_seen_type(&element.name, module) {
+            module.add(element);
+        }
+
+        Ok(())
+    }
+
+    fn print_complex_element(
+        &mut self,
+        node: &Node,
+        name: &str,
+        is_top_level: bool,
+        module: &mut Element,
+    ) -> WriterResult<()> {
+        if self.have_seen_type(name, module) {
+            return Ok(());
+        }
+
+        let mut element = self.init_element(name, is_top_level, ElementType::Struct);
 
         let maybe_sequence = node.children().find(|child| child.has_tag_name("sequence"));
 
