@@ -403,7 +403,14 @@ pub mod types {
         pub domain_name: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlCommProfileType")]
+    #[yaserde(
+        root = "xmlCommProfileType",
+        namespace = "agent: http://xml.avaya.com/schema/import_csm_agent",
+        namespace = "csm: http://xml.avaya.com/schema/import_csm_cm",
+        namespace = "ps: http://xml.avaya.com/schema/presence",
+        namespace = "asm: http://xml.avaya.com/schema/import_sessionmanager",
+        namespace = "ol: http://xml.avaya.com/schema/import_mem_officelinx"
+    )]
     pub struct XmlCommProfileType {
         #[yaserde(prefix = "xsi", rename = "type", attribute)]
         pub xsi_type: String, // XmlCommProfileType

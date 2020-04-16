@@ -484,19 +484,15 @@ pub mod types {
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "XmlPsCommProfile",
-        namespace = "ns3: http://xml.avaya.com/schema/presence",
-        prefix = "ns3"
+        namespace = "ps: http://xml.avaya.com/schema/presence",
+        prefix = "ps"
     )]
     pub struct XmlPsCommProfile {
-        #[yaserde(flatten, default)]
-        pub xml_comm_profile_type: XmlCommProfileType,
-        #[yaserde(prefix = "xsi", rename = "type", attribute)]
-        pub xsi_type: String,
-        #[yaserde(rename = "system", prefix = "ns3", default)]
+        #[yaserde(rename = "system", prefix = "ps", default)]
         pub system: String,
-        #[yaserde(rename = "imGatewaySipEntity", prefix = "ns3", default)]
+        #[yaserde(rename = "imGatewaySipEntity", prefix = "ps", default)]
         pub im_gateway_sip_entity: Option<String>,
-        #[yaserde(rename = "publishViaAESCollector", prefix = "ns3", default)]
+        #[yaserde(rename = "publishViaAESCollector", prefix = "ps", default)]
         pub publish_via_aes_collector: String,
     }
 }

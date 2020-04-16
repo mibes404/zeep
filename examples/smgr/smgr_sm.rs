@@ -484,37 +484,33 @@ pub mod types {
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         root = "SessionManagerCommProfXML",
-        namespace = "ns7: http://xml.avaya.com/schema/import_sessionmanager",
-        prefix = "ns7"
+        namespace = "asm: http://xml.avaya.com/schema/import_sessionmanager",
+        prefix = "asm"
     )]
     pub struct SessionManagerCommProfXML {
-        #[yaserde(flatten, default)]
-        pub xml_comm_profile_type: XmlCommProfileType,
-        #[yaserde(prefix = "xsi", rename = "type", attribute)]
-        pub xsi_type: String,
-        #[yaserde(rename = "primarySM", prefix = "ns7", default)]
+        #[yaserde(rename = "primarySM", prefix = "asm", default)]
         pub primary_sm: String,
-        #[yaserde(rename = "secondarySM", prefix = "ns7", default)]
+        #[yaserde(rename = "secondarySM", prefix = "asm", default)]
         pub secondary_sm: Option<String>,
-        #[yaserde(rename = "terminationAppSequence", prefix = "ns7", default)]
+        #[yaserde(rename = "terminationAppSequence", prefix = "asm", default)]
         pub termination_app_sequence: Option<String>,
-        #[yaserde(rename = "originationAppSequence", prefix = "ns7", default)]
+        #[yaserde(rename = "originationAppSequence", prefix = "asm", default)]
         pub origination_app_sequence: Option<String>,
-        #[yaserde(rename = "confFactorySet", prefix = "ns7", default)]
+        #[yaserde(rename = "confFactorySet", prefix = "asm", default)]
         pub conf_factory_set: Option<String>,
-        #[yaserde(rename = "survivabilityServer", prefix = "ns7", default)]
+        #[yaserde(rename = "survivabilityServer", prefix = "asm", default)]
         pub survivability_server: Option<String>,
-        #[yaserde(rename = "homeLocation", prefix = "ns7", default)]
+        #[yaserde(rename = "homeLocation", prefix = "asm", default)]
         pub home_location: String,
-        #[yaserde(rename = "maxSimultaneousDevices", prefix = "ns7", default)]
+        #[yaserde(rename = "maxSimultaneousDevices", prefix = "asm", default)]
         pub max_simultaneous_devices: Option<i32>,
-        #[yaserde(rename = "blockNewRegistrationWhenMaxActive", prefix = "ns7", default)]
+        #[yaserde(rename = "blockNewRegistrationWhenMaxActive", prefix = "asm", default)]
         pub block_new_registration_when_max_active: Option<bool>,
-        #[yaserde(rename = "enabledisablecalllog", prefix = "ns7", default)]
+        #[yaserde(rename = "enabledisablecalllog", prefix = "asm", default)]
         pub enabledisablecalllog: Option<bool>,
-        #[yaserde(rename = "emergencyTerminationAppSequence", prefix = "ns7", default)]
+        #[yaserde(rename = "emergencyTerminationAppSequence", prefix = "asm", default)]
         pub emergency_termination_app_sequence: Option<String>,
-        #[yaserde(rename = "emergencyOriginationAppSequence", prefix = "ns7", default)]
+        #[yaserde(rename = "emergencyOriginationAppSequence", prefix = "asm", default)]
         pub emergency_origination_app_sequence: Option<String>,
     }
 }
