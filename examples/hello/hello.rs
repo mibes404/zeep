@@ -14,7 +14,7 @@ pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub struct Header {}
 #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 #[yaserde(
-    root = "Fault",
+    rename = "Fault",
     namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
     prefix = "soapenv"
 )]
@@ -33,13 +33,13 @@ pub mod messages {
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "SayHelloResponse")]
+    #[yaserde(rename = "SayHelloResponse")]
     pub struct SayHelloResponse {
         #[yaserde(flatten, default)]
         pub parameters: types::SayHelloResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "SayHello")]
+    #[yaserde(rename = "SayHello")]
     pub struct SayHello {
         #[yaserde(flatten, default)]
         pub parameters: types::SayHello,
@@ -54,7 +54,7 @@ pub mod types {
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "SayHello",
+        rename = "SayHello",
         namespace = "tns: http://learnwebservices.com/services/hello",
         prefix = "tns"
     )]
@@ -64,7 +64,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "helloRequest",
+        rename = "helloRequest",
         namespace = "tns: http://learnwebservices.com/services/hello",
         prefix = "tns"
     )]
@@ -74,7 +74,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "SayHelloResponse",
+        rename = "SayHelloResponse",
         namespace = "tns: http://learnwebservices.com/services/hello",
         prefix = "tns"
     )]
@@ -84,7 +84,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "helloResponse",
+        rename = "helloResponse",
         namespace = "tns: http://learnwebservices.com/services/hello",
         prefix = "tns"
     )]
@@ -157,7 +157,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -198,7 +198,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]

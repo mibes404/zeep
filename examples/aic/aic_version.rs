@@ -14,7 +14,7 @@ pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub struct Header {}
 #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 #[yaserde(
-    root = "Fault",
+    rename = "Fault",
     namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
     prefix = "soapenv"
 )]
@@ -33,10 +33,10 @@ pub mod messages {
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "getVersionRequest")]
+    #[yaserde(rename = "getVersionRequest")]
     pub struct GetVersionRequest {}
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "getVersionResponse")]
+    #[yaserde(rename = "getVersionResponse")]
     pub struct GetVersionResponse {
         #[yaserde(rename = "getVersionReturn", default)]
         pub get_version_return: String,
@@ -114,7 +114,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -155,7 +155,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]

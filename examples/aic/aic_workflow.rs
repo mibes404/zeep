@@ -14,7 +14,7 @@ pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub struct Header {}
 #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 #[yaserde(
-    root = "Fault",
+    rename = "Fault",
     namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
     prefix = "soapenv"
 )]
@@ -33,19 +33,19 @@ pub mod messages {
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "ExecuteRequest")]
+    #[yaserde(rename = "ExecuteRequest")]
     pub struct ExecuteRequest {
         #[yaserde(flatten, default)]
         pub parameters: types::Execute,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "AicServiceFault")]
+    #[yaserde(rename = "AicServiceFault")]
     pub struct AicServiceFault {
         #[yaserde(flatten, default)]
         pub fault: types::Fault,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "ExecuteResponse")]
+    #[yaserde(rename = "ExecuteResponse")]
     pub struct ExecuteResponse {
         #[yaserde(flatten, default)]
         pub parameters: types::ExecuteResponse,
@@ -60,7 +60,7 @@ pub mod types {
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "Execute",
+        rename = "Execute",
         namespace = "tns: http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -73,7 +73,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AicCouple",
+        rename = "AicCouple",
         namespace = "tns: http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -85,7 +85,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "ExecuteResponse",
+        rename = "ExecuteResponse",
         namespace = "tns: http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -96,7 +96,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AicServiceFault",
+        rename = "AicServiceFault",
         namespace = "tns: http://xml.avaya.com/ws/WorkFlow/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -112,7 +112,7 @@ pub mod ports {
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "Fault",
+        rename = "Fault",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -183,7 +183,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -226,7 +226,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]

@@ -1122,7 +1122,7 @@ impl FileWriter {
         format!(
             r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
         #[yaserde(
-            root = "Envelope",
+            rename = "Envelope",
             namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
             prefix = "soapenv"
         )]
@@ -1549,7 +1549,7 @@ mod test_xsd {
         // no prefix for default namespace
         assert!(result.contains(
             r#"#[yaserde(
-	root = "xmlAgentProfile",
+	rename = "xmlAgentProfile",
 )]"#
         ));
     }
@@ -1560,7 +1560,7 @@ mod test_xsd {
 
         assert!(result.contains(
             r#"#[yaserde(
-	root = "xmlAgentProfile",
+	rename = "xmlAgentProfile",
 	namespace = "tns: http://xml.avaya.com/schema/import_csm_agent",
 	prefix = "tns",
 )]"#
@@ -1573,7 +1573,7 @@ mod test_xsd {
 
         assert!(result.contains(
             r#"#[yaserde(
-	root = "xmlAgentProfile",
+	rename = "xmlAgentProfile",
 	namespace = "ns2: http://xml.avaya.com/schema/import_csm_agent",
 	prefix = "ns2",
 )]"#

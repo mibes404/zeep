@@ -14,7 +14,7 @@ pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub struct Header {}
 #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 #[yaserde(
-    root = "Fault",
+    rename = "Fault",
     namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
     prefix = "soapenv"
 )]
@@ -46,7 +46,7 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "users",
+        rename = "users",
         namespace = "tns: http://xml.avaya.com/schema/import",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "nsi1"
@@ -58,31 +58,31 @@ pub mod types {
         pub user: Vec<XmlUser>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "UserProvisionRules")]
+    #[yaserde(rename = "UserProvisionRules")]
     pub struct UserProvisionRules {
         #[yaserde(rename = "UserProvisionRuleName", default)]
         pub user_provision_rule_name: Vec<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "roles")]
+    #[yaserde(rename = "roles")]
     pub struct Roles {
         #[yaserde(rename = "role", default)]
         pub role: Vec<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "ownedContactLists")]
+    #[yaserde(rename = "ownedContactLists")]
     pub struct OwnedContactLists {
         #[yaserde(rename = "contactList", default)]
         pub contact_list: XmlContactList,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "ownedContacts")]
+    #[yaserde(rename = "ownedContacts")]
     pub struct OwnedContacts {
         #[yaserde(rename = "contact", default)]
         pub contact: Vec<XmlContact>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlUser")]
+    #[yaserde(rename = "xmlUser")]
     pub struct XmlUser {
         #[yaserde(rename = "UserOrganizationDetails", default)]
         pub user_organization_details: Option<UserOrganizationDetailsType>,
@@ -174,7 +174,7 @@ pub mod types {
         pub comm_profile_set: Vec<XmlCommProfileSetType>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlSecurityIdentity")]
+    #[yaserde(rename = "xmlSecurityIdentity")]
     pub struct XmlSecurityIdentity {
         #[yaserde(rename = "identity", default)]
         pub identity: String,
@@ -184,7 +184,7 @@ pub mod types {
         pub rs_type: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlPresInfoTypeAccessType")]
+    #[yaserde(rename = "xmlPresInfoTypeAccessType")]
     pub struct XmlPresInfoTypeAccessType {
         #[yaserde(rename = "infoType", default)]
         pub info_type: XmlPresInfoTypeType,
@@ -192,13 +192,13 @@ pub mod types {
         pub access: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlPresACRuleType")]
+    #[yaserde(rename = "xmlPresACRuleType")]
     pub struct XmlPresACRuleType {
         #[yaserde(rename = "infoTypeAccess", default)]
         pub info_type_access: Vec<XmlPresInfoTypeAccessType>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlPresUserDefaultType")]
+    #[yaserde(rename = "xmlPresUserDefaultType")]
     pub struct XmlPresUserDefaultType {
         #[yaserde(flatten, default)]
         pub xml_pres_ac_rule_type: XmlPresACRuleType,
@@ -206,7 +206,7 @@ pub mod types {
         pub xsi_type: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlPresUserCLDefaultType")]
+    #[yaserde(rename = "xmlPresUserCLDefaultType")]
     pub struct XmlPresUserCLDefaultType {
         #[yaserde(flatten, default)]
         pub xml_pres_ac_rule_type: XmlPresACRuleType,
@@ -214,7 +214,7 @@ pub mod types {
         pub xsi_type: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlPresUserACLEntryType")]
+    #[yaserde(rename = "xmlPresUserACLEntryType")]
     pub struct XmlPresUserACLEntryType {
         #[yaserde(flatten, default)]
         pub xml_pres_ac_rule_type: XmlPresACRuleType,
@@ -226,7 +226,7 @@ pub mod types {
         pub watcher_display_name: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlPresInfoTypeType")]
+    #[yaserde(rename = "xmlPresInfoTypeType")]
     pub struct XmlPresInfoTypeType {
         #[yaserde(rename = "label", default)]
         pub label: String,
@@ -236,7 +236,7 @@ pub mod types {
         pub spec_flags: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlContactList")]
+    #[yaserde(rename = "xmlContactList")]
     pub struct XmlContactList {
         #[yaserde(rename = "name", default)]
         pub name: String,
@@ -250,7 +250,7 @@ pub mod types {
         pub contact_list_type: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlContactListMember")]
+    #[yaserde(rename = "xmlContactListMember")]
     pub struct XmlContactListMember {
         #[yaserde(rename = "memberContact", default)]
         pub member_contact: Option<String>,
@@ -278,7 +278,7 @@ pub mod types {
         pub priority_level: Option<i32>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlContactAddress")]
+    #[yaserde(rename = "xmlContactAddress")]
     pub struct XmlContactAddress {
         #[yaserde(rename = "address", default)]
         pub address: String,
@@ -292,7 +292,7 @@ pub mod types {
         pub label: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlAddress")]
+    #[yaserde(rename = "xmlAddress")]
     pub struct XmlAddress {
         #[yaserde(rename = "addressType", default)]
         pub address_type: String,
@@ -336,7 +336,7 @@ pub mod types {
         pub is_private: Option<bool>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlContact")]
+    #[yaserde(rename = "xmlContact")]
     pub struct XmlContact {
         #[yaserde(rename = "company", default)]
         pub company: Option<String>,
@@ -380,7 +380,7 @@ pub mod types {
         pub addresses: Vec<XmlAddress>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlHandle")]
+    #[yaserde(rename = "xmlHandle")]
     pub struct XmlHandle {
         #[yaserde(rename = "handleName", default)]
         pub handle_name: String,
@@ -392,7 +392,7 @@ pub mod types {
         pub domain_name: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlCommProfileType")]
+    #[yaserde(rename = "xmlCommProfileType")]
     pub struct XmlCommProfileType {
         #[yaserde(rename = "commProfileType", default)]
         pub comm_profile_type: String,
@@ -402,19 +402,19 @@ pub mod types {
         pub job_id: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "handleList")]
+    #[yaserde(rename = "handleList")]
     pub struct HandleList {
         #[yaserde(rename = "handle", default)]
         pub handle: Vec<XmlHandle>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "commProfileList")]
+    #[yaserde(rename = "commProfileList")]
     pub struct CommProfileList {
         #[yaserde(rename = "commProfile", default)]
         pub comm_profile: Vec<XmlCommProfileType>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlCommProfileSetType")]
+    #[yaserde(rename = "xmlCommProfileSetType")]
     pub struct XmlCommProfileSetType {
         #[yaserde(rename = "commProfileSetName", default)]
         pub comm_profile_set_name: String,
@@ -426,7 +426,7 @@ pub mod types {
         pub comm_profile_list: Option<CommProfileList>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "ForgeinCommProfileType")]
+    #[yaserde(rename = "ForgeinCommProfileType")]
     pub struct ForgeinCommProfileType {
         #[yaserde(flatten, default)]
         pub xml_comm_profile_type: XmlCommProfileType,
@@ -440,7 +440,7 @@ pub mod types {
         pub service_data: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlSecureStore")]
+    #[yaserde(rename = "xmlSecureStore")]
     pub struct XmlSecureStore {
         #[yaserde(rename = "secureStoreData", default)]
         pub secure_store_data: String,
@@ -448,7 +448,7 @@ pub mod types {
         pub password_encrypted: bool,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlLocalizedName")]
+    #[yaserde(rename = "xmlLocalizedName")]
     pub struct XmlLocalizedName {
         #[yaserde(rename = "locale", default)]
         pub locale: String,
@@ -456,13 +456,13 @@ pub mod types {
         pub name: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmLocalizedNames")]
+    #[yaserde(rename = "xmLocalizedNames")]
     pub struct XmLocalizedNames {
         #[yaserde(rename = "localizedName", default)]
         pub localized_name: Vec<XmlLocalizedName>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "tenant")]
+    #[yaserde(rename = "tenant")]
     pub struct Tenant {
         #[yaserde(rename = "name", attribute)]
         pub name: String,
@@ -470,7 +470,7 @@ pub mod types {
         pub create_tenant_if_not_already_present: bool,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "UserOrganizationDetailsType")]
+    #[yaserde(rename = "UserOrganizationDetailsType")]
     pub struct UserOrganizationDetailsType {
         #[yaserde(rename = "tenant", default)]
         pub tenant: Tenant,
@@ -483,7 +483,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "XmlPsCommProfile",
+        rename = "XmlPsCommProfile",
         namespace = "ps: http://xml.avaya.com/schema/presence",
         prefix = "ps"
     )]

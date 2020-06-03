@@ -14,7 +14,7 @@ pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub struct Header {}
 #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 #[yaserde(
-    root = "Fault",
+    rename = "Fault",
     namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
     prefix = "soapenv"
 )]
@@ -46,7 +46,7 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "users",
+        rename = "users",
         namespace = "tns: http://xml.avaya.com/schema/import",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "nsi1"
@@ -59,7 +59,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "UserProvisionRules",
+        rename = "UserProvisionRules",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -69,7 +69,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "roles",
+        rename = "roles",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -79,7 +79,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "ownedContactLists",
+        rename = "ownedContactLists",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -89,7 +89,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "ownedContacts",
+        rename = "ownedContacts",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -99,7 +99,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlUser",
+        rename = "xmlUser",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -195,7 +195,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlSecurityIdentity",
+        rename = "xmlSecurityIdentity",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -209,7 +209,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlPresInfoTypeAccessType",
+        rename = "xmlPresInfoTypeAccessType",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -221,7 +221,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlPresACRuleType",
+        rename = "xmlPresACRuleType",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -231,7 +231,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlPresUserDefaultType",
+        rename = "xmlPresUserDefaultType",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -243,7 +243,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlPresUserCLDefaultType",
+        rename = "xmlPresUserCLDefaultType",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -255,7 +255,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlPresUserACLEntryType",
+        rename = "xmlPresUserACLEntryType",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -271,7 +271,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlPresInfoTypeType",
+        rename = "xmlPresInfoTypeType",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -285,7 +285,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlContactList",
+        rename = "xmlContactList",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -303,7 +303,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlContactListMember",
+        rename = "xmlContactListMember",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -335,7 +335,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlContactAddress",
+        rename = "xmlContactAddress",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -353,7 +353,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlAddress",
+        rename = "xmlAddress",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -401,7 +401,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlContact",
+        rename = "xmlContact",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -449,7 +449,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlHandle",
+        rename = "xmlHandle",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -465,7 +465,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlCommProfileType",
+        rename = "xmlCommProfileType",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -479,7 +479,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "handleList",
+        rename = "handleList",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -489,7 +489,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "commProfileList",
+        rename = "commProfileList",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -499,7 +499,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlCommProfileSetType",
+        rename = "xmlCommProfileSetType",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -515,7 +515,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "ForgeinCommProfileType",
+        rename = "ForgeinCommProfileType",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -533,7 +533,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlSecureStore",
+        rename = "xmlSecureStore",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -545,7 +545,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmlLocalizedName",
+        rename = "xmlLocalizedName",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -557,7 +557,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "xmLocalizedNames",
+        rename = "xmLocalizedNames",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -567,7 +567,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "tenant",
+        rename = "tenant",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -579,7 +579,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "UserOrganizationDetailsType",
+        rename = "UserOrganizationDetailsType",
         namespace = "nsi1: http://xml.avaya.com/schema/import",
         prefix = "nsi1"
     )]
@@ -598,7 +598,7 @@ pub mod types {
     pub type DeltaUserList = XmlDeltaUserList;
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlDeltaUserList")]
+    #[yaserde(rename = "xmlDeltaUserList")]
     pub struct XmlDeltaUserList {
         #[yaserde(rename = "secureStore", default)]
         pub secure_store: XmlSecureStore,
@@ -606,7 +606,7 @@ pub mod types {
         pub user_delta: Vec<XmlUserDelta>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlUserDelta")]
+    #[yaserde(rename = "xmlUserDelta")]
     pub struct XmlUserDelta {
         #[yaserde(rename = "UserOrganizationDetails", default)]
         pub user_organization_details: Option<UserOrganizationDetailsType>,

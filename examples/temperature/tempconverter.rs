@@ -14,7 +14,7 @@ pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub struct Header {}
 #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 #[yaserde(
-    root = "Fault",
+    rename = "Fault",
     namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
     prefix = "soapenv"
 )]
@@ -33,25 +33,25 @@ pub mod messages {
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "CelsiusToFahrenheit")]
+    #[yaserde(rename = "CelsiusToFahrenheit")]
     pub struct CelsiusToFahrenheit {
         #[yaserde(flatten, default)]
         pub celsius_to_fahrenheit_request: types::CelsiusToFahrenheitRequest,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "FahrenheitToCelsius")]
+    #[yaserde(rename = "FahrenheitToCelsius")]
     pub struct FahrenheitToCelsius {
         #[yaserde(flatten, default)]
         pub fahrenheit_to_celsius_request: types::FahrenheitToCelsiusRequest,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "CelsiusToFahrenheitResponse")]
+    #[yaserde(rename = "CelsiusToFahrenheitResponse")]
     pub struct CelsiusToFahrenheitResponse {
         #[yaserde(flatten, default)]
         pub celsius_to_fahrenheit_response: types::CelsiusToFahrenheitResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "FahrenheitToCelsiusResponse")]
+    #[yaserde(rename = "FahrenheitToCelsiusResponse")]
     pub struct FahrenheitToCelsiusResponse {
         #[yaserde(flatten, default)]
         pub fahrenheit_to_celsius_response: types::FahrenheitToCelsiusResponse,
@@ -66,7 +66,7 @@ pub mod types {
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "celsiusToFahrenheitRequest",
+        rename = "celsiusToFahrenheitRequest",
         namespace = "tns: http://learnwebservices.com/services/tempconverter",
         prefix = "tns"
     )]
@@ -76,7 +76,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "celsiusToFahrenheitResponse",
+        rename = "celsiusToFahrenheitResponse",
         namespace = "tns: http://learnwebservices.com/services/tempconverter",
         prefix = "tns"
     )]
@@ -86,7 +86,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "fahrenheitToCelsiusRequest",
+        rename = "fahrenheitToCelsiusRequest",
         namespace = "tns: http://learnwebservices.com/services/tempconverter",
         prefix = "tns"
     )]
@@ -96,7 +96,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "fahrenheitToCelsiusResponse",
+        rename = "fahrenheitToCelsiusResponse",
         namespace = "tns: http://learnwebservices.com/services/tempconverter",
         prefix = "tns"
     )]
@@ -177,7 +177,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -220,7 +220,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -263,7 +263,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -306,7 +306,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]

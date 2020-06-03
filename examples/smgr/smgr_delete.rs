@@ -14,7 +14,7 @@ pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub struct Header {}
 #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 #[yaserde(
-    root = "Fault",
+    rename = "Fault",
     namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
     prefix = "soapenv"
 )]
@@ -46,7 +46,7 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "deleteUsers",
+        rename = "deleteUsers",
         namespace = "tns: http://xml.avaya.com/schema/bulkdelete",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -58,7 +58,7 @@ pub mod types {
         pub user: Vec<XmlUserDelete>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlUserDelete")]
+    #[yaserde(rename = "xmlUserDelete")]
     pub struct XmlUserDelete {
         #[yaserde(rename = "loginName", default)]
         pub login_name: String,
@@ -66,7 +66,7 @@ pub mod types {
         pub id: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "xmlDeleteType")]
+    #[yaserde(rename = "xmlDeleteType")]
     pub struct XmlDeleteType {
         #[yaserde(text, default)]
         pub body: String,

@@ -14,7 +14,7 @@ pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub struct Header {}
 #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 #[yaserde(
-    root = "Fault",
+    rename = "Fault",
     namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
     prefix = "soapenv"
 )]
@@ -42,7 +42,7 @@ pub mod types {
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "management-webservice-criteria",
+        rename = "management-webservice-criteria",
         namespace = "tns: http://www.avaya.com/mgmt-web-criteria/",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -52,7 +52,7 @@ pub mod types {
         pub criterialist: Option<Criterialist>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "criteria")]
+    #[yaserde(rename = "criteria")]
     pub struct Criteria {
         #[yaserde(rename = "propertyname", default)]
         pub propertyname: String,
@@ -64,7 +64,7 @@ pub mod types {
         pub restriction: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "criterialist")]
+    #[yaserde(rename = "criterialist")]
     pub struct Criterialist {
         #[yaserde(rename = "criteria", default)]
         pub criteria: Vec<Criteria>,

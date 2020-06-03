@@ -227,7 +227,7 @@ impl Element {
         let mut options = "#[yaserde(\n".to_string();
 
         if let Some(xml_name) = &self.xml_name {
-            options.push_str(&format!("\troot = \"{}\",\n", xml_name));
+            options.push_str(&format!("\trename = \"{}\",\n", xml_name));
             has_options = true;
         }
 
@@ -457,7 +457,7 @@ pub struct Header {
     fn test_struct_with_fields() {
         let expected = r#"#[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 #[yaserde(
-	root = "Fault",
+	rename = "Fault",
 	namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
 	prefix = "soapenv",
 )]

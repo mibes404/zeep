@@ -14,7 +14,7 @@ pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub struct Header {}
 #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 #[yaserde(
-    root = "Fault",
+    rename = "Fault",
     namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
     prefix = "soapenv"
 )]
@@ -33,139 +33,139 @@ pub mod messages {
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupPhoneTypesRequest")]
+    #[yaserde(rename = "LookupPhoneTypesRequest")]
     pub struct LookupPhoneTypesRequest {
         #[yaserde(flatten, default)]
         pub parameters: types::LookupPhoneTypes,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupLinkGroupsRequest")]
+    #[yaserde(rename = "LookupLinkGroupsRequest")]
     pub struct LookupLinkGroupsRequest {
         #[yaserde(flatten, default)]
         pub parameters: types::LookupLinkGroups,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupLRMIdsResponse")]
+    #[yaserde(rename = "LookupLRMIdsResponse")]
     pub struct LookupLRMIdsResponse {
         #[yaserde(flatten, default)]
         pub parameters: types::LookupLRMIdsResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "CreateRequest")]
+    #[yaserde(rename = "CreateRequest")]
     pub struct CreateRequest {
         #[yaserde(flatten, default)]
         pub parameters: types::Create,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "CreateResponse")]
+    #[yaserde(rename = "CreateResponse")]
     pub struct CreateResponse {
         #[yaserde(flatten, default)]
         pub parameters: types::CreateResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "UpdateRequest")]
+    #[yaserde(rename = "UpdateRequest")]
     pub struct UpdateRequest {
         #[yaserde(flatten, default)]
         pub parameters: types::Update,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupSitesRequest")]
+    #[yaserde(rename = "LookupSitesRequest")]
     pub struct LookupSitesRequest {
         #[yaserde(flatten, default)]
         pub parameters: types::LookupSites,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupDomainsRequest")]
+    #[yaserde(rename = "LookupDomainsRequest")]
     pub struct LookupDomainsRequest {
         #[yaserde(flatten, default)]
         pub parameters: types::LookupDomains,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupDomainsResponse")]
+    #[yaserde(rename = "LookupDomainsResponse")]
     pub struct LookupDomainsResponse {
         #[yaserde(flatten, default)]
         pub parameters: types::LookupDomainsResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetResponse")]
+    #[yaserde(rename = "GetResponse")]
     pub struct GetResponse {
         #[yaserde(flatten, default)]
         pub parameters: types::GetResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "DeleteResponse")]
+    #[yaserde(rename = "DeleteResponse")]
     pub struct DeleteResponse {
         #[yaserde(flatten, default)]
         pub parameters: types::DeleteResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupLRMIdsRequest")]
+    #[yaserde(rename = "LookupLRMIdsRequest")]
     pub struct LookupLRMIdsRequest {
         #[yaserde(flatten, default)]
         pub parameters: types::LookupLRMIds,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupLinkGroupsResponse")]
+    #[yaserde(rename = "LookupLinkGroupsResponse")]
     pub struct LookupLinkGroupsResponse {
         #[yaserde(flatten, default)]
         pub parameters: types::LookupLinkGroupsResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "UpdateResponse")]
+    #[yaserde(rename = "UpdateResponse")]
     pub struct UpdateResponse {
         #[yaserde(flatten, default)]
         pub parameters: types::UpdateResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetRequest")]
+    #[yaserde(rename = "GetRequest")]
     pub struct GetRequest {
         #[yaserde(flatten, default)]
         pub parameters: types::Get,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupAgentIdsResponse")]
+    #[yaserde(rename = "LookupAgentIdsResponse")]
     pub struct LookupAgentIdsResponse {
         #[yaserde(flatten, default)]
         pub parameters: types::LookupAgentIdsResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupPhoneTypesResponse")]
+    #[yaserde(rename = "LookupPhoneTypesResponse")]
     pub struct LookupPhoneTypesResponse {
         #[yaserde(flatten, default)]
         pub parameters: types::LookupPhoneTypesResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupAgentIdsRequest")]
+    #[yaserde(rename = "LookupAgentIdsRequest")]
     pub struct LookupAgentIdsRequest {
         #[yaserde(flatten, default)]
         pub parameters: types::LookupAgentIds,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupSitesResponse")]
+    #[yaserde(rename = "LookupSitesResponse")]
     pub struct LookupSitesResponse {
         #[yaserde(flatten, default)]
         pub parameters: types::LookupSitesResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupWorkgroupsResponse")]
+    #[yaserde(rename = "LookupWorkgroupsResponse")]
     pub struct LookupWorkgroupsResponse {
         #[yaserde(flatten, default)]
         pub parameters: types::LookupWorkgroupsResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "AicServiceFault")]
+    #[yaserde(rename = "AicServiceFault")]
     pub struct AicServiceFault {
         #[yaserde(flatten, default)]
         pub fault: types::Fault,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "DeleteRequest")]
+    #[yaserde(rename = "DeleteRequest")]
     pub struct DeleteRequest {
         #[yaserde(flatten, default)]
         pub parameters: types::Delete,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "LookupWorkgroupsRequest")]
+    #[yaserde(rename = "LookupWorkgroupsRequest")]
     pub struct LookupWorkgroupsRequest {
         #[yaserde(flatten, default)]
         pub parameters: types::LookupWorkgroups,
@@ -180,7 +180,7 @@ pub mod types {
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "Get",
+        rename = "Get",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -191,7 +191,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "GetResponse",
+        rename = "GetResponse",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -202,7 +202,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AgentAdvocateInfo",
+        rename = "AgentAdvocateInfo",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -216,7 +216,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "ArrayOf_xsd_string",
+        rename = "ArrayOf_xsd_string",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -226,7 +226,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AgentBasicProfile",
+        rename = "AgentBasicProfile",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -260,7 +260,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AgentChatChannel",
+        rename = "AgentChatChannel",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -274,7 +274,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AgentEmailChannel",
+        rename = "AgentEmailChannel",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -292,7 +292,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AgentAddressInfo",
+        rename = "AgentAddressInfo",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -320,7 +320,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AgentAddress",
+        rename = "AgentAddress",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -334,7 +334,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AgentEmail",
+        rename = "AgentEmail",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -350,7 +350,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AgentPhoneInfo",
+        rename = "AgentPhoneInfo",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -362,7 +362,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AgentPhone",
+        rename = "AgentPhone",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -382,7 +382,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AgentExtendedProfile",
+        rename = "AgentExtendedProfile",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -396,7 +396,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AgentSecurity",
+        rename = "AgentSecurity",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -426,7 +426,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AgentTaskLoad",
+        rename = "AgentTaskLoad",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -438,7 +438,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AgentVoiceChannel",
+        rename = "AgentVoiceChannel",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -462,7 +462,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "Agent",
+        rename = "Agent",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -488,7 +488,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "AicServiceFault",
+        rename = "AicServiceFault",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         prefix = "tns"
     )]
@@ -497,7 +497,7 @@ pub mod types {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "Update",
+        rename = "Update",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -508,7 +508,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "UpdateResponse",
+        rename = "UpdateResponse",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -519,7 +519,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "Delete",
+        rename = "Delete",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -530,7 +530,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "DeleteResponse",
+        rename = "DeleteResponse",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -541,7 +541,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "LookupAgentIds",
+        rename = "LookupAgentIds",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -549,7 +549,7 @@ pub mod types {
     pub struct LookupAgentIds {}
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "LookupAgentIdsResponse",
+        rename = "LookupAgentIdsResponse",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -560,7 +560,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "LookupLRMIds",
+        rename = "LookupLRMIds",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -568,7 +568,7 @@ pub mod types {
     pub struct LookupLRMIds {}
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "LookupLRMIdsResponse",
+        rename = "LookupLRMIdsResponse",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -579,7 +579,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "LookupWorkgroups",
+        rename = "LookupWorkgroups",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -587,7 +587,7 @@ pub mod types {
     pub struct LookupWorkgroups {}
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "LookupWorkgroupsResponse",
+        rename = "LookupWorkgroupsResponse",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -598,7 +598,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "LookupDomains",
+        rename = "LookupDomains",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -606,7 +606,7 @@ pub mod types {
     pub struct LookupDomains {}
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "LookupDomainsResponse",
+        rename = "LookupDomainsResponse",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -617,7 +617,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "LookupLinkGroups",
+        rename = "LookupLinkGroups",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -625,7 +625,7 @@ pub mod types {
     pub struct LookupLinkGroups {}
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "LookupLinkGroupsResponse",
+        rename = "LookupLinkGroupsResponse",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -636,7 +636,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "LookupPhoneTypes",
+        rename = "LookupPhoneTypes",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -644,7 +644,7 @@ pub mod types {
     pub struct LookupPhoneTypes {}
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "LookupPhoneTypesResponse",
+        rename = "LookupPhoneTypesResponse",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -655,7 +655,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "LookupSites",
+        rename = "LookupSites",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -663,7 +663,7 @@ pub mod types {
     pub struct LookupSites {}
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "LookupSitesResponse",
+        rename = "LookupSitesResponse",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -674,7 +674,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "Create",
+        rename = "Create",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -685,7 +685,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "CreateResponse",
+        rename = "CreateResponse",
         namespace = "tns: http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -704,7 +704,7 @@ pub mod ports {
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "Fault",
+        rename = "Fault",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -855,7 +855,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -898,7 +898,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -941,7 +941,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -984,7 +984,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1027,7 +1027,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1070,7 +1070,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1113,7 +1113,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1156,7 +1156,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1199,7 +1199,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1242,7 +1242,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1285,7 +1285,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1328,7 +1328,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1371,7 +1371,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1414,7 +1414,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1457,7 +1457,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1500,7 +1500,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1543,7 +1543,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1586,7 +1586,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1629,7 +1629,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1672,7 +1672,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1715,7 +1715,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1758,7 +1758,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]

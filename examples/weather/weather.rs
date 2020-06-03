@@ -14,7 +14,7 @@ pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub struct Header {}
 #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 #[yaserde(
-    root = "Fault",
+    rename = "Fault",
     namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
     prefix = "soapenv"
 )]
@@ -33,103 +33,103 @@ pub mod messages {
     use yaserde::ser::to_string;
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetWeatherInformationSoapIn")]
+    #[yaserde(rename = "GetWeatherInformationSoapIn")]
     pub struct GetWeatherInformationSoapIn {
         #[yaserde(flatten, default)]
         pub parameters: types::GetWeatherInformation,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetWeatherInformationSoapOut")]
+    #[yaserde(rename = "GetWeatherInformationSoapOut")]
     pub struct GetWeatherInformationSoapOut {
         #[yaserde(flatten, default)]
         pub parameters: types::GetWeatherInformationResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityForecastByZIPSoapIn")]
+    #[yaserde(rename = "GetCityForecastByZIPSoapIn")]
     pub struct GetCityForecastByZIPSoapIn {
         #[yaserde(flatten, default)]
         pub parameters: types::GetCityForecastByZIP,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityForecastByZIPSoapOut")]
+    #[yaserde(rename = "GetCityForecastByZIPSoapOut")]
     pub struct GetCityForecastByZIPSoapOut {
         #[yaserde(flatten, default)]
         pub parameters: types::GetCityForecastByZIPResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityWeatherByZIPSoapIn")]
+    #[yaserde(rename = "GetCityWeatherByZIPSoapIn")]
     pub struct GetCityWeatherByZIPSoapIn {
         #[yaserde(flatten, default)]
         pub parameters: types::GetCityWeatherByZIP,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityWeatherByZIPSoapOut")]
+    #[yaserde(rename = "GetCityWeatherByZIPSoapOut")]
     pub struct GetCityWeatherByZIPSoapOut {
         #[yaserde(flatten, default)]
         pub parameters: types::GetCityWeatherByZIPResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetWeatherInformationHttpGetIn")]
+    #[yaserde(rename = "GetWeatherInformationHttpGetIn")]
     pub struct GetWeatherInformationHttpGetIn {}
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetWeatherInformationHttpGetOut")]
+    #[yaserde(rename = "GetWeatherInformationHttpGetOut")]
     pub struct GetWeatherInformationHttpGetOut {
         #[yaserde(flatten, default)]
         pub body: types::ArrayOfWeatherDescription,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityForecastByZIPHttpGetIn")]
+    #[yaserde(rename = "GetCityForecastByZIPHttpGetIn")]
     pub struct GetCityForecastByZIPHttpGetIn {
         #[yaserde(rename = "ZIP", default)]
         pub zip: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityForecastByZIPHttpGetOut")]
+    #[yaserde(rename = "GetCityForecastByZIPHttpGetOut")]
     pub struct GetCityForecastByZIPHttpGetOut {
         #[yaserde(flatten, default)]
         pub body: types::ForecastReturn,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityWeatherByZIPHttpGetIn")]
+    #[yaserde(rename = "GetCityWeatherByZIPHttpGetIn")]
     pub struct GetCityWeatherByZIPHttpGetIn {
         #[yaserde(rename = "ZIP", default)]
         pub zip: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityWeatherByZIPHttpGetOut")]
+    #[yaserde(rename = "GetCityWeatherByZIPHttpGetOut")]
     pub struct GetCityWeatherByZIPHttpGetOut {
         #[yaserde(flatten, default)]
         pub body: types::WeatherReturn,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetWeatherInformationHttpPostIn")]
+    #[yaserde(rename = "GetWeatherInformationHttpPostIn")]
     pub struct GetWeatherInformationHttpPostIn {}
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetWeatherInformationHttpPostOut")]
+    #[yaserde(rename = "GetWeatherInformationHttpPostOut")]
     pub struct GetWeatherInformationHttpPostOut {
         #[yaserde(flatten, default)]
         pub body: types::ArrayOfWeatherDescription,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityForecastByZIPHttpPostIn")]
+    #[yaserde(rename = "GetCityForecastByZIPHttpPostIn")]
     pub struct GetCityForecastByZIPHttpPostIn {
         #[yaserde(rename = "ZIP", default)]
         pub zip: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityForecastByZIPHttpPostOut")]
+    #[yaserde(rename = "GetCityForecastByZIPHttpPostOut")]
     pub struct GetCityForecastByZIPHttpPostOut {
         #[yaserde(flatten, default)]
         pub body: types::ForecastReturn,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityWeatherByZIPHttpPostIn")]
+    #[yaserde(rename = "GetCityWeatherByZIPHttpPostIn")]
     pub struct GetCityWeatherByZIPHttpPostIn {
         #[yaserde(rename = "ZIP", default)]
         pub zip: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(root = "GetCityWeatherByZIPHttpPostOut")]
+    #[yaserde(rename = "GetCityWeatherByZIPHttpPostOut")]
     pub struct GetCityWeatherByZIPHttpPostOut {
         #[yaserde(flatten, default)]
         pub body: types::WeatherReturn,
@@ -144,7 +144,7 @@ pub mod types {
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "GetWeatherInformation",
+        rename = "GetWeatherInformation",
         namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -152,7 +152,7 @@ pub mod types {
     pub struct GetWeatherInformation {}
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "GetWeatherInformationResponse",
+        rename = "GetWeatherInformationResponse",
         namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -163,7 +163,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "ArrayOfWeatherDescription",
+        rename = "ArrayOfWeatherDescription",
         namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         prefix = "tns"
     )]
@@ -173,7 +173,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "WeatherDescription",
+        rename = "WeatherDescription",
         namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         prefix = "tns"
     )]
@@ -187,7 +187,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "GetCityForecastByZIP",
+        rename = "GetCityForecastByZIP",
         namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -198,7 +198,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "GetCityForecastByZIPResponse",
+        rename = "GetCityForecastByZIPResponse",
         namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -209,7 +209,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "ForecastReturn",
+        rename = "ForecastReturn",
         namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         prefix = "tns"
     )]
@@ -229,7 +229,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "ArrayOfForecast",
+        rename = "ArrayOfForecast",
         namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         prefix = "tns"
     )]
@@ -239,7 +239,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "Forecast",
+        rename = "Forecast",
         namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         prefix = "tns"
     )]
@@ -257,7 +257,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "temp",
+        rename = "temp",
         namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         prefix = "tns"
     )]
@@ -269,7 +269,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "POP",
+        rename = "POP",
         namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         prefix = "tns"
     )]
@@ -281,7 +281,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "GetCityWeatherByZIP",
+        rename = "GetCityWeatherByZIP",
         namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -292,7 +292,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "GetCityWeatherByZIPResponse",
+        rename = "GetCityWeatherByZIPResponse",
         namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
         prefix = "tns"
@@ -303,7 +303,7 @@ pub mod types {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        root = "WeatherReturn",
+        rename = "WeatherReturn",
         namespace = "tns: http://ws.cdyne.com/WeatherWS/",
         prefix = "tns"
     )]
@@ -472,7 +472,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -513,7 +513,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -554,7 +554,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -595,7 +595,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -636,7 +636,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -677,7 +677,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1018,7 +1018,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1059,7 +1059,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1100,7 +1100,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1141,7 +1141,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1182,7 +1182,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1223,7 +1223,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1416,7 +1416,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1457,7 +1457,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1498,7 +1498,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1539,7 +1539,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1580,7 +1580,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
@@ -1621,7 +1621,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(
-        root = "Envelope",
+        rename = "Envelope",
         namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
         prefix = "soapenv"
     )]
