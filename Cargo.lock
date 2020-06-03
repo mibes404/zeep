@@ -1461,8 +1461,9 @@ dependencies = [
 
 [[package]]
 name = "yaserde"
-version = "0.3.14"
-source = "git+https://github.com/horacimacias/yaserde.git#a81808a7964208f96e594d21296693fa5d0397d0"
+version = "0.3.16"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fe81055b36d926da70850a7c1a9bc72eff184659da29e008ce9f2af4bfee7c89"
 dependencies = [
  "log",
  "xml-rs",
@@ -1470,8 +1471,9 @@ dependencies = [
 
 [[package]]
 name = "yaserde_derive"
-version = "0.3.14"
-source = "git+https://github.com/horacimacias/yaserde.git#a81808a7964208f96e594d21296693fa5d0397d0"
+version = "0.3.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5fcdf088bb87971689cf7aef14b123c5c85ca8d71267985090369e5eab16a514"
 dependencies = [
  "proc-macro2",
  "quote",

@@ -8,7 +8,7 @@ fi
 ./target/release/zeep -p resources/hello -i hello.wsdl -o examples/hello/hello.rs
 ./target/release/zeep -p resources/temp_converter -i tempconverter.wsdl -o examples/temperature/tempconverter.rs
 ./target/release/zeep -p resources/weather -i weather.wsdl -o examples/weather/weather.rs
-./target/release/zeep -p resources/smgr -i agentCommProfile.xsd -o examples/smgr/smgr.rs
+./target/release/zeep -p resources/smgr -i agentCommProfile.xsd -o examples/smgr/smgr_agent.rs
 
 # Format the output
 rustfmt --color=always --edition=2018 examples/aic/aic.rs
