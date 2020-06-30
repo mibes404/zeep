@@ -122,8 +122,22 @@ impl FileWriter {
 
     fn process_file_in_path(&mut self, file_name: &str, print_when_done: bool) -> WriterResult<()> {
         let f_in = format!("{}/{}", self.base_path, file_name);
-        let xml = std::fs::read_to_string(f_in)?;
-        let doc = roxmltree::Document::parse(&xml)?;
+        let xml = match std::fs::read_to_string(&f_in) {
+            Err(e) => {
+                return Err(WriterError {
+                    message: format!("Unable to read file {}: {}", f_in, e.to_string()),
+                })
+            }
+            Ok(s) => s,
+        };
+        let doc = match roxmltree::Document::parse(&xml) {
+            Err(e) => {
+                return Err(WriterError {
+                    message: format!("Unable to parse file {}: {}", f_in, e.to_string()),
+                })
+            }
+            Ok(d) => d,
+        };
         doc.root().children().try_for_each(|n| self.print(&n))?;
 
         if !print_when_done {
