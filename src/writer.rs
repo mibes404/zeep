@@ -121,9 +121,10 @@ impl FileWriter {
     }
 
     fn process_file_in_path(&mut self, file_name: &str, print_when_done: bool) -> WriterResult<()> {
-        let f_in = format!("{}/{}", self.base_path, file_name);
-        let xml = std::fs::read_to_string(f_in)?;
-        let doc = roxmltree::Document::parse(&xml)?;
+        let xml = self.read_to_string(file_name)?;
+        let doc = roxmltree::Document::parse(&xml).map_err(|e| WriterError {
+            message: format!("Unable to parse file {}: {}", file_name, e.to_string()),
+        })?;
         doc.root().children().try_for_each(|n| self.print(&n))?;
 
         if !print_when_done {
@@ -137,6 +138,24 @@ impl FileWriter {
         }
 
         Ok(())
+    }
+
+    fn read_to_string(&self, file_name: &str) -> WriterResult<String> {
+        let f_in = format!("{}/{}", self.base_path, file_name);
+        if file_name.starts_with("http://") || file_name.starts_with("https://") {
+            let body = reqwest::blocking::get(file_name)
+                .map_err(|e| WriterError {
+                    message: format!("Unable to retrieve {}: {}", file_name, e.to_string()),
+                })?
+                .text()
+                .map_err(|e| WriterError {
+                    message: format!("Unable to get body from {}: {}", file_name, e.to_string()),
+                })?;
+            return Ok(body);
+        }
+        std::fs::read_to_string(&f_in).map_err(|e| WriterError {
+            message: format!("Unable to read file {}: {}", f_in, e.to_string()),
+        })
     }
 
     pub fn have_seen_type(&self, type_def: &str, module: &Element) -> bool {

@@ -130,3 +130,16 @@ after
     #[yaserde(rename = "user", prefix = "tns", default)]
     pub user: Vec<XmlUser>,
 ```
+
+Finally, some fields are optional on the "update user" xsd (userdeltaimport.xsd) but they are not optional on the "create user" xsd (userimport.xsd).
+This may result in xml being sent to SMGR with empty values, which SMGR does not like.
+In order to fix this, we've manually changed smgr.rs, User struct, fields givenName and surname and made them Optional.
+
+before
+
+```
+        #[yaserde(rename = "surname", default)]
+        pub surname: String,
+        #[yaserde(rename = "givenName", default)]
+        pub given_name: String,
+```  
