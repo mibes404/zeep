@@ -400,6 +400,7 @@ async fn main() {
     // smgr
 
     let xml_users = Users {
+        schema_location: "".to_string(),
         secure_store: None,
         user: vec![XmlUser {
             user_organization_details: None,
