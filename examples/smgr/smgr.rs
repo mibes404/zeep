@@ -67,6 +67,8 @@ pub mod types {
         pub secure_store: Option<XmlSecureStore>,
         #[yaserde(rename = "user", prefix = "tns", default)]
         pub user: Vec<XmlUser>,
+        #[yaserde(attribute, prefix = "xsi", rename = "schemaLocation")]
+        pub schema_location: String,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(rename = "UserProvisionRules")]
