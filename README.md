@@ -64,8 +64,8 @@ zeep -p resources/hello -i hello.wsdl -o examples/hello/hello.rs -n ns1
 
 ## TODO
 
-* [ ] Remove the dependency on customized yaserde version, once the renaming of a vector of structs is fixed
-* [ ] Allow network imports 
+* [x] Remove the dependency on customized yaserde version, once the renaming of a vector of structs is fixed
+* [x] Allow network imports 
 * [ ] Enable cargo install
 
 ## DISCLAIMER
