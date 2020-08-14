@@ -1485,9 +1485,9 @@ dependencies = [
 
 [[package]]
 name = "yaserde"
-version = "0.4.1"
+version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "15b662283bed00e1455f973849591a51a19771033f0cc081692486f216489c59"
+checksum = "ca3c2e545bba6b7bb482b73f36c3b153e76f0024d5a582d05919a72e7387c9ef"
 dependencies = [
  "log",
  "xml-rs",
@@ -1495,9 +1495,9 @@ dependencies = [
 
 [[package]]
 name = "yaserde_derive"
-version = "0.4.1"
+version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "56d4a64f5dcdf440f14d5cf6994899b44403aa0e98dcfc5943c21c543d850563"
+checksum = "06dc802c29029a7f24915ca20ada7dbc5ed768bc08e2c78bda0cba28f3c4e34d"
 dependencies = [
  "heck",
  "proc-macro2",
@@ -1507,7 +1507,7 @@ dependencies = [
 
 [[package]]
 name = "zeep"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "Inflector",
  "async-trait",
