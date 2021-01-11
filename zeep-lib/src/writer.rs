@@ -66,6 +66,7 @@ impl Default for FileWriter {
 }
 
 impl FileWriter {
+    #[allow(clippy::field_reassign_with_default)]
     pub fn new(ns_prefix: Option<String>, default_namespace: Option<String>) -> Self {
         let mut fw = FileWriter::default();
         fw.ns_prefix = ns_prefix.unwrap_or_else(|| DEFAULT_NS_PREFIX.to_string());
@@ -376,22 +377,13 @@ impl FileWriter {
             Some(n) => n,
         };
 
-        let as_vec = {
-            match self.get_some_attribute(node, "maxOccurs") {
-                Some("1") | None => false,
-                _ => true,
-            }
-        };
+        let as_vec = { !matches!(self.get_some_attribute(node, "maxOccurs"), Some("1") | None) };
 
         let as_option = {
-            match (
-                self.get_some_attribute(node, "nillable"),
-                self.get_some_attribute(node, "minOccurs"),
-            ) {
-                // either nillable set or minOccurs being 0 means the field is optional
-                (Some(_), _) | (_, Some("0")) => true,
-                _ => false,
-            }
+            matches!((
+                 self.get_some_attribute(node, "nillable"),
+                 self.get_some_attribute(node, "minOccurs"),
+             ), (Some(_), _) | (_, Some("0")))
         };
 
         let maybe_complex = node
@@ -505,10 +497,7 @@ impl FileWriter {
     }
 
     fn split_type<'a>(&self, node_type: &'a str) -> &'a str {
-        match node_type.split(':').last() {
-            None => "String",
-            Some(v) => v,
-        }
+        node_type.split(':').last().unwrap_or("String")
     }
 
     fn init_element(&self, name: &str, is_top_level: bool) -> Element {

@@ -1,15 +1,7 @@
-use crate::writer::FileWriter;
 use clap::{App, Arg};
 use log::warn;
 use std::fs::File;
-
-mod debug;
-mod element;
-mod error;
-mod writer;
-
-#[macro_use]
-extern crate log;
+use zeep_lib::writer::FileWriter;
 
 fn main() {
     if let Err(err) = log4rs::init_file("log4rs.yml", Default::default()) {

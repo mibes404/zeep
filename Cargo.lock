@@ -1507,7 +1507,25 @@ dependencies = [
 
 [[package]]
 name = "zeep"
-version = "0.1.2"
+version = "0.1.3"
+dependencies = [
+ "Inflector",
+ "async-trait",
+ "clap",
+ "log",
+ "log4rs",
+ "reqwest",
+ "roxmltree",
+ "tokio",
+ "xml-rs",
+ "yaserde",
+ "yaserde_derive",
+ "zeep-lib",
+]
+
+[[package]]
+name = "zeep-lib"
+version = "0.1.3"
 dependencies = [
  "Inflector",
  "async-trait",

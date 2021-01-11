@@ -144,11 +144,7 @@ impl ParentElement for Element {
     }
 
     fn has_child(&self, name: &str) -> bool {
-        if let Some(_pos) = self.children_idx.get(name) {
-            true
-        } else {
-            false
-        }
+        matches!(self.children_idx.get(name), Some(_pos))
     }
 }
 
