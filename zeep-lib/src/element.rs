@@ -428,9 +428,14 @@ impl Element {
 
         let function_input = format!("{}: {}", args.input_name, args.input_type);
 
+        let function_comment = match &self.comment {
+            Some(c) => format!("\t/// {}\n", c),
+            None => String::new(),
+        };
+
         format!(
-            "\tasync fn {} (&self, {}) {};\n",
-            self.name, function_input, function_result
+            "{}\tasync fn {} (&self, {}) {};\n",
+            function_comment,self.name, function_input, function_result
         )
     }
 }
