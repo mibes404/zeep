@@ -1,7 +1,7 @@
 //! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
-//! version: 0.1.1
+//! version: 0.1.3
 //!
 
 #![allow(dead_code)]
