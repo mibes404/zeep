@@ -13,38 +13,38 @@ fn main() {
         .author("Marcel Ibes <mibes@avaya.com>")
         .about("Generate Yaserde annotated Rust structs from XSD or WSDL")
         .arg(
-            Arg::with_name("to_file")
-                .short("o")
+            Arg::new("to_file")
+                .short('o')
                 .long("output")
                 .takes_value(true)
                 .help("Output to file"),
         )
         .arg(
-            Arg::with_name("from_file")
-                .short("i")
+            Arg::new("from_file")
+                .short('i')
                 .long("input")
                 .takes_value(true)
                 .required(true)
                 .help("Input from XSD/WSDL file"),
         )
         .arg(
-            Arg::with_name("path")
-                .short("p")
+            Arg::new("path")
+                .short('p')
                 .long("path")
                 .takes_value(true)
                 .required(true)
                 .help("Base path for the XSD file(s)"),
         )
         .arg(
-            Arg::with_name("ns")
-                .short("n")
+            Arg::new("ns")
+                .short('n')
                 .long("ns")
                 .takes_value(true)
                 .help("Namespace prefix"),
         )
         .arg(
-            Arg::with_name("dns")
-                .short("d")
+            Arg::new("dns")
+                .short('d')
                 .long("dns")
                 .takes_value(true)
                 .help("Default namespace (URL)"),
@@ -65,12 +65,12 @@ fn main() {
             base_path, from_file_name, output_file
         );
         if let Err(err) = writer.process_file(base_path, from_file_name) {
-            println!("Failed to process {}: {}", from_file_name, err.to_string())
+            println!("Failed to process {from_file_name}: {err}")
         }
     } else {
         let mut writer = FileWriter::new(ns_prefix, default_namespace);
         if let Err(err) = writer.process_file(base_path, from_file_name) {
-            println!("Failed to process {}: {}", from_file_name, err.to_string())
+            println!("Failed to process {from_file_name}: {err}")
         }
     }
 }

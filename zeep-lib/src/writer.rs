@@ -11,6 +11,7 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::{stdout, Write};
 use std::ops::Deref;
+use std::path::PathBuf;
 use std::rc::Rc;
 
 const MESSAGES_MOD: &str = "messages";
@@ -28,7 +29,7 @@ const DEFAULT_NS_PREFIX: &str = "tns";
 const IMPORT_PREFIX: &str = "nsi";
 
 pub struct FileWriter {
-    base_path: String,
+    base_path: PathBuf,
     writer: Option<Box<dyn std::io::Write>>,
     target_name_space: Option<String>,
     port_types: HashMap<String, PortType>,
@@ -51,7 +52,7 @@ struct PortType {
 impl Default for FileWriter {
     fn default() -> Self {
         FileWriter {
-            base_path: String::default(),
+            base_path: PathBuf::default(),
             writer: Option::Some(Box::new(stdout())),
             target_name_space: Option::None,
             port_types: HashMap::new(),
@@ -80,7 +81,7 @@ impl FileWriter {
         default_namespace: Option<String>,
     ) -> Self {
         FileWriter {
-            base_path: String::default(),
+            base_path: PathBuf::default(),
             writer: Option::Some(Box::new(dest_file_name)),
             target_name_space: Option::None,
             port_types: HashMap::new(),
@@ -113,7 +114,7 @@ impl FileWriter {
     }
 
     pub fn process_file(&mut self, base_path: &str, file_name: &str) -> WriterResult<()> {
-        self.base_path = base_path.to_string();
+        self.base_path = PathBuf::from(base_path);
         self.print_global_header();
         self.print_common_structs();
         self.init_modules();
@@ -124,7 +125,7 @@ impl FileWriter {
     fn process_file_in_path(&mut self, file_name: &str, print_when_done: bool) -> WriterResult<()> {
         let xml = self.read_to_string(file_name)?;
         let doc = roxmltree::Document::parse(&xml).map_err(|e| WriterError {
-            message: format!("Unable to parse file {}: {}", file_name, e.to_string()),
+            message: format!("Unable to parse file {file_name}: {e}"),
         })?;
         doc.root().children().try_for_each(|n| self.print(&n))?;
 
@@ -142,20 +143,23 @@ impl FileWriter {
     }
 
     fn read_to_string(&self, file_name: &str) -> WriterResult<String> {
-        let f_in = format!("{}/{}", self.base_path, file_name);
         if file_name.starts_with("http://") || file_name.starts_with("https://") {
             let body = reqwest::blocking::get(file_name)
                 .map_err(|e| WriterError {
-                    message: format!("Unable to retrieve {}: {}", file_name, e.to_string()),
+                    message: format!("Unable to retrieve {file_name}: {e}"),
                 })?
                 .text()
                 .map_err(|e| WriterError {
-                    message: format!("Unable to get body from {}: {}", file_name, e.to_string()),
+                    message: format!("Unable to get body from {file_name}: {e}"),
                 })?;
             return Ok(body);
         }
+
+        let mut f_in = self.base_path.clone();
+        f_in.push(file_name);
+
         std::fs::read_to_string(&f_in).map_err(|e| WriterError {
-            message: format!("Unable to read file {}: {}", f_in, e.to_string()),
+            message: format!("Unable to read file {f_in:?}: {e}"),
         })
     }
 
@@ -380,10 +384,13 @@ impl FileWriter {
         let as_vec = { !matches!(self.get_some_attribute(node, "maxOccurs"), Some("1") | None) };
 
         let as_option = {
-            matches!((
-                 self.get_some_attribute(node, "nillable"),
-                 self.get_some_attribute(node, "minOccurs"),
-             ), (Some(_), _) | (_, Some("0")))
+            matches!(
+                (
+                    self.get_some_attribute(node, "nillable"),
+                    self.get_some_attribute(node, "minOccurs"),
+                ),
+                (Some(_), _) | (_, Some("0"))
+            )
         };
 
         let maybe_complex = node
@@ -467,10 +474,10 @@ impl FileWriter {
     }
 
     fn get_some_attribute_as_string(&self, node: &Node, attr_name: &str) -> Option<String> {
-        match node.attributes().iter().find(|a| a.name() == attr_name) {
-            None => None,
-            Some(a) => Some(a.value().to_string()),
-        }
+        node.attributes()
+            .iter()
+            .find(|a| a.name() == attr_name)
+            .map(|a| a.value().to_string())
     }
 
     fn fetch_type(&self, node_type: &str) -> String {
@@ -543,7 +550,7 @@ impl FileWriter {
         }
 
         let mut parent_element = self.init_element(name, false);
-        let type_name = match self.deconstruct_simplex_element(&node) {
+        let type_name = match self.deconstruct_simplex_element(node) {
             Ok(tn) => tn,
             Err(_) => to_pascal_case(name),
         };
@@ -823,7 +830,7 @@ impl FileWriter {
                 to_pascal_case(element_name).as_str(),
                 &child,
                 &mut element,
-                &mut _parent,
+                _parent,
             )
         });
 
@@ -871,7 +878,7 @@ impl FileWriter {
         t_impl.field_type = Option::Some(format!("{1}::{0}", trait_name, PORTS_MOD));
 
         node.children().for_each(|child| {
-            self.print_binding_operation(&trait_name, &child, &mut t_impl, &mut _parent)
+            self.print_binding_operation(&trait_name, &child, &mut t_impl, _parent)
         });
 
         self.print_default_constructor(struct_name.as_str(), _parent);
@@ -1015,7 +1022,7 @@ impl FileWriter {
             .map(|c| self.map_name_message(&c));
 
         let port_type = PortType {
-            name: format!("{}::{}", port_type_name, element_name.to_string()),
+            name: format!("{port_type_name}::{element_name}"),
             input_type: some_input,
             output_type: some_output,
             fault_type: some_fault,
@@ -1196,7 +1203,7 @@ impl FileWriter {
             Some(pt) => pt.clone(),
         };
 
-        let func_name = to_snake_case(&operation_name);
+        let func_name = to_snake_case(operation_name);
 
         let (input_name, input_type, input_soap_name, has_input) = match &port_type.input_type {
             Some((input_name, Some(input_type))) => {
@@ -1342,7 +1349,7 @@ impl FileWriter {
                 input_name.as_str(),
                 input_type.as_str(),
                 output_type.as_str(),
-                &operation_name,
+                operation_name,
                 some_soap_action,
                 &mut e,
             )
@@ -1526,7 +1533,7 @@ mod test_xsd {
     fn prepare_output(ns_prefix: Option<String>, default_ns: Option<String>) -> String {
         let mut buffer = DebugBuffer::default();
         let mut fw = FileWriter::new_buffer(ns_prefix, default_ns, buffer.clone());
-        fw.process_file("resources/smgr/", "agentCommProfile.xsd")
+        fw.process_file("../resources/smgr/", "agentCommProfile.xsd")
             .expect("can not open xsd");
 
         let mut result = String::new();
@@ -1603,7 +1610,7 @@ mod test_wsdl {
     fn prepare_output(ns_prefix: Option<String>, default_ns: Option<String>) -> String {
         let mut buffer = DebugBuffer::default();
         let mut fw = FileWriter::new_buffer(ns_prefix, default_ns, buffer.clone());
-        fw.process_file("resources/temp_converter/", "tempconverter.wsdl")
+        fw.process_file("../resources/temp_converter/", "tempconverter.wsdl")
             .expect("can not open wsdl");
 
         let mut result = String::new();
