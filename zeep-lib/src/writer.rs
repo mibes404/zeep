@@ -175,7 +175,7 @@ impl FileWriter {
             r#"
             #![allow(dead_code)]           
             #![allow(unused_imports)]
-            use yaserde::{{YaSerialize, YaDeserialize}};
+            use yaserde_derive::{YaSerialize, YaDeserialize};
             use std::io::{Read, Write};
             
             pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
@@ -439,7 +439,9 @@ impl FileWriter {
                     e
                 }
             } else {
-                Element::new(field_name, ElementType::Field)
+                let mut e = Element::new(field_name, ElementType::Field);
+                e.xml_name = Option::Some(element_name.to_string());
+                e
             };
 
             if let Some(simple) = maybe_simplex {
