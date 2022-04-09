@@ -2,14 +2,7 @@ use crate::weather::messages::GetWeatherInformationSoapIn;
 use crate::weather::ports::WeatherSoap;
 use crate::weather::services::Weather;
 use crate::weather::types::GetWeatherInformation;
-
-#[macro_use]
-extern crate log;
-extern crate xml;
-extern crate yaserde;
-
-#[macro_use]
-extern crate yaserde_derive;
+use log::warn;
 
 mod weather;
 

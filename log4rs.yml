@@ -23,3 +23,7 @@ loggers:
     level: debug
   temperature:
     level: debug
+  blz_service:
+    level: debug
+  number_services:
+    level: debug

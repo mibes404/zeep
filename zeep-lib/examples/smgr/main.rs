@@ -1,13 +1,7 @@
 use crate::smgr::types::*;
 use crate::smgr_presence::types::XmlPsCommProfile;
+use log::warn;
 use yaserde::ser::to_string;
-
-#[macro_use]
-extern crate log;
-extern crate xml;
-extern crate yaserde;
-#[macro_use]
-extern crate yaserde_derive;
 
 mod smgr;
 mod smgr_agent;
@@ -27,7 +21,7 @@ mod tests {
     #[test]
     fn test_unmarshall() {
         let sample_response =
-            read_to_string("resources/smgr/sample_response.xml").expect("file not found");
+            read_to_string("../resources/smgr/sample_response.xml").expect("file not found");
         let users: Users = from_str(&sample_response).expect("problems unmarshalling");
 
         let users = resolve_comm_profiles(users);
@@ -315,6 +309,7 @@ mod tests {
                     }),
                 }],
             }],
+            schema_location: Default::default(),
         };
         let users = resolve_comm_profiles(users);
         let xml = to_string(&users).expect("problems marshalling");

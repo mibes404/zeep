@@ -1,13 +1,14 @@
 //! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
-//! version: 0.1.3
+//! version: 0.1.4
 //!
 
             #![allow(dead_code)]           
             #![allow(unused_imports)]
-            use yaserde::{{YaSerialize, YaDeserialize}};
+            use yaserde_derive::{YaSerialize, YaDeserialize};
             use std::io::{Read, Write};
+            use log::{warn, debug};
             
             pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
             #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -48,7 +49,7 @@ pub type User = XmlUser;
 #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 #[yaserde(
 	rename = "users",
-	namespace = "tns: http://xml.avaya.com/schema/import",
+	namespace = "nsi1: http://xml.avaya.com/schema/import",
 	namespace = "xsi: http://www.w3.org/2001/XMLSchema-instance",
 	prefix = "nsi1",
 )]

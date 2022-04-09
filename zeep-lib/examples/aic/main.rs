@@ -1,20 +1,14 @@
-use crate::aic_agent::bindings::{
+use crate::aic::bindings::{
     AicAgentAdminSoapBinding, CreateRequestSoapEnvelope, LookupAgentIdsRequestSoapEnvelope,
     SoapCreateRequest, SoapLookupAgentIdsRequest,
 };
-use crate::aic_agent::messages::GetRequest;
-use crate::aic_agent::ports::{AicAgentAdmin, CreateRequest, LookupAgentIdsRequest};
-use crate::aic_agent::types::{Agent, AgentChatChannel, Create, Get, LookupAgentIds};
+use crate::aic::messages::GetRequest;
+use crate::aic::ports::{AicAgentAdmin, CreateRequest, LookupAgentIdsRequest};
+use crate::aic::types::{Agent, AgentChatChannel, Create, Get, LookupAgentIds};
+use log::warn;
 use yaserde::ser::to_string;
 
-#[macro_use]
-extern crate log;
-extern crate xml;
-extern crate yaserde;
-#[macro_use]
-extern crate yaserde_derive;
-
-mod aic_agent;
+mod aic;
 
 #[tokio::main]
 async fn main() {
@@ -120,11 +114,9 @@ async fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::aic_agent::bindings::{
-        LookupAgentIdsResponseSoapEnvelope, SoapLookupAgentIdsResponse,
-    };
-    use crate::aic_agent::ports::LookupAgentIdsResponse;
-    use crate::aic_agent::types;
+    use crate::aic::bindings::{LookupAgentIdsResponseSoapEnvelope, SoapLookupAgentIdsResponse};
+    use crate::aic::ports::LookupAgentIdsResponse;
+    use crate::aic::types;
     use yaserde::de::from_str;
 
     #[test]

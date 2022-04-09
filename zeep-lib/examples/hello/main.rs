@@ -3,13 +3,7 @@ use crate::hello::ports::HelloEndpoint;
 use crate::hello::services::HelloEndpointService;
 use crate::hello::types;
 use crate::hello::types::HelloRequest;
-
-#[macro_use]
-extern crate log;
-extern crate xml;
-extern crate yaserde;
-#[macro_use]
-extern crate yaserde_derive;
+use log::warn;
 
 mod hello;
 
