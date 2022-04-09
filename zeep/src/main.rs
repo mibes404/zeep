@@ -1,15 +1,17 @@
-use clap::{App, Arg};
+use clap::{Arg, Command};
 use log::warn;
 use std::fs::File;
 use zeep_lib::writer::FileWriter;
+
+const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 fn main() {
     if let Err(err) = log4rs::init_file("log4rs.yml", Default::default()) {
         warn!("Unable to find log4rs.yml logging config. {}", err);
     }
 
-    let matches = App::new("Zeep - XSD/WSDL client generator for Rust")
-        .version("0.1.0")
+    let matches = Command::new("Zeep - XSD/WSDL client generator for Rust")
+        .version(VERSION)
         .author("Marcel Ibes <mibes@avaya.com>")
         .about("Generate Yaserde annotated Rust structs from XSD or WSDL")
         .arg(

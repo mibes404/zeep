@@ -1,24 +1,31 @@
-use crate::debug::DebugBuffer;
-use crate::element::{
-    root, Element, ElementType, NamespacedElement, ParentElement, StaticElement, WritableElement,
+use crate::{
+    debug::DebugBuffer,
+    element::{
+        root, Element, ElementType, NamespacedElement, ParentElement, StaticElement,
+        WritableElement,
+    },
+    error::{WriterError, WriterResult},
 };
-use crate::error::{WriterError, WriterResult};
-use inflector::cases::pascalcase::to_pascal_case;
-use inflector::cases::snakecase::to_snake_case;
+use inflector::cases::{pascalcase::to_pascal_case, snakecase::to_snake_case};
+use log::warn;
 use roxmltree::Node;
-use std::cell::RefCell;
-use std::collections::HashMap;
-use std::fs::File;
-use std::io::{stdout, Write};
-use std::ops::Deref;
-use std::path::PathBuf;
-use std::rc::Rc;
+use std::{
+    cell::RefCell,
+    collections::HashMap,
+    fs::File,
+    io::{stdout, Write},
+    ops::Deref,
+    path::PathBuf,
+    rc::Rc,
+};
 
 const MESSAGES_MOD: &str = "messages";
 const TYPES_MOD: &str = "types";
 const PORTS_MOD: &str = "ports";
 const BINDINGS_MOD: &str = "bindings";
 const SERVICES_MOD: &str = "services";
+const ANY_TYPE: &str = "AnyType";
+const ANY_TYPE_DEFINITION: &str = "Option<String>";
 
 const SIGNATURE: &str = r#"//! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
@@ -402,7 +409,7 @@ impl FileWriter {
             .find(|child| child.has_tag_name("simpleType"));
 
         let mut type_name = match self.get_some_attribute(node, "type") {
-            None => to_pascal_case(element_name),
+            None => ANY_TYPE.to_string(),
             Some(t) => t.to_string(),
         };
 
@@ -415,6 +422,14 @@ impl FileWriter {
                 let mut alias_element = Element::new(top_level_name.as_str(), ElementType::Alias);
                 alias_element.field_type = Option::Some(alias);
                 module.add(alias_element);
+
+                // todo: add the AnyType definition
+                if type_name == ANY_TYPE && !module.has_child(ANY_TYPE) {
+                    let mut alias_element = Element::new(ANY_TYPE, ElementType::Alias);
+                    alias_element.field_type = Option::Some(ANY_TYPE_DEFINITION.to_string());
+                    module.add(alias_element);
+                }
+
                 return Ok(());
             }
         } else {
@@ -1532,10 +1547,15 @@ mod test_xsd {
     use crate::debug::DebugBuffer;
     use std::io::Read;
 
-    fn prepare_output(ns_prefix: Option<String>, default_ns: Option<String>) -> String {
+    fn prepare_output(
+        base_path: &str,
+        filename: &str,
+        ns_prefix: Option<String>,
+        default_ns: Option<String>,
+    ) -> String {
         let mut buffer = DebugBuffer::default();
         let mut fw = FileWriter::new_buffer(ns_prefix, default_ns, buffer.clone());
-        fw.process_file("../resources/smgr/", "agentCommProfile.xsd")
+        fw.process_file(base_path, filename)
             .expect("can not open xsd");
 
         let mut result = String::new();
@@ -1545,9 +1565,18 @@ mod test_xsd {
         result
     }
 
+    fn prepare_smgr_output(ns_prefix: Option<String>, default_ns: Option<String>) -> String {
+        prepare_output(
+            "../resources/smgr/",
+            "agentCommProfile.xsd",
+            ns_prefix,
+            default_ns,
+        )
+    }
+
     #[test]
     fn test_attributes() {
-        let result = prepare_output(
+        let result = prepare_smgr_output(
             None,
             Some("http://xml.avaya.com/schema/import_csm_agent".to_string()),
         );
@@ -1558,7 +1587,7 @@ mod test_xsd {
 
     #[test]
     fn test_default_namespace() {
-        let result = prepare_output(
+        let result = prepare_smgr_output(
             None,
             Some("http://xml.avaya.com/schema/import_csm_agent".to_string()),
         );
@@ -1573,7 +1602,7 @@ mod test_xsd {
 
     #[test]
     fn test_no_default_namespace() {
-        let result = prepare_output(None, None);
+        let result = prepare_smgr_output(None, None);
 
         assert!(result.contains(
             r#"#[yaserde(
@@ -1586,7 +1615,7 @@ mod test_xsd {
 
     #[test]
     fn test_ns_prefix() {
-        let result = prepare_output(Some("ns2".to_string()), None);
+        let result = prepare_smgr_output(Some("ns2".to_string()), None);
 
         assert!(result.contains(
             r#"#[yaserde(
@@ -1599,8 +1628,17 @@ mod test_xsd {
 
     #[test]
     fn test_import() {
-        let result = prepare_output(None, None);
+        let result = prepare_smgr_output(None, None);
         assert!(result.contains(r#"xmlContact"#));
+    }
+
+    #[test]
+    fn test_simple_xsd() {
+        let result = prepare_output("../resources/simple/", "simple.xsd", None, None);
+        println!("{result}");
+        assert!(result.contains(r#"pub type ThisIsAString = String;"#));
+        assert!(result.contains(r#"pub type CouldBeAnything = AnyType;"#));
+        assert!(result.contains(&format!("pub type AnyType = {ANY_TYPE_DEFINITION};")));
     }
 }
 
