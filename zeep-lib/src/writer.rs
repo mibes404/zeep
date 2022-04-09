@@ -184,6 +184,7 @@ impl FileWriter {
             #![allow(unused_imports)]
             use yaserde_derive::{YaSerialize, YaDeserialize};
             use std::io::{Read, Write};
+            use log::{warn, debug};
             
             pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
             "#,
@@ -408,8 +409,16 @@ impl FileWriter {
             .children()
             .find(|child| child.has_tag_name("simpleType"));
 
+        let empty_element = node.children().count() == 0;
+
         let mut type_name = match self.get_some_attribute(node, "type") {
-            None => ANY_TYPE.to_string(),
+            None => {
+                if empty_element {
+                    ANY_TYPE.to_string()
+                } else {
+                    to_pascal_case(element_name)
+                }
+            }
             Some(t) => t.to_string(),
         };
 
@@ -536,7 +545,8 @@ impl FileWriter {
                 e.xml_name = Option::Some(name.to_string());
 
                 // declare all namespaces
-                e.add_ns("tns", &tns);
+                // e.add_ns("tns", &tns);
+                e.add_ns(&self.ns_prefix, &tns);
                 e.add_ns("xsi", "http://www.w3.org/2001/XMLSchema-instance");
                 e
             } else if self.on_default_namespace() {
