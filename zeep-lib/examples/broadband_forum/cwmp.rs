@@ -1,13 +1,14 @@
 //! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
-//! version: 0.1.1
+//! version: 0.1.5
 //!
 
 #![allow(dead_code)]
 #![allow(unused_imports)]
+use log::{debug, warn};
 use std::io::{Read, Write};
-use yaserde::{YaDeserialize, YaSerialize};
+use yaserde_derive::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -63,9 +64,10 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct CpefaultCodeType {
-        #[yaserde(flatten, default)]
+        #[yaserde(default)]
         pub body: u32,
     }
+
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         rename = "CPEExtensionFaultCodeType",
@@ -73,7 +75,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct CpeextensionFaultCodeType {
-        #[yaserde(flatten, default)]
+        #[yaserde(default)]
         pub body: u32,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -83,7 +85,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct CpevendorFaultCodeType {
-        #[yaserde(flatten, default)]
+        #[yaserde(default)]
         pub body: u32,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -93,7 +95,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AcsfaultCodeType {
-        #[yaserde(flatten, default)]
+        #[yaserde(default)]
         pub body: u32,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -103,7 +105,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct AcsvendorFaultCodeType {
-        #[yaserde(flatten, default)]
+        #[yaserde(default)]
         pub body: u32,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -341,7 +343,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct ParameterAttributeNotificationValueType {
-        #[yaserde(flatten, default)]
+        #[yaserde(default)]
         pub body: i32,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
@@ -422,7 +424,7 @@ pub mod types {
         prefix = "tns"
     )]
     pub struct TransferStateType {
-        #[yaserde(flatten, default)]
+        #[yaserde(default)]
         pub body: i32,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]

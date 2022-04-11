@@ -529,6 +529,13 @@ impl FileWriter {
         }
     }
 
+    fn is_primitive(&self, field_type: &str) -> bool {
+        matches!(
+            field_type,
+            "i8" | "u8" | "i16" | "f32" | "i32" | "u32" | "f64" | "i64" | "u64" | "String"
+        )
+    }
+
     fn split_type<'a>(&self, node_type: &'a str) -> &'a str {
         node_type.split(':').last().unwrap_or("String")
     }
@@ -585,11 +592,9 @@ impl FileWriter {
         let mut field = Element::new("body", ElementType::Field);
         let field_type = self.fetch_type(&type_name);
         field.text_field = field_type == "String";
+        field.flatten = !self.is_primitive(&field_type);
         field.field_type = Option::Some(field_type);
         field.xml_name = None;
-
-        // text fields are automatically "flattened"
-        field.flatten = !field.text_field;
 
         parent_element.add(field);
 
@@ -738,8 +743,9 @@ impl FileWriter {
                 to_snake_case(&self.fetch_type(base)).as_str(),
                 ElementType::Field,
             );
-            element.flatten = true;
-            element.field_type = Option::Some(self.fetch_type(base));
+            let field_type = self.fetch_type(base);
+            element.flatten = !self.is_primitive(&field_type);
+            element.field_type = Option::Some(field_type);
             p.add(element);
 
             let type_name = self.fetch_type(base);
@@ -805,7 +811,7 @@ impl FileWriter {
                 self.shield_reserved_names(&to_snake_case(element_name)),
                 ElementType::Field,
             );
-            element.flatten = true;
+            element.flatten = !self.is_primitive(&type_name);
             element.field_type = Option::Some(type_name.clone());
             parent.add(element);
 
