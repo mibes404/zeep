@@ -26,6 +26,7 @@ const BINDINGS_MOD: &str = "bindings";
 const SERVICES_MOD: &str = "services";
 const ANY_TYPE: &str = "AnyType";
 const ANY_TYPE_DEFINITION: &str = "Option<String>";
+const ERROR_IMPL: &str = include_str!("../template/soap_fault_error.tmpl.rs");
 
 const SIGNATURE: &str = r#"//! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
@@ -212,12 +213,17 @@ impl FileWriter {
             true,
         ));
 
+        // Error implementation for SoapFault
+        let mut soap_fault_error = Element::new("SoapFaultError", ElementType::Static);
+        soap_fault_error.set_content(ERROR_IMPL);
+
         let mut soap_response = Element::new("SoapResponse", ElementType::Alias);
         soap_response.field_type =
             Option::Some("Result<(reqwest::StatusCode, String), reqwest::Error>".to_string());
 
         self.root.add(header);
         self.root.add(soap_fault);
+        self.root.add(soap_fault_error);
         self.root.add(soap_response);
     }
 

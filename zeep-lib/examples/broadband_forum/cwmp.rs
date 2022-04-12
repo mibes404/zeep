@@ -25,6 +25,22 @@ pub struct SoapFault {
     #[yaserde(rename = "faultstring", default)]
     pub fault_string: Option<String>,
 }
+impl std::error::Error for SoapFault {}
+
+impl std::fmt::Display for SoapFault {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match (&self.fault_code, &self.fault_string) {
+            (None, None) => Ok(()),
+            (None, Some(fault_string)) => f.write_str(fault_string),
+            (Some(fault_code), None) => f.write_str(fault_code),
+            (Some(fault_code), Some(fault_string)) => {
+                f.write_str(fault_code)?;
+                f.write_str(": ")?;
+                f.write_str(fault_string)
+            }
+        }
+    }
+}
 pub type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
 
 pub mod messages {
@@ -67,7 +83,6 @@ pub mod types {
         #[yaserde(default)]
         pub body: u32,
     }
-
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         rename = "CPEExtensionFaultCodeType",
