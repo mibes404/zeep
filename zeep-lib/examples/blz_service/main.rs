@@ -1,14 +1,10 @@
-use log::warn;
-
 use crate::blz::{messages::GetBank, ports::BlzservicePortType, services::Blzservice, types};
 
 mod blz;
 
 #[tokio::main]
 async fn main() {
-    if let Err(err) = log4rs::init_file("log4rs.yml", Default::default()) {
-        warn!("Unable to find log4rs.yml logging config. {}", err);
-    }
+    env_logger::init();
 
     let blz_service = Blzservice::new_client(Option::None);
 

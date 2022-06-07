@@ -1,5 +1,3 @@
-use log::warn;
-
 use crate::number_services::{
     messages::{NumberToDollarsSoapRequest, NumberToWordsSoapRequest},
     ports::NumberConversionSoapType,
@@ -11,9 +9,7 @@ mod number_services;
 
 #[tokio::main]
 async fn main() {
-    if let Err(err) = log4rs::init_file("log4rs.yml", Default::default()) {
-        warn!("Unable to find log4rs.yml logging config. {}", err);
-    }
+    env_logger::init();
 
     let converter_service = NumberConversion::new_client(Option::None);
     let result = converter_service

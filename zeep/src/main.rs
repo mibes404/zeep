@@ -1,14 +1,11 @@
 use clap::{Arg, Command};
-use log::warn;
 use std::fs::File;
 use zeep_lib::writer::FileWriter;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 fn main() {
-    if let Err(err) = log4rs::init_file("log4rs.yml", Default::default()) {
-        warn!("Unable to find log4rs.yml logging config. {}", err);
-    }
+    env_logger::init();
 
     let matches = Command::new("Zeep - XSD/WSDL client generator for Rust")
         .version(VERSION)

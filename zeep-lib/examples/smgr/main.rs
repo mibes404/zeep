@@ -1,6 +1,5 @@
 use crate::smgr::types::*;
 use crate::smgr_presence::types::XmlPsCommProfile;
-use log::warn;
 use yaserde::ser::to_string;
 
 mod smgr;
@@ -388,9 +387,7 @@ pub fn resolve_comm_profiles(mut input: Users) -> Users {
 
 #[tokio::main]
 async fn main() {
-    if let Err(err) = log4rs::init_file("log4rs.yml", Default::default()) {
-        warn!("Unable to find log4rs.yml logging config. {}", err);
-    }
+    env_logger::init();
 
     // smgr
 

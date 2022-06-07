@@ -1,16 +1,13 @@
-use crate::tempconverter::messages::CelsiusToFahrenheit;
-use crate::tempconverter::ports::TempConverterEndpoint;
-use crate::tempconverter::services::TempConverterEndpointService;
-use crate::tempconverter::types::CelsiusToFahrenheitRequest;
-use log::warn;
+use crate::tempconverter::{
+    messages::CelsiusToFahrenheit, ports::TempConverterEndpoint,
+    services::TempConverterEndpointService, types::CelsiusToFahrenheitRequest,
+};
 
 mod tempconverter;
 
 #[tokio::main]
 async fn main() {
-    if let Err(err) = log4rs::init_file("log4rs.yml", Default::default()) {
-        warn!("Unable to find log4rs.yml logging config. {}", err);
-    }
+    env_logger::init();
 
     let tc = TempConverterEndpointService::new_client(Option::None);
 

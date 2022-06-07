@@ -1,20 +1,19 @@
-use crate::aic::bindings::{
-    AicAgentAdminSoapBinding, CreateRequestSoapEnvelope, LookupAgentIdsRequestSoapEnvelope,
-    SoapCreateRequest, SoapLookupAgentIdsRequest,
+use crate::aic::{
+    bindings::{
+        AicAgentAdminSoapBinding, CreateRequestSoapEnvelope, LookupAgentIdsRequestSoapEnvelope,
+        SoapCreateRequest, SoapLookupAgentIdsRequest,
+    },
+    messages::GetRequest,
+    ports::{AicAgentAdmin, CreateRequest, LookupAgentIdsRequest},
+    types::{Agent, AgentChatChannel, Create, Get, LookupAgentIds},
 };
-use crate::aic::messages::GetRequest;
-use crate::aic::ports::{AicAgentAdmin, CreateRequest, LookupAgentIdsRequest};
-use crate::aic::types::{Agent, AgentChatChannel, Create, Get, LookupAgentIds};
-use log::warn;
 use yaserde::ser::to_string;
 
 mod aic;
 
 #[tokio::main]
 async fn main() {
-    if let Err(err) = log4rs::init_file("log4rs.yml", Default::default()) {
-        warn!("Unable to find log4rs.yml logging config. {}", err);
-    }
+    env_logger::init();
 
     let c = Create {
         agent: Agent {
