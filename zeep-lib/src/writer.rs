@@ -314,7 +314,7 @@ impl FileWriter {
     }
 
     fn find_namespaces(&mut self, node: &Node) {
-        node.namespaces().iter().for_each(|ns| {
+        node.namespaces().for_each(|ns| {
             if let Some(name) = ns.name() {
                 self.namespaces
                     .insert(name.to_string(), ns.uri().to_string());
@@ -499,7 +499,7 @@ impl FileWriter {
     }
 
     fn get_some_attribute<'a>(&self, node: &'a Node, attr_name: &str) -> Option<&'a str> {
-        match node.attributes().iter().find(|a| a.name() == attr_name) {
+        match node.attributes().find(|a| a.name() == attr_name) {
             None => None,
             Some(a) => Some(a.value()),
         }
@@ -507,7 +507,6 @@ impl FileWriter {
 
     fn get_some_attribute_as_string(&self, node: &Node, attr_name: &str) -> Option<String> {
         node.attributes()
-            .iter()
             .find(|a| a.name() == attr_name)
             .map(|a| a.value().to_string())
     }
@@ -1498,7 +1497,6 @@ impl FileWriter {
 
         let some_binding = port
             .attributes()
-            .iter()
             .find(|a| a.name() == "binding")
             .map(|a| self.fetch_type(a.value()));
 
@@ -1516,7 +1514,6 @@ impl FileWriter {
 
         let location = address
             .attributes()
-            .iter()
             .find(|a| a.name() == "location")
             .map(|a| a.value())
             .unwrap_or_default();

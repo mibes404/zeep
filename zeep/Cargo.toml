@@ -7,13 +7,13 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-roxmltree = "0.14"
+roxmltree = "0.18"
 log = "0.4"
-env_logger = "0.9"
+env_logger = "0.10"
 Inflector = "0.11"
 yaserde = "0.8"
 yaserde_derive = "0.8"
-clap = "3"
+clap = "4"
 xml-rs = "0.8"
 reqwest = { version = "0.11", features =["blocking"]}
 tokio = { version = "1", features = ["full"] }

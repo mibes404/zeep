@@ -15,14 +15,12 @@ fn main() {
             Arg::new("to_file")
                 .short('o')
                 .long("output")
-                .takes_value(true)
                 .help("Output to file"),
         )
         .arg(
             Arg::new("from_file")
                 .short('i')
                 .long("input")
-                .takes_value(true)
                 .required(true)
                 .help("Input from XSD/WSDL file"),
         )
@@ -30,7 +28,6 @@ fn main() {
             Arg::new("path")
                 .short('p')
                 .long("path")
-                .takes_value(true)
                 .required(true)
                 .help("Base path for the XSD file(s)"),
         )
@@ -38,23 +35,27 @@ fn main() {
             Arg::new("ns")
                 .short('n')
                 .long("ns")
-                .takes_value(true)
                 .help("Namespace prefix"),
         )
         .arg(
             Arg::new("dns")
                 .short('d')
                 .long("dns")
-                .takes_value(true)
                 .help("Default namespace (URL)"),
         )
         .get_matches();
 
-    let to_file_name = matches.value_of("to_file");
-    let from_file_name = matches.value_of("from_file").unwrap_or_default();
-    let base_path = matches.value_of("path").unwrap_or_default();
-    let ns_prefix = matches.value_of("ns").map(|ns| ns.to_string());
-    let default_namespace = matches.value_of("dns").map(|dns| dns.to_string());
+    let to_file_name = matches.get_one::<String>("to_file");
+    let from_file_name = matches
+        .get_one::<String>("from_file")
+        .map(|ff| ff.to_string())
+        .unwrap_or_default();
+    let base_path = matches
+        .get_one::<String>("path")
+        .map(|ns| ns.to_string())
+        .unwrap_or_default();
+    let ns_prefix = matches.get_one::<String>("ns").map(|ns| ns.to_string());
+    let default_namespace = matches.get_one::<String>("dns").map(|dns| dns.to_string());
 
     if let Some(output_file) = to_file_name {
         let file = File::create(output_file).expect("can not create file");
@@ -63,12 +64,12 @@ fn main() {
             "parsing {}/{} --> {}",
             base_path, from_file_name, output_file
         );
-        if let Err(err) = writer.process_file(base_path, from_file_name) {
+        if let Err(err) = writer.process_file(&base_path, &from_file_name) {
             println!("Failed to process {from_file_name}: {err}")
         }
     } else {
         let mut writer = FileWriter::new(ns_prefix, default_namespace);
-        if let Err(err) = writer.process_file(base_path, from_file_name) {
+        if let Err(err) = writer.process_file(&base_path, &from_file_name) {
             println!("Failed to process {from_file_name}: {err}")
         }
     }
