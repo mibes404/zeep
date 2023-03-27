@@ -442,7 +442,7 @@ impl Element {
 }
 
 /// renamed the Rust keyword and quote the field name
-fn rename_keywords<'keyword>(field_name: &'keyword str) -> &'keyword str {
+fn rename_keywords(field_name: &str) -> &str {
     if field_name == "type" {
         "r#type"
     } else {
