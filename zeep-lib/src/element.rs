@@ -309,7 +309,7 @@ impl Element {
             format!(
                 "\t#[yaserde(rename = \"{0}\", {3}{5}default)]\n\tpub {1}: {2}, {4}\n",
                 xml_name,
-                self.name,
+                rename_keywords(&self.name),
                 self.render_field_type(),
                 bool_options,
                 comment,
@@ -318,7 +318,7 @@ impl Element {
         } else {
             format!(
                 "\t#[yaserde({2}{4}default)]\n\tpub {0}: {1}, {3}\n",
-                self.name,
+                rename_keywords(&self.name),
                 self.render_field_type(),
                 bool_options,
                 comment,
@@ -346,12 +346,18 @@ impl Element {
         if self.optional {
             format!(
                 "#[yaserde({}rename=\"{}\", attribute)]\npub {}: Option<{}>,\n",
-                prefix, xml_name, self.name, field_type
+                prefix,
+                xml_name,
+                rename_keywords(&self.name),
+                field_type
             )
         } else {
             format!(
                 "#[yaserde({}rename=\"{}\", attribute)]\npub {}: {},\n",
-                prefix, xml_name, self.name, field_type
+                prefix,
+                xml_name,
+                rename_keywords(&self.name),
+                field_type
             )
         }
     }
@@ -432,6 +438,15 @@ impl Element {
             "\tasync fn {} (&self, {}) {};\n",
             self.name, function_input, function_result
         )
+    }
+}
+
+/// renamed the Rust keyword and quote the field name
+fn rename_keywords<'keyword>(field_name: &'keyword str) -> &'keyword str {
+    if field_name == "type" {
+        "r#type"
+    } else {
+        field_name
     }
 }
 
@@ -521,5 +536,14 @@ pub struct SoapFault {
         let mut alias_element = Element::new("SomeElement", ElementType::Alias);
         alias_element.field_type = Option::Some("other_mod::SomeElement".to_string());
         assert_eq!(alias_element.render(), expected)
+    }
+
+    #[test]
+    fn can_rename_reserved_keywords() {
+        let renamed = rename_keywords("type");
+        assert_eq!(renamed, "r#type");
+
+        let not_renamed = rename_keywords("not_reserved");
+        assert_eq!(not_renamed, "not_reserved");
     }
 }
