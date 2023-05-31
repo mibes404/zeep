@@ -1,8 +1,8 @@
 use crate::hello::{
-    messages::SayHello,
-    ports::HelloEndpoint,
+    messages::{SayHello},
+    ports::{ HelloEndpoint},
     services::HelloEndpointService,
-    types::{self, HelloRequest},
+    types,
 };
 
 mod hello;
@@ -15,10 +15,8 @@ async fn main() {
 
     let hi = h
         .say_hello(SayHello {
-            parameters: types::SayHello {
-                hello_request: HelloRequest {
-                    name: "Claire".to_string(),
-                },
+            hello_request: types::HelloRequest {
+                name: "Claire".to_string(),
             },
         })
         .await

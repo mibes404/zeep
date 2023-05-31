@@ -1278,6 +1278,7 @@ impl FileWriter {
                     input_soap_name,
                     input_type,
                     PORTS_MOD,
+                    // this should be renamed when renaming is used
                     message_type_name,
                     self.construct_soap_wrapper(input_type.as_str(), input_soap_name.as_str())
                 ))

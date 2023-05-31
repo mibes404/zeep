@@ -1,7 +1,7 @@
 //! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
-//! version: 0.1.5
+//! version: 0.1.6
 //!
 
 #![allow(dead_code)]
@@ -53,13 +53,13 @@ pub mod messages {
     #[yaserde(rename = "SayHelloResponse")]
     pub struct SayHelloResponse {
         #[yaserde(flatten, default)]
-        pub parameters: types::SayHelloResponse,
+        pub hello_response: types::HelloResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(rename = "SayHello")]
     pub struct SayHello {
         #[yaserde(flatten, default)]
-        pub parameters: types::SayHello,
+        pub hello_request: types::HelloRequest,
     }
 }
 
@@ -71,16 +71,6 @@ pub mod types {
     use yaserde::{YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
-        rename = "SayHello",
-        namespace = "tns: http://learnwebservices.com/services/hello",
-        prefix = "tns"
-    )]
-    pub struct SayHello {
-        #[yaserde(rename = "HelloRequest", prefix = "tns", default)]
-        pub hello_request: HelloRequest,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
         rename = "helloRequest",
         namespace = "tns: http://learnwebservices.com/services/hello",
         prefix = "tns"
@@ -88,16 +78,6 @@ pub mod types {
     pub struct HelloRequest {
         #[yaserde(rename = "Name", prefix = "tns", default)]
         pub name: String,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        rename = "SayHelloResponse",
-        namespace = "tns: http://learnwebservices.com/services/hello",
-        prefix = "tns"
-    )]
-    pub struct SayHelloResponse {
-        #[yaserde(rename = "HelloResponse", prefix = "tns", default)]
-        pub hello_response: HelloResponse,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
@@ -167,7 +147,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapSayHello {
-        #[yaserde(rename = "SayHello", default)]
+        #[yaserde(rename = "HelloRequest", default)]
         pub body: ports::SayHello,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -314,7 +294,7 @@ pub mod services {
             credentials: Option<(String, String)>,
         ) -> bindings::HelloEndpointServiceSoapBinding {
             bindings::HelloEndpointServiceSoapBinding::new(
-                "http://www.learnwebservices.com/services/hello",
+                "http://apps.learnwebservices.com/services/hello",
                 credentials,
             )
         }

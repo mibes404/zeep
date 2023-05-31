@@ -1,0 +1,14 @@
+[package]
+name = "hello"
+version = "0.1.6"
+authors = ["mibes <mibes@avaya.com>"]
+edition = "2021"
+
+[dependencies]
+tokio = {version = "1", features = ["full"]}
+yaserde = "0.8"
+yaserde_derive = "0.8"
+env_logger = "0.10"
+log = "0.4"
+reqwest = "0.11"
+async-trait = "0.1"
