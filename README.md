@@ -9,9 +9,9 @@ Check the examples and the Cargo.toml for a complete list of dependencies.
 
 ## Installation
 
-1. Clone this repository
-2. Build: `cargo build --release`
-3. Copy the binary to a directory on your path, for example: `cp ./target/release/zeep /usr/local/bin`
+```shell
+$ cargo install --git https://github.com/mibes404/zeep zeep
+```
 
 ## Usage
 
