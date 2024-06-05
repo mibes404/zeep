@@ -80,7 +80,7 @@ $ cargo run --example hello
 
 * [x] Remove the dependency on customized yaserde version, once the renaming of a vector of structs is fixed
 * [x] Allow network imports 
-* [ ] Enable cargo install
+* [x] Enable cargo install
 
 ## DISCLAIMER
 
