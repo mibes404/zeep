@@ -9,9 +9,11 @@ Check the examples and the Cargo.toml for a complete list of dependencies.
 
 ## Installation
 
-1. $ cargo install --git https://github.com/mibes404/zeep zeep
-2. $ zeep --version
-   Zeep - XSD/WSDL client generator for Rust 0.1.6
+```bash
+$ cargo install --git https://github.com/mibes404/zeep zeep
+$ zeep --version
+  Zeep - XSD/WSDL client generator for Rust 0.1.6
+```
 
 ## Usage
 
