@@ -214,6 +214,7 @@ pub mod bindings {
     }
 
     impl CelsiusToFahrenheitSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCelsiusToFahrenheit) -> Self {
             CelsiusToFahrenheitSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -257,6 +258,7 @@ pub mod bindings {
     }
 
     impl CelsiusToFahrenheitResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCelsiusToFahrenheitResponse) -> Self {
             CelsiusToFahrenheitResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -300,6 +302,7 @@ pub mod bindings {
     }
 
     impl FahrenheitToCelsiusSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapFahrenheitToCelsius) -> Self {
             FahrenheitToCelsiusSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -343,6 +346,7 @@ pub mod bindings {
     }
 
     impl FahrenheitToCelsiusResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapFahrenheitToCelsiusResponse) -> Self {
             FahrenheitToCelsiusResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -367,6 +371,7 @@ pub mod bindings {
         }
     }
     impl TempConverterEndpointServiceSoapBinding {
+        #[must_use]
         pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
             TempConverterEndpointServiceSoapBinding {
                 client: reqwest::Client::new(),
@@ -453,6 +458,7 @@ pub mod services {
     use yaserde::{YaDeserialize, YaSerialize};
     pub struct TempConverterEndpointService {}
     impl TempConverterEndpointService {
+        #[must_use]
         pub fn new_client(
             credentials: Option<(String, String)>,
         ) -> bindings::TempConverterEndpointServiceSoapBinding {

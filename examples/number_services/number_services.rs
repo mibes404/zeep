@@ -218,6 +218,7 @@ pub mod bindings {
     }
 
     impl NumberToWordsSoapRequestSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapNumberToWordsSoapRequest) -> Self {
             NumberToWordsSoapRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -259,6 +260,7 @@ pub mod bindings {
     }
 
     impl NumberToWordsResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapNumberToWordsResponse) -> Self {
             NumberToWordsResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -300,6 +302,7 @@ pub mod bindings {
     }
 
     impl NumberToDollarsSoapRequestSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapNumberToDollarsSoapRequest) -> Self {
             NumberToDollarsSoapRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -341,6 +344,7 @@ pub mod bindings {
     }
 
     impl NumberToDollarsResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapNumberToDollarsResponse) -> Self {
             NumberToDollarsResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -363,6 +367,7 @@ pub mod bindings {
         }
     }
     impl NumberConversionSoapBinding {
+        #[must_use]
         pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
             NumberConversionSoapBinding {
                 client: reqwest::Client::new(),
@@ -474,6 +479,7 @@ pub mod bindings {
         }
     }
     impl NumberConversionSoapBinding12 {
+        #[must_use]
         pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
             NumberConversionSoapBinding12 {
                 client: reqwest::Client::new(),
@@ -558,6 +564,7 @@ pub mod services {
      */
     pub struct NumberConversion {}
     impl NumberConversion {
+        #[must_use]
         pub fn new_client(
             credentials: Option<(String, String)>,
         ) -> bindings::NumberConversionSoapBinding {

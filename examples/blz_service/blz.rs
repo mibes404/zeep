@@ -191,6 +191,7 @@ pub mod bindings {
     }
 
     impl GetBankSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetBank) -> Self {
             GetBankSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -232,6 +233,7 @@ pub mod bindings {
     }
 
     impl GetBankResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetBankResponse) -> Self {
             GetBankResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -254,6 +256,7 @@ pub mod bindings {
         }
     }
     impl BlzserviceSOAP11Binding {
+        #[must_use]
         pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
             BlzserviceSOAP11Binding {
                 client: reqwest::Client::new(),
@@ -336,6 +339,7 @@ pub mod bindings {
         }
     }
     impl BlzserviceSOAP12Binding {
+        #[must_use]
         pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
             BlzserviceSOAP12Binding {
                 client: reqwest::Client::new(),
@@ -418,6 +422,7 @@ pub mod bindings {
         }
     }
     impl BlzserviceHttpBinding {
+        #[must_use]
         pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
             BlzserviceHttpBinding {
                 client: reqwest::Client::new(),
@@ -471,6 +476,7 @@ pub mod services {
     use yaserde::{YaDeserialize, YaSerialize};
     pub struct Blzservice {}
     impl Blzservice {
+        #[must_use]
         pub fn new_client(
             credentials: Option<(String, String)>,
         ) -> bindings::BlzserviceSOAP11Binding {

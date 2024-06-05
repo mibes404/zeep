@@ -174,6 +174,7 @@ pub mod bindings {
     }
 
     impl SayHelloSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapSayHello) -> Self {
             SayHelloSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -215,6 +216,7 @@ pub mod bindings {
     }
 
     impl SayHelloResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapSayHelloResponse) -> Self {
             SayHelloResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -237,6 +239,7 @@ pub mod bindings {
         }
     }
     impl HelloEndpointServiceSoapBinding {
+        #[must_use]
         pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
             HelloEndpointServiceSoapBinding {
                 client: reqwest::Client::new(),
@@ -290,6 +293,7 @@ pub mod services {
     use yaserde::{YaDeserialize, YaSerialize};
     pub struct HelloEndpointService {}
     impl HelloEndpointService {
+        #[must_use]
         pub fn new_client(
             credentials: Option<(String, String)>,
         ) -> bindings::HelloEndpointServiceSoapBinding {

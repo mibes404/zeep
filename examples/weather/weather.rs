@@ -509,6 +509,7 @@ pub mod bindings {
     }
 
     impl GetWeatherInformationSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetWeatherInformationSoapIn) -> Self {
             GetWeatherInformationSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -550,6 +551,7 @@ pub mod bindings {
     }
 
     impl GetWeatherInformationSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetWeatherInformationSoapOut) -> Self {
             GetWeatherInformationSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -591,6 +593,7 @@ pub mod bindings {
     }
 
     impl GetCityForecastByZIPSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCityForecastByZIPSoapIn) -> Self {
             GetCityForecastByZIPSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -632,6 +635,7 @@ pub mod bindings {
     }
 
     impl GetCityForecastByZIPSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCityForecastByZIPSoapOut) -> Self {
             GetCityForecastByZIPSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -673,6 +677,7 @@ pub mod bindings {
     }
 
     impl GetCityWeatherByZIPSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCityWeatherByZIPSoapIn) -> Self {
             GetCityWeatherByZIPSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -714,6 +719,7 @@ pub mod bindings {
     }
 
     impl GetCityWeatherByZIPSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCityWeatherByZIPSoapOut) -> Self {
             GetCityWeatherByZIPSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -736,6 +742,7 @@ pub mod bindings {
         }
     }
     impl WeatherSoap {
+        #[must_use]
         pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
             WeatherSoap {
                 client: reqwest::Client::new(),
@@ -886,6 +893,7 @@ pub mod bindings {
         }
     }
     impl WeatherSoap12 {
+        #[must_use]
         pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
             WeatherSoap12 {
                 client: reqwest::Client::new(),
@@ -1055,6 +1063,7 @@ pub mod bindings {
     }
 
     impl GetWeatherInformationHttpGetInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetWeatherInformationHttpGetIn) -> Self {
             GetWeatherInformationHttpGetInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1096,6 +1105,7 @@ pub mod bindings {
     }
 
     impl GetWeatherInformationHttpGetOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetWeatherInformationHttpGetOut) -> Self {
             GetWeatherInformationHttpGetOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1137,6 +1147,7 @@ pub mod bindings {
     }
 
     impl GetCityForecastByZIPHttpGetInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCityForecastByZIPHttpGetIn) -> Self {
             GetCityForecastByZIPHttpGetInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1178,6 +1189,7 @@ pub mod bindings {
     }
 
     impl GetCityForecastByZIPHttpGetOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCityForecastByZIPHttpGetOut) -> Self {
             GetCityForecastByZIPHttpGetOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1219,6 +1231,7 @@ pub mod bindings {
     }
 
     impl GetCityWeatherByZIPHttpGetInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCityWeatherByZIPHttpGetIn) -> Self {
             GetCityWeatherByZIPHttpGetInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1260,6 +1273,7 @@ pub mod bindings {
     }
 
     impl GetCityWeatherByZIPHttpGetOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCityWeatherByZIPHttpGetOut) -> Self {
             GetCityWeatherByZIPHttpGetOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1282,6 +1296,7 @@ pub mod bindings {
         }
     }
     impl WeatherHttpGet {
+        #[must_use]
         pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
             WeatherHttpGet {
                 client: reqwest::Client::new(),
@@ -1453,6 +1468,7 @@ pub mod bindings {
     }
 
     impl GetWeatherInformationHttpPostInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetWeatherInformationHttpPostIn) -> Self {
             GetWeatherInformationHttpPostInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1494,6 +1510,7 @@ pub mod bindings {
     }
 
     impl GetWeatherInformationHttpPostOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetWeatherInformationHttpPostOut) -> Self {
             GetWeatherInformationHttpPostOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1535,6 +1552,7 @@ pub mod bindings {
     }
 
     impl GetCityForecastByZIPHttpPostInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCityForecastByZIPHttpPostIn) -> Self {
             GetCityForecastByZIPHttpPostInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1576,6 +1594,7 @@ pub mod bindings {
     }
 
     impl GetCityForecastByZIPHttpPostOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCityForecastByZIPHttpPostOut) -> Self {
             GetCityForecastByZIPHttpPostOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1617,6 +1636,7 @@ pub mod bindings {
     }
 
     impl GetCityWeatherByZIPHttpPostInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCityWeatherByZIPHttpPostIn) -> Self {
             GetCityWeatherByZIPHttpPostInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1658,6 +1678,7 @@ pub mod bindings {
     }
 
     impl GetCityWeatherByZIPHttpPostOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCityWeatherByZIPHttpPostOut) -> Self {
             GetCityWeatherByZIPHttpPostOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1680,6 +1701,7 @@ pub mod bindings {
         }
     }
     impl WeatherHttpPost {
+        #[must_use]
         pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
             WeatherHttpPost {
                 client: reqwest::Client::new(),
@@ -1804,6 +1826,7 @@ pub mod services {
     use yaserde::{YaDeserialize, YaSerialize};
     pub struct Weather {}
     impl Weather {
+        #[must_use]
         pub fn new_client(credentials: Option<(String, String)>) -> bindings::WeatherSoap {
             bindings::WeatherSoap::new("http://wsf.cdyne.com/WeatherWS/Weather.asmx", credentials)
         }

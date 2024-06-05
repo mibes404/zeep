@@ -892,6 +892,7 @@ pub mod bindings {
     }
 
     impl GetRequestSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetRequest) -> Self {
             GetRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -935,6 +936,7 @@ pub mod bindings {
     }
 
     impl GetResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetResponse) -> Self {
             GetResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -978,6 +980,7 @@ pub mod bindings {
     }
 
     impl UpdateRequestSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateRequest) -> Self {
             UpdateRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1021,6 +1024,7 @@ pub mod bindings {
     }
 
     impl UpdateResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateResponse) -> Self {
             UpdateResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1064,6 +1068,7 @@ pub mod bindings {
     }
 
     impl DeleteRequestSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapDeleteRequest) -> Self {
             DeleteRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1107,6 +1112,7 @@ pub mod bindings {
     }
 
     impl DeleteResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapDeleteResponse) -> Self {
             DeleteResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1150,6 +1156,7 @@ pub mod bindings {
     }
 
     impl LookupAgentIdsRequestSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapLookupAgentIdsRequest) -> Self {
             LookupAgentIdsRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1193,6 +1200,7 @@ pub mod bindings {
     }
 
     impl LookupAgentIdsResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapLookupAgentIdsResponse) -> Self {
             LookupAgentIdsResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1236,6 +1244,7 @@ pub mod bindings {
     }
 
     impl LookupLRMIdsRequestSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapLookupLRMIdsRequest) -> Self {
             LookupLRMIdsRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1279,6 +1288,7 @@ pub mod bindings {
     }
 
     impl LookupLRMIdsResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapLookupLRMIdsResponse) -> Self {
             LookupLRMIdsResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1322,6 +1332,7 @@ pub mod bindings {
     }
 
     impl LookupWorkgroupsRequestSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapLookupWorkgroupsRequest) -> Self {
             LookupWorkgroupsRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1365,6 +1376,7 @@ pub mod bindings {
     }
 
     impl LookupWorkgroupsResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapLookupWorkgroupsResponse) -> Self {
             LookupWorkgroupsResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1408,6 +1420,7 @@ pub mod bindings {
     }
 
     impl LookupDomainsRequestSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapLookupDomainsRequest) -> Self {
             LookupDomainsRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1451,6 +1464,7 @@ pub mod bindings {
     }
 
     impl LookupDomainsResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapLookupDomainsResponse) -> Self {
             LookupDomainsResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1494,6 +1508,7 @@ pub mod bindings {
     }
 
     impl LookupLinkGroupsRequestSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapLookupLinkGroupsRequest) -> Self {
             LookupLinkGroupsRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1537,6 +1552,7 @@ pub mod bindings {
     }
 
     impl LookupLinkGroupsResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapLookupLinkGroupsResponse) -> Self {
             LookupLinkGroupsResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1580,6 +1596,7 @@ pub mod bindings {
     }
 
     impl LookupPhoneTypesRequestSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapLookupPhoneTypesRequest) -> Self {
             LookupPhoneTypesRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1623,6 +1640,7 @@ pub mod bindings {
     }
 
     impl LookupPhoneTypesResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapLookupPhoneTypesResponse) -> Self {
             LookupPhoneTypesResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1666,6 +1684,7 @@ pub mod bindings {
     }
 
     impl LookupSitesRequestSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapLookupSitesRequest) -> Self {
             LookupSitesRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1709,6 +1728,7 @@ pub mod bindings {
     }
 
     impl LookupSitesResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapLookupSitesResponse) -> Self {
             LookupSitesResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1752,6 +1772,7 @@ pub mod bindings {
     }
 
     impl CreateRequestSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCreateRequest) -> Self {
             CreateRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1795,6 +1816,7 @@ pub mod bindings {
     }
 
     impl CreateResponseSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCreateResponse) -> Self {
             CreateResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1819,6 +1841,7 @@ pub mod bindings {
         }
     }
     impl AicAgentAdminSoapBinding {
+        #[must_use]
         pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
             AicAgentAdminSoapBinding {
                 client: reqwest::Client::new(),
@@ -2167,6 +2190,7 @@ pub mod services {
      */
     pub struct AicAgentAdminService {}
     impl AicAgentAdminService {
+        #[must_use]
         pub fn new_client(
             credentials: Option<(String, String)>,
         ) -> bindings::AicAgentAdminSoapBinding {

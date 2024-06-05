@@ -4575,6 +4575,7 @@ pub mod bindings {
     }
 
     impl AddAddressSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapAddAddressSoapIn) -> Self {
             AddAddressSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -4616,6 +4617,7 @@ pub mod bindings {
     }
 
     impl AddAddressSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapAddAddressSoapOut) -> Self {
             AddAddressSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -4657,6 +4659,7 @@ pub mod bindings {
     }
 
     impl AddContactSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapAddContactSoapIn) -> Self {
             AddContactSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -4698,6 +4701,7 @@ pub mod bindings {
     }
 
     impl AddContactSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapAddContactSoapOut) -> Self {
             AddContactSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -4739,6 +4743,7 @@ pub mod bindings {
     }
 
     impl AddCustomFieldSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapAddCustomFieldSoapIn) -> Self {
             AddCustomFieldSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -4780,6 +4785,7 @@ pub mod bindings {
     }
 
     impl AddCustomFieldSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapAddCustomFieldSoapOut) -> Self {
             AddCustomFieldSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -4821,6 +4827,7 @@ pub mod bindings {
     }
 
     impl AddEmailAddressSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapAddEmailAddressSoapIn) -> Self {
             AddEmailAddressSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -4862,6 +4869,7 @@ pub mod bindings {
     }
 
     impl AddEmailAddressSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapAddEmailAddressSoapOut) -> Self {
             AddEmailAddressSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -4903,6 +4911,7 @@ pub mod bindings {
     }
 
     impl AddPhoneNumberSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapAddPhoneNumberSoapIn) -> Self {
             AddPhoneNumberSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -4944,6 +4953,7 @@ pub mod bindings {
     }
 
     impl AddPhoneNumberSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapAddPhoneNumberSoapOut) -> Self {
             AddPhoneNumberSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -4985,6 +4995,7 @@ pub mod bindings {
     }
 
     impl AddSipUriSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapAddSipUriSoapIn) -> Self {
             AddSipUriSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5026,6 +5037,7 @@ pub mod bindings {
     }
 
     impl AddSipUriSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapAddSipUriSoapOut) -> Self {
             AddSipUriSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5067,6 +5079,7 @@ pub mod bindings {
     }
 
     impl CarbonCopySoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCarbonCopySoapIn) -> Self {
             CarbonCopySoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5108,6 +5121,7 @@ pub mod bindings {
     }
 
     impl CarbonCopySoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCarbonCopySoapOut) -> Self {
             CarbonCopySoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5149,6 +5163,7 @@ pub mod bindings {
     }
 
     impl CleanCustomerSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCleanCustomerSoapIn) -> Self {
             CleanCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5190,6 +5205,7 @@ pub mod bindings {
     }
 
     impl CleanCustomerSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCleanCustomerSoapOut) -> Self {
             CleanCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5231,6 +5247,7 @@ pub mod bindings {
     }
 
     impl CreateCustomerSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCreateCustomerSoapIn) -> Self {
             CreateCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5272,6 +5289,7 @@ pub mod bindings {
     }
 
     impl CreateCustomerSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCreateCustomerSoapOut) -> Self {
             CreateCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5313,6 +5331,7 @@ pub mod bindings {
     }
 
     impl CreateCustomerBySipUriSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCreateCustomerBySipUriSoapIn) -> Self {
             CreateCustomerBySipUriSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5354,6 +5373,7 @@ pub mod bindings {
     }
 
     impl CreateCustomerBySipUriSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCreateCustomerBySipUriSoapOut) -> Self {
             CreateCustomerBySipUriSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5395,6 +5415,7 @@ pub mod bindings {
     }
 
     impl CustomerAssociationSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCustomerAssociationSoapIn) -> Self {
             CustomerAssociationSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5436,6 +5457,7 @@ pub mod bindings {
     }
 
     impl CustomerAssociationSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCustomerAssociationSoapOut) -> Self {
             CustomerAssociationSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5477,6 +5499,7 @@ pub mod bindings {
     }
 
     impl CustomerSearchSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCustomerSearchSoapIn) -> Self {
             CustomerSearchSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5518,6 +5541,7 @@ pub mod bindings {
     }
 
     impl CustomerSearchSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapCustomerSearchSoapOut) -> Self {
             CustomerSearchSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5559,6 +5583,7 @@ pub mod bindings {
     }
 
     impl DeleteCustomerSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapDeleteCustomerSoapIn) -> Self {
             DeleteCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5600,6 +5625,7 @@ pub mod bindings {
     }
 
     impl DeleteCustomerSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapDeleteCustomerSoapOut) -> Self {
             DeleteCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5641,6 +5667,7 @@ pub mod bindings {
     }
 
     impl GetAllCustomersSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetAllCustomersSoapIn) -> Self {
             GetAllCustomersSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5682,6 +5709,7 @@ pub mod bindings {
     }
 
     impl GetAllCustomersSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetAllCustomersSoapOut) -> Self {
             GetAllCustomersSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5723,6 +5751,7 @@ pub mod bindings {
     }
 
     impl GetCustSQLColumnsSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustSQLColumnsSoapIn) -> Self {
             GetCustSQLColumnsSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5764,6 +5793,7 @@ pub mod bindings {
     }
 
     impl GetCustSQLColumnsSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustSQLColumnsSoapOut) -> Self {
             GetCustSQLColumnsSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5805,6 +5835,7 @@ pub mod bindings {
     }
 
     impl GetCustomFieldTemplatesSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustomFieldTemplatesSoapIn) -> Self {
             GetCustomFieldTemplatesSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5846,6 +5877,7 @@ pub mod bindings {
     }
 
     impl GetCustomFieldTemplatesSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustomFieldTemplatesSoapOut) -> Self {
             GetCustomFieldTemplatesSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5887,6 +5919,7 @@ pub mod bindings {
     }
 
     impl GetCustomerByContactIdSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustomerByContactIdSoapIn) -> Self {
             GetCustomerByContactIdSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5928,6 +5961,7 @@ pub mod bindings {
     }
 
     impl GetCustomerByContactIdSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustomerByContactIdSoapOut) -> Self {
             GetCustomerByContactIdSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -5969,6 +6003,7 @@ pub mod bindings {
     }
 
     impl GetCustomerByEmailSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustomerByEmailSoapIn) -> Self {
             GetCustomerByEmailSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6010,6 +6045,7 @@ pub mod bindings {
     }
 
     impl GetCustomerByEmailSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustomerByEmailSoapOut) -> Self {
             GetCustomerByEmailSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6051,6 +6087,7 @@ pub mod bindings {
     }
 
     impl GetCustomerByNameSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustomerByNameSoapIn) -> Self {
             GetCustomerByNameSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6092,6 +6129,7 @@ pub mod bindings {
     }
 
     impl GetCustomerByNameSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustomerByNameSoapOut) -> Self {
             GetCustomerByNameSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6133,6 +6171,7 @@ pub mod bindings {
     }
 
     impl GetCustomerByPhoneNumberSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustomerByPhoneNumberSoapIn) -> Self {
             GetCustomerByPhoneNumberSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6174,6 +6213,7 @@ pub mod bindings {
     }
 
     impl GetCustomerByPhoneNumberSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustomerByPhoneNumberSoapOut) -> Self {
             GetCustomerByPhoneNumberSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6215,6 +6255,7 @@ pub mod bindings {
     }
 
     impl GetCustomerBySipUriSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustomerBySipUriSoapIn) -> Self {
             GetCustomerBySipUriSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6256,6 +6297,7 @@ pub mod bindings {
     }
 
     impl GetCustomerBySipUriSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustomerBySipUriSoapOut) -> Self {
             GetCustomerBySipUriSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6297,6 +6339,7 @@ pub mod bindings {
     }
 
     impl GetCustomerByUserNameSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustomerByUserNameSoapIn) -> Self {
             GetCustomerByUserNameSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6338,6 +6381,7 @@ pub mod bindings {
     }
 
     impl GetCustomerByUserNameSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetCustomerByUserNameSoapOut) -> Self {
             GetCustomerByUserNameSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6379,6 +6423,7 @@ pub mod bindings {
     }
 
     impl GetNoCustContactsByTimeSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetNoCustContactsByTimeSoapIn) -> Self {
             GetNoCustContactsByTimeSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6420,6 +6465,7 @@ pub mod bindings {
     }
 
     impl GetNoCustContactsByTimeSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetNoCustContactsByTimeSoapOut) -> Self {
             GetNoCustContactsByTimeSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6461,6 +6507,7 @@ pub mod bindings {
     }
 
     impl GetSearchableFieldsSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetSearchableFieldsSoapIn) -> Self {
             GetSearchableFieldsSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6502,6 +6549,7 @@ pub mod bindings {
     }
 
     impl GetSearchableFieldsSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapGetSearchableFieldsSoapOut) -> Self {
             GetSearchableFieldsSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6543,6 +6591,7 @@ pub mod bindings {
     }
 
     impl ImpersonateCustomerSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapImpersonateCustomerSoapIn) -> Self {
             ImpersonateCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6584,6 +6633,7 @@ pub mod bindings {
     }
 
     impl ImpersonateCustomerSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapImpersonateCustomerSoapOut) -> Self {
             ImpersonateCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6625,6 +6675,7 @@ pub mod bindings {
     }
 
     impl ReadCustomerSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapReadCustomerSoapIn) -> Self {
             ReadCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6666,6 +6717,7 @@ pub mod bindings {
     }
 
     impl ReadCustomerSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapReadCustomerSoapOut) -> Self {
             ReadCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6707,6 +6759,7 @@ pub mod bindings {
     }
 
     impl ReadCustomerHistorySoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapReadCustomerHistorySoapIn) -> Self {
             ReadCustomerHistorySoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6748,6 +6801,7 @@ pub mod bindings {
     }
 
     impl ReadCustomerHistorySoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapReadCustomerHistorySoapOut) -> Self {
             ReadCustomerHistorySoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6789,6 +6843,7 @@ pub mod bindings {
     }
 
     impl RegisterAnonymousCustomerSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRegisterAnonymousCustomerSoapIn) -> Self {
             RegisterAnonymousCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6830,6 +6885,7 @@ pub mod bindings {
     }
 
     impl RegisterAnonymousCustomerSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRegisterAnonymousCustomerSoapOut) -> Self {
             RegisterAnonymousCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6871,6 +6927,7 @@ pub mod bindings {
     }
 
     impl RegisterCustomerSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRegisterCustomerSoapIn) -> Self {
             RegisterCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6912,6 +6969,7 @@ pub mod bindings {
     }
 
     impl RegisterCustomerSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRegisterCustomerSoapOut) -> Self {
             RegisterCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6953,6 +7011,7 @@ pub mod bindings {
     }
 
     impl RemoveAddressSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRemoveAddressSoapIn) -> Self {
             RemoveAddressSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -6994,6 +7053,7 @@ pub mod bindings {
     }
 
     impl RemoveAddressSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRemoveAddressSoapOut) -> Self {
             RemoveAddressSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7035,6 +7095,7 @@ pub mod bindings {
     }
 
     impl RemoveContactSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRemoveContactSoapIn) -> Self {
             RemoveContactSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7076,6 +7137,7 @@ pub mod bindings {
     }
 
     impl RemoveContactSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRemoveContactSoapOut) -> Self {
             RemoveContactSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7117,6 +7179,7 @@ pub mod bindings {
     }
 
     impl RemoveCustomFieldSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRemoveCustomFieldSoapIn) -> Self {
             RemoveCustomFieldSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7158,6 +7221,7 @@ pub mod bindings {
     }
 
     impl RemoveCustomFieldSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRemoveCustomFieldSoapOut) -> Self {
             RemoveCustomFieldSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7199,6 +7263,7 @@ pub mod bindings {
     }
 
     impl RemoveEmailAddressSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRemoveEmailAddressSoapIn) -> Self {
             RemoveEmailAddressSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7240,6 +7305,7 @@ pub mod bindings {
     }
 
     impl RemoveEmailAddressSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRemoveEmailAddressSoapOut) -> Self {
             RemoveEmailAddressSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7281,6 +7347,7 @@ pub mod bindings {
     }
 
     impl RemovePhoneNumberSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRemovePhoneNumberSoapIn) -> Self {
             RemovePhoneNumberSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7322,6 +7389,7 @@ pub mod bindings {
     }
 
     impl RemovePhoneNumberSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRemovePhoneNumberSoapOut) -> Self {
             RemovePhoneNumberSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7363,6 +7431,7 @@ pub mod bindings {
     }
 
     impl RemoveSipUriSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRemoveSipUriSoapIn) -> Self {
             RemoveSipUriSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7404,6 +7473,7 @@ pub mod bindings {
     }
 
     impl RemoveSipUriSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapRemoveSipUriSoapOut) -> Self {
             RemoveSipUriSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7445,6 +7515,7 @@ pub mod bindings {
     }
 
     impl SendADPasswordReminderSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapSendADPasswordReminderSoapIn) -> Self {
             SendADPasswordReminderSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7486,6 +7557,7 @@ pub mod bindings {
     }
 
     impl SendADPasswordReminderSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapSendADPasswordReminderSoapOut) -> Self {
             SendADPasswordReminderSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7527,6 +7599,7 @@ pub mod bindings {
     }
 
     impl SendPasswordReminderSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapSendPasswordReminderSoapIn) -> Self {
             SendPasswordReminderSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7568,6 +7641,7 @@ pub mod bindings {
     }
 
     impl SendPasswordReminderSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapSendPasswordReminderSoapOut) -> Self {
             SendPasswordReminderSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7609,6 +7683,7 @@ pub mod bindings {
     }
 
     impl SetAgentIDSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapSetAgentIDSoapIn) -> Self {
             SetAgentIDSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7650,6 +7725,7 @@ pub mod bindings {
     }
 
     impl SetAgentIDSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapSetAgentIDSoapOut) -> Self {
             SetAgentIDSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7691,6 +7767,7 @@ pub mod bindings {
     }
 
     impl UpdateCustomerSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateCustomerSoapIn) -> Self {
             UpdateCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7732,6 +7809,7 @@ pub mod bindings {
     }
 
     impl UpdateCustomerSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateCustomerSoapOut) -> Self {
             UpdateCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7773,6 +7851,7 @@ pub mod bindings {
     }
 
     impl UpdateFirstNameSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateFirstNameSoapIn) -> Self {
             UpdateFirstNameSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7814,6 +7893,7 @@ pub mod bindings {
     }
 
     impl UpdateFirstNameSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateFirstNameSoapOut) -> Self {
             UpdateFirstNameSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7855,6 +7935,7 @@ pub mod bindings {
     }
 
     impl UpdateLastNameSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateLastNameSoapIn) -> Self {
             UpdateLastNameSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7896,6 +7977,7 @@ pub mod bindings {
     }
 
     impl UpdateLastNameSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateLastNameSoapOut) -> Self {
             UpdateLastNameSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7937,6 +8019,7 @@ pub mod bindings {
     }
 
     impl UpdateLoginPageSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateLoginPageSoapIn) -> Self {
             UpdateLoginPageSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -7978,6 +8061,7 @@ pub mod bindings {
     }
 
     impl UpdateLoginPageSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateLoginPageSoapOut) -> Self {
             UpdateLoginPageSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -8019,6 +8103,7 @@ pub mod bindings {
     }
 
     impl UpdateObjectionSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateObjectionSoapIn) -> Self {
             UpdateObjectionSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -8060,6 +8145,7 @@ pub mod bindings {
     }
 
     impl UpdateObjectionSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateObjectionSoapOut) -> Self {
             UpdateObjectionSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -8101,6 +8187,7 @@ pub mod bindings {
     }
 
     impl UpdatePasswordSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdatePasswordSoapIn) -> Self {
             UpdatePasswordSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -8142,6 +8229,7 @@ pub mod bindings {
     }
 
     impl UpdatePasswordSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdatePasswordSoapOut) -> Self {
             UpdatePasswordSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -8183,6 +8271,7 @@ pub mod bindings {
     }
 
     impl UpdatePreferredAgentSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdatePreferredAgentSoapIn) -> Self {
             UpdatePreferredAgentSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -8224,6 +8313,7 @@ pub mod bindings {
     }
 
     impl UpdatePreferredAgentSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdatePreferredAgentSoapOut) -> Self {
             UpdatePreferredAgentSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -8265,6 +8355,7 @@ pub mod bindings {
     }
 
     impl UpdateRegisterDateSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateRegisterDateSoapIn) -> Self {
             UpdateRegisterDateSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -8306,6 +8397,7 @@ pub mod bindings {
     }
 
     impl UpdateRegisterDateSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateRegisterDateSoapOut) -> Self {
             UpdateRegisterDateSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -8347,6 +8439,7 @@ pub mod bindings {
     }
 
     impl UpdateTitleSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateTitleSoapIn) -> Self {
             UpdateTitleSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -8388,6 +8481,7 @@ pub mod bindings {
     }
 
     impl UpdateTitleSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateTitleSoapOut) -> Self {
             UpdateTitleSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -8429,6 +8523,7 @@ pub mod bindings {
     }
 
     impl UpdateUserNameSoapInSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateUserNameSoapIn) -> Self {
             UpdateUserNameSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -8470,6 +8565,7 @@ pub mod bindings {
     }
 
     impl UpdateUserNameSoapOutSoapEnvelope {
+        #[must_use]
         pub fn new(body: SoapUpdateUserNameSoapOut) -> Self {
             UpdateUserNameSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -8492,6 +8588,7 @@ pub mod bindings {
         }
     }
     impl CustMultimediaSoap {
+        #[must_use]
         pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
             CustMultimediaSoap {
                 client: reqwest::Client::new(),
@@ -9980,6 +10077,7 @@ pub mod services {
     use yaserde::{YaDeserialize, YaSerialize};
     pub struct CustMultimedia {}
     impl CustMultimedia {
+        #[must_use]
         pub fn new_client(credentials: Option<(String, String)>) -> bindings::CustMultimediaSoap {
             bindings::CustMultimediaSoap::new(
                 "https://aacc1ver7:443/csp/multimedia/ws.Customer.cls",

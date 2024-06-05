@@ -999,6 +999,7 @@ impl FileWriter {
         e.set_content(
             format!(
                 r#"impl {struct_name} {{
+                #[must_use]
                 pub fn new(url: &str, credentials: Option<(String,String)>) -> Self {{
                     {struct_name} {{
                         client: reqwest::Client::new(),
@@ -1200,6 +1201,7 @@ impl FileWriter {
         }}
         
         impl {0}SoapEnvelope {{
+            #[must_use]
             pub fn new(body: {1}) -> Self {{
                 {0}SoapEnvelope {{
                     encoding_style: Some(SOAP_ENCODING.to_string()),
@@ -1545,6 +1547,7 @@ impl FileWriter {
         e.append_content(
             format!(
                 r#"
+            #[must_use]
             pub fn new_client(credentials: Option<(String, String)>) -> {2}::{1} {{
                 {2}::{1}::new("{0}", credentials)
             }}
