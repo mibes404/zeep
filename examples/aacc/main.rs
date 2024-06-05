@@ -8,5 +8,5 @@ async fn main() {
     // self-referencing struct
     let contact_type = ContactType::default();
     let xml = yaserde::ser::to_string(&contact_type).unwrap();
-    println!("{}", xml);
+    println!("{xml}");
 }
