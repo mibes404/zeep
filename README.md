@@ -2,7 +2,7 @@
 
 Generate yaserde annotated structs for Rust based on XSD/WSDL. For WSDL input, client code is generated as well.
 
-The generated code depends on yaserde (0.8) and yaserde_derive for the XSD-generated types. The SOAP client needs tokio, log and reqwest in addition. 
+The generated code depends on yaserde (0.10) and yaserde_derive for the XSD-generated types. The SOAP client needs tokio, log and reqwest in addition. 
 The generated code does *not* have any dependencies on this library.
 
 Check the examples and the Cargo.toml for a complete list of dependencies.
@@ -35,31 +35,43 @@ Example usage:
 
 ### Output to stdout:
 ```bash
-zeep -p resources/aic -i agent_wsdl.xml
+$ zeep -p resources/aic -i agent_wsdl.xml
 ```
 
 ### Output to file:
 ```bash
-zeep -p resources/hello -i hello.wsdl -o examples/hello/hello.rs
+$ zeep -p resources/hello -i hello.wsdl -o examples/hello/hello.rs
 ```
 
 ### Format the output
 ```bash
-rustfmt --color=always --edition=2018 examples/hello/hello.rs
+$ rustfmt --color=always --edition=2018 examples/hello/hello.rs
 ```
 
 ### Define a default namespace:
 No prefixes will be generated for elements matching the default namespace.
 
 ```bash
-zeep -p resources/hello -i hello.wsdl -o examples/hello/hello.rs -d "http://learnwebservices.com/services/hello"
+$ zeep -p resources/hello -i hello.wsdl -o examples/hello/hello.rs -d "http://learnwebservices.com/services/hello"
 ```
 
 ### Define a different prefix:
 Use a different prefix than "tns" for the types in the default namespace.
 
 ```bash
-zeep -p resources/hello -i hello.wsdl -o examples/hello/hello.rs -n ns1
+$ zeep -p resources/hello -i hello.wsdl -o examples/hello/hello.rs -n ns1
+```
+
+## Examples
+
+You can run one of the pre-built examples in the examples directory.
+
+```bash
+$ cargo run --example temperature 
+
+or 
+
+$ cargo run --example hello
 ```
 
 ## TODO
