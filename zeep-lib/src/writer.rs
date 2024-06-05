@@ -1676,6 +1676,6 @@ mod test_wsdl {
     #[test]
     fn test_service() {
         let result = prepare_output(None, None);
-        assert!(result.contains(r#"bindings::TempConverterEndpointServiceSoapBinding::new("http://www.learnwebservices.com/services/tempconverter", credentials)"#));
+        assert!(result.contains(r#"bindings::TempConverterEndpointServiceSoapBinding::new("https://apps.learnwebservices.com:443/services/tempconverter", credentials)"#));
     }
 }
