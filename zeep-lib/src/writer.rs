@@ -7,7 +7,7 @@ use crate::{
     error::{WriterError, WriterResult},
 };
 use inflector::cases::{pascalcase::to_pascal_case, snakecase::to_snake_case};
-use log::{debug, warn};
+use log::{warn};
 use roxmltree::Node;
 use std::{
     cell::RefCell,
@@ -28,10 +28,10 @@ const ANY_TYPE: &str = "AnyType";
 const ANY_TYPE_DEFINITION: &str = "Option<String>";
 const ERROR_IMPL: &str = include_str!("../template/soap_fault_error.tmpl.rs");
 
-const SIGNATURE: &str = r#"//! THIS IS A GENERATED FILE!
+const SIGNATURE: &str = r"//! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
-"#;
+";
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 const DEFAULT_NS_PREFIX: &str = "tns";
 const IMPORT_PREFIX: &str = "nsi";
@@ -76,14 +76,14 @@ impl Default for FileWriter {
 
 impl FileWriter {
     #[allow(clippy::field_reassign_with_default)]
-    pub fn new(ns_prefix: Option<String>, default_namespace: Option<String>) -> Self {
+    #[must_use] pub fn new(ns_prefix: Option<String>, default_namespace: Option<String>) -> Self {
         let mut fw = FileWriter::default();
         fw.ns_prefix = ns_prefix.unwrap_or_else(|| DEFAULT_NS_PREFIX.to_string());
         fw.default_namespace = default_namespace;
         fw
     }
 
-    pub fn new_file(
+    #[must_use] pub fn new_file(
         dest_file_name: File,
         ns_prefix: Option<String>,
         default_namespace: Option<String>,
@@ -103,7 +103,7 @@ impl FileWriter {
     }
 
     #[allow(dead_code)]
-    pub fn new_buffer(
+    #[must_use] pub fn new_buffer(
         ns_prefix: Option<String>,
         default_namespace: Option<String>,
         buffer: DebugBuffer,
@@ -171,14 +171,14 @@ impl FileWriter {
         })
     }
 
-    pub fn have_seen_type(&self, type_def: &str, module: &Element) -> bool {
+    #[must_use] pub fn have_seen_type(&self, type_def: &str, module: &Element) -> bool {
         module.has_child(type_def)
     }
 
     fn print_global_header(&mut self) {
         let mut global_header = Element::new("global_header", ElementType::Static);
         global_header.set_content(SIGNATURE);
-        global_header.append_content(format!("//! version: {}\n//!\n", VERSION).as_str());
+        global_header.append_content(format!("//! version: {VERSION}\n//!\n").as_str());
         global_header.append_content(
             r#"
             #![allow(dead_code)]           
@@ -277,7 +277,7 @@ impl FileWriter {
     fn print_xsd(&mut self, node: &Node) -> WriterResult<()> {
         self.target_name_space = self
             .get_some_attribute(node, "targetNamespace")
-            .map(|s| s.to_string());
+            .map(std::string::ToString::to_string);
 
         self.find_namespaces(node);
 
@@ -377,7 +377,7 @@ impl FileWriter {
                 .collect();
 
             for node in seq {
-                self.print_sequence(&node, parent, module)?
+                self.print_sequence(&node, parent, module)?;
             }
 
             let elements: Vec<Node> = node
@@ -386,7 +386,7 @@ impl FileWriter {
                 .collect();
 
             for node in elements {
-                self.print_element(&node, false, parent, module)?
+                self.print_element(&node, false, parent, module)?;
             }
         }
 
@@ -492,7 +492,7 @@ impl FileWriter {
         }
 
         if let Some(complex) = maybe_complex {
-            self.print_complex_element(&complex, element_name, is_top_level, module)?
+            self.print_complex_element(&complex, element_name, is_top_level, module)?;
         }
 
         Ok(())
@@ -672,7 +672,7 @@ impl FileWriter {
         element.xml_name = Option::Some(element_name.to_string());
         element.field_type = Option::Some(element_type);
         element.optional = optional;
-        parent.add(element)
+        parent.add(element);
     }
 
     fn deconstruct_simplex_element(&mut self, node: &Node) -> WriterResult<String> {
@@ -869,7 +869,7 @@ impl FileWriter {
                 &child,
                 &mut element,
                 _parent,
-            )
+            );
         });
 
         _parent.add(element);
@@ -901,22 +901,21 @@ impl FileWriter {
         let mut client = Element::new(&struct_name, ElementType::Static);
         client.set_content(
             format!(
-                r#"pub struct {0} {{
+                r#"pub struct {struct_name} {{
                 client: reqwest::Client,
                 url: String,
                 credentials: Option<(String,String)>
                 }}
-                "#,
-                struct_name
+                "#
             )
             .as_str(),
         );
 
         let mut t_impl = Element::new(&struct_name, ElementType::TraitImpl);
-        t_impl.field_type = Option::Some(format!("{1}::{0}", trait_name, PORTS_MOD));
+        t_impl.field_type = Option::Some(format!("{PORTS_MOD}::{trait_name}"));
 
         node.children().for_each(|child| {
-            self.print_binding_operation(&trait_name, &child, &mut t_impl, _parent)
+            self.print_binding_operation(&trait_name, &child, &mut t_impl, _parent);
         });
 
         self.print_default_constructor(struct_name.as_str(), _parent);
@@ -929,7 +928,7 @@ impl FileWriter {
     fn print_binding_helpers(&mut self, struct_name: &str, parent: &mut Element) {
         let mut e = Element::new(struct_name, ElementType::Static);
         e.set_content(format!(r#"
-            impl {0} {{
+            impl {struct_name} {{
                 async fn send_soap_request<T: YaSerialize>(&self, request: &T, action: &str) -> SoapResponse {{
                     let body = to_string(request).expect("failed to generate xml");
                     debug!("SOAP Request: {{}}", body);
@@ -953,7 +952,7 @@ impl FileWriter {
                     Ok((status, txt))
                 }}
             }}
-            "#, struct_name).as_str());
+            "#).as_str());
 
         parent.add(e);
     }
@@ -967,17 +966,16 @@ impl FileWriter {
         let mut e = Element::new(struct_name, ElementType::Static);
         e.set_content(
             format!(
-                r#"impl Default for {0} {{
+                r#"impl Default for {struct_name} {{
                 fn default() -> Self {{
-                    {0} {{
+                    {struct_name} {{
                         client: reqwest::Client::new(),
-                        url: "{1}".to_string(),
+                        url: "{url}".to_string(),
                         credentials: Option::None,
                      }}
                 }}
             }}
-            "#,
-                struct_name, url
+            "#
             )
             .as_str(),
         );
@@ -989,17 +987,16 @@ impl FileWriter {
         let mut e = Element::new(struct_name, ElementType::Static);
         e.set_content(
             format!(
-                r#"impl {0} {{
+                r#"impl {struct_name} {{
                 pub fn new(url: &str, credentials: Option<(String,String)>) -> Self {{
-                    {0} {{
+                    {struct_name} {{
                         client: reqwest::Client::new(),
                         url: url.to_string(),
                         credentials,
                     }}
                 }}
         }}
-        "#,
-                struct_name
+        "#
             )
             .as_str(),
         );
@@ -1069,7 +1066,7 @@ impl FileWriter {
         let input_type_element = match &port_type.input_type {
             Some((type_name, Some(message_type_name))) => {
                 let mut e = Element::new(to_pascal_case(type_name).as_str(), ElementType::Alias);
-                e.field_type = Option::Some(format!("{0}::{1}", MESSAGES_MOD, message_type_name,));
+                e.field_type = Option::Some(format!("{MESSAGES_MOD}::{message_type_name}",));
 
                 Option::Some(e)
             }
@@ -1088,11 +1085,11 @@ impl FileWriter {
         let (output_type_element, fault_type_element) = match &port_type.output_type {
             Some((type_name, Some(msg))) => {
                 let mut e = Element::new(to_pascal_case(type_name).as_str(), ElementType::Alias);
-                e.field_type = Option::Some(format!("{}::{}", MESSAGES_MOD, msg));
+                e.field_type = Option::Some(format!("{MESSAGES_MOD}::{msg}"));
 
                 if let Some((fault_name, Some(fault_type))) = &port_type.fault_type {
                     let mut f = Element::new(fault_name.as_str(), ElementType::Alias);
-                    f.field_type = Option::Some(format!("{}::{}", MESSAGES_MOD, fault_type,));
+                    f.field_type = Option::Some(format!("{MESSAGES_MOD}::{fault_type}",));
 
                     if !self.have_seen_type(fault_name, module) {
                         self.fault_soap_wrapper(fault_name, fault_type, module);
@@ -1146,7 +1143,7 @@ impl FileWriter {
     }
 
     fn fault_soap_wrapper(&self, fault_name: &str, fault_type: &str, parent: &mut Element) {
-        let soap_fault_name = format!("Soap{}", fault_name);
+        let soap_fault_name = format!("Soap{fault_name}");
 
         let mut e = Element::new(&soap_fault_name, ElementType::Struct);
         e.xml_name = Option::Some("Fault".to_string());
@@ -1169,7 +1166,7 @@ impl FileWriter {
     fn construct_soap_wrapper(&self, soap_name: &str, body_type: &str) -> String {
         let tns = match &self.target_name_space {
             None => "Option::None".to_string(),
-            Some(t) => format!("Option::Some(\"{}\".to_string())", t),
+            Some(t) => format!("Option::Some(\"{t}\".to_string())"),
         };
 
         format!(
@@ -1228,7 +1225,7 @@ impl FileWriter {
             Some(mt) => self.split_type(mt).to_string(),
         };
 
-        let port_type_name = format!("{}::{}", bind_type_name, operation_name);
+        let port_type_name = format!("{bind_type_name}::{operation_name}");
 
         let port_type = match self.port_types.get(&port_type_name) {
             None => {
@@ -1245,7 +1242,7 @@ impl FileWriter {
 
         let (input_name, input_type, input_soap_name, has_input) = match &port_type.input_type {
             Some((input_name, Some(input_type))) => {
-                let soap_name = format!("Soap{}", input_type);
+                let soap_name = format!("Soap{input_type}");
 
                 (
                     to_snake_case(input_name),
@@ -1258,7 +1255,7 @@ impl FileWriter {
         };
 
         let input_template = if has_input {
-            format!("{}: {}::{}", input_name, PORTS_MOD, input_type)
+            format!("{input_name}: {PORTS_MOD}::{input_type}")
         } else {
             String::new()
         };
@@ -1292,7 +1289,7 @@ impl FileWriter {
         let (output_type, output_soap_name, output_xml_type, has_output) =
             match &port_type.output_type {
                 Some((output_name, Some(output_type))) => {
-                    let soap_name = format!("Soap{}", output_type);
+                    let soap_name = format!("Soap{output_type}");
                     (output_type.clone(), soap_name, output_name.clone(), true)
                 }
                 _ => (String::new(), String::new(), String::new(), false),
@@ -1306,7 +1303,7 @@ impl FileWriter {
         let (_fault_type, _fault_xml_type, fault_soap_name, has_fault) = match &port_type.fault_type
         {
             Some((fault_name, Some(fault_type))) => {
-                let soap_name = format!("Soap{}", fault_type);
+                let soap_name = format!("Soap{fault_type}");
                 (
                     fault_type.to_string(),
                     fault_name.to_string(),
@@ -1320,9 +1317,8 @@ impl FileWriter {
         let soap_fault = if has_fault {
             format!(
                 r#"     #[yaserde(rename = "Fault", default)]
-                            pub fault: Option<{1}::{0}>,
+                            pub fault: Option<{PORTS_MOD}::{fault_soap_name}>,
                             "#,
-                fault_soap_name, PORTS_MOD,
             )
         } else {
             r#"     #[yaserde(rename = "Fault", default)]
@@ -1359,13 +1355,11 @@ impl FileWriter {
         let output_template = if has_output {
             if has_fault {
                 format!(
-                    "-> Result<{2}::{0}, Option<{2}::{1}>>",
-                    output_type, fault_soap_name, PORTS_MOD,
+                    "-> Result<{PORTS_MOD}::{output_type}, Option<{PORTS_MOD}::{fault_soap_name}>>",
                 )
             } else {
                 format!(
-                    "-> Result<{}::{}, Option<SoapFault>>",
-                    PORTS_MOD, output_type
+                    "-> Result<{PORTS_MOD}::{output_type}, Option<SoapFault>>"
                 )
             }
         } else {
@@ -1382,8 +1376,7 @@ impl FileWriter {
         let mut e = Element::new(&func_name, ElementType::Static);
         e.set_content(
             format!(
-                "\tasync fn {} (&self, {}) {} {{\n",
-                func_name, input_template, output_template,
+                "\tasync fn {func_name} (&self, {input_template}) {output_template} {{\n",
             )
             .as_str(),
         );
@@ -1396,7 +1389,7 @@ impl FileWriter {
                 operation_name,
                 some_soap_action,
                 &mut e,
-            )
+            );
         }
 
         e.append_content("}");
@@ -1434,47 +1427,46 @@ impl FileWriter {
         let action = match soap_action {
             None => match &self.target_name_space {
                 None => "undefined".to_string(),
-                Some(tns) => format!("{}/{}", tns, operation_name),
+                Some(tns) => format!("{tns}/{operation_name}"),
             },
             Some(sa) => sa.to_string(),
         };
 
         let xmlns = match &self.target_name_space {
             None => "Option::None".to_string(),
-            Some(tns) => format!("Option::Some(\"{}\".to_string())", tns),
+            Some(tns) => format!("Option::Some(\"{tns}\".to_string())"),
         };
 
         parent.append_content(
             format!(
                 r#"
-        let __request = {1}SoapEnvelope::new(Soap{1} {{
-            body: {0},
-            xmlns: {4},
+        let __request = {input_type}SoapEnvelope::new(Soap{input_type} {{
+            body: {input_variable},
+            xmlns: {xmlns},
         }});            
         
-        let (status, response) = self.send_soap_request(&__request, "{3}")
+        let (status, response) = self.send_soap_request(&__request, "{action}")
                     .await
                     .map_err(|err| {{
                         warn!("Failed to send SOAP request: {{:?}}", err);
                         None
                     }})?;
 
-        let r: {2}SoapEnvelope = from_str(&response).map_err(|err| {{
+        let r: {output_type}SoapEnvelope = from_str(&response).map_err(|err| {{
                         warn!("Failed to unmarshal SOAP response: {{:?}}", err);
                         None
                     }})?;
-        "#,
-                input_variable, input_type, output_type, action, xmlns
+        "#
             )
             .as_str(),
         );
 
         parent.append_content(
-            r#"if status.is_success() {
+            r"if status.is_success() {
             Ok(r.body.body)
         } else {
             Err(r.body.fault)
-        }"#,
+        }",
         );
     }
 
@@ -1538,10 +1530,9 @@ impl FileWriter {
 
         e.set_content(
             format!(
-                r#"pub struct {0} {{}}
-               impl {0} {{
+                r#"pub struct {struct_name} {{}}
+               impl {struct_name} {{
                 "#,
-                struct_name,
             )
             .as_str(),
         );
@@ -1654,15 +1645,15 @@ mod test_xsd {
     #[test]
     fn test_import() {
         let result = prepare_smgr_output(None, None);
-        assert!(result.contains(r#"xmlContact"#));
+        assert!(result.contains(r"xmlContact"));
     }
 
     #[test]
     fn test_simple_xsd() {
         let result = prepare_output("../resources/simple/", "simple.xsd", None, None);
         println!("{result}");
-        assert!(result.contains(r#"pub type ThisIsAString = String;"#));
-        assert!(result.contains(r#"pub type CouldBeAnything = AnyType;"#));
+        assert!(result.contains(r"pub type ThisIsAString = String;"));
+        assert!(result.contains(r"pub type CouldBeAnything = AnyType;"));
         assert!(result.contains(&format!("pub type AnyType = {ANY_TYPE_DEFINITION};")));
     }
 }

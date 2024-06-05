@@ -16,5 +16,5 @@ async fn main() {
     };
     let hi = h.say_hello(request).await.expect("can not greet");
 
-    println!("{:?}", hi);
+    println!("{hi:?}");
 }

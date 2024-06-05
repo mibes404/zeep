@@ -106,7 +106,7 @@ impl WritableElement for Element {
 
 impl NamespacedElement for Element {
     fn add_ns(&mut self, prefix: &str, ns: &str) {
-        self.namespaces.push(format!("{}: {}", prefix, ns))
+        self.namespaces.push(format!("{prefix}: {ns}"));
     }
 }
 
@@ -211,9 +211,9 @@ impl Element {
 
     fn render_struct(&self) -> String {
         let mut result = if let Some(comment) = &self.comment {
-            format!("//* {}\n */", comment)
+            format!("//* {comment}\n */")
         } else {
-            "".to_string()
+            String::new()
         };
 
         result.push_str("#[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]\n");
@@ -223,17 +223,17 @@ impl Element {
         let mut options = "#[yaserde(\n".to_string();
 
         if let Some(xml_name) = &self.xml_name {
-            options.push_str(&format!("\trename = \"{}\",\n", xml_name));
+            options.push_str(&format!("\trename = \"{xml_name}\",\n"));
             has_options = true;
         }
 
         for namespace in &self.namespaces {
-            options.push_str(&format!("\tnamespace = \"{}\",\n", namespace));
+            options.push_str(&format!("\tnamespace = \"{namespace}\",\n"));
             has_options = true;
         }
 
         if let Some(prefix) = &self.prefix {
-            options.push_str(&format!("\tprefix = \"{}\",\n", prefix));
+            options.push_str(&format!("\tprefix = \"{prefix}\",\n"));
             has_options = true;
         }
 
@@ -288,21 +288,21 @@ impl Element {
         let mut bool_options = if self.flatten {
             "flatten, ".to_string()
         } else {
-            "".to_string()
+            String::new()
         };
 
         if self.text_field {
-            bool_options.push_str("text, ")
+            bool_options.push_str("text, ");
         }
 
         let comment = match &self.comment {
-            None => "".to_string(),
-            Some(c) => format!("// {}", c),
+            None => String::new(),
+            Some(c) => format!("// {c}"),
         };
 
         let prefix = match &self.prefix {
-            Some(p) => format!("prefix = \"{}\", ", p),
-            None => "".to_string(),
+            Some(p) => format!("prefix = \"{p}\", "),
+            None => String::new(),
         };
 
         if let Some(xml_name) = &self.xml_name {
@@ -339,8 +339,8 @@ impl Element {
         };
 
         let prefix = match &self.prefix {
-            Some(p) => format!("prefix = \"{}\", ", p),
-            None => "".to_string(),
+            Some(p) => format!("prefix = \"{p}\", "),
+            None => String::new(),
         };
 
         if self.optional {
@@ -365,14 +365,14 @@ impl Element {
     fn render_field_type(&self) -> String {
         if let Some(field_type) = &self.field_type {
             if self.vector {
-                format!("Vec<{}>", field_type)
+                format!("Vec<{field_type}>")
             } else if self.optional {
-                format!("Option<{}>", field_type)
+                format!("Option<{field_type}>")
             } else {
                 field_type.to_string()
             }
         } else {
-            "".to_string()
+            String::new()
         }
     }
 
@@ -381,7 +381,7 @@ impl Element {
             None => String::new(),
             Some(c) => {
                 if let Some(comment) = &self.comment {
-                    format!("/** {}\n */\n{}", comment, c)
+                    format!("/** {comment}\n */\n{c}")
                 } else {
                     c.clone()
                 }
@@ -400,12 +400,12 @@ impl Element {
     fn render_module(&self) -> String {
         let mut result = format!("pub mod {} {{\n", self.name);
         result.push_str(
-            r#"use yaserde::{YaSerialize, YaDeserialize};
+            r"use yaserde::{YaSerialize, YaDeserialize};
             use yaserde::de::from_str;
             use async_trait::async_trait;
             use yaserde::ser::to_string;
             use super::*;
-            "#,
+            ",
         );
 
         let child_content: String = self.children.iter().map(|c| c.borrow().render()).collect();
@@ -424,11 +424,11 @@ impl Element {
         let function_result = match &args.fault_type {
             None => match &args.output_type {
                 None => String::new(),
-                Some(o) => format!("-> {}", o),
+                Some(o) => format!("-> {o}"),
             },
             Some(fault) => match &args.output_type {
-                None => format!("-> {}", fault),
-                Some(o) => format!("-> Result<{},{}>", o, fault),
+                None => format!("-> {fault}"),
+                Some(o) => format!("-> Result<{o},{fault}>"),
             },
         };
 
@@ -456,10 +456,10 @@ mod tests {
 
     #[test]
     fn test_base_struct() {
-        let expected = r#"#[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
+        let expected = r"#[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
 pub struct Header {
 }
-"#;
+";
         let header = Element::new("Header", ElementType::Struct);
         assert_eq!(header.render(), expected.to_string());
     }
@@ -496,7 +496,7 @@ pub struct SoapFault {
             "String",
             true,
         ));
-        assert_eq!(soap_fault.render(), expected.to_string())
+        assert_eq!(soap_fault.render(), expected.to_string());
     }
 
     #[test]
@@ -529,13 +529,13 @@ pub struct SoapFault {
 
     #[test]
     fn test_alias() {
-        let expected = r#"pub type SomeElement = other_mod::SomeElement;
+        let expected = r"pub type SomeElement = other_mod::SomeElement;
 
-"#
+"
         .to_string();
         let mut alias_element = Element::new("SomeElement", ElementType::Alias);
         alias_element.field_type = Option::Some("other_mod::SomeElement".to_string());
-        assert_eq!(alias_element.render(), expected)
+        assert_eq!(alias_element.render(), expected);
     }
 
     #[test]

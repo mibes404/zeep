@@ -18,7 +18,7 @@ async fn main() {
         .await;
 
     match w_info {
-        Ok(w_info) => println!("Succeeded: {:?}", w_info),
+        Ok(w_info) => println!("Succeeded: {w_info:?}"),
         Err(Some(err)) => println!("Failed: {:?}", err.fault_string),
         Err(None) => println!("Failed: no info"),
     }
