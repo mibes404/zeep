@@ -31,7 +31,3 @@ path = "../examples/weather/main.rs"
 [[example]]
 name = "temperature"
 path = "../examples/temperature/main.rs"
-
-[[example]]
-name = "country"
-path = "../examples/country/main.rs"
