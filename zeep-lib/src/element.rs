@@ -18,6 +18,7 @@ pub enum ElementType {
     Function,
 }
 
+#[allow(clippy::struct_excessive_bools)]
 pub struct Element {
     pub element_type: ElementType,
     pub prefix: Option<String>,
