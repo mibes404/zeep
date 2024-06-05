@@ -24,9 +24,11 @@ const TYPES_MOD: &str = "types";
 const PORTS_MOD: &str = "ports";
 const BINDINGS_MOD: &str = "bindings";
 const SERVICES_MOD: &str = "services";
+const MULTIREF_MOD: &str = "multiref";
 const ANY_TYPE: &str = "AnyType";
 const ANY_TYPE_DEFINITION: &str = "Option<String>";
 const ERROR_IMPL: &str = include_str!("../template/soap_fault_error.tmpl.rs");
+const MULTIREF_TMPL: &str = include_str!("../template/multiref.tmpl.rs");
 
 const SIGNATURE: &str = r"//! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
@@ -122,6 +124,10 @@ impl FileWriter {
         self.root.add(Element::new_module(PORTS_MOD));
         self.root.add(Element::new_module(BINDINGS_MOD));
         self.root.add(Element::new_module(SERVICES_MOD));
+        self.root.add(Element::new_module_with_content(
+            MULTIREF_MOD,
+            MULTIREF_TMPL.to_string(),
+        ));
     }
 
     pub fn process_file(&mut self, base_path: &str, file_name: &str) -> WriterResult<()> {
@@ -492,11 +498,13 @@ impl FileWriter {
             }
 
             // add the element to the owning structure
-            element.field_type = Option::Some(Self::fetch_type(&type_name));
+            element.field_type = Some(Self::fetch_type(&type_name));
             element.vector = as_vec;
             element.optional = as_option;
 
             if let Some(p) = parent {
+                // Self-referencing structs need to wrap the field in MultiRef<T>
+                element.multi_ref = p.xml_name == element.field_type;
                 p.add(element);
             }
         }

@@ -1,6 +1,6 @@
 [package]
 name = "zeep"
-version = "0.1.7"
+version = "0.1.8"
 authors = ["mibes <mibes@avaya.com>"]
 edition = "2021"
 
@@ -19,15 +19,3 @@ reqwest = { version = "0.12", default-features = false, features =["blocking", "
 tokio = { version = "1", features = ["full"] }
 async-trait = "0.1"
 zeep-lib = { path = "../zeep-lib"}
-
-[[example]]
-name = "hello"
-path = "../examples/hello/main.rs"
-
-[[example]]
-name = "weather"
-path = "../examples/weather/main.rs"
-
-[[example]]
-name = "temperature"
-path = "../examples/temperature/main.rs"

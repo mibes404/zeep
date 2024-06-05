@@ -1,0 +1,3903 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:s0="http://ws.db.ccmm.applications.nortel.com" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://ws.db.ccmm.applications.nortel.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://ws.db.ccmm.applications.nortel.com">
+      <s:element name="AddAddress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="newAddress" type="s0:Address" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Address">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Line1">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Line2">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Line3">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Line4">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Line5">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="ZipCode">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Country">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Default" type="s:boolean" />
+          <s:element minOccurs="0" name="Imported" type="s:boolean" />
+          <s:element minOccurs="0" name="FullAddress">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="1785" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddAddressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="AddAddressResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddContact">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="contactParams" type="s0:ContactCreate" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ContactCreate">
+        <s:sequence>
+          <s:element minOccurs="0" name="NewCount" type="s:long" />
+          <s:element minOccurs="0" name="OriginalSubject">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="CustomerID" type="s:long" />
+          <s:element minOccurs="0" name="Agent" type="s:long" />
+          <s:element minOccurs="0" name="Skillset" type="s:long" />
+          <s:element minOccurs="0" name="AcquiredTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="Source" type="s:long" />
+          <s:element minOccurs="0" name="MailTo">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4096" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="MailFrom">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="MailCC">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="32767" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Status" type="s:long" />
+          <s:element minOccurs="0" name="QueueType" type="s:long" />
+          <s:element minOccurs="0" name="OpenTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="ClosedTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="AutoResponse" type="s:long" />
+          <s:element minOccurs="0" name="Rule" type="s:long" />
+          <s:element minOccurs="0" name="Priority" type="s:long" />
+          <s:element minOccurs="0" name="OpenDuration" type="s:long" />
+          <s:element minOccurs="0" name="SubStatus" type="s:long" />
+          <s:element minOccurs="0" name="CMFStatus" type="s:long" />
+          <s:element minOccurs="0" name="CallId" type="s:long" />
+          <s:element minOccurs="0" name="WebOnHoldTag" type="s:string" />
+          <s:element minOccurs="0" name="TimeZone" type="s:short" />
+          <s:element minOccurs="0" name="CharSet">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="ClickStreamText">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="32768" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="OutBoundOriginator">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Campaign" type="s:long" />
+          <s:element minOccurs="0" name="CampaignRetryCount" type="s:long" />
+          <s:element minOccurs="0" name="DispositionCode" type="s:long" />
+          <s:element minOccurs="0" name="PreferredCallBackMedia" type="s:long" />
+          <s:element minOccurs="0" name="Type" type="s:long" />
+          <s:element minOccurs="0" name="LastAction" type="s:long" />
+          <s:element minOccurs="0" name="ClosureType" type="s:long" />
+          <s:element minOccurs="0" name="Answers" type="s0:ArrayOfAnswer" />
+          <s:element minOccurs="0" name="ActionCreateList" type="s0:ArrayOfActionCreate" />
+          <s:element minOccurs="0" name="CustomFieldCreateList" type="s0:ArrayOfCustomFieldCreate" />
+          <s:element minOccurs="0" name="CmfId">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="RouteSummary" type="s:string" />
+          <s:element minOccurs="0" name="Importance" type="s:long" />
+          <s:element minOccurs="0" name="SocialMediaHeader" type="s0:SocialMediaHeader" />
+          <s:element minOccurs="0" name="SMFToken" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAnswer">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Answer" nillable="true" type="s0:Answer" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Answer">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="QuestionID" type="s:long" />
+          <s:element minOccurs="0" name="Answer">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="FreeText">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="DateCreated" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfActionCreate">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ActionCreate" nillable="true" type="s0:ActionCreate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ActionCreate">
+        <s:sequence>
+          <s:element minOccurs="0" name="ContactId" type="s:long" />
+          <s:element minOccurs="0" name="Type" type="s:long" />
+          <s:element minOccurs="0" name="Source" type="s:long" />
+          <s:element minOccurs="0" name="Subject" type="s:string" />
+          <s:element minOccurs="0" name="Text" type="s:string" />
+          <s:element minOccurs="0" name="TextHTML" type="s:string" />
+          <s:element minOccurs="0" name="CharSet">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Attempt" type="s:long" />
+          <s:element minOccurs="0" name="DispositionCode" type="s:long" />
+          <s:element minOccurs="0" name="MailTo">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4096" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="MailFrom">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="MailCC">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="32767" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="MailBCC">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="32767" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="CallBackTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="CallBackMedia" type="s:long" />
+          <s:element minOccurs="0" name="CallBackStatus" type="s:long" />
+          <s:element minOccurs="0" name="Agent" type="s:long" />
+          <s:element minOccurs="0" name="Comment">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="TimeAllocated" type="s:long" />
+          <s:element minOccurs="0" name="TemplateLocation">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="ClosedReason" type="s:long" />
+          <s:element minOccurs="0" name="HistoryFlag" type="s:boolean" />
+          <s:element minOccurs="0" name="NumberUsed">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="CallStartTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="CallEndTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="DialStartTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="DialEndTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="OpenTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="ClosedTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="CustomFieldCreateList" type="s0:ArrayOfCustomFieldCreate" />
+          <s:element minOccurs="0" name="AttachmentList" type="s0:ArrayOfAttachmentCreate" />
+          <s:element minOccurs="0" name="AutoSuggest" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCustomFieldCreate">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CustomFieldCreate" nillable="true" type="s0:CustomFieldCreate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CustomFieldCreate">
+        <s:sequence>
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Text">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="IsTextVisible" type="s:boolean" />
+          <s:element minOccurs="0" name="CustomFieldTemplate" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAttachmentCreate">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AttachmentCreate" nillable="true" type="s0:AttachmentCreate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AttachmentCreate">
+        <s:sequence>
+          <s:element minOccurs="0" name="DisplayFileName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="InternalFileName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Direction" type="s:long" />
+          <s:element minOccurs="0" name="FileContents" type="s:base64Binary" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SocialMediaHeader">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="DesktopUrl">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="InteractionID">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Query">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Domain">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Classification">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Relevance">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Sentiment">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Language">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Author">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Channel">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Keywords">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="MimeContactType">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="SocialMediaRuleId" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddContactResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="AddContactResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddCustomField">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="customFieldParams" type="s0:CustomFieldCreate" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddCustomFieldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="AddCustomFieldResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddEmailAddress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="newEmailAddress" type="s0:EmailAddress" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="EmailAddress">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Address">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="SearchAddress">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Default" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddEmailAddressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="AddEmailAddressResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddPhoneNumber">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="phoneNumberParams" type="s0:PhoneNumberCreate" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PhoneNumberCreate">
+        <s:sequence>
+          <s:element minOccurs="0" name="Type" type="s:long" />
+          <s:element minOccurs="0" name="InternationalCode">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="6" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="AreaCode">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="10" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Number">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="32" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="DoNotCall" type="s:boolean" />
+          <s:element minOccurs="0" name="Default" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddPhoneNumberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="AddPhoneNumberResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddSipUri">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="newSipUri" type="s0:SipUri" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SipUri">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Address">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="SearchAddress">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Default" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddSipUriResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="AddSipUriResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CarbonCopy">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="customerId" type="s:long" />
+            <s:element minOccurs="0" name="contactId" type="s:long" />
+            <s:element minOccurs="0" name="copyMode" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CarbonCopyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="CarbonCopyResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CleanCustomer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="bRemoveAllContacts" type="s:boolean" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CleanCustomerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="CleanCustomerResult" type="s0:Customer" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Customer">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Addresses" type="s0:ArrayOfAddress" />
+          <s:element minOccurs="0" name="PhoneNumbers" type="s0:ArrayOfPhoneNumber" />
+          <s:element minOccurs="0" name="EmailAddresses" type="s0:ArrayOfEmailAddress" />
+          <s:element minOccurs="0" name="Contacts" type="s0:ArrayOfContact" />
+          <s:element minOccurs="0" name="CustomFields" type="s0:ArrayOfCustomField" />
+          <s:element minOccurs="0" name="SipUris" type="s0:ArrayOfSipUri" />
+          <s:element minOccurs="0" name="Title">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="20" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="FirstName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="LastName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="LoginPage" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="RegisterDate" type="s:dateTime" />
+          <s:element minOccurs="0" name="UserName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="PreferredAgent" type="s0:User" />
+          <s:element minOccurs="0" name="PreferredAgentID" type="s:long" />
+          <s:element minOccurs="0" name="Objection" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAddress">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Address" nillable="true" type="s0:Address" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPhoneNumber">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PhoneNumber" nillable="true" type="s0:PhoneNumber" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PhoneNumber">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Type" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="InternationalCode">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="10" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="AreaCode">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="10" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Number">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="32" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="FullNumber">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="32" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="DoNotCall" type="s:boolean" />
+          <s:element minOccurs="0" name="Default" type="s:boolean" />
+          <s:element minOccurs="0" name="Offset" type="s:long" />
+          <s:element minOccurs="0" name="TimeZoneId" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CodeMapping">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="FieldName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="NumericValue" type="s:long" />
+          <s:element minOccurs="0" name="TextValue">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Icon">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfEmailAddress">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EmailAddress" nillable="true" type="s0:EmailAddress" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfContact">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Contact" nillable="true" type="s0:Contact" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Contact">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="ArrivalTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="OriginalSubject">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="CustomerID" type="s:long" />
+          <s:element minOccurs="0" name="Agent" type="s0:User" />
+          <s:element minOccurs="0" name="Skillset" type="s0:Skillset" />
+          <s:element minOccurs="0" name="AcquiredTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="Source" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="Type" type="s0:ContactType" />
+          <s:element minOccurs="0" name="MailTo">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4096" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="MailFrom">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4096" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="MailCC">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4096" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Status" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="QueueType" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="OpenTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="ClosedTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="AutoResponse" type="s0:AutoResponse" />
+          <s:element minOccurs="0" name="Rule" type="s0:Rule" />
+          <s:element minOccurs="0" name="Priority" type="s:long" />
+          <s:element minOccurs="0" name="OpenDuration" type="s:long" />
+          <s:element minOccurs="0" name="SubStatus" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="CMFStatus" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="CallId" type="s:long" />
+          <s:element minOccurs="0" name="WebOnHoldTag" type="s:string" />
+          <s:element minOccurs="0" name="TimeZone" type="s:long" />
+          <s:element minOccurs="0" name="CharSet">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="ClickStreamText">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="32767" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="NNCCApplicationId" type="s:long" />
+          <s:element minOccurs="0" name="OutBoundOriginator">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Campaign" type="s0:Campaign" />
+          <s:element minOccurs="0" name="NoOfCallAttempts" type="s:long" />
+          <s:element minOccurs="0" name="CampaignRetryCount" type="s:long" />
+          <s:element minOccurs="0" name="DispositionCode" type="s0:DispositionCode" />
+          <s:element minOccurs="0" name="PreferredCallBackMedia" type="s0:ContactType" />
+          <s:element minOccurs="0" name="CallTime" type="s:long" />
+          <s:element minOccurs="0" name="DialTime" type="s:long" />
+          <s:element minOccurs="0" name="LastAction" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="ClosureType" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="CmfId">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="CustomFields" type="s0:ArrayOfCustomField" />
+          <s:element minOccurs="0" name="Actions" type="s0:ArrayOfAction" />
+          <s:element minOccurs="0" name="Answers" type="s0:ArrayOfAnswer" />
+          <s:element minOccurs="0" name="ClosedReason" type="s0:ClosedReason" />
+          <s:element minOccurs="0" name="RouteSummary">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="512" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="CCOpenQueuedTime" type="s:long" />
+          <s:element minOccurs="0" name="Importance" type="s:long" />
+          <s:element minOccurs="0" name="SocialMediaHeader" type="s0:SocialMediaHeader" />
+          <s:element minOccurs="0" name="ApprovalCheck" type="s:long" />
+          <s:element minOccurs="0" name="ApprovalSkillsetId" type="s:long" />
+          <s:element minOccurs="0" name="SMFToken">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="StartingEWT" type="s:long" />
+          <s:element minOccurs="0" name="StartingPIQ" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="User">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="CCMSID" type="s:long" />
+          <s:element minOccurs="0" name="DeletionTimeStamp" type="s:dateTime" />
+          <s:element minOccurs="0" name="MarkAsDeleted" type="s:boolean" />
+          <s:element minOccurs="0" name="Supervisor" type="s:long" />
+          <s:element minOccurs="0" name="TelsetLogonId">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="UserClass">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="20" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="RoutePoint" type="s0:RoutePoint" />
+          <s:element minOccurs="0" name="Email">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Fax">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="20" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="FirstName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="LogonId">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Status" type="s:boolean" />
+          <s:element minOccurs="0" name="LastName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="SipUri">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="SipTerminal">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="DeletedOnCCMS" type="s:boolean" />
+          <s:element minOccurs="0" name="PredictiveAgent" type="s:boolean" />
+          <s:element minOccurs="0" name="PredictiveReportingEnabled" type="s:boolean" />
+          <s:element minOccurs="0" name="PredictiveWrapTimeLimit" type="s:long" />
+          <s:element minOccurs="0" name="DataPurge" type="s:boolean" />
+          <s:element minOccurs="0" name="DefaultPassword" type="s:boolean" />
+          <s:element minOccurs="0" name="AgentGreetingState" type="s:long" />
+          <s:element minOccurs="0" name="BlendingStatus" type="s:long" />
+          <s:element minOccurs="0" name="LastBlendedTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="BlendSkillsetId" type="s:long" />
+          <s:element minOccurs="0" name="AgentURL">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="LastCCADBlendedTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="BlendedEligiblityTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="NailedUp" type="s:boolean" />
+          <s:element minOccurs="0" name="Blended" type="s:boolean" />
+          <s:element minOccurs="0" name="BlendedReason">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="ACDLogin" type="s:string" />
+          <s:element minOccurs="0" name="Extension" type="s:string" />
+          <s:element minOccurs="0" name="ApprovalRatio" type="s:long" />
+          <s:element minOccurs="0" name="LastApprovalUpdate" type="s:dateTime" />
+          <s:element minOccurs="0" name="CurrentPOMSkillsetId" type="s:long" />
+          <s:element minOccurs="0" name="POMAgent" type="s:boolean" />
+          <s:element minOccurs="0" name="SkillsetUpdateTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="FriendlyName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="SoftPhoneEnabled" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RoutePoint">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="RoutePoint">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="32" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="DeletionTimeStamp" type="s:dateTime" />
+          <s:element minOccurs="0" name="MarkAsDeleted" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Skillset">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="CCMSID" type="s:long" />
+          <s:element minOccurs="0" name="ActivityCode">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="32" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="AutoSignature">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4095" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="DeletionTimeStamp" type="s:dateTime" />
+          <s:element minOccurs="0" name="MarkAsDeleted" type="s:boolean" />
+          <s:element minOccurs="0" name="MailBox" type="s0:Inbox" />
+          <s:element minOccurs="0" name="RoutePoint" type="s0:RoutePoint" />
+          <s:element minOccurs="0" name="WebCommsComfortGroup" type="s0:WebCommsComfortGroup" />
+          <s:element minOccurs="0" name="WebCommOnHoldGroup" type="s0:WebCommsComfortGroup" />
+          <s:element minOccurs="0" name="Mapping">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Agents" type="s0:ArrayOfUserPairOfAgentsKeyUser" />
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Status" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="Threshold" type="s:long" />
+          <s:element minOccurs="0" name="UseOriginalAddress" type="s:long" />
+          <s:element minOccurs="0" name="WebDescription">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="DeletedOnCCMS" type="s:boolean" />
+          <s:element minOccurs="0" name="PagePushURLs" type="s0:ArrayOfPagePushURL" />
+          <s:element minOccurs="0" name="Phrases" type="s0:ArrayOfPhrase" />
+          <s:element minOccurs="0" name="WelcomeMessage">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4095" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="WrapUpMessage">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4095" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Expert" type="s0:ArrayOfExpert" />
+          <s:element minOccurs="0" name="SkillsetThresholdTemplate" type="s0:SkillsetThresholdTemplate" />
+          <s:element minOccurs="0" name="Calendar" type="s0:Calendar" />
+          <s:element minOccurs="0" name="ChatHistoryHeader" type="s0:AutoResponse" />
+          <s:element minOccurs="0" name="WebOnHoldURLs" type="s0:OnHoldURL" />
+          <s:element minOccurs="0" name="ConcurrentWebChats" type="s:long" />
+          <s:element minOccurs="0" name="ApprovalRatio" type="s:long" />
+          <s:element minOccurs="0" name="LastApprovalUpdate" type="s:dateTime" />
+          <s:element minOccurs="0" name="ApprovalSkillset1" type="s:long" />
+          <s:element minOccurs="0" name="ApprovalSkillset2" type="s:long" />
+          <s:element minOccurs="0" name="ApprovalSkillset3" type="s:long" />
+          <s:element minOccurs="0" name="ApprovalSkillset4" type="s:long" />
+          <s:element minOccurs="0" name="ApprovalSkillset5" type="s:long" />
+          <s:element minOccurs="0" name="RejectionLevel1" type="s:long" />
+          <s:element minOccurs="0" name="RejectionLevel2" type="s:long" />
+          <s:element minOccurs="0" name="RejectionLevel3" type="s:long" />
+          <s:element minOccurs="0" name="RejectionLevel4" type="s:long" />
+          <s:element minOccurs="0" name="RejectionLevel5" type="s:long" />
+          <s:element minOccurs="0" name="RSMStatus" type="s:long" />
+          <s:element minOccurs="0" name="AutoRejectKeywordGroupID" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Inbox">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="InboundMailThreshold" type="s:long" />
+          <s:element minOccurs="0" name="DisplayName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="DomainName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Enabled" type="s:long" />
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="OutBoundMailThreshold" type="s:long" />
+          <s:element minOccurs="0" name="Server" type="s0:Server" />
+          <s:element minOccurs="0" name="SmtpAuthLogon">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="64" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="SMTPServer" type="s0:Server" />
+          <s:element minOccurs="0" name="WinNTAccount">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="StripLeadingDigits" type="s:long" />
+          <s:element minOccurs="0" name="StripTrailingCharacters" type="s:boolean" />
+          <s:element minOccurs="0" name="RuleGroupID" type="s:long" />
+          <s:element minOccurs="0" name="ContactType" type="s0:ContactType" />
+          <s:element minOccurs="0" name="LastAccessedUtcTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="LastAccessedError">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="LastAccessedCount" type="s:long" />
+          <s:element minOccurs="0" name="LastAccessed" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Server">
+        <s:sequence>
+          <s:element name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Auth" type="s:long" />
+          <s:element minOccurs="0" name="BackUpHost">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Port" type="s:long" />
+          <s:element minOccurs="0" name="Type" type="s:long" />
+          <s:element minOccurs="0" name="NewType" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="Protocol" type="s:long" />
+          <s:element minOccurs="0" name="Encryption" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ContactType">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="NumericValue" type="s:long" />
+          <s:element minOccurs="0" name="TextValue">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="DeletionTimeStamp" type="s:dateTime" />
+          <s:element minOccurs="0" name="MarkAsDeleted" type="s:boolean" />
+          <s:element minOccurs="0" name="DefaultSkillset" type="s:long" />
+          <s:element minOccurs="0" name="Parent" type="s0:ContactType" />
+          <s:element minOccurs="0" name="DefaultClosedReasonID" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="WebCommsComfortGroup">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="GroupName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Type" type="s:long" />
+          <s:element minOccurs="0" name="WebCommsComfortMessages" type="s0:ArrayOfWebCommsComfortMessage" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfWebCommsComfortMessage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="WebCommsComfortMessage" nillable="true" type="s0:WebCommsComfortMessage" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="WebCommsComfortMessage">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Message">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Delay" type="s:long" />
+          <s:element minOccurs="0" name="Sequence" type="s:long" />
+          <s:element minOccurs="0" name="WebCommsComfortGroupID" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfUserPairOfAgentsKeyUser">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="User" nillable="true" type="s0:PairOfAgentsKeyUser" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PairOfAgentsKeyUser">
+        <s:complexContent mixed="false">
+          <s:extension base="s0:User">
+            <s:attribute name="AgentsKey" type="s:string" use="required" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfPagePushURL">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PagePushURL" nillable="true" type="s0:PagePushURL" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PagePushURL">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Description">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="URL">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4095" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPhrase">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Phrase" nillable="true" type="s0:Phrase" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Phrase">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Text">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4095" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfExpert">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Expert" nillable="true" type="s0:Expert" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Expert">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Custom1">
+            <s:simpleType>
+              <s:restriction base="s:long">
+                <s:maxInclusive value="2147483647" />
+                <s:minInclusive value="-2147483648" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Custom2">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="250" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element name="ExpertName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element name="ExpertSipUri">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Group">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="250" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Phone">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="250" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SkillsetThresholdTemplate">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="CCMSID" type="s:long" />
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="MarkAsDeleted" type="s:boolean" />
+          <s:element minOccurs="0" name="DeletionTimeStamp" type="s:dateTime" />
+          <s:element minOccurs="0" name="ThresholdToMonitor" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="AgentsToAssignVoice" type="s:long" />
+          <s:element minOccurs="0" name="AgentsToAssignPredictive" type="s:long" />
+          <s:element minOccurs="0" name="ThresholdLevels" type="s0:ArrayOfThresholdLevel" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfThresholdLevel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ThresholdLevel" nillable="true" type="s0:ThresholdLevel" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ThresholdLevel">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="BlendingThreshold" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="Level1" type="s:long" />
+          <s:element minOccurs="0" name="Level2" type="s:long" />
+          <s:element minOccurs="0" name="Enabled" type="s:boolean" />
+          <s:element minOccurs="0" name="ThresholdTemplateID" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Calendar">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Breaks" type="s0:ArrayOfBreak" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfBreak">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Break" nillable="true" type="s0:Break" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Break">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="DayOfWeek">
+            <s:simpleType>
+              <s:restriction base="s:long">
+                <s:enumeration value="0" />
+                <s:enumeration value="1" />
+                <s:enumeration value="2" />
+                <s:enumeration value="3" />
+                <s:enumeration value="4" />
+                <s:enumeration value="5" />
+                <s:enumeration value="6" />
+                <s:enumeration value="7" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="HolidayDate" type="s:date" />
+          <s:element minOccurs="0" name="HolidayName" type="s:string" />
+          <s:element minOccurs="0" name="StartTime">
+            <s:simpleType>
+              <s:restriction base="s:long">
+                <s:maxInclusive value="86400" />
+                <s:minInclusive value="0" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="EndTime">
+            <s:simpleType>
+              <s:restriction base="s:long">
+                <s:maxInclusive value="86400" />
+                <s:minInclusive value="0" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="CalendarID" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AutoResponse">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Subject">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Body">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4095" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Type" type="s:long" />
+          <s:element minOccurs="0" name="Suggestion" type="s:boolean" />
+          <s:element minOccurs="0" name="Attachments" type="s0:ArrayOfAutoResponseAttachment" />
+          <s:element minOccurs="0" name="Categories" type="s0:ArrayOfCategory" />
+          <s:element minOccurs="0" name="Frequency" type="s:long" />
+          <s:element minOccurs="0" name="BodyHTML">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4095" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAutoResponseAttachment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AutoResponseAttachment" nillable="true" type="s0:AutoResponseAttachment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AutoResponseAttachment">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="DisplayFileName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="InternalFileName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Inline" type="s:boolean" />
+          <s:element minOccurs="0" name="URL" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCategory">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Category" nillable="true" type="s0:Category" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Category">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="250" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="OnHoldURL">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Description">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="URL">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4095" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="HoldTime" type="s:long" />
+          <s:element minOccurs="0" name="Tag">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="1024" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Sequence" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Rule">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="AutoResponseID" type="s:long" />
+          <s:element minOccurs="0" name="SkillsetID" type="s:long" />
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="64" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Status" type="s:long" />
+          <s:element minOccurs="0" name="Sequence" type="s:long" />
+          <s:element minOccurs="0" name="IsClosed" type="s:boolean" />
+          <s:element minOccurs="0" name="Priority" type="s:long" />
+          <s:element minOccurs="0" name="Type" type="s:long" />
+          <s:element minOccurs="0" name="UseOutOfHoursRule" type="s:boolean" />
+          <s:element minOccurs="0" name="SkillsetReset" type="s:boolean" />
+          <s:element minOccurs="0" name="LastModifiedTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="RuleKeywordCriteria" type="s0:ArrayOfRuleKeywordCriterion" />
+          <s:element minOccurs="0" name="AutoSuggests" type="s0:ArrayOfAutoResponse" />
+          <s:element minOccurs="0" name="RuleGroupID" type="s:long" />
+          <s:element minOccurs="0" name="OpenInterfaceMethod" type="s0:OpenInterfaceMethod" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRuleKeywordCriterion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RuleKeywordCriterion" nillable="true" type="s0:RuleKeywordCriterion" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RuleKeywordCriterion">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="MatchTypeID" type="s:long" />
+          <s:element minOccurs="0" name="Weighting" type="s:double" />
+          <s:element minOccurs="0" name="RuleKeywordGroups" type="s0:ArrayOfRuleKeywordGroup" />
+          <s:element minOccurs="0" name="EmailAddressGroupID" type="s:long" />
+          <s:element minOccurs="0" name="LastModifiedTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="RuleQuery">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="2000" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRuleKeywordGroup">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RuleKeywordGroup" nillable="true" type="s0:RuleKeywordGroup" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RuleKeywordGroup">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="KeyWordGroupID" type="s:long" />
+          <s:element minOccurs="0" name="Operator">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="10" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Sequence" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAutoResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AutoResponse" nillable="true" type="s0:AutoResponse" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="OpenInterfaceMethod">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="MethodName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="DisplayName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="InputParameterName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="InputParameterArrayItem">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="InputParameterNamespace">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="OuputParameterName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="InputFieldMap" type="s0:ArrayOfInputFieldMapItemLong" />
+          <s:element minOccurs="0" name="OutputFieldMap" type="s0:ArrayOfOutputFieldMapItemLong" />
+          <s:element minOccurs="0" name="InputFields" type="s0:ListOfCodeMappings" />
+          <s:element minOccurs="0" name="OutputFields" type="s0:ListOfCodeMappings" />
+          <s:element minOccurs="0" name="OpenInterfaceServiceID" type="s:long" />
+          <s:element minOccurs="0" name="LastModifiedUtcTime" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfInputFieldMapItemLong">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="InputFieldMapItem" nillable="true" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfOutputFieldMapItemLong">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="OutputFieldMapItem" nillable="true" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ListOfCodeMappings">
+        <s:sequence>
+          <s:element minOccurs="0" name="CodeMappings" type="s0:ArrayOfCodeMapping" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCodeMapping">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CodeMapping" nillable="true" type="s0:CodeMapping" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Campaign">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Description">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="32768" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="NumberOfContacts" type="s:long" />
+          <s:element minOccurs="0" name="NumberOfContactsProcessed" type="s:long" />
+          <s:element minOccurs="0" name="CampaignScript" type="s0:CampaignScript" />
+          <s:element minOccurs="0" name="DateCreated" type="s:dateTime" />
+          <s:element minOccurs="0" name="Owner">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="StartDateTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="EndDateTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="DailyStartTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="DailyEndTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="Skillset" type="s0:Skillset" />
+          <s:element minOccurs="0" name="Status" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="PreviousStatus" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="StartOfRun" type="s:boolean" />
+          <s:element minOccurs="0" name="Priority" type="s:long" />
+          <s:element minOccurs="0" name="LastLoadedDate" type="s:dateTime" />
+          <s:element minOccurs="0" name="LoadInterval" type="s:long" />
+          <s:element minOccurs="0" name="LoadContactsPerInterval" type="s:long" />
+          <s:element minOccurs="0" name="DialingPrefix">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="10" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="AutoDialTimeOut" type="s:long" />
+          <s:element minOccurs="0" name="MinimumRingTime" type="s:long" />
+          <s:element minOccurs="0" name="Locked" type="s:boolean" />
+          <s:element minOccurs="0" name="LockedBy">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="LockedDateTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="DispositionCodes" type="s0:ArrayOfDispositionCodePairOfDispositionCodesKeyDispositionCode" />
+          <s:element minOccurs="0" name="CustomFields" type="s0:ArrayOfCustomField" />
+          <s:element minOccurs="0" name="UseTimeZone" type="s:long" />
+          <s:element minOccurs="0" name="NumberOfContactsClosed" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CampaignScript">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="DateCreated" type="s:dateTime" />
+          <s:element minOccurs="0" name="Introduction">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="1024" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Questions" type="s0:ArrayOfQuestion" />
+          <s:element minOccurs="0" name="Conclusion">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="1024" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfQuestion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Question" nillable="true" type="s0:Question" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Question">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Question">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="1024" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="AllowedAnswers">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="1024" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="AllowedFreeText" type="s:boolean" />
+          <s:element minOccurs="0" name="DefaultAnswer">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="GUI" type="s0:CodeMapping" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDispositionCodePairOfDispositionCodesKeyDispositionCode">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DispositionCode" nillable="true" type="s0:PairOfDispositionCodesKeyDispositionCode" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PairOfDispositionCodesKeyDispositionCode">
+        <s:complexContent mixed="false">
+          <s:extension base="s0:DispositionCode">
+            <s:attribute name="DispositionCodesKey" type="s:string" use="required" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="DispositionCode">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="DisplayName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="RetryTimeout" type="s:long" />
+          <s:element minOccurs="0" name="NumericValue" type="s:long" />
+          <s:element minOccurs="0" name="MaxRetryCount" type="s:long" />
+          <s:element minOccurs="0" name="Deletable" type="s:boolean" />
+          <s:element minOccurs="0" name="CallRequired" type="s:boolean" />
+          <s:element minOccurs="0" name="MarkAsDeleted" type="s:boolean" />
+          <s:element minOccurs="0" name="SaveAgentScript" type="s:boolean" />
+          <s:element minOccurs="0" name="Type" type="s0:CodeMapping" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCustomField">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CustomField" nillable="true" type="s0:CustomField" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CustomField">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="IsTextVisible" type="s:boolean" />
+          <s:element minOccurs="0" name="Text">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="CustomFieldTemplate" type="s0:CustomFieldTemplate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CustomFieldTemplate">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="MarkAsDeleted" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAction">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Action" nillable="true" type="s0:Action" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Action">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="ContactId" type="s:long" />
+          <s:element minOccurs="0" name="CreationTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="Type" type="s0:ContactType" />
+          <s:element minOccurs="0" name="Source" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="Subject">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Text" type="s:string" />
+          <s:element minOccurs="0" name="TextHTML" type="s:string" />
+          <s:element minOccurs="0" name="CharSet">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Attempt" type="s:long" />
+          <s:element minOccurs="0" name="DispositionCode" type="s0:DispositionCode" />
+          <s:element minOccurs="0" name="MailTo">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4096" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="MailFrom">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="MailCC">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="32767" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="MailBCC">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="32767" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="CallBackTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="CallBackMedia" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="CallBackStatus" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="Agent" type="s0:User" />
+          <s:element minOccurs="0" name="Comment">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="10239" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="TimeAllocated" type="s:long" />
+          <s:element minOccurs="0" name="TemplateLocation">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="HistoryFlag" type="s:boolean" />
+          <s:element minOccurs="0" name="NumberUsed">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="CallStartTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="CallEndTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="DialStartTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="DialEndTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="OpenTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="ClosedTime" type="s:dateTime" />
+          <s:element minOccurs="0" name="Attachments" type="s0:ArrayOfAttachment" />
+          <s:element minOccurs="0" name="CustomFields" type="s0:ArrayOfCustomField" />
+          <s:element minOccurs="0" name="ClosedReason" type="s0:ClosedReason" />
+          <s:element minOccurs="0" name="AutoSuggest" type="s0:AutoResponse" />
+          <s:element minOccurs="0" name="ApprovalAudits" type="s0:ArrayOfApprovalAudit" />
+          <s:element minOccurs="0" name="ApprovalLevel" type="s:long" />
+          <s:element minOccurs="0" name="ComfortMessages" type="s:long" />
+          <s:element minOccurs="0" name="RestCall" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAttachment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Attachment" nillable="true" type="s0:Attachment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Attachment">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="DisplayFileName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="InternalFileName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Direction" type="s0:CodeMapping" />
+          <s:element minOccurs="0" name="URL" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ClosedReason">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element name="Name">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Type" type="s0:ContactType" />
+          <s:element minOccurs="0" name="DeletionTimeStamp" type="s:dateTime" />
+          <s:element minOccurs="0" name="MarkAsDeleted" type="s:boolean" />
+          <s:element minOccurs="0" name="OldCodeMappingID" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfApprovalAudit">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ApprovalAudit" nillable="true" type="s0:ApprovalAudit" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ApprovalAudit">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="UserId" type="s:long" />
+          <s:element minOccurs="0" name="SkillsetId" type="s:long" />
+          <s:element minOccurs="0" name="Level" type="s:long" />
+          <s:element minOccurs="0" name="Status" type="s:long" />
+          <s:element minOccurs="0" name="UpdatedTimestamp" type="s:dateTime" />
+          <s:element minOccurs="0" name="CreatedTimestamp" type="s:dateTime" />
+          <s:element minOccurs="0" name="Comment">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="4096" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="ActionId" type="s:long" />
+          <s:element minOccurs="0" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" name="LastName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSipUri">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SipUri" nillable="true" type="s0:SipUri" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CreateCustomer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="customerParams" type="s0:CustomerCreate" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CampaignCustomerCreate">
+        <s:complexContent mixed="false">
+          <s:extension base="s0:CustomerCreate">
+            <s:sequence>
+              <s:element minOccurs="0" name="BlockIndex" type="s:long" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="CustomerCreate">
+        <s:sequence>
+          <s:element minOccurs="0" name="Title">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="20" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="FirstName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="LastName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="LoginPage" type="s:long" />
+          <s:element minOccurs="0" name="PreferredAgent" type="s:long" />
+          <s:element minOccurs="0" name="Password">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="RegisterDate" type="s:dateTime" />
+          <s:element minOccurs="0" name="UserName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Addresses" type="s0:ArrayOfAddress" />
+          <s:element minOccurs="0" name="EmailAddresses" type="s0:ArrayOfEmailAddress" />
+          <s:element minOccurs="0" name="SipUris" type="s0:ArrayOfSipUri" />
+          <s:element minOccurs="0" name="PhoneNumberCreateList" type="s0:ArrayOfPhoneNumberCreate" />
+          <s:element minOccurs="0" name="ContactCreateList" type="s0:ArrayOfContactCreate" />
+          <s:element minOccurs="0" name="CustomFieldCreateList" type="s0:ArrayOfCustomFieldCreate" />
+          <s:element minOccurs="0" name="Objection" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPhoneNumberCreate">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PhoneNumberCreate" nillable="true" type="s0:PhoneNumberCreate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfContactCreate">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ContactCreate" nillable="true" type="s0:ContactCreate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CampaignCustomerDetails">
+        <s:complexContent mixed="false">
+          <s:extension base="s0:CustomerCreate">
+            <s:sequence>
+              <s:element minOccurs="0" name="BlockIndex" type="s:long" />
+              <s:element minOccurs="0" name="MatchType" type="s:long" />
+              <s:element minOccurs="0" name="CustomerID" type="s:long" />
+              <s:element minOccurs="0" name="ImportDataOverrides" type="s:boolean" />
+              <s:element minOccurs="0" name="SkillsetID" type="s:long" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="CreateCustomerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="CreateCustomerResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateCustomerBySipUri">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="sipUri" type="s:string" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateCustomerBySipUriResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="CreateCustomerBySipUriResult" type="s0:Customer" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CustomerAssociation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="listOfCallDetails" type="s0:ListOfCallDetails" />
+            <s:element minOccurs="0" name="partialMatch" type="s:boolean" />
+            <s:element minOccurs="0" name="maxCustomerMatches" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ListOfCallDetails">
+        <s:sequence>
+          <s:element minOccurs="0" name="CallDetails" type="s0:ArrayOfCallDetails" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCallDetails">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CallDetails" nillable="true" type="s0:CallDetails" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CallDetails">
+        <s:sequence>
+          <s:element minOccurs="0" name="FirstName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="LastName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="InternationalCode">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="6" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="AreaCode">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="10" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Number">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="32" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Email">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CustomerAssociationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="CustomerAssociationResult" type="s0:ListOfCustomerAssociationResults" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ListOfCustomerAssociationResults">
+        <s:sequence>
+          <s:element minOccurs="0" name="CustomerAssociationResults" type="s0:ArrayOfCustomerAssociationResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCustomerAssociationResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CustomerAssociationResult" nillable="true" type="s0:CustomerAssociationResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CustomerAssociationResult">
+        <s:sequence>
+          <s:element minOccurs="0" name="CallDetailIndex" type="s:string" />
+          <s:element minOccurs="0" name="MatchType" type="s:string" />
+          <s:element minOccurs="0" name="ExistingCustID" type="s0:ArrayOfExistingCustIDItemString" />
+          <s:element minOccurs="0" name="DNCStatus" type="s0:ArrayOfDNCStatusItemBoolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfExistingCustIDItemString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ExistingCustIDItem" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDNCStatusItemBoolean">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DNCStatusItem" nillable="true" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CustomerSearch">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="searchParams" type="s0:SearchObject" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SearchObject">
+        <s:sequence>
+          <s:element minOccurs="0" name="SearchConditions" type="s0:ArrayOfSearchCondition" />
+          <s:element minOccurs="0" name="DateField" type="s:string" />
+          <s:element minOccurs="0" name="StartDateRange" type="s:dateTime" />
+          <s:element minOccurs="0" name="EndDateRange" type="s:dateTime" />
+          <s:element minOccurs="0" name="OrderField" type="s:string" />
+          <s:element minOccurs="0" name="Order" type="s:string" />
+          <s:element minOccurs="0" name="MaxNoObjects" type="s:long" />
+          <s:element minOccurs="0" name="MaxID" type="s:long" />
+          <s:element minOccurs="0" name="StartID" type="s:long" />
+          <s:element minOccurs="0" name="Direction" type="s:long" />
+          <s:element minOccurs="0" name="Timeout" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSearchCondition">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SearchCondition" nillable="true" type="s0:SearchCondition" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SearchCondition">
+        <s:sequence>
+          <s:element minOccurs="0" name="Name" type="s:string" />
+          <s:element minOccurs="0" name="Condition" type="s:string" />
+          <s:element minOccurs="0" name="Value" type="s:string" />
+          <s:element minOccurs="0" name="NextConditionValue" type="s:string" />
+          <s:element minOccurs="0" name="AllowWildcards" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CustomerSearchResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="CustomerSearchResult" type="s0:CustomerSearchResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CustomerSearchResult">
+        <s:sequence>
+          <s:element minOccurs="0" name="Customers" type="s0:ArrayOfSearchCustomer" />
+          <s:element minOccurs="0" name="NoObjectsRemaining" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSearchCustomer">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SearchCustomer" nillable="true" type="s0:SearchCustomer" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SearchCustomer">
+        <s:sequence>
+          <s:element minOccurs="0" name="ID" type="s:long" />
+          <s:element minOccurs="0" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" name="LastName" type="s:string" />
+          <s:element minOccurs="0" name="PrefAgentFirstName" type="s:string" />
+          <s:element minOccurs="0" name="PrefAgentLastName" type="s:string" />
+          <s:element minOccurs="0" name="Address" type="s:string" />
+          <s:element minOccurs="0" name="PhoneNumber" type="s:string" />
+          <s:element minOccurs="0" name="Email" type="s:string" />
+          <s:element minOccurs="0" name="SipUri" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="DeleteCustomer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteCustomerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="DeleteCustomerResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllCustomers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="maxID" type="s:long" />
+            <s:element minOccurs="0" name="maxNoObjects" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllCustomersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="GetAllCustomersResult" type="s0:ListOfCustomers" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ListOfCustomers">
+        <s:sequence>
+          <s:element minOccurs="0" name="Customers" type="s0:ArrayOfCustomer" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCustomer">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Customer" nillable="true" type="s0:Customer" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCustSQLColumns">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustSQLColumnsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="GetCustSQLColumnsResult" type="s0:ArrayOfGetCustSQLColumnsResultItemString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfGetCustSQLColumnsResultItemString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="GetCustSQLColumnsResultItem" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCustomFieldTemplates">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomFieldTemplatesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="GetCustomFieldTemplatesResult" type="s0:ListOfCustomFieldTemplates" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ListOfCustomFieldTemplates">
+        <s:sequence>
+          <s:element minOccurs="0" name="CustomFieldTemplates" type="s0:ArrayOfCustomFieldTemplate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCustomFieldTemplate">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CustomFieldTemplate" nillable="true" type="s0:CustomFieldTemplate" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCustomerByContactId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="contactID" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomerByContactIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="GetCustomerByContactIdResult" type="s0:Customer" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomerByEmail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="email" type="s:string" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomerByEmailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="GetCustomerByEmailResult" type="s0:Customer" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomerByName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="firstName" type="s:string" />
+            <s:element minOccurs="0" name="lastName" type="s:string" />
+            <s:element minOccurs="0" name="fieldToCompare" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomerByNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="GetCustomerByNameResult" type="s0:ArrayOfGetCustomerByNameResultItemString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfGetCustomerByNameResultItemString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="GetCustomerByNameResultItem" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCustomerByPhoneNumber">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="phoneNumber" type="s0:PhoneNumber" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomerByPhoneNumberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="GetCustomerByPhoneNumberResult" type="s0:ArrayOfGetCustomerByPhoneNumberResultItemString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfGetCustomerByPhoneNumberResultItemString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="GetCustomerByPhoneNumberResultItem" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCustomerBySipUri">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="sipUri" type="s:string" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomerBySipUriResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="GetCustomerBySipUriResult" type="s0:Customer" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomerByUserName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="userName" type="s:string" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomerByUserNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="GetCustomerByUserNameResult" type="s0:Customer" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNoCustContactsByTime">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="customerID" type="s:long" />
+            <s:element minOccurs="0" name="startTime" type="s:dateTime" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNoCustContactsByTimeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="GetNoCustContactsByTimeResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSearchableFields">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSearchableFieldsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="GetSearchableFieldsResult" type="s0:ArrayOfGetSearchableFieldsResultItemString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfGetSearchableFieldsResultItemString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="GetSearchableFieldsResultItem" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ImpersonateCustomer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+            <s:element minOccurs="0" name="customerID" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ImpersonateCustomerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="ImpersonateCustomerResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReadCustomer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+            <s:element minOccurs="0" name="lite" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReadCustomerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="ReadCustomerResult" type="s0:Customer" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReadCustomerHistory">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="maxNoContacts" type="s:long" />
+            <s:element minOccurs="0" name="startContactID" type="s:long" />
+            <s:element minOccurs="0" name="contactOrder" type="s:string" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+            <s:element minOccurs="0" name="lite" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReadCustomerHistoryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="ReadCustomerHistoryResult" type="s0:CustomerHistoryResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CustomerHistoryResult">
+        <s:sequence>
+          <s:element minOccurs="0" name="Customer" type="s0:Customer" />
+          <s:element minOccurs="0" name="MinID" type="s:long" />
+          <s:element minOccurs="0" name="MaxID" type="s:long" />
+          <s:element minOccurs="0" name="MinNumberRemaining" type="s:long" />
+          <s:element minOccurs="0" name="MaxNumberRemaining" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RegisterAnonymousCustomer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="customerParams" type="s0:CustomerCreate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterAnonymousCustomerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="RegisterAnonymousCustomerResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterCustomer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="customerParams" type="s0:CustomerCreate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterCustomerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="RegisterCustomerResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveAddress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="addressID" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveAddressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="RemoveAddressResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveContact">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="contactID" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveContactResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="RemoveContactResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCustomField">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="customFieldID" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCustomFieldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="RemoveCustomFieldResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveEmailAddress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="emailAddressID" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveEmailAddressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="RemoveEmailAddressResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemovePhoneNumber">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="phoneNumberID" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemovePhoneNumberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="RemovePhoneNumberResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveSipUri">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="sipUriID" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveSipUriResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="RemoveSipUriResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendADPasswordReminder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="contactID" type="s:long" />
+            <s:element minOccurs="0" name="customerID" type="s:long" />
+            <s:element minOccurs="0" name="skillsetID" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendADPasswordReminderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="SendADPasswordReminderResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendPasswordReminder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="emailAddress" type="s:string" />
+            <s:element minOccurs="0" name="skillsetName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendPasswordReminderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="SendPasswordReminderResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetAgentID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="agentID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetAgentIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="SetAgentIDResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateCustomer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="customerParams" type="s0:CustomerUpdate" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CustomerUpdate">
+        <s:sequence>
+          <s:element minOccurs="0" name="Title">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="20" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="FirstName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="50" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="LastName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="100" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="LoginPage" type="s:long" />
+          <s:element minOccurs="0" name="PreferredAgent" type="s:long" />
+          <s:element minOccurs="0" name="RegisterDate" type="s:dateTime" />
+          <s:element minOccurs="0" name="UserName">
+            <s:simpleType>
+              <s:restriction base="s:string">
+                <s:maxLength value="255" />
+              </s:restriction>
+            </s:simpleType>
+          </s:element>
+          <s:element minOccurs="0" name="Addresses" type="s0:ArrayOfAddress" />
+          <s:element minOccurs="0" name="EmailAddresses" type="s0:ArrayOfEmailAddress" />
+          <s:element minOccurs="0" name="SipUris" type="s0:ArrayOfSipUri" />
+          <s:element minOccurs="0" name="PhoneNumberCreateList" type="s0:ArrayOfPhoneNumberCreate" />
+          <s:element minOccurs="0" name="ContactCreateList" type="s0:ArrayOfContactCreate" />
+          <s:element minOccurs="0" name="CustomFieldCreateList" type="s0:ArrayOfCustomFieldCreate" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UpdateCustomerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="UpdateCustomerResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateFirstName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="newValue" type="s:string" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateFirstNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="UpdateFirstNameResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateLastName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="newValue" type="s:string" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateLastNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="UpdateLastNameResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateLoginPage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="loginPageID" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateLoginPageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="UpdateLoginPageResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateObjection">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="newValue" type="s:boolean" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateObjectionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="UpdateObjectionResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePassword">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="oldPassword" type="s:string" />
+            <s:element minOccurs="0" name="newPassword" type="s:string" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePasswordResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="UpdatePasswordResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePreferredAgent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="preferredAgentID" type="s:long" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePreferredAgentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="UpdatePreferredAgentResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateRegisterDate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="newValue" type="s:dateTime" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateRegisterDateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="UpdateRegisterDateResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateTitle">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="newValue" type="s:string" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateTitleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="UpdateTitleResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateUserName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" name="id" type="s:long" />
+            <s:element minOccurs="0" name="newValue" type="s:string" />
+            <s:element minOccurs="0" name="sessionKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateUserNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="UpdateUserNameResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="AddAddressSoapIn">
+    <wsdl:part name="parameters" element="s0:AddAddress" />
+  </wsdl:message>
+  <wsdl:message name="AddAddressSoapOut">
+    <wsdl:part name="parameters" element="s0:AddAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddContactSoapIn">
+    <wsdl:part name="parameters" element="s0:AddContact" />
+  </wsdl:message>
+  <wsdl:message name="AddContactSoapOut">
+    <wsdl:part name="parameters" element="s0:AddContactResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddCustomFieldSoapIn">
+    <wsdl:part name="parameters" element="s0:AddCustomField" />
+  </wsdl:message>
+  <wsdl:message name="AddCustomFieldSoapOut">
+    <wsdl:part name="parameters" element="s0:AddCustomFieldResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddEmailAddressSoapIn">
+    <wsdl:part name="parameters" element="s0:AddEmailAddress" />
+  </wsdl:message>
+  <wsdl:message name="AddEmailAddressSoapOut">
+    <wsdl:part name="parameters" element="s0:AddEmailAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddPhoneNumberSoapIn">
+    <wsdl:part name="parameters" element="s0:AddPhoneNumber" />
+  </wsdl:message>
+  <wsdl:message name="AddPhoneNumberSoapOut">
+    <wsdl:part name="parameters" element="s0:AddPhoneNumberResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddSipUriSoapIn">
+    <wsdl:part name="parameters" element="s0:AddSipUri" />
+  </wsdl:message>
+  <wsdl:message name="AddSipUriSoapOut">
+    <wsdl:part name="parameters" element="s0:AddSipUriResponse" />
+  </wsdl:message>
+  <wsdl:message name="CarbonCopySoapIn">
+    <wsdl:part name="parameters" element="s0:CarbonCopy" />
+  </wsdl:message>
+  <wsdl:message name="CarbonCopySoapOut">
+    <wsdl:part name="parameters" element="s0:CarbonCopyResponse" />
+  </wsdl:message>
+  <wsdl:message name="CleanCustomerSoapIn">
+    <wsdl:part name="parameters" element="s0:CleanCustomer" />
+  </wsdl:message>
+  <wsdl:message name="CleanCustomerSoapOut">
+    <wsdl:part name="parameters" element="s0:CleanCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateCustomerSoapIn">
+    <wsdl:part name="parameters" element="s0:CreateCustomer" />
+  </wsdl:message>
+  <wsdl:message name="CreateCustomerSoapOut">
+    <wsdl:part name="parameters" element="s0:CreateCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateCustomerBySipUriSoapIn">
+    <wsdl:part name="parameters" element="s0:CreateCustomerBySipUri" />
+  </wsdl:message>
+  <wsdl:message name="CreateCustomerBySipUriSoapOut">
+    <wsdl:part name="parameters" element="s0:CreateCustomerBySipUriResponse" />
+  </wsdl:message>
+  <wsdl:message name="CustomerAssociationSoapIn">
+    <wsdl:part name="parameters" element="s0:CustomerAssociation" />
+  </wsdl:message>
+  <wsdl:message name="CustomerAssociationSoapOut">
+    <wsdl:part name="parameters" element="s0:CustomerAssociationResponse" />
+  </wsdl:message>
+  <wsdl:message name="CustomerSearchSoapIn">
+    <wsdl:part name="parameters" element="s0:CustomerSearch" />
+  </wsdl:message>
+  <wsdl:message name="CustomerSearchSoapOut">
+    <wsdl:part name="parameters" element="s0:CustomerSearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCustomerSoapIn">
+    <wsdl:part name="parameters" element="s0:DeleteCustomer" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCustomerSoapOut">
+    <wsdl:part name="parameters" element="s0:DeleteCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllCustomersSoapIn">
+    <wsdl:part name="parameters" element="s0:GetAllCustomers" />
+  </wsdl:message>
+  <wsdl:message name="GetAllCustomersSoapOut">
+    <wsdl:part name="parameters" element="s0:GetAllCustomersResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCustSQLColumnsSoapIn">
+    <wsdl:part name="parameters" element="s0:GetCustSQLColumns" />
+  </wsdl:message>
+  <wsdl:message name="GetCustSQLColumnsSoapOut">
+    <wsdl:part name="parameters" element="s0:GetCustSQLColumnsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomFieldTemplatesSoapIn">
+    <wsdl:part name="parameters" element="s0:GetCustomFieldTemplates" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomFieldTemplatesSoapOut">
+    <wsdl:part name="parameters" element="s0:GetCustomFieldTemplatesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerByContactIdSoapIn">
+    <wsdl:part name="parameters" element="s0:GetCustomerByContactId" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerByContactIdSoapOut">
+    <wsdl:part name="parameters" element="s0:GetCustomerByContactIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerByEmailSoapIn">
+    <wsdl:part name="parameters" element="s0:GetCustomerByEmail" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerByEmailSoapOut">
+    <wsdl:part name="parameters" element="s0:GetCustomerByEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerByNameSoapIn">
+    <wsdl:part name="parameters" element="s0:GetCustomerByName" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerByNameSoapOut">
+    <wsdl:part name="parameters" element="s0:GetCustomerByNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerByPhoneNumberSoapIn">
+    <wsdl:part name="parameters" element="s0:GetCustomerByPhoneNumber" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerByPhoneNumberSoapOut">
+    <wsdl:part name="parameters" element="s0:GetCustomerByPhoneNumberResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerBySipUriSoapIn">
+    <wsdl:part name="parameters" element="s0:GetCustomerBySipUri" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerBySipUriSoapOut">
+    <wsdl:part name="parameters" element="s0:GetCustomerBySipUriResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerByUserNameSoapIn">
+    <wsdl:part name="parameters" element="s0:GetCustomerByUserName" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerByUserNameSoapOut">
+    <wsdl:part name="parameters" element="s0:GetCustomerByUserNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetNoCustContactsByTimeSoapIn">
+    <wsdl:part name="parameters" element="s0:GetNoCustContactsByTime" />
+  </wsdl:message>
+  <wsdl:message name="GetNoCustContactsByTimeSoapOut">
+    <wsdl:part name="parameters" element="s0:GetNoCustContactsByTimeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSearchableFieldsSoapIn">
+    <wsdl:part name="parameters" element="s0:GetSearchableFields" />
+  </wsdl:message>
+  <wsdl:message name="GetSearchableFieldsSoapOut">
+    <wsdl:part name="parameters" element="s0:GetSearchableFieldsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ImpersonateCustomerSoapIn">
+    <wsdl:part name="parameters" element="s0:ImpersonateCustomer" />
+  </wsdl:message>
+  <wsdl:message name="ImpersonateCustomerSoapOut">
+    <wsdl:part name="parameters" element="s0:ImpersonateCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReadCustomerSoapIn">
+    <wsdl:part name="parameters" element="s0:ReadCustomer" />
+  </wsdl:message>
+  <wsdl:message name="ReadCustomerSoapOut">
+    <wsdl:part name="parameters" element="s0:ReadCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReadCustomerHistorySoapIn">
+    <wsdl:part name="parameters" element="s0:ReadCustomerHistory" />
+  </wsdl:message>
+  <wsdl:message name="ReadCustomerHistorySoapOut">
+    <wsdl:part name="parameters" element="s0:ReadCustomerHistoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegisterAnonymousCustomerSoapIn">
+    <wsdl:part name="parameters" element="s0:RegisterAnonymousCustomer" />
+  </wsdl:message>
+  <wsdl:message name="RegisterAnonymousCustomerSoapOut">
+    <wsdl:part name="parameters" element="s0:RegisterAnonymousCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegisterCustomerSoapIn">
+    <wsdl:part name="parameters" element="s0:RegisterCustomer" />
+  </wsdl:message>
+  <wsdl:message name="RegisterCustomerSoapOut">
+    <wsdl:part name="parameters" element="s0:RegisterCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveAddressSoapIn">
+    <wsdl:part name="parameters" element="s0:RemoveAddress" />
+  </wsdl:message>
+  <wsdl:message name="RemoveAddressSoapOut">
+    <wsdl:part name="parameters" element="s0:RemoveAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveContactSoapIn">
+    <wsdl:part name="parameters" element="s0:RemoveContact" />
+  </wsdl:message>
+  <wsdl:message name="RemoveContactSoapOut">
+    <wsdl:part name="parameters" element="s0:RemoveContactResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCustomFieldSoapIn">
+    <wsdl:part name="parameters" element="s0:RemoveCustomField" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCustomFieldSoapOut">
+    <wsdl:part name="parameters" element="s0:RemoveCustomFieldResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveEmailAddressSoapIn">
+    <wsdl:part name="parameters" element="s0:RemoveEmailAddress" />
+  </wsdl:message>
+  <wsdl:message name="RemoveEmailAddressSoapOut">
+    <wsdl:part name="parameters" element="s0:RemoveEmailAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemovePhoneNumberSoapIn">
+    <wsdl:part name="parameters" element="s0:RemovePhoneNumber" />
+  </wsdl:message>
+  <wsdl:message name="RemovePhoneNumberSoapOut">
+    <wsdl:part name="parameters" element="s0:RemovePhoneNumberResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveSipUriSoapIn">
+    <wsdl:part name="parameters" element="s0:RemoveSipUri" />
+  </wsdl:message>
+  <wsdl:message name="RemoveSipUriSoapOut">
+    <wsdl:part name="parameters" element="s0:RemoveSipUriResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendADPasswordReminderSoapIn">
+    <wsdl:part name="parameters" element="s0:SendADPasswordReminder" />
+  </wsdl:message>
+  <wsdl:message name="SendADPasswordReminderSoapOut">
+    <wsdl:part name="parameters" element="s0:SendADPasswordReminderResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendPasswordReminderSoapIn">
+    <wsdl:part name="parameters" element="s0:SendPasswordReminder" />
+  </wsdl:message>
+  <wsdl:message name="SendPasswordReminderSoapOut">
+    <wsdl:part name="parameters" element="s0:SendPasswordReminderResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetAgentIDSoapIn">
+    <wsdl:part name="parameters" element="s0:SetAgentID" />
+  </wsdl:message>
+  <wsdl:message name="SetAgentIDSoapOut">
+    <wsdl:part name="parameters" element="s0:SetAgentIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCustomerSoapIn">
+    <wsdl:part name="parameters" element="s0:UpdateCustomer" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCustomerSoapOut">
+    <wsdl:part name="parameters" element="s0:UpdateCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateFirstNameSoapIn">
+    <wsdl:part name="parameters" element="s0:UpdateFirstName" />
+  </wsdl:message>
+  <wsdl:message name="UpdateFirstNameSoapOut">
+    <wsdl:part name="parameters" element="s0:UpdateFirstNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateLastNameSoapIn">
+    <wsdl:part name="parameters" element="s0:UpdateLastName" />
+  </wsdl:message>
+  <wsdl:message name="UpdateLastNameSoapOut">
+    <wsdl:part name="parameters" element="s0:UpdateLastNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateLoginPageSoapIn">
+    <wsdl:part name="parameters" element="s0:UpdateLoginPage" />
+  </wsdl:message>
+  <wsdl:message name="UpdateLoginPageSoapOut">
+    <wsdl:part name="parameters" element="s0:UpdateLoginPageResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateObjectionSoapIn">
+    <wsdl:part name="parameters" element="s0:UpdateObjection" />
+  </wsdl:message>
+  <wsdl:message name="UpdateObjectionSoapOut">
+    <wsdl:part name="parameters" element="s0:UpdateObjectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePasswordSoapIn">
+    <wsdl:part name="parameters" element="s0:UpdatePassword" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePasswordSoapOut">
+    <wsdl:part name="parameters" element="s0:UpdatePasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePreferredAgentSoapIn">
+    <wsdl:part name="parameters" element="s0:UpdatePreferredAgent" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePreferredAgentSoapOut">
+    <wsdl:part name="parameters" element="s0:UpdatePreferredAgentResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateRegisterDateSoapIn">
+    <wsdl:part name="parameters" element="s0:UpdateRegisterDate" />
+  </wsdl:message>
+  <wsdl:message name="UpdateRegisterDateSoapOut">
+    <wsdl:part name="parameters" element="s0:UpdateRegisterDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateTitleSoapIn">
+    <wsdl:part name="parameters" element="s0:UpdateTitle" />
+  </wsdl:message>
+  <wsdl:message name="UpdateTitleSoapOut">
+    <wsdl:part name="parameters" element="s0:UpdateTitleResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateUserNameSoapIn">
+    <wsdl:part name="parameters" element="s0:UpdateUserName" />
+  </wsdl:message>
+  <wsdl:message name="UpdateUserNameSoapOut">
+    <wsdl:part name="parameters" element="s0:UpdateUserNameResponse" />
+  </wsdl:message>
+  <wsdl:portType name="CustMultimediaSoap">
+    <wsdl:operation name="AddAddress">
+      <wsdl:input message="s0:AddAddressSoapIn" />
+      <wsdl:output message="s0:AddAddressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddContact">
+      <wsdl:input message="s0:AddContactSoapIn" />
+      <wsdl:output message="s0:AddContactSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddCustomField">
+      <wsdl:input message="s0:AddCustomFieldSoapIn" />
+      <wsdl:output message="s0:AddCustomFieldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddEmailAddress">
+      <wsdl:input message="s0:AddEmailAddressSoapIn" />
+      <wsdl:output message="s0:AddEmailAddressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddPhoneNumber">
+      <wsdl:input message="s0:AddPhoneNumberSoapIn" />
+      <wsdl:output message="s0:AddPhoneNumberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddSipUri">
+      <wsdl:input message="s0:AddSipUriSoapIn" />
+      <wsdl:output message="s0:AddSipUriSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CarbonCopy">
+      <wsdl:input message="s0:CarbonCopySoapIn" />
+      <wsdl:output message="s0:CarbonCopySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CleanCustomer">
+      <wsdl:input message="s0:CleanCustomerSoapIn" />
+      <wsdl:output message="s0:CleanCustomerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateCustomer">
+      <wsdl:input message="s0:CreateCustomerSoapIn" />
+      <wsdl:output message="s0:CreateCustomerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateCustomerBySipUri">
+      <wsdl:input message="s0:CreateCustomerBySipUriSoapIn" />
+      <wsdl:output message="s0:CreateCustomerBySipUriSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CustomerAssociation">
+      <wsdl:input message="s0:CustomerAssociationSoapIn" />
+      <wsdl:output message="s0:CustomerAssociationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CustomerSearch">
+      <wsdl:input message="s0:CustomerSearchSoapIn" />
+      <wsdl:output message="s0:CustomerSearchSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCustomer">
+      <wsdl:input message="s0:DeleteCustomerSoapIn" />
+      <wsdl:output message="s0:DeleteCustomerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllCustomers">
+      <wsdl:input message="s0:GetAllCustomersSoapIn" />
+      <wsdl:output message="s0:GetAllCustomersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustSQLColumns">
+      <wsdl:input message="s0:GetCustSQLColumnsSoapIn" />
+      <wsdl:output message="s0:GetCustSQLColumnsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomFieldTemplates">
+      <wsdl:input message="s0:GetCustomFieldTemplatesSoapIn" />
+      <wsdl:output message="s0:GetCustomFieldTemplatesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerByContactId">
+      <wsdl:input message="s0:GetCustomerByContactIdSoapIn" />
+      <wsdl:output message="s0:GetCustomerByContactIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerByEmail">
+      <wsdl:input message="s0:GetCustomerByEmailSoapIn" />
+      <wsdl:output message="s0:GetCustomerByEmailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerByName">
+      <wsdl:input message="s0:GetCustomerByNameSoapIn" />
+      <wsdl:output message="s0:GetCustomerByNameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerByPhoneNumber">
+      <wsdl:input message="s0:GetCustomerByPhoneNumberSoapIn" />
+      <wsdl:output message="s0:GetCustomerByPhoneNumberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerBySipUri">
+      <wsdl:input message="s0:GetCustomerBySipUriSoapIn" />
+      <wsdl:output message="s0:GetCustomerBySipUriSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerByUserName">
+      <wsdl:input message="s0:GetCustomerByUserNameSoapIn" />
+      <wsdl:output message="s0:GetCustomerByUserNameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetNoCustContactsByTime">
+      <wsdl:input message="s0:GetNoCustContactsByTimeSoapIn" />
+      <wsdl:output message="s0:GetNoCustContactsByTimeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSearchableFields">
+      <wsdl:input message="s0:GetSearchableFieldsSoapIn" />
+      <wsdl:output message="s0:GetSearchableFieldsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ImpersonateCustomer">
+      <wsdl:input message="s0:ImpersonateCustomerSoapIn" />
+      <wsdl:output message="s0:ImpersonateCustomerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadCustomer">
+      <wsdl:input message="s0:ReadCustomerSoapIn" />
+      <wsdl:output message="s0:ReadCustomerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadCustomerHistory">
+      <wsdl:input message="s0:ReadCustomerHistorySoapIn" />
+      <wsdl:output message="s0:ReadCustomerHistorySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterAnonymousCustomer">
+      <wsdl:input message="s0:RegisterAnonymousCustomerSoapIn" />
+      <wsdl:output message="s0:RegisterAnonymousCustomerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterCustomer">
+      <wsdl:input message="s0:RegisterCustomerSoapIn" />
+      <wsdl:output message="s0:RegisterCustomerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveAddress">
+      <wsdl:input message="s0:RemoveAddressSoapIn" />
+      <wsdl:output message="s0:RemoveAddressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveContact">
+      <wsdl:input message="s0:RemoveContactSoapIn" />
+      <wsdl:output message="s0:RemoveContactSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCustomField">
+      <wsdl:input message="s0:RemoveCustomFieldSoapIn" />
+      <wsdl:output message="s0:RemoveCustomFieldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveEmailAddress">
+      <wsdl:input message="s0:RemoveEmailAddressSoapIn" />
+      <wsdl:output message="s0:RemoveEmailAddressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemovePhoneNumber">
+      <wsdl:input message="s0:RemovePhoneNumberSoapIn" />
+      <wsdl:output message="s0:RemovePhoneNumberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveSipUri">
+      <wsdl:input message="s0:RemoveSipUriSoapIn" />
+      <wsdl:output message="s0:RemoveSipUriSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendADPasswordReminder">
+      <wsdl:input message="s0:SendADPasswordReminderSoapIn" />
+      <wsdl:output message="s0:SendADPasswordReminderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendPasswordReminder">
+      <wsdl:input message="s0:SendPasswordReminderSoapIn" />
+      <wsdl:output message="s0:SendPasswordReminderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetAgentID">
+      <wsdl:input message="s0:SetAgentIDSoapIn" />
+      <wsdl:output message="s0:SetAgentIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCustomer">
+      <wsdl:input message="s0:UpdateCustomerSoapIn" />
+      <wsdl:output message="s0:UpdateCustomerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateFirstName">
+      <wsdl:input message="s0:UpdateFirstNameSoapIn" />
+      <wsdl:output message="s0:UpdateFirstNameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateLastName">
+      <wsdl:input message="s0:UpdateLastNameSoapIn" />
+      <wsdl:output message="s0:UpdateLastNameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateLoginPage">
+      <wsdl:input message="s0:UpdateLoginPageSoapIn" />
+      <wsdl:output message="s0:UpdateLoginPageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateObjection">
+      <wsdl:input message="s0:UpdateObjectionSoapIn" />
+      <wsdl:output message="s0:UpdateObjectionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePassword">
+      <wsdl:input message="s0:UpdatePasswordSoapIn" />
+      <wsdl:output message="s0:UpdatePasswordSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePreferredAgent">
+      <wsdl:input message="s0:UpdatePreferredAgentSoapIn" />
+      <wsdl:output message="s0:UpdatePreferredAgentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRegisterDate">
+      <wsdl:input message="s0:UpdateRegisterDateSoapIn" />
+      <wsdl:output message="s0:UpdateRegisterDateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTitle">
+      <wsdl:input message="s0:UpdateTitleSoapIn" />
+      <wsdl:output message="s0:UpdateTitleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUserName">
+      <wsdl:input message="s0:UpdateUserNameSoapIn" />
+      <wsdl:output message="s0:UpdateUserNameSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CustMultimediaSoap" type="s0:CustMultimediaSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddAddress">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddContact">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddContact" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCustomField">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddCustomField" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddEmailAddress">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddEmailAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddPhoneNumber">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddPhoneNumber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddSipUri">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddSipUri" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CarbonCopy">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.CarbonCopy" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CleanCustomer">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.CleanCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateCustomer">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.CreateCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateCustomerBySipUri">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.CreateCustomerBySipUri" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CustomerAssociation">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.CustomerAssociation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CustomerSearch">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.CustomerSearch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCustomer">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.DeleteCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllCustomers">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetAllCustomers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustSQLColumns">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustSQLColumns" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomFieldTemplates">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomFieldTemplates" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerByContactId">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByContactId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerByEmail">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByEmail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerByName">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerByPhoneNumber">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByPhoneNumber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerBySipUri">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerBySipUri" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerByUserName">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByUserName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNoCustContactsByTime">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetNoCustContactsByTime" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSearchableFields">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetSearchableFields" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ImpersonateCustomer">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.ImpersonateCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadCustomer">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.ReadCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadCustomerHistory">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.ReadCustomerHistory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterAnonymousCustomer">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.RegisterAnonymousCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterCustomer">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.RegisterCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveAddress">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveContact">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveContact" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCustomField">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveCustomField" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveEmailAddress">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveEmailAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemovePhoneNumber">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemovePhoneNumber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveSipUri">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveSipUri" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendADPasswordReminder">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.SendADPasswordReminder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendPasswordReminder">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.SendPasswordReminder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetAgentID">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.SetAgentID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCustomer">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateFirstName">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateFirstName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateLastName">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateLastName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateLoginPage">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateLoginPage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateObjection">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateObjection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePassword">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdatePassword" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePreferredAgent">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdatePreferredAgent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRegisterDate">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateRegisterDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTitle">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateTitle" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUserName">
+      <soap:operation soapAction="http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateUserName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CustMultimedia">
+    <wsdl:port name="CustMultimediaSoap" binding="s0:CustMultimediaSoap">
+      <soap:address location="https://aacc1ver7:443/csp/multimedia/ws.Customer.cls" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

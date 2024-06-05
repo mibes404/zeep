@@ -11,7 +11,7 @@ pub enum ElementType {
     Field,
     Static,
     Alias,
-    Module,
+    Module(Option<String>),
     Attribute,
     Trait,
     TraitImpl,
@@ -35,6 +35,7 @@ pub struct Element {
     pub comment: Option<String>,
     pub function_args: Option<FunctionArgs>,
     pub text_field: bool,
+    pub multi_ref: bool,
 }
 
 pub struct FunctionArgs {
@@ -62,6 +63,7 @@ pub fn root() -> Element {
         comment: None,
         function_args: None,
         text_field: false,
+        multi_ref: false,
     }
 }
 
@@ -90,13 +92,13 @@ pub trait NamespacedElement {
 /// Various render functions for the different Element types.
 impl WritableElement for Element {
     fn render(&self) -> String {
-        match self.element_type {
+        match &self.element_type {
             ElementType::Root => self.render_root(),
             ElementType::Struct => self.render_struct(),
             ElementType::Field => self.render_field(),
             ElementType::Static => self.render_static(),
             ElementType::Alias => self.render_alias(),
-            ElementType::Module => self.render_module(),
+            ElementType::Module(content) => self.render_module(content),
             ElementType::Attribute => self.render_atribute(),
             ElementType::Trait => self.render_trait(),
             ElementType::TraitImpl => self.render_trait_impl(),
@@ -167,6 +169,7 @@ impl Element {
             comment: None,
             function_args: None,
             text_field: false,
+            multi_ref: false,
         }
     }
 
@@ -187,11 +190,16 @@ impl Element {
             comment: None,
             function_args: None,
             text_field: false,
+            multi_ref: false,
         }
     }
 
     pub fn new_module(module_name: &str) -> Self {
-        Element::new(module_name, ElementType::Module)
+        Element::new(module_name, ElementType::Module(None))
+    }
+
+    pub fn new_module_with_content(module_name: &str, content: String) -> Self {
+        Element::new(module_name, ElementType::Module(Some(content)))
     }
 
     pub fn new_function(function_name: &str, input_name: &str, input_type: &str) -> Self {
@@ -367,6 +375,8 @@ impl Element {
         if let Some(field_type) = &self.field_type {
             if self.vector {
                 format!("Vec<{field_type}>")
+            } else if self.multi_ref {
+                format!("Option<multiref::MultiRef<{field_type}>>")
             } else if self.optional {
                 format!("Option<{field_type}>")
             } else {
@@ -398,8 +408,15 @@ impl Element {
         }
     }
 
-    fn render_module(&self) -> String {
+    fn render_module(&self, static_content: &Option<String>) -> String {
         let mut result = format!("pub mod {} {{\n", self.name);
+
+        if let Some(c) = static_content {
+            result.push_str(c.as_str());
+            result.push_str("}\n\n");
+            return result;
+        }
+
         result.push_str(
             r"use yaserde::{YaSerialize, YaDeserialize};
             use yaserde::de::from_str;
