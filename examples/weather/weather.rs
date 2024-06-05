@@ -495,7 +495,7 @@ pub mod bindings {
     )]
     pub struct GetWeatherInformationSoapInSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -511,7 +511,7 @@ pub mod bindings {
     impl GetWeatherInformationSoapInSoapEnvelope {
         pub fn new(body: SoapGetWeatherInformationSoapIn) -> Self {
             GetWeatherInformationSoapInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -523,7 +523,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetWeatherInformationSoapOut {
-        #[yaserde(rename = "GetWeatherInformationSoapOut", default)]
+        #[yaserde(rename = "GetWeatherInformationResponse", default)]
         pub body: ports::GetWeatherInformationSoapOut,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
@@ -536,7 +536,7 @@ pub mod bindings {
     )]
     pub struct GetWeatherInformationSoapOutSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -552,7 +552,7 @@ pub mod bindings {
     impl GetWeatherInformationSoapOutSoapEnvelope {
         pub fn new(body: SoapGetWeatherInformationSoapOut) -> Self {
             GetWeatherInformationSoapOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -577,7 +577,7 @@ pub mod bindings {
     )]
     pub struct GetCityForecastByZIPSoapInSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -593,7 +593,7 @@ pub mod bindings {
     impl GetCityForecastByZIPSoapInSoapEnvelope {
         pub fn new(body: SoapGetCityForecastByZIPSoapIn) -> Self {
             GetCityForecastByZIPSoapInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -605,7 +605,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityForecastByZIPSoapOut {
-        #[yaserde(rename = "GetCityForecastByZIPSoapOut", default)]
+        #[yaserde(rename = "GetCityForecastByZIPResponse", default)]
         pub body: ports::GetCityForecastByZIPSoapOut,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
@@ -618,7 +618,7 @@ pub mod bindings {
     )]
     pub struct GetCityForecastByZIPSoapOutSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -634,7 +634,7 @@ pub mod bindings {
     impl GetCityForecastByZIPSoapOutSoapEnvelope {
         pub fn new(body: SoapGetCityForecastByZIPSoapOut) -> Self {
             GetCityForecastByZIPSoapOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -659,7 +659,7 @@ pub mod bindings {
     )]
     pub struct GetCityWeatherByZIPSoapInSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -675,7 +675,7 @@ pub mod bindings {
     impl GetCityWeatherByZIPSoapInSoapEnvelope {
         pub fn new(body: SoapGetCityWeatherByZIPSoapIn) -> Self {
             GetCityWeatherByZIPSoapInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -687,7 +687,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityWeatherByZIPSoapOut {
-        #[yaserde(rename = "GetCityWeatherByZIPSoapOut", default)]
+        #[yaserde(rename = "GetCityWeatherByZIPResponse", default)]
         pub body: ports::GetCityWeatherByZIPSoapOut,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
@@ -700,7 +700,7 @@ pub mod bindings {
     )]
     pub struct GetCityWeatherByZIPSoapOutSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -716,7 +716,7 @@ pub mod bindings {
     impl GetCityWeatherByZIPSoapOutSoapEnvelope {
         pub fn new(body: SoapGetCityWeatherByZIPSoapOut) -> Self {
             GetCityWeatherByZIPSoapOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -1041,7 +1041,7 @@ pub mod bindings {
     )]
     pub struct GetWeatherInformationHttpGetInSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1057,7 +1057,7 @@ pub mod bindings {
     impl GetWeatherInformationHttpGetInSoapEnvelope {
         pub fn new(body: SoapGetWeatherInformationHttpGetIn) -> Self {
             GetWeatherInformationHttpGetInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -1069,7 +1069,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetWeatherInformationHttpGetOut {
-        #[yaserde(rename = "GetWeatherInformationHttpGetOut", default)]
+        #[yaserde(rename = "ArrayOfWeatherDescription", default)]
         pub body: ports::GetWeatherInformationHttpGetOut,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
@@ -1082,7 +1082,7 @@ pub mod bindings {
     )]
     pub struct GetWeatherInformationHttpGetOutSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1098,7 +1098,7 @@ pub mod bindings {
     impl GetWeatherInformationHttpGetOutSoapEnvelope {
         pub fn new(body: SoapGetWeatherInformationHttpGetOut) -> Self {
             GetWeatherInformationHttpGetOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -1123,7 +1123,7 @@ pub mod bindings {
     )]
     pub struct GetCityForecastByZIPHttpGetInSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1139,7 +1139,7 @@ pub mod bindings {
     impl GetCityForecastByZIPHttpGetInSoapEnvelope {
         pub fn new(body: SoapGetCityForecastByZIPHttpGetIn) -> Self {
             GetCityForecastByZIPHttpGetInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -1151,7 +1151,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityForecastByZIPHttpGetOut {
-        #[yaserde(rename = "GetCityForecastByZIPHttpGetOut", default)]
+        #[yaserde(rename = "ForecastReturn", default)]
         pub body: ports::GetCityForecastByZIPHttpGetOut,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
@@ -1164,7 +1164,7 @@ pub mod bindings {
     )]
     pub struct GetCityForecastByZIPHttpGetOutSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1180,7 +1180,7 @@ pub mod bindings {
     impl GetCityForecastByZIPHttpGetOutSoapEnvelope {
         pub fn new(body: SoapGetCityForecastByZIPHttpGetOut) -> Self {
             GetCityForecastByZIPHttpGetOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -1205,7 +1205,7 @@ pub mod bindings {
     )]
     pub struct GetCityWeatherByZIPHttpGetInSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1221,7 +1221,7 @@ pub mod bindings {
     impl GetCityWeatherByZIPHttpGetInSoapEnvelope {
         pub fn new(body: SoapGetCityWeatherByZIPHttpGetIn) -> Self {
             GetCityWeatherByZIPHttpGetInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -1233,7 +1233,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityWeatherByZIPHttpGetOut {
-        #[yaserde(rename = "GetCityWeatherByZIPHttpGetOut", default)]
+        #[yaserde(rename = "WeatherReturn", default)]
         pub body: ports::GetCityWeatherByZIPHttpGetOut,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
@@ -1246,7 +1246,7 @@ pub mod bindings {
     )]
     pub struct GetCityWeatherByZIPHttpGetOutSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1262,7 +1262,7 @@ pub mod bindings {
     impl GetCityWeatherByZIPHttpGetOutSoapEnvelope {
         pub fn new(body: SoapGetCityWeatherByZIPHttpGetOut) -> Self {
             GetCityWeatherByZIPHttpGetOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -1439,7 +1439,7 @@ pub mod bindings {
     )]
     pub struct GetWeatherInformationHttpPostInSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1455,7 +1455,7 @@ pub mod bindings {
     impl GetWeatherInformationHttpPostInSoapEnvelope {
         pub fn new(body: SoapGetWeatherInformationHttpPostIn) -> Self {
             GetWeatherInformationHttpPostInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -1467,7 +1467,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetWeatherInformationHttpPostOut {
-        #[yaserde(rename = "GetWeatherInformationHttpPostOut", default)]
+        #[yaserde(rename = "ArrayOfWeatherDescription", default)]
         pub body: ports::GetWeatherInformationHttpPostOut,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
@@ -1480,7 +1480,7 @@ pub mod bindings {
     )]
     pub struct GetWeatherInformationHttpPostOutSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1496,7 +1496,7 @@ pub mod bindings {
     impl GetWeatherInformationHttpPostOutSoapEnvelope {
         pub fn new(body: SoapGetWeatherInformationHttpPostOut) -> Self {
             GetWeatherInformationHttpPostOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -1521,7 +1521,7 @@ pub mod bindings {
     )]
     pub struct GetCityForecastByZIPHttpPostInSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1537,7 +1537,7 @@ pub mod bindings {
     impl GetCityForecastByZIPHttpPostInSoapEnvelope {
         pub fn new(body: SoapGetCityForecastByZIPHttpPostIn) -> Self {
             GetCityForecastByZIPHttpPostInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -1549,7 +1549,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityForecastByZIPHttpPostOut {
-        #[yaserde(rename = "GetCityForecastByZIPHttpPostOut", default)]
+        #[yaserde(rename = "ForecastReturn", default)]
         pub body: ports::GetCityForecastByZIPHttpPostOut,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
@@ -1562,7 +1562,7 @@ pub mod bindings {
     )]
     pub struct GetCityForecastByZIPHttpPostOutSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1578,7 +1578,7 @@ pub mod bindings {
     impl GetCityForecastByZIPHttpPostOutSoapEnvelope {
         pub fn new(body: SoapGetCityForecastByZIPHttpPostOut) -> Self {
             GetCityForecastByZIPHttpPostOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -1603,7 +1603,7 @@ pub mod bindings {
     )]
     pub struct GetCityWeatherByZIPHttpPostInSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1619,7 +1619,7 @@ pub mod bindings {
     impl GetCityWeatherByZIPHttpPostInSoapEnvelope {
         pub fn new(body: SoapGetCityWeatherByZIPHttpPostIn) -> Self {
             GetCityWeatherByZIPHttpPostInSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
@@ -1631,7 +1631,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityWeatherByZIPHttpPostOut {
-        #[yaserde(rename = "GetCityWeatherByZIPHttpPostOut", default)]
+        #[yaserde(rename = "WeatherReturn", default)]
         pub body: ports::GetCityWeatherByZIPHttpPostOut,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
@@ -1644,7 +1644,7 @@ pub mod bindings {
     )]
     pub struct GetCityWeatherByZIPHttpPostOutSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1660,7 +1660,7 @@ pub mod bindings {
     impl GetCityWeatherByZIPHttpPostOutSoapEnvelope {
         pub fn new(body: SoapGetCityWeatherByZIPHttpPostOut) -> Self {
             GetCityWeatherByZIPHttpPostOutSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,

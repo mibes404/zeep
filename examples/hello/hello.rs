@@ -160,7 +160,7 @@ pub mod bindings {
     )]
     pub struct SayHelloSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -176,7 +176,7 @@ pub mod bindings {
     impl SayHelloSoapEnvelope {
         pub fn new(body: SoapSayHello) -> Self {
             SayHelloSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://learnwebservices.com/services/hello".to_string()),
                 body,
                 urnattr: None,
@@ -188,7 +188,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapSayHelloResponse {
-        #[yaserde(rename = "SayHelloResponse", default)]
+        #[yaserde(rename = "HelloResponse", default)]
         pub body: ports::SayHelloResponse,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
@@ -201,7 +201,7 @@ pub mod bindings {
     )]
     pub struct SayHelloResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -217,7 +217,7 @@ pub mod bindings {
     impl SayHelloResponseSoapEnvelope {
         pub fn new(body: SoapSayHelloResponse) -> Self {
             SayHelloResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://learnwebservices.com/services/hello".to_string()),
                 body,
                 urnattr: None,
@@ -294,7 +294,7 @@ pub mod services {
             credentials: Option<(String, String)>,
         ) -> bindings::HelloEndpointServiceSoapBinding {
             bindings::HelloEndpointServiceSoapBinding::new(
-                "http://apps.learnwebservices.com/services/hello",
+                "https://apps.learnwebservices.com:443/services/hello",
                 credentials,
             )
         }

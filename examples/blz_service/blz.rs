@@ -177,7 +177,7 @@ pub mod bindings {
     )]
     pub struct GetBankSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -193,7 +193,7 @@ pub mod bindings {
     impl GetBankSoapEnvelope {
         pub fn new(body: SoapGetBank) -> Self {
             GetBankSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://thomas-bayer.com/blz/".to_string()),
                 body,
                 urnattr: None,
@@ -218,7 +218,7 @@ pub mod bindings {
     )]
     pub struct GetBankResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -234,7 +234,7 @@ pub mod bindings {
     impl GetBankResponseSoapEnvelope {
         pub fn new(body: SoapGetBankResponse) -> Self {
             GetBankResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://thomas-bayer.com/blz/".to_string()),
                 body,
                 urnattr: None,

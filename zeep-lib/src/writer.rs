@@ -7,7 +7,7 @@ use crate::{
     error::{WriterError, WriterResult},
 };
 use inflector::cases::{pascalcase::to_pascal_case, snakecase::to_snake_case};
-use log::warn;
+use log::{debug, warn};
 use roxmltree::Node;
 use std::{
     cell::RefCell,
@@ -1181,7 +1181,7 @@ impl FileWriter {
         )]
         pub struct {0}SoapEnvelope {{
             #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-            pub encoding_style: String,
+            pub encoding_style: Option<String>,
             #[yaserde(rename = "{3}", prefix = "xmlns", attribute)]
             pub tnsattr: Option<String>,
             #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1197,7 +1197,7 @@ impl FileWriter {
         impl {0}SoapEnvelope {{
             pub fn new(body: {1}) -> Self {{
                 {0}SoapEnvelope {{
-                    encoding_style: SOAP_ENCODING.to_string(),
+                    encoding_style: Some(SOAP_ENCODING.to_string()),
                     tnsattr: {2},
                     body,
                     urnattr: None,
@@ -1297,6 +1297,11 @@ impl FileWriter {
                 }
                 _ => (String::new(), String::new(), String::new(), false),
             };
+
+        let output_xml_type = match self.message_types.get(&output_xml_type) {
+            None => output_xml_type.to_string(),
+            Some(mt) => self.split_type(mt).to_string(),
+        };
 
         let (_fault_type, _fault_xml_type, fault_soap_name, has_fault) = match &port_type.fault_type
         {

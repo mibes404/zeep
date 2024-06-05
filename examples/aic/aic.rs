@@ -878,7 +878,7 @@ pub mod bindings {
     )]
     pub struct GetRequestSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -894,7 +894,7 @@ pub mod bindings {
     impl GetRequestSoapEnvelope {
         pub fn new(body: SoapGetRequest) -> Self {
             GetRequestSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -921,7 +921,7 @@ pub mod bindings {
     )]
     pub struct GetResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -937,7 +937,7 @@ pub mod bindings {
     impl GetResponseSoapEnvelope {
         pub fn new(body: SoapGetResponse) -> Self {
             GetResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -964,7 +964,7 @@ pub mod bindings {
     )]
     pub struct UpdateRequestSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -980,7 +980,7 @@ pub mod bindings {
     impl UpdateRequestSoapEnvelope {
         pub fn new(body: SoapUpdateRequest) -> Self {
             UpdateRequestSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1007,7 +1007,7 @@ pub mod bindings {
     )]
     pub struct UpdateResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1023,7 +1023,7 @@ pub mod bindings {
     impl UpdateResponseSoapEnvelope {
         pub fn new(body: SoapUpdateResponse) -> Self {
             UpdateResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1050,7 +1050,7 @@ pub mod bindings {
     )]
     pub struct DeleteRequestSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1066,7 +1066,7 @@ pub mod bindings {
     impl DeleteRequestSoapEnvelope {
         pub fn new(body: SoapDeleteRequest) -> Self {
             DeleteRequestSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1093,7 +1093,7 @@ pub mod bindings {
     )]
     pub struct DeleteResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1109,7 +1109,7 @@ pub mod bindings {
     impl DeleteResponseSoapEnvelope {
         pub fn new(body: SoapDeleteResponse) -> Self {
             DeleteResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1136,7 +1136,7 @@ pub mod bindings {
     )]
     pub struct LookupAgentIdsRequestSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1152,7 +1152,7 @@ pub mod bindings {
     impl LookupAgentIdsRequestSoapEnvelope {
         pub fn new(body: SoapLookupAgentIdsRequest) -> Self {
             LookupAgentIdsRequestSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1179,7 +1179,7 @@ pub mod bindings {
     )]
     pub struct LookupAgentIdsResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1195,7 +1195,7 @@ pub mod bindings {
     impl LookupAgentIdsResponseSoapEnvelope {
         pub fn new(body: SoapLookupAgentIdsResponse) -> Self {
             LookupAgentIdsResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1222,7 +1222,7 @@ pub mod bindings {
     )]
     pub struct LookupLRMIdsRequestSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1238,7 +1238,7 @@ pub mod bindings {
     impl LookupLRMIdsRequestSoapEnvelope {
         pub fn new(body: SoapLookupLRMIdsRequest) -> Self {
             LookupLRMIdsRequestSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1265,7 +1265,7 @@ pub mod bindings {
     )]
     pub struct LookupLRMIdsResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1281,7 +1281,7 @@ pub mod bindings {
     impl LookupLRMIdsResponseSoapEnvelope {
         pub fn new(body: SoapLookupLRMIdsResponse) -> Self {
             LookupLRMIdsResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1308,7 +1308,7 @@ pub mod bindings {
     )]
     pub struct LookupWorkgroupsRequestSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1324,7 +1324,7 @@ pub mod bindings {
     impl LookupWorkgroupsRequestSoapEnvelope {
         pub fn new(body: SoapLookupWorkgroupsRequest) -> Self {
             LookupWorkgroupsRequestSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1351,7 +1351,7 @@ pub mod bindings {
     )]
     pub struct LookupWorkgroupsResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1367,7 +1367,7 @@ pub mod bindings {
     impl LookupWorkgroupsResponseSoapEnvelope {
         pub fn new(body: SoapLookupWorkgroupsResponse) -> Self {
             LookupWorkgroupsResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1394,7 +1394,7 @@ pub mod bindings {
     )]
     pub struct LookupDomainsRequestSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1410,7 +1410,7 @@ pub mod bindings {
     impl LookupDomainsRequestSoapEnvelope {
         pub fn new(body: SoapLookupDomainsRequest) -> Self {
             LookupDomainsRequestSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1437,7 +1437,7 @@ pub mod bindings {
     )]
     pub struct LookupDomainsResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1453,7 +1453,7 @@ pub mod bindings {
     impl LookupDomainsResponseSoapEnvelope {
         pub fn new(body: SoapLookupDomainsResponse) -> Self {
             LookupDomainsResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1480,7 +1480,7 @@ pub mod bindings {
     )]
     pub struct LookupLinkGroupsRequestSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1496,7 +1496,7 @@ pub mod bindings {
     impl LookupLinkGroupsRequestSoapEnvelope {
         pub fn new(body: SoapLookupLinkGroupsRequest) -> Self {
             LookupLinkGroupsRequestSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1523,7 +1523,7 @@ pub mod bindings {
     )]
     pub struct LookupLinkGroupsResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1539,7 +1539,7 @@ pub mod bindings {
     impl LookupLinkGroupsResponseSoapEnvelope {
         pub fn new(body: SoapLookupLinkGroupsResponse) -> Self {
             LookupLinkGroupsResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1566,7 +1566,7 @@ pub mod bindings {
     )]
     pub struct LookupPhoneTypesRequestSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1582,7 +1582,7 @@ pub mod bindings {
     impl LookupPhoneTypesRequestSoapEnvelope {
         pub fn new(body: SoapLookupPhoneTypesRequest) -> Self {
             LookupPhoneTypesRequestSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1609,7 +1609,7 @@ pub mod bindings {
     )]
     pub struct LookupPhoneTypesResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1625,7 +1625,7 @@ pub mod bindings {
     impl LookupPhoneTypesResponseSoapEnvelope {
         pub fn new(body: SoapLookupPhoneTypesResponse) -> Self {
             LookupPhoneTypesResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1652,7 +1652,7 @@ pub mod bindings {
     )]
     pub struct LookupSitesRequestSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1668,7 +1668,7 @@ pub mod bindings {
     impl LookupSitesRequestSoapEnvelope {
         pub fn new(body: SoapLookupSitesRequest) -> Self {
             LookupSitesRequestSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1695,7 +1695,7 @@ pub mod bindings {
     )]
     pub struct LookupSitesResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1711,7 +1711,7 @@ pub mod bindings {
     impl LookupSitesResponseSoapEnvelope {
         pub fn new(body: SoapLookupSitesResponse) -> Self {
             LookupSitesResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1738,7 +1738,7 @@ pub mod bindings {
     )]
     pub struct CreateRequestSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1754,7 +1754,7 @@ pub mod bindings {
     impl CreateRequestSoapEnvelope {
         pub fn new(body: SoapCreateRequest) -> Self {
             CreateRequestSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
@@ -1781,7 +1781,7 @@ pub mod bindings {
     )]
     pub struct CreateResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -1797,7 +1797,7 @@ pub mod bindings {
     impl CreateResponseSoapEnvelope {
         pub fn new(body: SoapCreateResponse) -> Self {
             CreateResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),

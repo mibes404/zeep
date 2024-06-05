@@ -204,7 +204,7 @@ pub mod bindings {
     )]
     pub struct NumberToWordsSoapRequestSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "m", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -220,7 +220,7 @@ pub mod bindings {
     impl NumberToWordsSoapRequestSoapEnvelope {
         pub fn new(body: SoapNumberToWordsSoapRequest) -> Self {
             NumberToWordsSoapRequestSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://www.dataaccess.com/webservicesserver/".to_string()),
                 body,
                 urnattr: None,
@@ -245,7 +245,7 @@ pub mod bindings {
     )]
     pub struct NumberToWordsResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "m", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -261,7 +261,7 @@ pub mod bindings {
     impl NumberToWordsResponseSoapEnvelope {
         pub fn new(body: SoapNumberToWordsResponse) -> Self {
             NumberToWordsResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://www.dataaccess.com/webservicesserver/".to_string()),
                 body,
                 urnattr: None,
@@ -286,7 +286,7 @@ pub mod bindings {
     )]
     pub struct NumberToDollarsSoapRequestSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "m", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -302,7 +302,7 @@ pub mod bindings {
     impl NumberToDollarsSoapRequestSoapEnvelope {
         pub fn new(body: SoapNumberToDollarsSoapRequest) -> Self {
             NumberToDollarsSoapRequestSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://www.dataaccess.com/webservicesserver/".to_string()),
                 body,
                 urnattr: None,
@@ -327,7 +327,7 @@ pub mod bindings {
     )]
     pub struct NumberToDollarsResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "m", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -343,7 +343,7 @@ pub mod bindings {
     impl NumberToDollarsResponseSoapEnvelope {
         pub fn new(body: SoapNumberToDollarsResponse) -> Self {
             NumberToDollarsResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some("http://www.dataaccess.com/webservicesserver/".to_string()),
                 body,
                 urnattr: None,

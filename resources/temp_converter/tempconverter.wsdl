@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://learnwebservices.com/services/tempconverter" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="TempConverterEndpointService" targetNamespace="http://learnwebservices.com/services/tempconverter">
   <wsdl:types>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://learnwebservices.com/services/tempconverter" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://learnwebservices.com/services/tempconverter">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://learnwebservices.com/services/tempconverter" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://learnwebservices.com/services/tempconverter" version="1.0">
   <xs:complexType name="celsiusToFahrenheitRequest">
     <xs:sequence>
       <xs:element name="TemperatureInCelsius" type="xs:double"/>
@@ -80,7 +80,7 @@
   </wsdl:binding>
   <wsdl:service name="TempConverterEndpointService">
     <wsdl:port binding="tns:TempConverterEndpointServiceSoapBinding" name="TempConverterEndpointPort">
-      <soap:address location="http://www.learnwebservices.com/services/tempconverter"/>
+      <soap:address location="https://apps.learnwebservices.com:443/services/tempconverter"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

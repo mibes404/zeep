@@ -200,7 +200,7 @@ pub mod bindings {
     )]
     pub struct CelsiusToFahrenheitSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -216,7 +216,7 @@ pub mod bindings {
     impl CelsiusToFahrenheitSoapEnvelope {
         pub fn new(body: SoapCelsiusToFahrenheit) -> Self {
             CelsiusToFahrenheitSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://learnwebservices.com/services/tempconverter".to_string(),
                 ),
@@ -243,7 +243,7 @@ pub mod bindings {
     )]
     pub struct CelsiusToFahrenheitResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -259,7 +259,7 @@ pub mod bindings {
     impl CelsiusToFahrenheitResponseSoapEnvelope {
         pub fn new(body: SoapCelsiusToFahrenheitResponse) -> Self {
             CelsiusToFahrenheitResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://learnwebservices.com/services/tempconverter".to_string(),
                 ),
@@ -286,7 +286,7 @@ pub mod bindings {
     )]
     pub struct FahrenheitToCelsiusSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -302,7 +302,7 @@ pub mod bindings {
     impl FahrenheitToCelsiusSoapEnvelope {
         pub fn new(body: SoapFahrenheitToCelsius) -> Self {
             FahrenheitToCelsiusSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://learnwebservices.com/services/tempconverter".to_string(),
                 ),
@@ -329,7 +329,7 @@ pub mod bindings {
     )]
     pub struct FahrenheitToCelsiusResponseSoapEnvelope {
         #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: String,
+        pub encoding_style: Option<String>,
         #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
         pub tnsattr: Option<String>,
         #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
@@ -345,7 +345,7 @@ pub mod bindings {
     impl FahrenheitToCelsiusResponseSoapEnvelope {
         pub fn new(body: SoapFahrenheitToCelsiusResponse) -> Self {
             FahrenheitToCelsiusResponseSoapEnvelope {
-                encoding_style: SOAP_ENCODING.to_string(),
+                encoding_style: Some(SOAP_ENCODING.to_string()),
                 tnsattr: Option::Some(
                     "http://learnwebservices.com/services/tempconverter".to_string(),
                 ),
@@ -457,7 +457,7 @@ pub mod services {
             credentials: Option<(String, String)>,
         ) -> bindings::TempConverterEndpointServiceSoapBinding {
             bindings::TempConverterEndpointServiceSoapBinding::new(
-                "http://www.learnwebservices.com/services/tempconverter",
+                "https://apps.learnwebservices.com:443/services/tempconverter",
                 credentials,
             )
         }

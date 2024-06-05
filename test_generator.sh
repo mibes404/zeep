@@ -2,6 +2,7 @@
 cargo build
 
 # Output to file:
+./target/debug/zeep -p resources/country -i country.wsdl -o examples/country/country.rs
 ./target/debug/zeep -p resources/aic -i agent_wsdl.xml -o examples/aic/aic.rs
 ./target/debug/zeep -p resources/hello -i hello.wsdl -o examples/hello/hello.rs
 ./target/debug/zeep -p resources/temp_converter -i tempconverter.wsdl -o examples/temperature/tempconverter.rs
@@ -12,6 +13,7 @@ cargo build
 ./target/debug/zeep -p resources/broadband_forum -i cwmp-1-2.xsd -o examples/broadband_forum/cwmp.rs
 
 # Format the output
+rustfmt --color=always --edition=2021 examples/country/country.rs
 rustfmt --color=always --edition=2021 examples/aic/aic.rs
 rustfmt --color=always --edition=2021 examples/hello/hello.rs
 rustfmt --color=always --edition=2021 examples/temperature/tempconverter.rs
