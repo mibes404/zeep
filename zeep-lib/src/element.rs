@@ -448,6 +448,7 @@ fn rename_keywords(field_name: &str) -> &str {
         "type" => "r#type",
         "as" => "r#as",
         "where" => "r#where",
+        "break" => "r#break",
         _ => field_name,
     }
 }
