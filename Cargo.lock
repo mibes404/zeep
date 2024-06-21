@@ -1322,7 +1322,7 @@ dependencies = [
 
 [[package]]
 name = "zeep"
-version = "0.1.8"
+version = "0.1.9"
 dependencies = [
  "Inflector",
  "async-trait",
@@ -1340,7 +1340,7 @@ dependencies = [
 
 [[package]]
 name = "zeep-lib"
-version = "0.1.8"
+version = "0.1.9"
 dependencies = [
  "Inflector",
  "async-trait",

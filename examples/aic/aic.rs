@@ -2194,10 +2194,18 @@ pub mod services {
         pub fn new_client(
             credentials: Option<(String, String)>,
         ) -> bindings::AicAgentAdminSoapBinding {
-            bindings::AicAgentAdminSoapBinding::new(
+            Self::new_client_with_url(
                 "http://aiccore.avayacloud.com:9800/webservices/services/AicAgentAdmin",
                 credentials,
             )
+        }
+
+        #[must_use]
+        pub fn new_client_with_url(
+            url: &str,
+            credentials: Option<(String, String)>,
+        ) -> bindings::AicAgentAdminSoapBinding {
+            bindings::AicAgentAdminSoapBinding::new(url, credentials)
         }
     }
 }

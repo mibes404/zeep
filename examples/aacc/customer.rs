@@ -10079,10 +10079,18 @@ pub mod services {
     impl CustMultimedia {
         #[must_use]
         pub fn new_client(credentials: Option<(String, String)>) -> bindings::CustMultimediaSoap {
-            bindings::CustMultimediaSoap::new(
+            Self::new_client_with_url(
                 "https://aacc1ver7:443/csp/multimedia/ws.Customer.cls",
                 credentials,
             )
+        }
+
+        #[must_use]
+        pub fn new_client_with_url(
+            url: &str,
+            credentials: Option<(String, String)>,
+        ) -> bindings::CustMultimediaSoap {
+            bindings::CustMultimediaSoap::new(url, credentials)
         }
     }
 }

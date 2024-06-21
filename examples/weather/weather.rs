@@ -1828,7 +1828,15 @@ pub mod services {
     impl Weather {
         #[must_use]
         pub fn new_client(credentials: Option<(String, String)>) -> bindings::WeatherSoap {
-            bindings::WeatherSoap::new("http://wsf.cdyne.com/WeatherWS/Weather.asmx", credentials)
+            Self::new_client_with_url("http://wsf.cdyne.com/WeatherWS/Weather.asmx", credentials)
+        }
+
+        #[must_use]
+        pub fn new_client_with_url(
+            url: &str,
+            credentials: Option<(String, String)>,
+        ) -> bindings::WeatherSoap {
+            bindings::WeatherSoap::new(url, credentials)
         }
     }
 }

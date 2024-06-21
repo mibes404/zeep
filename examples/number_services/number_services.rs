@@ -568,10 +568,18 @@ pub mod services {
         pub fn new_client(
             credentials: Option<(String, String)>,
         ) -> bindings::NumberConversionSoapBinding {
-            bindings::NumberConversionSoapBinding::new(
+            Self::new_client_with_url(
                 "https://www.dataaccess.com/webservicesserver/NumberConversion.wso",
                 credentials,
             )
+        }
+
+        #[must_use]
+        pub fn new_client_with_url(
+            url: &str,
+            credentials: Option<(String, String)>,
+        ) -> bindings::NumberConversionSoapBinding {
+            bindings::NumberConversionSoapBinding::new(url, credentials)
         }
     }
 }

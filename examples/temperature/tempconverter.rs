@@ -462,10 +462,18 @@ pub mod services {
         pub fn new_client(
             credentials: Option<(String, String)>,
         ) -> bindings::TempConverterEndpointServiceSoapBinding {
-            bindings::TempConverterEndpointServiceSoapBinding::new(
+            Self::new_client_with_url(
                 "https://apps.learnwebservices.com:443/services/tempconverter",
                 credentials,
             )
+        }
+
+        #[must_use]
+        pub fn new_client_with_url(
+            url: &str,
+            credentials: Option<(String, String)>,
+        ) -> bindings::TempConverterEndpointServiceSoapBinding {
+            bindings::TempConverterEndpointServiceSoapBinding::new(url, credentials)
         }
     }
 }

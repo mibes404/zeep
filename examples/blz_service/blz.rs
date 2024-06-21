@@ -480,10 +480,18 @@ pub mod services {
         pub fn new_client(
             credentials: Option<(String, String)>,
         ) -> bindings::BlzserviceSOAP11Binding {
-            bindings::BlzserviceSOAP11Binding::new(
+            Self::new_client_with_url(
                 "http://www.thomas-bayer.com/axis2/services/BLZService",
                 credentials,
             )
+        }
+
+        #[must_use]
+        pub fn new_client_with_url(
+            url: &str,
+            credentials: Option<(String, String)>,
+        ) -> bindings::BlzserviceSOAP11Binding {
+            bindings::BlzserviceSOAP11Binding::new(url, credentials)
         }
     }
 }
