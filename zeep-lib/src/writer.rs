@@ -1549,7 +1549,12 @@ impl FileWriter {
                 r#"
             #[must_use]
             pub fn new_client(credentials: Option<(String, String)>) -> {2}::{1} {{
-                {2}::{1}::new("{0}", credentials)
+                Self::new_client_with_url("{0}", credentials)
+            }}
+
+            #[must_use]
+            pub fn new_client_with_url(url: &str, credentials: Option<(String, String)>) -> {2}::{1} {{
+                {2}::{1}::new(url, credentials)
             }}
         "#,
                 location,
