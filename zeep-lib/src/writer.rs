@@ -1362,7 +1362,7 @@ impl FileWriter {
                     r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
                     pub struct {0} {{
                     #[yaserde(rename = "{3}", default)]
-                    pub body: {2}::{1},
+                    pub body: Option<{2}::{1}>,
                     {4}
                 }}
                 {5}
@@ -1485,11 +1485,11 @@ impl FileWriter {
         );
 
         parent.append_content(
-            r"if status.is_success() {
-            Ok(r.body.body)
+            r#"if status.is_success() {
+            Ok(r.body.body.expect("missing body"))
         } else {
             Err(r.body.fault)
-        }",
+        }"#,
         );
     }
 

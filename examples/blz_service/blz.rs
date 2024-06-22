@@ -204,7 +204,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetBankResponse {
         #[yaserde(rename = "GetBankResponse", default)]
-        pub body: ports::GetBankResponse,
+        pub body: Option<ports::GetBankResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -291,7 +291,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -371,7 +371,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -451,7 +451,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }

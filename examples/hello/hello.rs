@@ -187,7 +187,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapSayHelloResponse {
         #[yaserde(rename = "HelloResponse", default)]
-        pub body: ports::SayHelloResponse,
+        pub body: Option<ports::SayHelloResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -274,7 +274,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }

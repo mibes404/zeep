@@ -4588,7 +4588,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapAddAddressSoapOut {
         #[yaserde(rename = "AddAddressResponse", default)]
-        pub body: ports::AddAddressSoapOut,
+        pub body: Option<ports::AddAddressSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -4672,7 +4672,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapAddContactSoapOut {
         #[yaserde(rename = "AddContactResponse", default)]
-        pub body: ports::AddContactSoapOut,
+        pub body: Option<ports::AddContactSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -4756,7 +4756,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapAddCustomFieldSoapOut {
         #[yaserde(rename = "AddCustomFieldResponse", default)]
-        pub body: ports::AddCustomFieldSoapOut,
+        pub body: Option<ports::AddCustomFieldSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -4840,7 +4840,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapAddEmailAddressSoapOut {
         #[yaserde(rename = "AddEmailAddressResponse", default)]
-        pub body: ports::AddEmailAddressSoapOut,
+        pub body: Option<ports::AddEmailAddressSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -4924,7 +4924,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapAddPhoneNumberSoapOut {
         #[yaserde(rename = "AddPhoneNumberResponse", default)]
-        pub body: ports::AddPhoneNumberSoapOut,
+        pub body: Option<ports::AddPhoneNumberSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -5008,7 +5008,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapAddSipUriSoapOut {
         #[yaserde(rename = "AddSipUriResponse", default)]
-        pub body: ports::AddSipUriSoapOut,
+        pub body: Option<ports::AddSipUriSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -5092,7 +5092,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCarbonCopySoapOut {
         #[yaserde(rename = "CarbonCopyResponse", default)]
-        pub body: ports::CarbonCopySoapOut,
+        pub body: Option<ports::CarbonCopySoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -5176,7 +5176,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCleanCustomerSoapOut {
         #[yaserde(rename = "CleanCustomerResponse", default)]
-        pub body: ports::CleanCustomerSoapOut,
+        pub body: Option<ports::CleanCustomerSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -5260,7 +5260,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCreateCustomerSoapOut {
         #[yaserde(rename = "CreateCustomerResponse", default)]
-        pub body: ports::CreateCustomerSoapOut,
+        pub body: Option<ports::CreateCustomerSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -5344,7 +5344,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCreateCustomerBySipUriSoapOut {
         #[yaserde(rename = "CreateCustomerBySipUriResponse", default)]
-        pub body: ports::CreateCustomerBySipUriSoapOut,
+        pub body: Option<ports::CreateCustomerBySipUriSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -5428,7 +5428,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCustomerAssociationSoapOut {
         #[yaserde(rename = "CustomerAssociationResponse", default)]
-        pub body: ports::CustomerAssociationSoapOut,
+        pub body: Option<ports::CustomerAssociationSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -5512,7 +5512,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCustomerSearchSoapOut {
         #[yaserde(rename = "CustomerSearchResponse", default)]
-        pub body: ports::CustomerSearchSoapOut,
+        pub body: Option<ports::CustomerSearchSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -5596,7 +5596,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapDeleteCustomerSoapOut {
         #[yaserde(rename = "DeleteCustomerResponse", default)]
-        pub body: ports::DeleteCustomerSoapOut,
+        pub body: Option<ports::DeleteCustomerSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -5680,7 +5680,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetAllCustomersSoapOut {
         #[yaserde(rename = "GetAllCustomersResponse", default)]
-        pub body: ports::GetAllCustomersSoapOut,
+        pub body: Option<ports::GetAllCustomersSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -5764,7 +5764,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustSQLColumnsSoapOut {
         #[yaserde(rename = "GetCustSQLColumnsResponse", default)]
-        pub body: ports::GetCustSQLColumnsSoapOut,
+        pub body: Option<ports::GetCustSQLColumnsSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -5848,7 +5848,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustomFieldTemplatesSoapOut {
         #[yaserde(rename = "GetCustomFieldTemplatesResponse", default)]
-        pub body: ports::GetCustomFieldTemplatesSoapOut,
+        pub body: Option<ports::GetCustomFieldTemplatesSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -5932,7 +5932,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustomerByContactIdSoapOut {
         #[yaserde(rename = "GetCustomerByContactIdResponse", default)]
-        pub body: ports::GetCustomerByContactIdSoapOut,
+        pub body: Option<ports::GetCustomerByContactIdSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -6016,7 +6016,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustomerByEmailSoapOut {
         #[yaserde(rename = "GetCustomerByEmailResponse", default)]
-        pub body: ports::GetCustomerByEmailSoapOut,
+        pub body: Option<ports::GetCustomerByEmailSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -6100,7 +6100,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustomerByNameSoapOut {
         #[yaserde(rename = "GetCustomerByNameResponse", default)]
-        pub body: ports::GetCustomerByNameSoapOut,
+        pub body: Option<ports::GetCustomerByNameSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -6184,7 +6184,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustomerByPhoneNumberSoapOut {
         #[yaserde(rename = "GetCustomerByPhoneNumberResponse", default)]
-        pub body: ports::GetCustomerByPhoneNumberSoapOut,
+        pub body: Option<ports::GetCustomerByPhoneNumberSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -6268,7 +6268,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustomerBySipUriSoapOut {
         #[yaserde(rename = "GetCustomerBySipUriResponse", default)]
-        pub body: ports::GetCustomerBySipUriSoapOut,
+        pub body: Option<ports::GetCustomerBySipUriSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -6352,7 +6352,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustomerByUserNameSoapOut {
         #[yaserde(rename = "GetCustomerByUserNameResponse", default)]
-        pub body: ports::GetCustomerByUserNameSoapOut,
+        pub body: Option<ports::GetCustomerByUserNameSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -6436,7 +6436,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetNoCustContactsByTimeSoapOut {
         #[yaserde(rename = "GetNoCustContactsByTimeResponse", default)]
-        pub body: ports::GetNoCustContactsByTimeSoapOut,
+        pub body: Option<ports::GetNoCustContactsByTimeSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -6520,7 +6520,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetSearchableFieldsSoapOut {
         #[yaserde(rename = "GetSearchableFieldsResponse", default)]
-        pub body: ports::GetSearchableFieldsSoapOut,
+        pub body: Option<ports::GetSearchableFieldsSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -6604,7 +6604,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapImpersonateCustomerSoapOut {
         #[yaserde(rename = "ImpersonateCustomerResponse", default)]
-        pub body: ports::ImpersonateCustomerSoapOut,
+        pub body: Option<ports::ImpersonateCustomerSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -6688,7 +6688,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapReadCustomerSoapOut {
         #[yaserde(rename = "ReadCustomerResponse", default)]
-        pub body: ports::ReadCustomerSoapOut,
+        pub body: Option<ports::ReadCustomerSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -6772,7 +6772,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapReadCustomerHistorySoapOut {
         #[yaserde(rename = "ReadCustomerHistoryResponse", default)]
-        pub body: ports::ReadCustomerHistorySoapOut,
+        pub body: Option<ports::ReadCustomerHistorySoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -6856,7 +6856,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRegisterAnonymousCustomerSoapOut {
         #[yaserde(rename = "RegisterAnonymousCustomerResponse", default)]
-        pub body: ports::RegisterAnonymousCustomerSoapOut,
+        pub body: Option<ports::RegisterAnonymousCustomerSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -6940,7 +6940,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRegisterCustomerSoapOut {
         #[yaserde(rename = "RegisterCustomerResponse", default)]
-        pub body: ports::RegisterCustomerSoapOut,
+        pub body: Option<ports::RegisterCustomerSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -7024,7 +7024,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRemoveAddressSoapOut {
         #[yaserde(rename = "RemoveAddressResponse", default)]
-        pub body: ports::RemoveAddressSoapOut,
+        pub body: Option<ports::RemoveAddressSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -7108,7 +7108,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRemoveContactSoapOut {
         #[yaserde(rename = "RemoveContactResponse", default)]
-        pub body: ports::RemoveContactSoapOut,
+        pub body: Option<ports::RemoveContactSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -7192,7 +7192,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRemoveCustomFieldSoapOut {
         #[yaserde(rename = "RemoveCustomFieldResponse", default)]
-        pub body: ports::RemoveCustomFieldSoapOut,
+        pub body: Option<ports::RemoveCustomFieldSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -7276,7 +7276,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRemoveEmailAddressSoapOut {
         #[yaserde(rename = "RemoveEmailAddressResponse", default)]
-        pub body: ports::RemoveEmailAddressSoapOut,
+        pub body: Option<ports::RemoveEmailAddressSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -7360,7 +7360,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRemovePhoneNumberSoapOut {
         #[yaserde(rename = "RemovePhoneNumberResponse", default)]
-        pub body: ports::RemovePhoneNumberSoapOut,
+        pub body: Option<ports::RemovePhoneNumberSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -7444,7 +7444,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRemoveSipUriSoapOut {
         #[yaserde(rename = "RemoveSipUriResponse", default)]
-        pub body: ports::RemoveSipUriSoapOut,
+        pub body: Option<ports::RemoveSipUriSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -7528,7 +7528,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapSendADPasswordReminderSoapOut {
         #[yaserde(rename = "SendADPasswordReminderResponse", default)]
-        pub body: ports::SendADPasswordReminderSoapOut,
+        pub body: Option<ports::SendADPasswordReminderSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -7612,7 +7612,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapSendPasswordReminderSoapOut {
         #[yaserde(rename = "SendPasswordReminderResponse", default)]
-        pub body: ports::SendPasswordReminderSoapOut,
+        pub body: Option<ports::SendPasswordReminderSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -7696,7 +7696,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapSetAgentIDSoapOut {
         #[yaserde(rename = "SetAgentIDResponse", default)]
-        pub body: ports::SetAgentIDSoapOut,
+        pub body: Option<ports::SetAgentIDSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -7780,7 +7780,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateCustomerSoapOut {
         #[yaserde(rename = "UpdateCustomerResponse", default)]
-        pub body: ports::UpdateCustomerSoapOut,
+        pub body: Option<ports::UpdateCustomerSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -7864,7 +7864,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateFirstNameSoapOut {
         #[yaserde(rename = "UpdateFirstNameResponse", default)]
-        pub body: ports::UpdateFirstNameSoapOut,
+        pub body: Option<ports::UpdateFirstNameSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -7948,7 +7948,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateLastNameSoapOut {
         #[yaserde(rename = "UpdateLastNameResponse", default)]
-        pub body: ports::UpdateLastNameSoapOut,
+        pub body: Option<ports::UpdateLastNameSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -8032,7 +8032,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateLoginPageSoapOut {
         #[yaserde(rename = "UpdateLoginPageResponse", default)]
-        pub body: ports::UpdateLoginPageSoapOut,
+        pub body: Option<ports::UpdateLoginPageSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -8116,7 +8116,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateObjectionSoapOut {
         #[yaserde(rename = "UpdateObjectionResponse", default)]
-        pub body: ports::UpdateObjectionSoapOut,
+        pub body: Option<ports::UpdateObjectionSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -8200,7 +8200,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdatePasswordSoapOut {
         #[yaserde(rename = "UpdatePasswordResponse", default)]
-        pub body: ports::UpdatePasswordSoapOut,
+        pub body: Option<ports::UpdatePasswordSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -8284,7 +8284,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdatePreferredAgentSoapOut {
         #[yaserde(rename = "UpdatePreferredAgentResponse", default)]
-        pub body: ports::UpdatePreferredAgentSoapOut,
+        pub body: Option<ports::UpdatePreferredAgentSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -8368,7 +8368,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateRegisterDateSoapOut {
         #[yaserde(rename = "UpdateRegisterDateResponse", default)]
-        pub body: ports::UpdateRegisterDateSoapOut,
+        pub body: Option<ports::UpdateRegisterDateSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -8452,7 +8452,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateTitleSoapOut {
         #[yaserde(rename = "UpdateTitleResponse", default)]
-        pub body: ports::UpdateTitleSoapOut,
+        pub body: Option<ports::UpdateTitleSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -8536,7 +8536,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateUserNameSoapOut {
         #[yaserde(rename = "UpdateUserNameResponse", default)]
-        pub body: ports::UpdateUserNameSoapOut,
+        pub body: Option<ports::UpdateUserNameSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -8626,7 +8626,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -8656,7 +8656,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -8686,7 +8686,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -8716,7 +8716,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -8746,7 +8746,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -8776,7 +8776,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -8806,7 +8806,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -8836,7 +8836,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -8866,7 +8866,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -8898,7 +8898,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -8929,7 +8929,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -8959,7 +8959,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -8989,7 +8989,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9019,7 +9019,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9049,7 +9049,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9081,7 +9081,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9113,7 +9113,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9144,7 +9144,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9174,7 +9174,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9203,7 +9203,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9234,7 +9234,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9266,7 +9266,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9298,7 +9298,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9329,7 +9329,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9360,7 +9360,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9390,7 +9390,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9421,7 +9421,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9450,7 +9450,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9480,7 +9480,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9510,7 +9510,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9540,7 +9540,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9570,7 +9570,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9601,7 +9601,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9631,7 +9631,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9661,7 +9661,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9693,7 +9693,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9725,7 +9725,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9755,7 +9755,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9785,7 +9785,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9815,7 +9815,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9845,7 +9845,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9875,7 +9875,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9905,7 +9905,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9935,7 +9935,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9967,7 +9967,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -9998,7 +9998,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -10028,7 +10028,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -10058,7 +10058,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }

@@ -227,7 +227,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCelsiusToFahrenheitResponse {
         #[yaserde(rename = "CelsiusToFahrenheitResponse", default)]
-        pub body: ports::CelsiusToFahrenheitResponse,
+        pub body: Option<ports::CelsiusToFahrenheitResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -311,7 +311,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapFahrenheitToCelsiusResponse {
         #[yaserde(rename = "FahrenheitToCelsiusResponse", default)]
-        pub body: ports::FahrenheitToCelsiusResponse,
+        pub body: Option<ports::FahrenheitToCelsiusResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -399,7 +399,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -427,7 +427,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }

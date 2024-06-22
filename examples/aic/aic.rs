@@ -907,7 +907,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetResponse {
         #[yaserde(rename = "GetResponse", default)]
-        pub body: ports::GetResponse,
+        pub body: Option<ports::GetResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<ports::SoapAicServiceFault>,
     }
@@ -995,7 +995,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateResponse {
         #[yaserde(rename = "UpdateResponse", default)]
-        pub body: ports::UpdateResponse,
+        pub body: Option<ports::UpdateResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<ports::SoapAicServiceFault>,
     }
@@ -1083,7 +1083,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapDeleteResponse {
         #[yaserde(rename = "DeleteResponse", default)]
-        pub body: ports::DeleteResponse,
+        pub body: Option<ports::DeleteResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<ports::SoapAicServiceFault>,
     }
@@ -1171,7 +1171,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupAgentIdsResponse {
         #[yaserde(rename = "LookupAgentIdsResponse", default)]
-        pub body: ports::LookupAgentIdsResponse,
+        pub body: Option<ports::LookupAgentIdsResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<ports::SoapAicServiceFault>,
     }
@@ -1259,7 +1259,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupLRMIdsResponse {
         #[yaserde(rename = "LookupLRMIdsResponse", default)]
-        pub body: ports::LookupLRMIdsResponse,
+        pub body: Option<ports::LookupLRMIdsResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<ports::SoapAicServiceFault>,
     }
@@ -1347,7 +1347,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupWorkgroupsResponse {
         #[yaserde(rename = "LookupWorkgroupsResponse", default)]
-        pub body: ports::LookupWorkgroupsResponse,
+        pub body: Option<ports::LookupWorkgroupsResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<ports::SoapAicServiceFault>,
     }
@@ -1435,7 +1435,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupDomainsResponse {
         #[yaserde(rename = "LookupDomainsResponse", default)]
-        pub body: ports::LookupDomainsResponse,
+        pub body: Option<ports::LookupDomainsResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<ports::SoapAicServiceFault>,
     }
@@ -1523,7 +1523,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupLinkGroupsResponse {
         #[yaserde(rename = "LookupLinkGroupsResponse", default)]
-        pub body: ports::LookupLinkGroupsResponse,
+        pub body: Option<ports::LookupLinkGroupsResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<ports::SoapAicServiceFault>,
     }
@@ -1611,7 +1611,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupPhoneTypesResponse {
         #[yaserde(rename = "LookupPhoneTypesResponse", default)]
-        pub body: ports::LookupPhoneTypesResponse,
+        pub body: Option<ports::LookupPhoneTypesResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<ports::SoapAicServiceFault>,
     }
@@ -1699,7 +1699,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupSitesResponse {
         #[yaserde(rename = "LookupSitesResponse", default)]
-        pub body: ports::LookupSitesResponse,
+        pub body: Option<ports::LookupSitesResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<ports::SoapAicServiceFault>,
     }
@@ -1787,7 +1787,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCreateResponse {
         #[yaserde(rename = "CreateResponse", default)]
-        pub body: ports::CreateResponse,
+        pub body: Option<ports::CreateResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<ports::SoapAicServiceFault>,
     }
@@ -1876,7 +1876,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -1903,7 +1903,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -1930,7 +1930,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -1957,7 +1957,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -1984,7 +1984,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -2011,7 +2011,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -2038,7 +2038,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -2065,7 +2065,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -2092,7 +2092,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -2119,7 +2119,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -2146,7 +2146,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }

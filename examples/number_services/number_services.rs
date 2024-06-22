@@ -231,7 +231,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapNumberToWordsResponse {
         #[yaserde(rename = "NumberToWordsResponse", default)]
-        pub body: ports::NumberToWordsResponse,
+        pub body: Option<ports::NumberToWordsResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -315,7 +315,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapNumberToDollarsResponse {
         #[yaserde(rename = "NumberToDollarsResponse", default)]
-        pub body: ports::NumberToDollarsResponse,
+        pub body: Option<ports::NumberToDollarsResponse>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -403,7 +403,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -431,7 +431,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -512,7 +512,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -540,7 +540,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }

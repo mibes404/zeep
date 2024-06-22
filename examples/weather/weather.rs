@@ -522,7 +522,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetWeatherInformationSoapOut {
         #[yaserde(rename = "GetWeatherInformationResponse", default)]
-        pub body: ports::GetWeatherInformationSoapOut,
+        pub body: Option<ports::GetWeatherInformationSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -606,7 +606,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityForecastByZIPSoapOut {
         #[yaserde(rename = "GetCityForecastByZIPResponse", default)]
-        pub body: ports::GetCityForecastByZIPSoapOut,
+        pub body: Option<ports::GetCityForecastByZIPSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -690,7 +690,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityWeatherByZIPSoapOut {
         #[yaserde(rename = "GetCityWeatherByZIPResponse", default)]
-        pub body: ports::GetCityWeatherByZIPSoapOut,
+        pub body: Option<ports::GetCityWeatherByZIPSoapOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -782,7 +782,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -814,7 +814,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -845,7 +845,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -930,7 +930,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -962,7 +962,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -993,7 +993,7 @@ pub mod bindings {
                 None
             })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -1070,7 +1070,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetWeatherInformationHttpGetOut {
         #[yaserde(rename = "ArrayOfWeatherDescription", default)]
-        pub body: ports::GetWeatherInformationHttpGetOut,
+        pub body: Option<ports::GetWeatherInformationHttpGetOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -1154,7 +1154,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityForecastByZIPHttpGetOut {
         #[yaserde(rename = "ForecastReturn", default)]
-        pub body: ports::GetCityForecastByZIPHttpGetOut,
+        pub body: Option<ports::GetCityForecastByZIPHttpGetOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -1238,7 +1238,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityWeatherByZIPHttpGetOut {
         #[yaserde(rename = "WeatherReturn", default)]
-        pub body: ports::GetCityWeatherByZIPHttpGetOut,
+        pub body: Option<ports::GetCityWeatherByZIPHttpGetOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -1331,7 +1331,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -1363,7 +1363,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -1395,7 +1395,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -1472,7 +1472,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetWeatherInformationHttpPostOut {
         #[yaserde(rename = "ArrayOfWeatherDescription", default)]
-        pub body: ports::GetWeatherInformationHttpPostOut,
+        pub body: Option<ports::GetWeatherInformationHttpPostOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -1556,7 +1556,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityForecastByZIPHttpPostOut {
         #[yaserde(rename = "ForecastReturn", default)]
-        pub body: ports::GetCityForecastByZIPHttpPostOut,
+        pub body: Option<ports::GetCityForecastByZIPHttpPostOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -1640,7 +1640,7 @@ pub mod bindings {
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityWeatherByZIPHttpPostOut {
         #[yaserde(rename = "WeatherReturn", default)]
-        pub body: ports::GetCityWeatherByZIPHttpPostOut,
+        pub body: Option<ports::GetCityWeatherByZIPHttpPostOut>,
         #[yaserde(rename = "Fault", default)]
         pub fault: Option<SoapFault>,
     }
@@ -1733,7 +1733,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -1766,7 +1766,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
@@ -1798,7 +1798,7 @@ pub mod bindings {
                     None
                 })?;
             if status.is_success() {
-                Ok(r.body.body)
+                Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
