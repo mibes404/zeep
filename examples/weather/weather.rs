@@ -44,7 +44,7 @@ impl std::fmt::Display for SoapFault {
 pub type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
 
 pub mod messages {
-    use super::{Write, types};
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -154,7 +154,7 @@ pub mod messages {
 }
 
 pub mod types {
-    use super::Write;
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -357,7 +357,7 @@ pub mod types {
 }
 
 pub mod ports {
-    use super::{SoapFault, messages};
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -446,7 +446,7 @@ pub mod ports {
 }
 
 pub mod bindings {
-    use super::{Header, SOAP_ENCODING, SoapFault, SoapResponse, Write, debug, ports, warn};
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -467,10 +467,7 @@ pub mod bindings {
                 .header("Content-Type", "text/xml")
                 .header("Soapaction", action);
             if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::Some(credentials.1.to_string()),
-                );
+                req = req.basic_auth(credentials.0.to_string(), Some(credentials.1.to_string()));
             }
             let res = req.send().await?;
             let status = res.status();
@@ -513,7 +510,7 @@ pub mod bindings {
         pub fn new(body: SoapGetWeatherInformationSoapIn) -> Self {
             GetWeatherInformationSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -555,7 +552,7 @@ pub mod bindings {
         pub fn new(body: SoapGetWeatherInformationSoapOut) -> Self {
             GetWeatherInformationSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -597,7 +594,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCityForecastByZIPSoapIn) -> Self {
             GetCityForecastByZIPSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -639,7 +636,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCityForecastByZIPSoapOut) -> Self {
             GetCityForecastByZIPSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -681,7 +678,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCityWeatherByZIPSoapIn) -> Self {
             GetCityWeatherByZIPSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -723,7 +720,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCityWeatherByZIPSoapOut) -> Self {
             GetCityWeatherByZIPSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -737,7 +734,7 @@ pub mod bindings {
             WeatherSoap {
                 client: reqwest::Client::new(),
                 url: "http://ws.cdyne.com/WeatherWS/".to_string(),
-                credentials: Option::None,
+                credentials: None,
             }
         }
     }
@@ -765,7 +762,7 @@ pub mod bindings {
             let __request =
                 GetWeatherInformationSoapInSoapEnvelope::new(SoapGetWeatherInformationSoapIn {
                     body: get_weather_information_soap_in,
-                    xmlns: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 });
 
             let (status, response) = self
@@ -797,7 +794,7 @@ pub mod bindings {
             let __request =
                 GetCityForecastByZIPSoapInSoapEnvelope::new(SoapGetCityForecastByZIPSoapIn {
                     body: get_city_forecast_by_zip_soap_in,
-                    xmlns: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 });
 
             let (status, response) = self
@@ -829,7 +826,7 @@ pub mod bindings {
             let __request =
                 GetCityWeatherByZIPSoapInSoapEnvelope::new(SoapGetCityWeatherByZIPSoapIn {
                     body: get_city_weather_by_zip_soap_in,
-                    xmlns: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 });
 
             let (status, response) = self
@@ -870,10 +867,7 @@ pub mod bindings {
                 .header("Content-Type", "text/xml")
                 .header("Soapaction", action);
             if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::Some(credentials.1.to_string()),
-                );
+                req = req.basic_auth(credentials.0.to_string(), Some(credentials.1.to_string()));
             }
             let res = req.send().await?;
             let status = res.status();
@@ -888,7 +882,7 @@ pub mod bindings {
             WeatherSoap12 {
                 client: reqwest::Client::new(),
                 url: "http://ws.cdyne.com/WeatherWS/".to_string(),
-                credentials: Option::None,
+                credentials: None,
             }
         }
     }
@@ -916,7 +910,7 @@ pub mod bindings {
             let __request =
                 GetWeatherInformationSoapInSoapEnvelope::new(SoapGetWeatherInformationSoapIn {
                     body: get_weather_information_soap_in,
-                    xmlns: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 });
 
             let (status, response) = self
@@ -948,7 +942,7 @@ pub mod bindings {
             let __request =
                 GetCityForecastByZIPSoapInSoapEnvelope::new(SoapGetCityForecastByZIPSoapIn {
                     body: get_city_forecast_by_zip_soap_in,
-                    xmlns: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 });
 
             let (status, response) = self
@@ -980,7 +974,7 @@ pub mod bindings {
             let __request =
                 GetCityWeatherByZIPSoapInSoapEnvelope::new(SoapGetCityWeatherByZIPSoapIn {
                     body: get_city_weather_by_zip_soap_in,
-                    xmlns: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 });
 
             let (status, response) = self
@@ -1021,10 +1015,7 @@ pub mod bindings {
                 .header("Content-Type", "text/xml")
                 .header("Soapaction", action);
             if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::Some(credentials.1.to_string()),
-                );
+                req = req.basic_auth(credentials.0.to_string(), Some(credentials.1.to_string()));
             }
             let res = req.send().await?;
             let status = res.status();
@@ -1067,7 +1058,7 @@ pub mod bindings {
         pub fn new(body: SoapGetWeatherInformationHttpGetIn) -> Self {
             GetWeatherInformationHttpGetInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -1109,7 +1100,7 @@ pub mod bindings {
         pub fn new(body: SoapGetWeatherInformationHttpGetOut) -> Self {
             GetWeatherInformationHttpGetOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -1151,7 +1142,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCityForecastByZIPHttpGetIn) -> Self {
             GetCityForecastByZIPHttpGetInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -1193,7 +1184,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCityForecastByZIPHttpGetOut) -> Self {
             GetCityForecastByZIPHttpGetOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -1235,7 +1226,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCityWeatherByZIPHttpGetIn) -> Self {
             GetCityWeatherByZIPHttpGetInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -1277,7 +1268,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCityWeatherByZIPHttpGetOut) -> Self {
             GetCityWeatherByZIPHttpGetOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -1291,7 +1282,7 @@ pub mod bindings {
             WeatherHttpGet {
                 client: reqwest::Client::new(),
                 url: "http://ws.cdyne.com/WeatherWS/".to_string(),
-                credentials: Option::None,
+                credentials: None,
             }
         }
     }
@@ -1319,7 +1310,7 @@ pub mod bindings {
             let __request = GetWeatherInformationHttpGetInSoapEnvelope::new(
                 SoapGetWeatherInformationHttpGetIn {
                     body: get_weather_information_http_get_in,
-                    xmlns: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 },
             );
 
@@ -1352,7 +1343,7 @@ pub mod bindings {
             let __request =
                 GetCityForecastByZIPHttpGetInSoapEnvelope::new(SoapGetCityForecastByZIPHttpGetIn {
                     body: get_city_forecast_by_zip_http_get_in,
-                    xmlns: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 });
 
             let (status, response) = self
@@ -1384,7 +1375,7 @@ pub mod bindings {
             let __request =
                 GetCityWeatherByZIPHttpGetInSoapEnvelope::new(SoapGetCityWeatherByZIPHttpGetIn {
                     body: get_city_weather_by_zip_http_get_in,
-                    xmlns: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 });
 
             let (status, response) = self
@@ -1426,10 +1417,7 @@ pub mod bindings {
                 .header("Content-Type", "text/xml")
                 .header("Soapaction", action);
             if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::Some(credentials.1.to_string()),
-                );
+                req = req.basic_auth(credentials.0.to_string(), Some(credentials.1.to_string()));
             }
             let res = req.send().await?;
             let status = res.status();
@@ -1472,7 +1460,7 @@ pub mod bindings {
         pub fn new(body: SoapGetWeatherInformationHttpPostIn) -> Self {
             GetWeatherInformationHttpPostInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -1514,7 +1502,7 @@ pub mod bindings {
         pub fn new(body: SoapGetWeatherInformationHttpPostOut) -> Self {
             GetWeatherInformationHttpPostOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -1556,7 +1544,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCityForecastByZIPHttpPostIn) -> Self {
             GetCityForecastByZIPHttpPostInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -1598,7 +1586,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCityForecastByZIPHttpPostOut) -> Self {
             GetCityForecastByZIPHttpPostOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -1640,7 +1628,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCityWeatherByZIPHttpPostIn) -> Self {
             GetCityWeatherByZIPHttpPostInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -1682,7 +1670,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCityWeatherByZIPHttpPostOut) -> Self {
             GetCityWeatherByZIPHttpPostOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                tnsattr: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -1696,7 +1684,7 @@ pub mod bindings {
             WeatherHttpPost {
                 client: reqwest::Client::new(),
                 url: "http://ws.cdyne.com/WeatherWS/".to_string(),
-                credentials: Option::None,
+                credentials: None,
             }
         }
     }
@@ -1724,7 +1712,7 @@ pub mod bindings {
             let __request = GetWeatherInformationHttpPostInSoapEnvelope::new(
                 SoapGetWeatherInformationHttpPostIn {
                     body: get_weather_information_http_post_in,
-                    xmlns: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 },
             );
 
@@ -1757,7 +1745,7 @@ pub mod bindings {
             let __request = GetCityForecastByZIPHttpPostInSoapEnvelope::new(
                 SoapGetCityForecastByZIPHttpPostIn {
                     body: get_city_forecast_by_zip_http_post_in,
-                    xmlns: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 },
             );
 
@@ -1790,7 +1778,7 @@ pub mod bindings {
             let __request =
                 GetCityWeatherByZIPHttpPostInSoapEnvelope::new(SoapGetCityWeatherByZIPHttpPostIn {
                     body: get_city_weather_by_zip_http_post_in,
-                    xmlns: Option::Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
                 });
 
             let (status, response) = self
@@ -1819,7 +1807,7 @@ pub mod bindings {
 }
 
 pub mod services {
-    use super::bindings;
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;

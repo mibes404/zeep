@@ -10,7 +10,7 @@ async fn main() {
     env_logger::init();
 
     // -- this is not giving a response at the moment; SQL error...
-    let w = Weather::new_client(Option::None);
+    let w = Weather::new_client(None);
     let w_info = w
         .get_weather_information(GetWeatherInformationSoapIn {
             parameters: GetWeatherInformation {},

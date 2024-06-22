@@ -176,10 +176,7 @@ pub mod bindings {
                 .header("Content-Type", "text/xml")
                 .header("Soapaction", action);
             if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::Some(credentials.1.to_string()),
-                );
+                req = req.basic_auth(credentials.0.to_string(), Some(credentials.1.to_string()));
             }
             let res = req.send().await?;
             let status = res.status();
@@ -222,7 +219,7 @@ pub mod bindings {
         pub fn new(body: SoapNumberToWordsSoapRequest) -> Self {
             NumberToWordsSoapRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://www.dataaccess.com/webservicesserver/".to_string()),
+                tnsattr: Some("http://www.dataaccess.com/webservicesserver/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -264,7 +261,7 @@ pub mod bindings {
         pub fn new(body: SoapNumberToWordsResponse) -> Self {
             NumberToWordsResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://www.dataaccess.com/webservicesserver/".to_string()),
+                tnsattr: Some("http://www.dataaccess.com/webservicesserver/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -306,7 +303,7 @@ pub mod bindings {
         pub fn new(body: SoapNumberToDollarsSoapRequest) -> Self {
             NumberToDollarsSoapRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://www.dataaccess.com/webservicesserver/".to_string()),
+                tnsattr: Some("http://www.dataaccess.com/webservicesserver/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -348,7 +345,7 @@ pub mod bindings {
         pub fn new(body: SoapNumberToDollarsResponse) -> Self {
             NumberToDollarsResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://www.dataaccess.com/webservicesserver/".to_string()),
+                tnsattr: Some("http://www.dataaccess.com/webservicesserver/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -362,7 +359,7 @@ pub mod bindings {
             NumberConversionSoapBinding {
                 client: reqwest::Client::new(),
                 url: "http://www.dataaccess.com/webservicesserver/".to_string(),
-                credentials: Option::None,
+                credentials: None,
             }
         }
     }
@@ -390,7 +387,7 @@ pub mod bindings {
             let __request =
                 NumberToWordsSoapRequestSoapEnvelope::new(SoapNumberToWordsSoapRequest {
                     body: number_to_words_soap_request,
-                    xmlns: Option::Some("http://www.dataaccess.com/webservicesserver/".to_string()),
+                    xmlns: Some("http://www.dataaccess.com/webservicesserver/".to_string()),
                 });
 
             let (status, response) =
@@ -418,7 +415,7 @@ pub mod bindings {
             let __request =
                 NumberToDollarsSoapRequestSoapEnvelope::new(SoapNumberToDollarsSoapRequest {
                     body: number_to_dollars_soap_request,
-                    xmlns: Option::Some("http://www.dataaccess.com/webservicesserver/".to_string()),
+                    xmlns: Some("http://www.dataaccess.com/webservicesserver/".to_string()),
                 });
 
             let (status, response) =
@@ -456,10 +453,7 @@ pub mod bindings {
                 .header("Content-Type", "text/xml")
                 .header("Soapaction", action);
             if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::Some(credentials.1.to_string()),
-                );
+                req = req.basic_auth(credentials.0.to_string(), Some(credentials.1.to_string()));
             }
             let res = req.send().await?;
             let status = res.status();
@@ -474,7 +468,7 @@ pub mod bindings {
             NumberConversionSoapBinding12 {
                 client: reqwest::Client::new(),
                 url: "http://www.dataaccess.com/webservicesserver/".to_string(),
-                credentials: Option::None,
+                credentials: None,
             }
         }
     }
@@ -502,7 +496,7 @@ pub mod bindings {
             let __request =
                 NumberToWordsSoapRequestSoapEnvelope::new(SoapNumberToWordsSoapRequest {
                     body: number_to_words_soap_request,
-                    xmlns: Option::Some("http://www.dataaccess.com/webservicesserver/".to_string()),
+                    xmlns: Some("http://www.dataaccess.com/webservicesserver/".to_string()),
                 });
 
             let (status, response) =
@@ -530,7 +524,7 @@ pub mod bindings {
             let __request =
                 NumberToDollarsSoapRequestSoapEnvelope::new(SoapNumberToDollarsSoapRequest {
                     body: number_to_dollars_soap_request,
-                    xmlns: Option::Some("http://www.dataaccess.com/webservicesserver/".to_string()),
+                    xmlns: Some("http://www.dataaccess.com/webservicesserver/".to_string()),
                 });
 
             let (status, response) =

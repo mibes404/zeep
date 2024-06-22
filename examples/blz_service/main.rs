@@ -6,7 +6,7 @@ mod blz;
 async fn main() {
     env_logger::init();
 
-    let blz_service = Blzservice::new_client(Option::None);
+    let blz_service = Blzservice::new_client(None);
 
     let bank = blz_service
         .get_bank(GetBank {

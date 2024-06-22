@@ -44,7 +44,7 @@ impl std::fmt::Display for SoapFault {
 pub type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
 
 pub mod messages {
-    use super::{Write, types};
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -628,7 +628,7 @@ pub mod messages {
 }
 
 pub mod types {
-    use super::{Write, multiref};
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -4117,7 +4117,7 @@ pub mod types {
 }
 
 pub mod ports {
-    use super::{SoapFault, messages};
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -4512,7 +4512,7 @@ pub mod ports {
 }
 
 pub mod bindings {
-    use super::{Header, SOAP_ENCODING, SoapFault, SoapResponse, Write, debug, ports, warn};
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -4533,10 +4533,7 @@ pub mod bindings {
                 .header("Content-Type", "text/xml")
                 .header("Soapaction", action);
             if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::Some(credentials.1.to_string()),
-                );
+                req = req.basic_auth(credentials.0.to_string(), Some(credentials.1.to_string()));
             }
             let res = req.send().await?;
             let status = res.status();
@@ -4579,7 +4576,7 @@ pub mod bindings {
         pub fn new(body: SoapAddAddressSoapIn) -> Self {
             AddAddressSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -4621,7 +4618,7 @@ pub mod bindings {
         pub fn new(body: SoapAddAddressSoapOut) -> Self {
             AddAddressSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -4663,7 +4660,7 @@ pub mod bindings {
         pub fn new(body: SoapAddContactSoapIn) -> Self {
             AddContactSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -4705,7 +4702,7 @@ pub mod bindings {
         pub fn new(body: SoapAddContactSoapOut) -> Self {
             AddContactSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -4747,7 +4744,7 @@ pub mod bindings {
         pub fn new(body: SoapAddCustomFieldSoapIn) -> Self {
             AddCustomFieldSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -4789,7 +4786,7 @@ pub mod bindings {
         pub fn new(body: SoapAddCustomFieldSoapOut) -> Self {
             AddCustomFieldSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -4831,7 +4828,7 @@ pub mod bindings {
         pub fn new(body: SoapAddEmailAddressSoapIn) -> Self {
             AddEmailAddressSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -4873,7 +4870,7 @@ pub mod bindings {
         pub fn new(body: SoapAddEmailAddressSoapOut) -> Self {
             AddEmailAddressSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -4915,7 +4912,7 @@ pub mod bindings {
         pub fn new(body: SoapAddPhoneNumberSoapIn) -> Self {
             AddPhoneNumberSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -4957,7 +4954,7 @@ pub mod bindings {
         pub fn new(body: SoapAddPhoneNumberSoapOut) -> Self {
             AddPhoneNumberSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -4999,7 +4996,7 @@ pub mod bindings {
         pub fn new(body: SoapAddSipUriSoapIn) -> Self {
             AddSipUriSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5041,7 +5038,7 @@ pub mod bindings {
         pub fn new(body: SoapAddSipUriSoapOut) -> Self {
             AddSipUriSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5083,7 +5080,7 @@ pub mod bindings {
         pub fn new(body: SoapCarbonCopySoapIn) -> Self {
             CarbonCopySoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5125,7 +5122,7 @@ pub mod bindings {
         pub fn new(body: SoapCarbonCopySoapOut) -> Self {
             CarbonCopySoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5167,7 +5164,7 @@ pub mod bindings {
         pub fn new(body: SoapCleanCustomerSoapIn) -> Self {
             CleanCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5209,7 +5206,7 @@ pub mod bindings {
         pub fn new(body: SoapCleanCustomerSoapOut) -> Self {
             CleanCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5251,7 +5248,7 @@ pub mod bindings {
         pub fn new(body: SoapCreateCustomerSoapIn) -> Self {
             CreateCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5293,7 +5290,7 @@ pub mod bindings {
         pub fn new(body: SoapCreateCustomerSoapOut) -> Self {
             CreateCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5335,7 +5332,7 @@ pub mod bindings {
         pub fn new(body: SoapCreateCustomerBySipUriSoapIn) -> Self {
             CreateCustomerBySipUriSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5377,7 +5374,7 @@ pub mod bindings {
         pub fn new(body: SoapCreateCustomerBySipUriSoapOut) -> Self {
             CreateCustomerBySipUriSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5419,7 +5416,7 @@ pub mod bindings {
         pub fn new(body: SoapCustomerAssociationSoapIn) -> Self {
             CustomerAssociationSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5461,7 +5458,7 @@ pub mod bindings {
         pub fn new(body: SoapCustomerAssociationSoapOut) -> Self {
             CustomerAssociationSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5503,7 +5500,7 @@ pub mod bindings {
         pub fn new(body: SoapCustomerSearchSoapIn) -> Self {
             CustomerSearchSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5545,7 +5542,7 @@ pub mod bindings {
         pub fn new(body: SoapCustomerSearchSoapOut) -> Self {
             CustomerSearchSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5587,7 +5584,7 @@ pub mod bindings {
         pub fn new(body: SoapDeleteCustomerSoapIn) -> Self {
             DeleteCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5629,7 +5626,7 @@ pub mod bindings {
         pub fn new(body: SoapDeleteCustomerSoapOut) -> Self {
             DeleteCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5671,7 +5668,7 @@ pub mod bindings {
         pub fn new(body: SoapGetAllCustomersSoapIn) -> Self {
             GetAllCustomersSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5713,7 +5710,7 @@ pub mod bindings {
         pub fn new(body: SoapGetAllCustomersSoapOut) -> Self {
             GetAllCustomersSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5755,7 +5752,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustSQLColumnsSoapIn) -> Self {
             GetCustSQLColumnsSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5797,7 +5794,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustSQLColumnsSoapOut) -> Self {
             GetCustSQLColumnsSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5839,7 +5836,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustomFieldTemplatesSoapIn) -> Self {
             GetCustomFieldTemplatesSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5881,7 +5878,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustomFieldTemplatesSoapOut) -> Self {
             GetCustomFieldTemplatesSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5923,7 +5920,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustomerByContactIdSoapIn) -> Self {
             GetCustomerByContactIdSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -5965,7 +5962,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustomerByContactIdSoapOut) -> Self {
             GetCustomerByContactIdSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6007,7 +6004,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustomerByEmailSoapIn) -> Self {
             GetCustomerByEmailSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6049,7 +6046,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustomerByEmailSoapOut) -> Self {
             GetCustomerByEmailSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6091,7 +6088,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustomerByNameSoapIn) -> Self {
             GetCustomerByNameSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6133,7 +6130,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustomerByNameSoapOut) -> Self {
             GetCustomerByNameSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6175,7 +6172,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustomerByPhoneNumberSoapIn) -> Self {
             GetCustomerByPhoneNumberSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6217,7 +6214,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustomerByPhoneNumberSoapOut) -> Self {
             GetCustomerByPhoneNumberSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6259,7 +6256,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustomerBySipUriSoapIn) -> Self {
             GetCustomerBySipUriSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6301,7 +6298,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustomerBySipUriSoapOut) -> Self {
             GetCustomerBySipUriSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6343,7 +6340,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustomerByUserNameSoapIn) -> Self {
             GetCustomerByUserNameSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6385,7 +6382,7 @@ pub mod bindings {
         pub fn new(body: SoapGetCustomerByUserNameSoapOut) -> Self {
             GetCustomerByUserNameSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6427,7 +6424,7 @@ pub mod bindings {
         pub fn new(body: SoapGetNoCustContactsByTimeSoapIn) -> Self {
             GetNoCustContactsByTimeSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6469,7 +6466,7 @@ pub mod bindings {
         pub fn new(body: SoapGetNoCustContactsByTimeSoapOut) -> Self {
             GetNoCustContactsByTimeSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6511,7 +6508,7 @@ pub mod bindings {
         pub fn new(body: SoapGetSearchableFieldsSoapIn) -> Self {
             GetSearchableFieldsSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6553,7 +6550,7 @@ pub mod bindings {
         pub fn new(body: SoapGetSearchableFieldsSoapOut) -> Self {
             GetSearchableFieldsSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6595,7 +6592,7 @@ pub mod bindings {
         pub fn new(body: SoapImpersonateCustomerSoapIn) -> Self {
             ImpersonateCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6637,7 +6634,7 @@ pub mod bindings {
         pub fn new(body: SoapImpersonateCustomerSoapOut) -> Self {
             ImpersonateCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6679,7 +6676,7 @@ pub mod bindings {
         pub fn new(body: SoapReadCustomerSoapIn) -> Self {
             ReadCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6721,7 +6718,7 @@ pub mod bindings {
         pub fn new(body: SoapReadCustomerSoapOut) -> Self {
             ReadCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6763,7 +6760,7 @@ pub mod bindings {
         pub fn new(body: SoapReadCustomerHistorySoapIn) -> Self {
             ReadCustomerHistorySoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6805,7 +6802,7 @@ pub mod bindings {
         pub fn new(body: SoapReadCustomerHistorySoapOut) -> Self {
             ReadCustomerHistorySoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6847,7 +6844,7 @@ pub mod bindings {
         pub fn new(body: SoapRegisterAnonymousCustomerSoapIn) -> Self {
             RegisterAnonymousCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6889,7 +6886,7 @@ pub mod bindings {
         pub fn new(body: SoapRegisterAnonymousCustomerSoapOut) -> Self {
             RegisterAnonymousCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6931,7 +6928,7 @@ pub mod bindings {
         pub fn new(body: SoapRegisterCustomerSoapIn) -> Self {
             RegisterCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -6973,7 +6970,7 @@ pub mod bindings {
         pub fn new(body: SoapRegisterCustomerSoapOut) -> Self {
             RegisterCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7015,7 +7012,7 @@ pub mod bindings {
         pub fn new(body: SoapRemoveAddressSoapIn) -> Self {
             RemoveAddressSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7057,7 +7054,7 @@ pub mod bindings {
         pub fn new(body: SoapRemoveAddressSoapOut) -> Self {
             RemoveAddressSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7099,7 +7096,7 @@ pub mod bindings {
         pub fn new(body: SoapRemoveContactSoapIn) -> Self {
             RemoveContactSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7141,7 +7138,7 @@ pub mod bindings {
         pub fn new(body: SoapRemoveContactSoapOut) -> Self {
             RemoveContactSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7183,7 +7180,7 @@ pub mod bindings {
         pub fn new(body: SoapRemoveCustomFieldSoapIn) -> Self {
             RemoveCustomFieldSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7225,7 +7222,7 @@ pub mod bindings {
         pub fn new(body: SoapRemoveCustomFieldSoapOut) -> Self {
             RemoveCustomFieldSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7267,7 +7264,7 @@ pub mod bindings {
         pub fn new(body: SoapRemoveEmailAddressSoapIn) -> Self {
             RemoveEmailAddressSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7309,7 +7306,7 @@ pub mod bindings {
         pub fn new(body: SoapRemoveEmailAddressSoapOut) -> Self {
             RemoveEmailAddressSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7351,7 +7348,7 @@ pub mod bindings {
         pub fn new(body: SoapRemovePhoneNumberSoapIn) -> Self {
             RemovePhoneNumberSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7393,7 +7390,7 @@ pub mod bindings {
         pub fn new(body: SoapRemovePhoneNumberSoapOut) -> Self {
             RemovePhoneNumberSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7435,7 +7432,7 @@ pub mod bindings {
         pub fn new(body: SoapRemoveSipUriSoapIn) -> Self {
             RemoveSipUriSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7477,7 +7474,7 @@ pub mod bindings {
         pub fn new(body: SoapRemoveSipUriSoapOut) -> Self {
             RemoveSipUriSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7519,7 +7516,7 @@ pub mod bindings {
         pub fn new(body: SoapSendADPasswordReminderSoapIn) -> Self {
             SendADPasswordReminderSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7561,7 +7558,7 @@ pub mod bindings {
         pub fn new(body: SoapSendADPasswordReminderSoapOut) -> Self {
             SendADPasswordReminderSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7603,7 +7600,7 @@ pub mod bindings {
         pub fn new(body: SoapSendPasswordReminderSoapIn) -> Self {
             SendPasswordReminderSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7645,7 +7642,7 @@ pub mod bindings {
         pub fn new(body: SoapSendPasswordReminderSoapOut) -> Self {
             SendPasswordReminderSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7687,7 +7684,7 @@ pub mod bindings {
         pub fn new(body: SoapSetAgentIDSoapIn) -> Self {
             SetAgentIDSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7729,7 +7726,7 @@ pub mod bindings {
         pub fn new(body: SoapSetAgentIDSoapOut) -> Self {
             SetAgentIDSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7771,7 +7768,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateCustomerSoapIn) -> Self {
             UpdateCustomerSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7813,7 +7810,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateCustomerSoapOut) -> Self {
             UpdateCustomerSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7855,7 +7852,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateFirstNameSoapIn) -> Self {
             UpdateFirstNameSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7897,7 +7894,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateFirstNameSoapOut) -> Self {
             UpdateFirstNameSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7939,7 +7936,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateLastNameSoapIn) -> Self {
             UpdateLastNameSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -7981,7 +7978,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateLastNameSoapOut) -> Self {
             UpdateLastNameSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8023,7 +8020,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateLoginPageSoapIn) -> Self {
             UpdateLoginPageSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8065,7 +8062,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateLoginPageSoapOut) -> Self {
             UpdateLoginPageSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8107,7 +8104,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateObjectionSoapIn) -> Self {
             UpdateObjectionSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8149,7 +8146,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateObjectionSoapOut) -> Self {
             UpdateObjectionSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8191,7 +8188,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdatePasswordSoapIn) -> Self {
             UpdatePasswordSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8233,7 +8230,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdatePasswordSoapOut) -> Self {
             UpdatePasswordSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8275,7 +8272,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdatePreferredAgentSoapIn) -> Self {
             UpdatePreferredAgentSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8317,7 +8314,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdatePreferredAgentSoapOut) -> Self {
             UpdatePreferredAgentSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8359,7 +8356,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateRegisterDateSoapIn) -> Self {
             UpdateRegisterDateSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8401,7 +8398,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateRegisterDateSoapOut) -> Self {
             UpdateRegisterDateSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8443,7 +8440,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateTitleSoapIn) -> Self {
             UpdateTitleSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8485,7 +8482,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateTitleSoapOut) -> Self {
             UpdateTitleSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8527,7 +8524,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateUserNameSoapIn) -> Self {
             UpdateUserNameSoapInSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8569,7 +8566,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateUserNameSoapOut) -> Self {
             UpdateUserNameSoapOutSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                tnsattr: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -8583,7 +8580,7 @@ pub mod bindings {
             CustMultimediaSoap {
                 client: reqwest::Client::new(),
                 url: "http://ws.db.ccmm.applications.nortel.com".to_string(),
-                credentials: Option::None,
+                credentials: None,
             }
         }
     }
@@ -8610,7 +8607,7 @@ pub mod bindings {
         ) -> Result<ports::AddAddressSoapOut, Option<SoapFault>> {
             let __request = AddAddressSoapInSoapEnvelope::new(SoapAddAddressSoapIn {
                 body: add_address_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -8640,7 +8637,7 @@ pub mod bindings {
         ) -> Result<ports::AddContactSoapOut, Option<SoapFault>> {
             let __request = AddContactSoapInSoapEnvelope::new(SoapAddContactSoapIn {
                 body: add_contact_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -8670,7 +8667,7 @@ pub mod bindings {
         ) -> Result<ports::AddCustomFieldSoapOut, Option<SoapFault>> {
             let __request = AddCustomFieldSoapInSoapEnvelope::new(SoapAddCustomFieldSoapIn {
                 body: add_custom_field_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -8700,7 +8697,7 @@ pub mod bindings {
         ) -> Result<ports::AddEmailAddressSoapOut, Option<SoapFault>> {
             let __request = AddEmailAddressSoapInSoapEnvelope::new(SoapAddEmailAddressSoapIn {
                 body: add_email_address_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -8730,7 +8727,7 @@ pub mod bindings {
         ) -> Result<ports::AddPhoneNumberSoapOut, Option<SoapFault>> {
             let __request = AddPhoneNumberSoapInSoapEnvelope::new(SoapAddPhoneNumberSoapIn {
                 body: add_phone_number_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -8760,7 +8757,7 @@ pub mod bindings {
         ) -> Result<ports::AddSipUriSoapOut, Option<SoapFault>> {
             let __request = AddSipUriSoapInSoapEnvelope::new(SoapAddSipUriSoapIn {
                 body: add_sip_uri_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -8790,7 +8787,7 @@ pub mod bindings {
         ) -> Result<ports::CarbonCopySoapOut, Option<SoapFault>> {
             let __request = CarbonCopySoapInSoapEnvelope::new(SoapCarbonCopySoapIn {
                 body: carbon_copy_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -8820,7 +8817,7 @@ pub mod bindings {
         ) -> Result<ports::CleanCustomerSoapOut, Option<SoapFault>> {
             let __request = CleanCustomerSoapInSoapEnvelope::new(SoapCleanCustomerSoapIn {
                 body: clean_customer_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -8850,7 +8847,7 @@ pub mod bindings {
         ) -> Result<ports::CreateCustomerSoapOut, Option<SoapFault>> {
             let __request = CreateCustomerSoapInSoapEnvelope::new(SoapCreateCustomerSoapIn {
                 body: create_customer_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -8881,7 +8878,7 @@ pub mod bindings {
             let __request =
                 CreateCustomerBySipUriSoapInSoapEnvelope::new(SoapCreateCustomerBySipUriSoapIn {
                     body: create_customer_by_sip_uri_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -8913,7 +8910,7 @@ pub mod bindings {
             let __request =
                 CustomerAssociationSoapInSoapEnvelope::new(SoapCustomerAssociationSoapIn {
                     body: customer_association_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -8943,7 +8940,7 @@ pub mod bindings {
         ) -> Result<ports::CustomerSearchSoapOut, Option<SoapFault>> {
             let __request = CustomerSearchSoapInSoapEnvelope::new(SoapCustomerSearchSoapIn {
                 body: customer_search_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -8973,7 +8970,7 @@ pub mod bindings {
         ) -> Result<ports::DeleteCustomerSoapOut, Option<SoapFault>> {
             let __request = DeleteCustomerSoapInSoapEnvelope::new(SoapDeleteCustomerSoapIn {
                 body: delete_customer_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9003,7 +9000,7 @@ pub mod bindings {
         ) -> Result<ports::GetAllCustomersSoapOut, Option<SoapFault>> {
             let __request = GetAllCustomersSoapInSoapEnvelope::new(SoapGetAllCustomersSoapIn {
                 body: get_all_customers_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9033,7 +9030,7 @@ pub mod bindings {
         ) -> Result<ports::GetCustSQLColumnsSoapOut, Option<SoapFault>> {
             let __request = GetCustSQLColumnsSoapInSoapEnvelope::new(SoapGetCustSQLColumnsSoapIn {
                 body: get_cust_sql_columns_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9064,7 +9061,7 @@ pub mod bindings {
             let __request =
                 GetCustomFieldTemplatesSoapInSoapEnvelope::new(SoapGetCustomFieldTemplatesSoapIn {
                     body: get_custom_field_templates_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -9096,7 +9093,7 @@ pub mod bindings {
             let __request =
                 GetCustomerByContactIdSoapInSoapEnvelope::new(SoapGetCustomerByContactIdSoapIn {
                     body: get_customer_by_contact_id_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -9128,7 +9125,7 @@ pub mod bindings {
             let __request =
                 GetCustomerByEmailSoapInSoapEnvelope::new(SoapGetCustomerByEmailSoapIn {
                     body: get_customer_by_email_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -9158,7 +9155,7 @@ pub mod bindings {
         ) -> Result<ports::GetCustomerByNameSoapOut, Option<SoapFault>> {
             let __request = GetCustomerByNameSoapInSoapEnvelope::new(SoapGetCustomerByNameSoapIn {
                 body: get_customer_by_name_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9189,7 +9186,7 @@ pub mod bindings {
             let __request = GetCustomerByPhoneNumberSoapInSoapEnvelope::new(
                 SoapGetCustomerByPhoneNumberSoapIn {
                     body: get_customer_by_phone_number_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 },
             );
 
@@ -9218,7 +9215,7 @@ pub mod bindings {
             let __request =
                 GetCustomerBySipUriSoapInSoapEnvelope::new(SoapGetCustomerBySipUriSoapIn {
                     body: get_customer_by_sip_uri_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -9249,7 +9246,7 @@ pub mod bindings {
             let __request =
                 GetCustomerByUserNameSoapInSoapEnvelope::new(SoapGetCustomerByUserNameSoapIn {
                     body: get_customer_by_user_name_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -9281,7 +9278,7 @@ pub mod bindings {
             let __request =
                 GetNoCustContactsByTimeSoapInSoapEnvelope::new(SoapGetNoCustContactsByTimeSoapIn {
                     body: get_no_cust_contacts_by_time_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -9313,7 +9310,7 @@ pub mod bindings {
             let __request =
                 GetSearchableFieldsSoapInSoapEnvelope::new(SoapGetSearchableFieldsSoapIn {
                     body: get_searchable_fields_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -9344,7 +9341,7 @@ pub mod bindings {
             let __request =
                 ImpersonateCustomerSoapInSoapEnvelope::new(SoapImpersonateCustomerSoapIn {
                     body: impersonate_customer_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -9374,7 +9371,7 @@ pub mod bindings {
         ) -> Result<ports::ReadCustomerSoapOut, Option<SoapFault>> {
             let __request = ReadCustomerSoapInSoapEnvelope::new(SoapReadCustomerSoapIn {
                 body: read_customer_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9405,7 +9402,7 @@ pub mod bindings {
             let __request =
                 ReadCustomerHistorySoapInSoapEnvelope::new(SoapReadCustomerHistorySoapIn {
                     body: read_customer_history_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -9436,7 +9433,7 @@ pub mod bindings {
             let __request = RegisterAnonymousCustomerSoapInSoapEnvelope::new(
                 SoapRegisterAnonymousCustomerSoapIn {
                     body: register_anonymous_customer_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 },
             );
 
@@ -9464,7 +9461,7 @@ pub mod bindings {
         ) -> Result<ports::RegisterCustomerSoapOut, Option<SoapFault>> {
             let __request = RegisterCustomerSoapInSoapEnvelope::new(SoapRegisterCustomerSoapIn {
                 body: register_customer_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9494,7 +9491,7 @@ pub mod bindings {
         ) -> Result<ports::RemoveAddressSoapOut, Option<SoapFault>> {
             let __request = RemoveAddressSoapInSoapEnvelope::new(SoapRemoveAddressSoapIn {
                 body: remove_address_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9524,7 +9521,7 @@ pub mod bindings {
         ) -> Result<ports::RemoveContactSoapOut, Option<SoapFault>> {
             let __request = RemoveContactSoapInSoapEnvelope::new(SoapRemoveContactSoapIn {
                 body: remove_contact_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9554,7 +9551,7 @@ pub mod bindings {
         ) -> Result<ports::RemoveCustomFieldSoapOut, Option<SoapFault>> {
             let __request = RemoveCustomFieldSoapInSoapEnvelope::new(SoapRemoveCustomFieldSoapIn {
                 body: remove_custom_field_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9585,7 +9582,7 @@ pub mod bindings {
             let __request =
                 RemoveEmailAddressSoapInSoapEnvelope::new(SoapRemoveEmailAddressSoapIn {
                     body: remove_email_address_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -9615,7 +9612,7 @@ pub mod bindings {
         ) -> Result<ports::RemovePhoneNumberSoapOut, Option<SoapFault>> {
             let __request = RemovePhoneNumberSoapInSoapEnvelope::new(SoapRemovePhoneNumberSoapIn {
                 body: remove_phone_number_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9645,7 +9642,7 @@ pub mod bindings {
         ) -> Result<ports::RemoveSipUriSoapOut, Option<SoapFault>> {
             let __request = RemoveSipUriSoapInSoapEnvelope::new(SoapRemoveSipUriSoapIn {
                 body: remove_sip_uri_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9676,7 +9673,7 @@ pub mod bindings {
             let __request =
                 SendADPasswordReminderSoapInSoapEnvelope::new(SoapSendADPasswordReminderSoapIn {
                     body: send_ad_password_reminder_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -9708,7 +9705,7 @@ pub mod bindings {
             let __request =
                 SendPasswordReminderSoapInSoapEnvelope::new(SoapSendPasswordReminderSoapIn {
                     body: send_password_reminder_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -9739,7 +9736,7 @@ pub mod bindings {
         ) -> Result<ports::SetAgentIDSoapOut, Option<SoapFault>> {
             let __request = SetAgentIDSoapInSoapEnvelope::new(SoapSetAgentIDSoapIn {
                 body: set_agent_id_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9769,7 +9766,7 @@ pub mod bindings {
         ) -> Result<ports::UpdateCustomerSoapOut, Option<SoapFault>> {
             let __request = UpdateCustomerSoapInSoapEnvelope::new(SoapUpdateCustomerSoapIn {
                 body: update_customer_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9799,7 +9796,7 @@ pub mod bindings {
         ) -> Result<ports::UpdateFirstNameSoapOut, Option<SoapFault>> {
             let __request = UpdateFirstNameSoapInSoapEnvelope::new(SoapUpdateFirstNameSoapIn {
                 body: update_first_name_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9829,7 +9826,7 @@ pub mod bindings {
         ) -> Result<ports::UpdateLastNameSoapOut, Option<SoapFault>> {
             let __request = UpdateLastNameSoapInSoapEnvelope::new(SoapUpdateLastNameSoapIn {
                 body: update_last_name_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9859,7 +9856,7 @@ pub mod bindings {
         ) -> Result<ports::UpdateLoginPageSoapOut, Option<SoapFault>> {
             let __request = UpdateLoginPageSoapInSoapEnvelope::new(SoapUpdateLoginPageSoapIn {
                 body: update_login_page_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9889,7 +9886,7 @@ pub mod bindings {
         ) -> Result<ports::UpdateObjectionSoapOut, Option<SoapFault>> {
             let __request = UpdateObjectionSoapInSoapEnvelope::new(SoapUpdateObjectionSoapIn {
                 body: update_objection_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9919,7 +9916,7 @@ pub mod bindings {
         ) -> Result<ports::UpdatePasswordSoapOut, Option<SoapFault>> {
             let __request = UpdatePasswordSoapInSoapEnvelope::new(SoapUpdatePasswordSoapIn {
                 body: update_password_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -9950,7 +9947,7 @@ pub mod bindings {
             let __request =
                 UpdatePreferredAgentSoapInSoapEnvelope::new(SoapUpdatePreferredAgentSoapIn {
                     body: update_preferred_agent_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -9982,7 +9979,7 @@ pub mod bindings {
             let __request =
                 UpdateRegisterDateSoapInSoapEnvelope::new(SoapUpdateRegisterDateSoapIn {
                     body: update_register_date_soap_in,
-                    xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
                 });
 
             let (status, response) = self
@@ -10012,7 +10009,7 @@ pub mod bindings {
         ) -> Result<ports::UpdateTitleSoapOut, Option<SoapFault>> {
             let __request = UpdateTitleSoapInSoapEnvelope::new(SoapUpdateTitleSoapIn {
                 body: update_title_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -10042,7 +10039,7 @@ pub mod bindings {
         ) -> Result<ports::UpdateUserNameSoapOut, Option<SoapFault>> {
             let __request = UpdateUserNameSoapInSoapEnvelope::new(SoapUpdateUserNameSoapIn {
                 body: update_user_name_soap_in,
-                xmlns: Option::Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
             });
 
             let (status, response) = self
@@ -10070,7 +10067,7 @@ pub mod bindings {
 }
 
 pub mod services {
-    use super::bindings;
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;

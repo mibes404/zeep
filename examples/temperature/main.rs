@@ -9,7 +9,7 @@ mod tempconverter;
 async fn main() {
     env_logger::init();
 
-    let tc = TempConverterEndpointService::new_client(Option::None);
+    let tc = TempConverterEndpointService::new_client(None);
 
     let fahrenheit = tc
         .celsius_to_fahrenheit(CelsiusToFahrenheit {

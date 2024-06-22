@@ -149,10 +149,7 @@ pub mod bindings {
                 .header("Content-Type", "text/xml")
                 .header("Soapaction", action);
             if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::Some(credentials.1.to_string()),
-                );
+                req = req.basic_auth(credentials.0.to_string(), Some(credentials.1.to_string()));
             }
             let res = req.send().await?;
             let status = res.status();
@@ -195,7 +192,7 @@ pub mod bindings {
         pub fn new(body: SoapGetBank) -> Self {
             GetBankSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://thomas-bayer.com/blz/".to_string()),
+                tnsattr: Some("http://thomas-bayer.com/blz/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -237,7 +234,7 @@ pub mod bindings {
         pub fn new(body: SoapGetBankResponse) -> Self {
             GetBankResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://thomas-bayer.com/blz/".to_string()),
+                tnsattr: Some("http://thomas-bayer.com/blz/".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -251,7 +248,7 @@ pub mod bindings {
             BlzserviceSOAP11Binding {
                 client: reqwest::Client::new(),
                 url: "http://thomas-bayer.com/blz/".to_string(),
-                credentials: Option::None,
+                credentials: None,
             }
         }
     }
@@ -278,7 +275,7 @@ pub mod bindings {
         ) -> Result<ports::GetBankResponse, Option<SoapFault>> {
             let __request = GetBankSoapEnvelope::new(SoapGetBank {
                 body: get_bank,
-                xmlns: Option::Some("http://thomas-bayer.com/blz/".to_string()),
+                xmlns: Some("http://thomas-bayer.com/blz/".to_string()),
             });
 
             let (status, response) =
@@ -316,10 +313,7 @@ pub mod bindings {
                 .header("Content-Type", "text/xml")
                 .header("Soapaction", action);
             if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::Some(credentials.1.to_string()),
-                );
+                req = req.basic_auth(credentials.0.to_string(), Some(credentials.1.to_string()));
             }
             let res = req.send().await?;
             let status = res.status();
@@ -334,7 +328,7 @@ pub mod bindings {
             BlzserviceSOAP12Binding {
                 client: reqwest::Client::new(),
                 url: "http://thomas-bayer.com/blz/".to_string(),
-                credentials: Option::None,
+                credentials: None,
             }
         }
     }
@@ -361,7 +355,7 @@ pub mod bindings {
         ) -> Result<ports::GetBankResponse, Option<SoapFault>> {
             let __request = GetBankSoapEnvelope::new(SoapGetBank {
                 body: get_bank,
-                xmlns: Option::Some("http://thomas-bayer.com/blz/".to_string()),
+                xmlns: Some("http://thomas-bayer.com/blz/".to_string()),
             });
 
             let (status, response) =
@@ -399,10 +393,7 @@ pub mod bindings {
                 .header("Content-Type", "text/xml")
                 .header("Soapaction", action);
             if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::Some(credentials.1.to_string()),
-                );
+                req = req.basic_auth(credentials.0.to_string(), Some(credentials.1.to_string()));
             }
             let res = req.send().await?;
             let status = res.status();
@@ -417,7 +408,7 @@ pub mod bindings {
             BlzserviceHttpBinding {
                 client: reqwest::Client::new(),
                 url: "http://thomas-bayer.com/blz/".to_string(),
-                credentials: Option::None,
+                credentials: None,
             }
         }
     }
@@ -444,7 +435,7 @@ pub mod bindings {
         ) -> Result<ports::GetBankResponse, Option<SoapFault>> {
             let __request = GetBankSoapEnvelope::new(SoapGetBank {
                 body: get_bank,
-                xmlns: Option::Some("http://thomas-bayer.com/blz/".to_string()),
+                xmlns: Some("http://thomas-bayer.com/blz/".to_string()),
             });
 
             let (status, response) = self

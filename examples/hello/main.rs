@@ -8,7 +8,7 @@ mod hello;
 async fn main() {
     env_logger::init();
 
-    let h = HelloEndpointService::new_client(Option::None);
+    let h = HelloEndpointService::new_client(None);
     let request = SayHello {
         hello_request: types::HelloRequest {
             name: "Claire".to_string(),

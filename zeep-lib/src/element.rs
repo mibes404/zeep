@@ -115,7 +115,7 @@ impl NamespacedElement for Element {
 
 impl StaticElement for Element {
     fn set_content(&mut self, content: &str) {
-        self.static_content = Option::Some(content.to_string());
+        self.static_content = Some(content.to_string());
     }
 
     fn append_content(&mut self, additional_content: &str) {
@@ -177,14 +177,14 @@ impl Element {
         Element {
             element_type: ElementType::Field,
             prefix: None,
-            xml_name: Option::Some(xml_name.to_string()),
+            xml_name: Some(xml_name.to_string()),
             namespaces: vec![],
             name: field_name.to_string(),
             children: vec![],
             children_idx: HashMap::new(),
             static_content: None,
             optional,
-            field_type: Option::Some(field_type.to_string()),
+            field_type: Some(field_type.to_string()),
             vector: false,
             flatten: false,
             comment: None,
@@ -204,7 +204,7 @@ impl Element {
 
     pub fn new_function(function_name: &str, input_name: &str, input_type: &str) -> Self {
         let mut e = Element::new(function_name, ElementType::Function);
-        e.function_args = Option::Some(FunctionArgs {
+        e.function_args = Some(FunctionArgs {
             input_type: input_type.to_string(),
             input_name: input_name.to_string(),
             output_type: None,
@@ -501,9 +501,9 @@ pub struct SoapFault {
 "#;
 
         let mut soap_fault = Element::new("SoapFault", ElementType::Struct);
-        soap_fault.xml_name = Option::Some("Fault".to_string());
+        soap_fault.xml_name = Some("Fault".to_string());
         soap_fault.add_ns("soapenv", "http://schemas.xmlsoap.org/soap/envelope/");
-        soap_fault.prefix = Option::Some("soapenv".to_string());
+        soap_fault.prefix = Some("soapenv".to_string());
         soap_fault.add(Element::new_field(
             "fault_code",
             "faultcode",
@@ -554,7 +554,7 @@ pub struct SoapFault {
 "
         .to_string();
         let mut alias_element = Element::new("SomeElement", ElementType::Alias);
-        alias_element.field_type = Option::Some("other_mod::SomeElement".to_string());
+        alias_element.field_type = Some("other_mod::SomeElement".to_string());
         assert_eq!(alias_element.render(), expected);
     }
 

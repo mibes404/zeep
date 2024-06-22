@@ -11,7 +11,7 @@ mod number_services;
 async fn main() {
     env_logger::init();
 
-    let converter_service = NumberConversion::new_client(Option::None);
+    let converter_service = NumberConversion::new_client(None);
     let result = converter_service
         .number_to_words(NumberToWordsSoapRequest {
             parameters: types::NumberToWords { ubi_num: 100 },

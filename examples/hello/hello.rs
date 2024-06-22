@@ -44,7 +44,7 @@ impl std::fmt::Display for SoapFault {
 pub type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
 
 pub mod messages {
-    use super::{Write, types};
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -64,7 +64,7 @@ pub mod messages {
 }
 
 pub mod types {
-    use super::Write;
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -92,7 +92,7 @@ pub mod types {
 }
 
 pub mod ports {
-    use super::{SoapFault, messages};
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -111,7 +111,7 @@ pub mod ports {
 }
 
 pub mod bindings {
-    use super::{Header, SOAP_ENCODING, SoapFault, SoapResponse, Write, debug, ports, warn};
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -132,10 +132,7 @@ pub mod bindings {
                 .header("Content-Type", "text/xml")
                 .header("Soapaction", action);
             if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::Some(credentials.1.to_string()),
-                );
+                req = req.basic_auth(credentials.0.to_string(), Some(credentials.1.to_string()));
             }
             let res = req.send().await?;
             let status = res.status();
@@ -178,7 +175,7 @@ pub mod bindings {
         pub fn new(body: SoapSayHello) -> Self {
             SayHelloSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://learnwebservices.com/services/hello".to_string()),
+                tnsattr: Some("http://learnwebservices.com/services/hello".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -220,7 +217,7 @@ pub mod bindings {
         pub fn new(body: SoapSayHelloResponse) -> Self {
             SayHelloResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some("http://learnwebservices.com/services/hello".to_string()),
+                tnsattr: Some("http://learnwebservices.com/services/hello".to_string()),
                 body,
                 urnattr: None,
                 xsiattr: None,
@@ -234,7 +231,7 @@ pub mod bindings {
             HelloEndpointServiceSoapBinding {
                 client: reqwest::Client::new(),
                 url: "http://learnwebservices.com/services/hello".to_string(),
-                credentials: Option::None,
+                credentials: None,
             }
         }
     }
@@ -261,7 +258,7 @@ pub mod bindings {
         ) -> Result<ports::SayHelloResponse, Option<SoapFault>> {
             let __request = SayHelloSoapEnvelope::new(SoapSayHello {
                 body: say_hello,
-                xmlns: Option::Some("http://learnwebservices.com/services/hello".to_string()),
+                xmlns: Some("http://learnwebservices.com/services/hello".to_string()),
             });
 
             let (status, response) =
@@ -286,7 +283,7 @@ pub mod bindings {
 }
 
 pub mod services {
-    use super::bindings;
+    use super::*;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;

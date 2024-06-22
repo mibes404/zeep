@@ -158,7 +158,7 @@ mod tests {
 
         let t2 = LookupAgentIdsResponseSoapEnvelope::new(SoapLookupAgentIdsResponse {
             body: t,
-            fault: Option::None,
+            fault: None,
         });
 
         let b3 = to_string(&t2).expect("failed to generate xml");

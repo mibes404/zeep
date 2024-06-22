@@ -850,10 +850,7 @@ pub mod bindings {
                 .header("Content-Type", "text/xml")
                 .header("Soapaction", action);
             if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(
-                    credentials.0.to_string(),
-                    Option::Some(credentials.1.to_string()),
-                );
+                req = req.basic_auth(credentials.0.to_string(), Some(credentials.1.to_string()));
             }
             let res = req.send().await?;
             let status = res.status();
@@ -896,7 +893,7 @@ pub mod bindings {
         pub fn new(body: SoapGetRequest) -> Self {
             GetRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -940,7 +937,7 @@ pub mod bindings {
         pub fn new(body: SoapGetResponse) -> Self {
             GetResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -984,7 +981,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateRequest) -> Self {
             UpdateRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1028,7 +1025,7 @@ pub mod bindings {
         pub fn new(body: SoapUpdateResponse) -> Self {
             UpdateResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1072,7 +1069,7 @@ pub mod bindings {
         pub fn new(body: SoapDeleteRequest) -> Self {
             DeleteRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1116,7 +1113,7 @@ pub mod bindings {
         pub fn new(body: SoapDeleteResponse) -> Self {
             DeleteResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1160,7 +1157,7 @@ pub mod bindings {
         pub fn new(body: SoapLookupAgentIdsRequest) -> Self {
             LookupAgentIdsRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1204,7 +1201,7 @@ pub mod bindings {
         pub fn new(body: SoapLookupAgentIdsResponse) -> Self {
             LookupAgentIdsResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1248,7 +1245,7 @@ pub mod bindings {
         pub fn new(body: SoapLookupLRMIdsRequest) -> Self {
             LookupLRMIdsRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1292,7 +1289,7 @@ pub mod bindings {
         pub fn new(body: SoapLookupLRMIdsResponse) -> Self {
             LookupLRMIdsResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1336,7 +1333,7 @@ pub mod bindings {
         pub fn new(body: SoapLookupWorkgroupsRequest) -> Self {
             LookupWorkgroupsRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1380,7 +1377,7 @@ pub mod bindings {
         pub fn new(body: SoapLookupWorkgroupsResponse) -> Self {
             LookupWorkgroupsResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1424,7 +1421,7 @@ pub mod bindings {
         pub fn new(body: SoapLookupDomainsRequest) -> Self {
             LookupDomainsRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1468,7 +1465,7 @@ pub mod bindings {
         pub fn new(body: SoapLookupDomainsResponse) -> Self {
             LookupDomainsResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1512,7 +1509,7 @@ pub mod bindings {
         pub fn new(body: SoapLookupLinkGroupsRequest) -> Self {
             LookupLinkGroupsRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1556,7 +1553,7 @@ pub mod bindings {
         pub fn new(body: SoapLookupLinkGroupsResponse) -> Self {
             LookupLinkGroupsResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1600,7 +1597,7 @@ pub mod bindings {
         pub fn new(body: SoapLookupPhoneTypesRequest) -> Self {
             LookupPhoneTypesRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1644,7 +1641,7 @@ pub mod bindings {
         pub fn new(body: SoapLookupPhoneTypesResponse) -> Self {
             LookupPhoneTypesResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1688,7 +1685,7 @@ pub mod bindings {
         pub fn new(body: SoapLookupSitesRequest) -> Self {
             LookupSitesRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1732,7 +1729,7 @@ pub mod bindings {
         pub fn new(body: SoapLookupSitesResponse) -> Self {
             LookupSitesResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1776,7 +1773,7 @@ pub mod bindings {
         pub fn new(body: SoapCreateRequest) -> Self {
             CreateRequestSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1820,7 +1817,7 @@ pub mod bindings {
         pub fn new(body: SoapCreateResponse) -> Self {
             CreateResponseSoapEnvelope {
                 encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Option::Some(
+                tnsattr: Some(
                     "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
                 ),
                 body,
@@ -1836,7 +1833,7 @@ pub mod bindings {
             AicAgentAdminSoapBinding {
                 client: reqwest::Client::new(),
                 url: "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-                credentials: Option::None,
+                credentials: None,
             }
         }
     }
@@ -1863,9 +1860,7 @@ pub mod bindings {
         ) -> Result<ports::GetResponse, Option<ports::SoapAicServiceFault>> {
             let __request = GetRequestSoapEnvelope::new(SoapGetRequest {
                 body: get_request,
-                xmlns: Option::Some(
-                    "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-                ),
+                xmlns: Some("http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string()),
             });
 
             let (status, response) =
@@ -1892,9 +1887,7 @@ pub mod bindings {
         ) -> Result<ports::UpdateResponse, Option<ports::SoapAicServiceFault>> {
             let __request = UpdateRequestSoapEnvelope::new(SoapUpdateRequest {
                 body: update_request,
-                xmlns: Option::Some(
-                    "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-                ),
+                xmlns: Some("http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string()),
             });
 
             let (status, response) =
@@ -1921,9 +1914,7 @@ pub mod bindings {
         ) -> Result<ports::DeleteResponse, Option<ports::SoapAicServiceFault>> {
             let __request = DeleteRequestSoapEnvelope::new(SoapDeleteRequest {
                 body: delete_request,
-                xmlns: Option::Some(
-                    "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-                ),
+                xmlns: Some("http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string()),
             });
 
             let (status, response) =
@@ -1950,9 +1941,7 @@ pub mod bindings {
         ) -> Result<ports::LookupAgentIdsResponse, Option<ports::SoapAicServiceFault>> {
             let __request = LookupAgentIdsRequestSoapEnvelope::new(SoapLookupAgentIdsRequest {
                 body: lookup_agent_ids_request,
-                xmlns: Option::Some(
-                    "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-                ),
+                xmlns: Some("http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string()),
             });
 
             let (status, response) =
@@ -1979,9 +1968,7 @@ pub mod bindings {
         ) -> Result<ports::LookupLRMIdsResponse, Option<ports::SoapAicServiceFault>> {
             let __request = LookupLRMIdsRequestSoapEnvelope::new(SoapLookupLRMIdsRequest {
                 body: lookup_lrm_ids_request,
-                xmlns: Option::Some(
-                    "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-                ),
+                xmlns: Some("http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string()),
             });
 
             let (status, response) =
@@ -2008,9 +1995,7 @@ pub mod bindings {
         ) -> Result<ports::LookupWorkgroupsResponse, Option<ports::SoapAicServiceFault>> {
             let __request = LookupWorkgroupsRequestSoapEnvelope::new(SoapLookupWorkgroupsRequest {
                 body: lookup_workgroups_request,
-                xmlns: Option::Some(
-                    "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-                ),
+                xmlns: Some("http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string()),
             });
 
             let (status, response) =
@@ -2037,9 +2022,7 @@ pub mod bindings {
         ) -> Result<ports::LookupDomainsResponse, Option<ports::SoapAicServiceFault>> {
             let __request = LookupDomainsRequestSoapEnvelope::new(SoapLookupDomainsRequest {
                 body: lookup_domains_request,
-                xmlns: Option::Some(
-                    "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-                ),
+                xmlns: Some("http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string()),
             });
 
             let (status, response) =
@@ -2066,9 +2049,7 @@ pub mod bindings {
         ) -> Result<ports::LookupLinkGroupsResponse, Option<ports::SoapAicServiceFault>> {
             let __request = LookupLinkGroupsRequestSoapEnvelope::new(SoapLookupLinkGroupsRequest {
                 body: lookup_link_groups_request,
-                xmlns: Option::Some(
-                    "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-                ),
+                xmlns: Some("http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string()),
             });
 
             let (status, response) =
@@ -2095,9 +2076,7 @@ pub mod bindings {
         ) -> Result<ports::LookupPhoneTypesResponse, Option<ports::SoapAicServiceFault>> {
             let __request = LookupPhoneTypesRequestSoapEnvelope::new(SoapLookupPhoneTypesRequest {
                 body: lookup_phone_types_request,
-                xmlns: Option::Some(
-                    "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-                ),
+                xmlns: Some("http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string()),
             });
 
             let (status, response) =
@@ -2124,9 +2103,7 @@ pub mod bindings {
         ) -> Result<ports::LookupSitesResponse, Option<ports::SoapAicServiceFault>> {
             let __request = LookupSitesRequestSoapEnvelope::new(SoapLookupSitesRequest {
                 body: lookup_sites_request,
-                xmlns: Option::Some(
-                    "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-                ),
+                xmlns: Some("http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string()),
             });
 
             let (status, response) =
@@ -2153,9 +2130,7 @@ pub mod bindings {
         ) -> Result<ports::CreateResponse, Option<ports::SoapAicServiceFault>> {
             let __request = CreateRequestSoapEnvelope::new(SoapCreateRequest {
                 body: create_request,
-                xmlns: Option::Some(
-                    "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string(),
-                ),
+                xmlns: Some("http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71".to_string()),
             });
 
             let (status, response) =

@@ -40,7 +40,7 @@ const IMPORT_PREFIX: &str = "nsi";
 
 pub struct FileWriter {
     base_path: PathBuf,
-    writer: Option<Box<dyn std::io::Write>>,
+    writer: Option<Box<dyn Write>>,
     target_name_space: Option<String>,
     port_types: HashMap<String, PortType>,
     message_types: HashMap<String, String>,
@@ -63,14 +63,14 @@ impl Default for FileWriter {
     fn default() -> Self {
         FileWriter {
             base_path: PathBuf::default(),
-            writer: Option::Some(Box::new(stdout())),
-            target_name_space: Option::None,
+            writer: Some(Box::new(stdout())),
+            target_name_space: None,
             port_types: HashMap::new(),
             message_types: HashMap::new(),
             namespaces: HashMap::new(),
             import_count: 0,
             ns_prefix: DEFAULT_NS_PREFIX.to_string(),
-            default_namespace: Option::None,
+            default_namespace: None,
             root: root(),
         }
     }
@@ -94,8 +94,8 @@ impl FileWriter {
     ) -> Self {
         FileWriter {
             base_path: PathBuf::default(),
-            writer: Option::Some(Box::new(dest_file_name)),
-            target_name_space: Option::None,
+            writer: Some(Box::new(dest_file_name)),
+            target_name_space: None,
             port_types: HashMap::new(),
             message_types: HashMap::new(),
             namespaces: HashMap::new(),
@@ -114,7 +114,7 @@ impl FileWriter {
         buffer: DebugBuffer,
     ) -> Self {
         let mut fw = FileWriter::new(ns_prefix, default_namespace);
-        fw.writer = Option::Some(Box::from(buffer));
+        fw.writer = Some(Box::from(buffer));
         fw
     }
 
@@ -207,9 +207,9 @@ impl FileWriter {
     fn print_common_structs(&mut self) {
         let header = Element::new("Header", ElementType::Struct);
         let mut soap_fault = Element::new("SoapFault", ElementType::Struct);
-        soap_fault.xml_name = Option::Some("Fault".to_string());
+        soap_fault.xml_name = Some("Fault".to_string());
         soap_fault.add_ns("soapenv", "http://schemas.xmlsoap.org/soap/envelope/");
-        soap_fault.prefix = Option::Some("soapenv".to_string());
+        soap_fault.prefix = Some("soapenv".to_string());
         soap_fault.add(Element::new_field(
             "fault_code",
             "faultcode",
@@ -229,7 +229,7 @@ impl FileWriter {
 
         let mut soap_response = Element::new("SoapResponse", ElementType::Alias);
         soap_response.field_type =
-            Option::Some("Result<(reqwest::StatusCode, String), reqwest::Error>".to_string());
+            Some("Result<(reqwest::StatusCode, String), reqwest::Error>".to_string());
 
         self.root.add(header);
         self.root.add(soap_fault);
@@ -286,7 +286,7 @@ impl FileWriter {
 
     fn print_xsd(&mut self, node: &Node) -> WriterResult<()> {
         self.target_name_space =
-            Self::get_some_attribute(node, "targetNamespace").map(std::string::ToString::to_string);
+            Self::get_some_attribute(node, "targetNamespace").map(ToString::to_string);
 
         self.find_namespaces(node);
 
@@ -451,13 +451,13 @@ impl FileWriter {
 
             if top_level_name != alias {
                 let mut alias_element = Element::new(top_level_name.as_str(), ElementType::Alias);
-                alias_element.field_type = Option::Some(alias);
+                alias_element.field_type = Some(alias);
                 module.add(alias_element);
 
                 // todo: add the AnyType definition
                 if type_name == ANY_TYPE && !module.has_child(ANY_TYPE) {
                     let mut alias_element = Element::new(ANY_TYPE, ElementType::Alias);
-                    alias_element.field_type = Option::Some(ANY_TYPE_DEFINITION.to_string());
+                    alias_element.field_type = Some(ANY_TYPE_DEFINITION.to_string());
                     module.add(alias_element);
                 }
 
@@ -471,22 +471,22 @@ impl FileWriter {
             let mut element = if let Some(_tns) = &self.target_name_space {
                 if is_top_level {
                     let mut e = Element::new(field_name, ElementType::Field);
-                    e.xml_name = Option::Some(element_name.to_string());
+                    e.xml_name = Some(element_name.to_string());
                     e.add_ns("xsi", "http://www.w3.org/2001/XMLSchema-instance");
                     e
                 } else if self.on_default_namespace() {
                     let mut e = Element::new(field_name, ElementType::Field);
-                    e.xml_name = Option::Some(element_name.to_string());
+                    e.xml_name = Some(element_name.to_string());
                     e
                 } else {
                     let mut e = Element::new(field_name, ElementType::Field);
-                    e.xml_name = Option::Some(element_name.to_string());
-                    e.prefix = Option::Some(self.ns_prefix.to_string());
+                    e.xml_name = Some(element_name.to_string());
+                    e.prefix = Some(self.ns_prefix.to_string());
                     e
                 }
             } else {
                 let mut e = Element::new(field_name, ElementType::Field);
-                e.xml_name = Option::Some(element_name.to_string());
+                e.xml_name = Some(element_name.to_string());
                 e
             };
 
@@ -568,8 +568,8 @@ impl FileWriter {
             let mut e = Element::new(&element_name, ElementType::Struct);
 
             if is_top_level {
-                e.prefix = Option::Some(self.ns_prefix.to_string());
-                e.xml_name = Option::Some(name.to_string());
+                e.prefix = Some(self.ns_prefix.to_string());
+                e.xml_name = Some(name.to_string());
 
                 // declare all namespaces
                 // e.add_ns("tns", &tns);
@@ -577,18 +577,18 @@ impl FileWriter {
                 e.add_ns("xsi", "http://www.w3.org/2001/XMLSchema-instance");
                 e
             } else if self.on_default_namespace() {
-                e.xml_name = Option::Some(name.to_string());
+                e.xml_name = Some(name.to_string());
                 e
             } else {
-                e.prefix = Option::Some(self.ns_prefix.to_string());
-                e.xml_name = Option::Some(name.to_string());
+                e.prefix = Some(self.ns_prefix.to_string());
+                e.xml_name = Some(name.to_string());
                 e.add_ns(&self.ns_prefix, &tns);
                 e
             }
         } else {
             let element_name = to_pascal_case(name);
             let mut e = Element::new(&element_name, ElementType::Struct);
-            e.xml_name = Option::Some(name.to_string());
+            e.xml_name = Some(name.to_string());
             e
         }
     }
@@ -608,7 +608,7 @@ impl FileWriter {
         let field_type = Self::fetch_type(&type_name);
         field.text_field = field_type == "String";
         field.flatten = !Self::is_primitive(&field_type);
-        field.field_type = Option::Some(field_type);
+        field.field_type = Some(field_type);
         field.xml_name = None;
 
         parent_element.add(field);
@@ -677,8 +677,8 @@ impl FileWriter {
         let mut element =
             Element::new(to_snake_case(element_name).as_str(), ElementType::Attribute);
 
-        element.xml_name = Option::Some(element_name.to_string());
-        element.field_type = Option::Some(element_type);
+        element.xml_name = Some(element_name.to_string());
+        element.field_type = Some(element_type);
         element.optional = optional;
         parent.add(element);
     }
@@ -758,15 +758,15 @@ impl FileWriter {
             );
             let field_type = Self::fetch_type(base);
             element.flatten = !Self::is_primitive(&field_type);
-            element.field_type = Option::Some(field_type);
+            element.field_type = Some(field_type);
             p.add(element);
 
             let type_name = Self::fetch_type(base);
             let mut xsi = Element::new("xsi_type", ElementType::Attribute);
-            xsi.field_type = Option::Some("String".to_string());
-            xsi.prefix = Option::Some("xsi".to_string());
-            xsi.xml_name = Option::Some("type".to_string());
-            xsi.comment = Option::Some(type_name);
+            xsi.field_type = Some("String".to_string());
+            xsi.prefix = Some("xsi".to_string());
+            xsi.xml_name = Some("type".to_string());
+            xsi.comment = Some(type_name);
             p.add(xsi);
         }
     }
@@ -792,7 +792,7 @@ impl FileWriter {
 
         if let Some(name) = Self::get_some_attribute(node, "name") {
             let mut element = Element::new(to_pascal_case(name).as_str(), ElementType::Struct);
-            element.xml_name = Option::Some(name.to_string());
+            element.xml_name = Some(name.to_string());
 
             let maybe_part = node.children().find(|child| child.has_tag_name("part"));
 
@@ -825,7 +825,7 @@ impl FileWriter {
                 ElementType::Field,
             );
             element.flatten = !Self::is_primitive(&type_name);
-            element.field_type = Option::Some(type_name.clone());
+            element.field_type = Some(type_name.clone());
             parent.add(element);
 
             self.message_types
@@ -920,7 +920,7 @@ impl FileWriter {
         );
 
         let mut t_impl = Element::new(&struct_name, ElementType::TraitImpl);
-        t_impl.field_type = Option::Some(format!("{PORTS_MOD}::{trait_name}"));
+        t_impl.field_type = Some(format!("{PORTS_MOD}::{trait_name}"));
 
         node.children().for_each(|child| {
             self.print_binding_operation(&trait_name, &child, &mut t_impl, mut_parent);
@@ -949,7 +949,7 @@ impl FileWriter {
                     if let Some(credentials) = &self.credentials {{
                         req = req.basic_auth(
                             credentials.0.to_string(),
-                            Option::Some(credentials.1.to_string()),
+                            Some(credentials.1.to_string()),
                         );
                     }}
                     let res = req.send().await?;
@@ -979,7 +979,7 @@ impl FileWriter {
                     {struct_name} {{
                         client: reqwest::Client::new(),
                         url: "{url}".to_string(),
-                        credentials: Option::None,
+                        credentials: None,
                      }}
                 }}
             }}
@@ -1072,9 +1072,9 @@ impl FileWriter {
         let input_type_element = match &port_type.input_type {
             Some((type_name, Some(message_type_name))) => {
                 let mut e = Element::new(to_pascal_case(type_name).as_str(), ElementType::Alias);
-                e.field_type = Option::Some(format!("{MESSAGES_MOD}::{message_type_name}",));
+                e.field_type = Some(format!("{MESSAGES_MOD}::{message_type_name}",));
 
-                Option::Some(e)
+                Some(e)
             }
             _ => None,
         };
@@ -1091,35 +1091,35 @@ impl FileWriter {
         let (output_type_element, fault_type_element) = match &port_type.output_type {
             Some((type_name, Some(msg))) => {
                 let mut e = Element::new(to_pascal_case(type_name).as_str(), ElementType::Alias);
-                e.field_type = Option::Some(format!("{MESSAGES_MOD}::{msg}"));
+                e.field_type = Some(format!("{MESSAGES_MOD}::{msg}"));
 
                 if let Some((fault_name, Some(fault_type))) = &port_type.fault_type {
                     let mut f = Element::new(fault_name.as_str(), ElementType::Alias);
-                    f.field_type = Option::Some(format!("{MESSAGES_MOD}::{fault_type}",));
+                    f.field_type = Some(format!("{MESSAGES_MOD}::{fault_type}",));
 
                     if !self.have_seen_type(fault_name, module) {
                         self.fault_soap_wrapper(fault_name, fault_type, module);
                     }
 
                     if let Some(mut args) = function_element.function_args.take() {
-                        args.output_type = Option::Some(to_pascal_case(type_name));
+                        args.output_type = Some(to_pascal_case(type_name));
                         args.fault_type =
-                            Option::Some(format!("Option<Soap{}>", to_pascal_case(fault_name)));
+                            Some(format!("Option<Soap{}>", to_pascal_case(fault_name)));
                         function_element.function_args.replace(args);
                     }
 
-                    (Option::Some(e), Option::Some(f))
+                    (Some(e), Some(f))
                 } else {
                     if let Some(mut args) = function_element.function_args.take() {
-                        args.output_type = Option::Some(to_pascal_case(type_name));
-                        args.fault_type = Option::Some("Option<SoapFault>".to_string());
+                        args.output_type = Some(to_pascal_case(type_name));
+                        args.fault_type = Some("Option<SoapFault>".to_string());
                         function_element.function_args.replace(args);
                     }
 
-                    (Option::Some(e), Option::None)
+                    (Some(e), None)
                 }
             }
-            _ => (Option::None, Option::None),
+            _ => (None, None),
         };
 
         if let Some(input_type_element) = input_type_element {
@@ -1141,7 +1141,7 @@ impl FileWriter {
         }
 
         if let Some(doc) = some_documentation {
-            function_element.comment = Option::Some(doc.to_string());
+            function_element.comment = Some(doc.to_string());
         }
 
         parent.add(function_element);
@@ -1152,9 +1152,9 @@ impl FileWriter {
         let soap_fault_name = format!("Soap{fault_name}");
 
         let mut e = Element::new(&soap_fault_name, ElementType::Struct);
-        e.xml_name = Option::Some("Fault".to_string());
+        e.xml_name = Some("Fault".to_string());
         e.add_ns("soapenv", "http://schemas.xmlsoap.org/soap/envelope/");
-        e.prefix = Option::Some("soapenv".to_string());
+        e.prefix = Some("soapenv".to_string());
 
         let fault_code = Element::new_field("fault_code", "faultcode", "String", true);
         let fault_string = Element::new_field("fault_string", "faultstring", "String", true);
@@ -1171,8 +1171,8 @@ impl FileWriter {
 
     fn construct_soap_wrapper(&self, soap_name: &str, body_type: &str) -> String {
         let tns = match &self.target_name_space {
-            None => "Option::None".to_string(),
-            Some(t) => format!("Option::Some(\"{t}\".to_string())"),
+            None => "None".to_string(),
+            Some(t) => format!("Some(\"{t}\".to_string())"),
         };
 
         format!(
@@ -1282,9 +1282,9 @@ impl FileWriter {
 
         let soap_wrapper_in = if has_input {
             if self.have_seen_type(&input_soap_name, parent) {
-                Option::None
+                None
             } else {
-                Option::Some(format!(
+                Some(format!(
                     r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
                     pub struct {0} {{
                         #[yaserde(rename = "{3}", default)]
@@ -1303,7 +1303,7 @@ impl FileWriter {
                 ))
             }
         } else {
-            Option::None
+            None
         };
 
         let (output_type, output_soap_name, output_xml_type, has_output) =
@@ -1349,9 +1349,9 @@ impl FileWriter {
 
         let soap_wrapper_out = if has_output {
             if self.have_seen_type(&output_soap_name, parent) {
-                Option::None
+                None
             } else {
-                Option::Some(format!(
+                Some(format!(
                     r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
                     pub struct {0} {{
                     #[yaserde(rename = "{3}", default)]
@@ -1369,7 +1369,7 @@ impl FileWriter {
                 ))
             }
         } else {
-            Option::None
+            None
         };
 
         let output_template = if has_output {
@@ -1449,8 +1449,8 @@ impl FileWriter {
         };
 
         let xmlns = match &self.target_name_space {
-            None => "Option::None".to_string(),
-            Some(tns) => format!("Option::Some(\"{tns}\".to_string())"),
+            None => "None".to_string(),
+            Some(tns) => format!("Some(\"{tns}\".to_string())"),
         };
 
         parent.append_content(
@@ -1541,7 +1541,7 @@ impl FileWriter {
         let mut e = Element::new(&struct_name, ElementType::Static);
 
         if let Some(doc) = some_documentation {
-            e.comment = Option::Some(doc.to_string());
+            e.comment = Some(doc.to_string());
         }
 
         e.set_content(
