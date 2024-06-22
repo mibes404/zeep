@@ -141,7 +141,11 @@ impl FileWriter {
 
     fn process_file_in_path(&mut self, file_name: &str, print_when_done: bool) -> WriterResult<()> {
         let xml = self.read_to_string(file_name)?;
-        let doc = roxmltree::Document::parse(&xml).map_err(|e| WriterError {
+        self.process_xml(file_name, print_when_done, &xml)
+    }
+
+    fn process_xml(&mut self, file_name: &str, print_when_done: bool, xml: &str) -> Result<(), WriterError> {
+        let doc = roxmltree::Document::parse(xml).map_err(|e| WriterError {
             message: format!("Unable to parse file {file_name}: {e}"),
         })?;
         doc.root().children().try_for_each(|n| self.print(&n))?;
@@ -1693,16 +1697,30 @@ mod test_wsdl {
     use std::io::Read;
 
     fn prepare_output(ns_prefix: Option<String>, default_ns: Option<String>) -> String {
-        let mut buffer = DebugBuffer::default();
-        let mut fw = FileWriter::new_buffer(ns_prefix, default_ns, buffer.clone());
-        fw.process_file("../resources/temp_converter/", "tempconverter.wsdl")
-            .expect("can not open wsdl");
-
+        let (_, mut buffer) = prepare_file_writer(ns_prefix, default_ns);
         let mut result = String::new();
         buffer
             .read_to_string(&mut result)
             .expect("failed to get content");
         result
+    }
+
+    fn prepare_file_writer(ns_prefix: Option<String>, default_ns: Option<String>) -> (FileWriter, DebugBuffer) {
+        let buffer = DebugBuffer::default();
+        let mut fw = FileWriter::new_buffer(ns_prefix, default_ns, buffer.clone());
+        fw.process_file("../resources/temp_converter/", "tempconverter.wsdl")
+            .expect("can not open wsdl");
+        (fw, buffer)
+    }
+
+    #[test]
+    fn can_parse_namespaces() {
+        let (fw, _) = prepare_file_writer(None, None);
+        assert_eq!(fw.namespaces.len(), 6);
+        let wsdl_ns = fw.namespaces.get("wsdl").expect("wsdl namespace not found");
+        assert_eq!(wsdl_ns, "http://schemas.xmlsoap.org/wsdl/");
+        assert!(!fw.namespaces.contains_key("definitions"));
+        assert_eq!(fw.target_name_space.as_deref(), Some("http://learnwebservices.com/services/tempconverter"));
     }
 
     #[test]
@@ -1711,4 +1729,5 @@ mod test_wsdl {
         assert!(result.contains(r#"Self::new_client_with_url("https://apps.learnwebservices.com:443/services/tempconverter", credentials)"#));
         assert!(result.contains(r#"#[yaserde(rename = "tns:CelsiusToFahrenheitRequest", default)]"#));
     }
+
 }
