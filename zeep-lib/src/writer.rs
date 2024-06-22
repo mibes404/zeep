@@ -491,10 +491,7 @@ impl FileWriter {
             };
 
             if let Some(simple) = maybe_simplex {
-                type_name = match Self::deconstruct_simplex_element(&simple) {
-                    Ok(tn) => tn,
-                    Err(_) => type_name,
-                };
+                type_name = Self::deconstruct_simplex_element(&simple).unwrap_or_else(|_| type_name);
             }
 
             // add the element to the owning structure
@@ -1271,9 +1268,14 @@ impl FileWriter {
             String::new()
         };
 
-        message_type_name = if let Some(_tns) = &self.target_name_space {
-            // todo: verify this
-            format!("tns:{message_type_name}")
+        message_type_name = if let Some(tns) = &self.target_name_space {
+            if let Some(namespace) = self.namespaces.iter().find(|(_k, v)| *v == tns).map(|(k, _v)|
+                k
+            ) {
+                format!("{namespace}:{message_type_name}")
+            } else {
+                message_type_name
+            }
         } else {
             message_type_name
         };
