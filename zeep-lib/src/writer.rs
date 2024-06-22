@@ -1699,6 +1699,7 @@ mod test_wsdl {
     #[test]
     fn test_service() {
         let result = prepare_output(None, None);
-        assert!(result.contains(r#"bindings::TempConverterEndpointServiceSoapBinding::new("https://apps.learnwebservices.com:443/services/tempconverter", credentials)"#));
+        assert!(result.contains(r#"Self::new_client_with_url("https://apps.learnwebservices.com:443/services/tempconverter", credentials)"#));
+        assert!(result.contains(r#"#[yaserde(rename = "tns:CelsiusToFahrenheitRequest", default)]"#));
     }
 }
