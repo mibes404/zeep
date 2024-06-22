@@ -12,7 +12,7 @@ Check the examples and the Cargo.toml for a complete list of dependencies.
 ```bash
 $ cargo install --git https://github.com/mibes404/zeep zeep
 $ zeep --version
-  Zeep - XSD/WSDL client generator for Rust 0.1.9
+  Zeep - XSD/WSDL client generator for Rust 0.1.10
 ```
 
 ## Usage
