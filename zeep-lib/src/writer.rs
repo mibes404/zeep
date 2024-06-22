@@ -193,7 +193,7 @@ impl FileWriter {
             r#"
             #![allow(dead_code)]           
             #![allow(unused_imports)]
-            use yaserde_derive::{YaSerialize, YaDeserialize};
+            use yaserde::{YaSerialize, YaDeserialize};
             use std::io::{Read, Write};
             use log::{warn, debug};
             

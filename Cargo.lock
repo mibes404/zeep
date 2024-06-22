@@ -1304,6 +1304,7 @@ checksum = "43d9349777b8f5b0dee8113c56bb7f1c606d015d3007fe2b82be530cb68e84b6"
 dependencies = [
  "log",
  "xml-rs",
+ "yaserde_derive",
 ]
 
 [[package]]
@@ -1334,7 +1335,6 @@ dependencies = [
  "tokio",
  "xml-rs",
  "yaserde",
- "yaserde_derive",
  "zeep-lib",
 ]
 

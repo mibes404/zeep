@@ -1,12 +1,12 @@
 //! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
-//! version: 0.1.9
+//! version: 0.1.10
 //!
 
             #![allow(dead_code)]           
             #![allow(unused_imports)]
-            use yaserde_derive::{YaSerialize, YaDeserialize};
+            use yaserde::{YaSerialize, YaDeserialize};
             use std::io::{Read, Write};
             use log::{warn, debug};
             
