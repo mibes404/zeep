@@ -491,7 +491,7 @@ impl FileWriter {
             };
 
             if let Some(simple) = maybe_simplex {
-                type_name = Self::deconstruct_simplex_element(&simple).unwrap_or_else(|_| type_name);
+                type_name = Self::deconstruct_simplex_element(&simple).unwrap_or(type_name);
             }
 
             // add the element to the owning structure

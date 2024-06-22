@@ -44,7 +44,7 @@ impl std::fmt::Display for SoapFault {
 pub type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
 
 pub mod messages {
-    use super::*;
+    use super::{Write, types};
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -76,7 +76,7 @@ pub mod messages {
 }
 
 pub mod types {
-    use super::*;
+    use super::Write;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -124,7 +124,7 @@ pub mod types {
 }
 
 pub mod ports {
-    use super::*;
+    use super::{SoapFault, messages};
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -151,7 +151,7 @@ pub mod ports {
 }
 
 pub mod bindings {
-    use super::*;
+    use super::{Header, SOAP_ENCODING, SoapFault, SoapResponse, Write, debug, ports, warn};
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
@@ -451,7 +451,7 @@ pub mod bindings {
 }
 
 pub mod services {
-    use super::*;
+    use super::bindings;
     use async_trait::async_trait;
     use yaserde::de::from_str;
     use yaserde::ser::to_string;
