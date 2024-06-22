@@ -1,7 +1,7 @@
 //! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
-//! version: 0.1.8
+//! version: 0.1.9
 //!
 
 #![allow(dead_code)]
@@ -187,7 +187,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCelsiusToFahrenheit {
-        #[yaserde(rename = "CelsiusToFahrenheitRequest", default)]
+        #[yaserde(rename = "tns:CelsiusToFahrenheitRequest", default)]
         pub body: ports::CelsiusToFahrenheit,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -275,7 +275,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapFahrenheitToCelsius {
-        #[yaserde(rename = "FahrenheitToCelsiusRequest", default)]
+        #[yaserde(rename = "tns:FahrenheitToCelsiusRequest", default)]
         pub body: ports::FahrenheitToCelsius,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,

@@ -1,7 +1,7 @@
 //! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
-//! version: 0.1.8
+//! version: 0.1.9
 //!
 
 #![allow(dead_code)]
@@ -4548,7 +4548,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapAddAddressSoapIn {
-        #[yaserde(rename = "AddAddress", default)]
+        #[yaserde(rename = "tns:AddAddress", default)]
         pub body: ports::AddAddressSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -4632,7 +4632,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapAddContactSoapIn {
-        #[yaserde(rename = "AddContact", default)]
+        #[yaserde(rename = "tns:AddContact", default)]
         pub body: ports::AddContactSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -4716,7 +4716,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapAddCustomFieldSoapIn {
-        #[yaserde(rename = "AddCustomField", default)]
+        #[yaserde(rename = "tns:AddCustomField", default)]
         pub body: ports::AddCustomFieldSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -4800,7 +4800,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapAddEmailAddressSoapIn {
-        #[yaserde(rename = "AddEmailAddress", default)]
+        #[yaserde(rename = "tns:AddEmailAddress", default)]
         pub body: ports::AddEmailAddressSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -4884,7 +4884,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapAddPhoneNumberSoapIn {
-        #[yaserde(rename = "AddPhoneNumber", default)]
+        #[yaserde(rename = "tns:AddPhoneNumber", default)]
         pub body: ports::AddPhoneNumberSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -4968,7 +4968,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapAddSipUriSoapIn {
-        #[yaserde(rename = "AddSipUri", default)]
+        #[yaserde(rename = "tns:AddSipUri", default)]
         pub body: ports::AddSipUriSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -5052,7 +5052,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCarbonCopySoapIn {
-        #[yaserde(rename = "CarbonCopy", default)]
+        #[yaserde(rename = "tns:CarbonCopy", default)]
         pub body: ports::CarbonCopySoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -5136,7 +5136,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCleanCustomerSoapIn {
-        #[yaserde(rename = "CleanCustomer", default)]
+        #[yaserde(rename = "tns:CleanCustomer", default)]
         pub body: ports::CleanCustomerSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -5220,7 +5220,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCreateCustomerSoapIn {
-        #[yaserde(rename = "CreateCustomer", default)]
+        #[yaserde(rename = "tns:CreateCustomer", default)]
         pub body: ports::CreateCustomerSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -5304,7 +5304,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCreateCustomerBySipUriSoapIn {
-        #[yaserde(rename = "CreateCustomerBySipUri", default)]
+        #[yaserde(rename = "tns:CreateCustomerBySipUri", default)]
         pub body: ports::CreateCustomerBySipUriSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -5388,7 +5388,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCustomerAssociationSoapIn {
-        #[yaserde(rename = "CustomerAssociation", default)]
+        #[yaserde(rename = "tns:CustomerAssociation", default)]
         pub body: ports::CustomerAssociationSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -5472,7 +5472,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCustomerSearchSoapIn {
-        #[yaserde(rename = "CustomerSearch", default)]
+        #[yaserde(rename = "tns:CustomerSearch", default)]
         pub body: ports::CustomerSearchSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -5556,7 +5556,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapDeleteCustomerSoapIn {
-        #[yaserde(rename = "DeleteCustomer", default)]
+        #[yaserde(rename = "tns:DeleteCustomer", default)]
         pub body: ports::DeleteCustomerSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -5640,7 +5640,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetAllCustomersSoapIn {
-        #[yaserde(rename = "GetAllCustomers", default)]
+        #[yaserde(rename = "tns:GetAllCustomers", default)]
         pub body: ports::GetAllCustomersSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -5724,7 +5724,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustSQLColumnsSoapIn {
-        #[yaserde(rename = "GetCustSQLColumns", default)]
+        #[yaserde(rename = "tns:GetCustSQLColumns", default)]
         pub body: ports::GetCustSQLColumnsSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -5808,7 +5808,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustomFieldTemplatesSoapIn {
-        #[yaserde(rename = "GetCustomFieldTemplates", default)]
+        #[yaserde(rename = "tns:GetCustomFieldTemplates", default)]
         pub body: ports::GetCustomFieldTemplatesSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -5892,7 +5892,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustomerByContactIdSoapIn {
-        #[yaserde(rename = "GetCustomerByContactId", default)]
+        #[yaserde(rename = "tns:GetCustomerByContactId", default)]
         pub body: ports::GetCustomerByContactIdSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -5976,7 +5976,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustomerByEmailSoapIn {
-        #[yaserde(rename = "GetCustomerByEmail", default)]
+        #[yaserde(rename = "tns:GetCustomerByEmail", default)]
         pub body: ports::GetCustomerByEmailSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -6060,7 +6060,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustomerByNameSoapIn {
-        #[yaserde(rename = "GetCustomerByName", default)]
+        #[yaserde(rename = "tns:GetCustomerByName", default)]
         pub body: ports::GetCustomerByNameSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -6144,7 +6144,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustomerByPhoneNumberSoapIn {
-        #[yaserde(rename = "GetCustomerByPhoneNumber", default)]
+        #[yaserde(rename = "tns:GetCustomerByPhoneNumber", default)]
         pub body: ports::GetCustomerByPhoneNumberSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -6228,7 +6228,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustomerBySipUriSoapIn {
-        #[yaserde(rename = "GetCustomerBySipUri", default)]
+        #[yaserde(rename = "tns:GetCustomerBySipUri", default)]
         pub body: ports::GetCustomerBySipUriSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -6312,7 +6312,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCustomerByUserNameSoapIn {
-        #[yaserde(rename = "GetCustomerByUserName", default)]
+        #[yaserde(rename = "tns:GetCustomerByUserName", default)]
         pub body: ports::GetCustomerByUserNameSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -6396,7 +6396,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetNoCustContactsByTimeSoapIn {
-        #[yaserde(rename = "GetNoCustContactsByTime", default)]
+        #[yaserde(rename = "tns:GetNoCustContactsByTime", default)]
         pub body: ports::GetNoCustContactsByTimeSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -6480,7 +6480,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetSearchableFieldsSoapIn {
-        #[yaserde(rename = "GetSearchableFields", default)]
+        #[yaserde(rename = "tns:GetSearchableFields", default)]
         pub body: ports::GetSearchableFieldsSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -6564,7 +6564,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapImpersonateCustomerSoapIn {
-        #[yaserde(rename = "ImpersonateCustomer", default)]
+        #[yaserde(rename = "tns:ImpersonateCustomer", default)]
         pub body: ports::ImpersonateCustomerSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -6648,7 +6648,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapReadCustomerSoapIn {
-        #[yaserde(rename = "ReadCustomer", default)]
+        #[yaserde(rename = "tns:ReadCustomer", default)]
         pub body: ports::ReadCustomerSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -6732,7 +6732,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapReadCustomerHistorySoapIn {
-        #[yaserde(rename = "ReadCustomerHistory", default)]
+        #[yaserde(rename = "tns:ReadCustomerHistory", default)]
         pub body: ports::ReadCustomerHistorySoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -6816,7 +6816,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRegisterAnonymousCustomerSoapIn {
-        #[yaserde(rename = "RegisterAnonymousCustomer", default)]
+        #[yaserde(rename = "tns:RegisterAnonymousCustomer", default)]
         pub body: ports::RegisterAnonymousCustomerSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -6900,7 +6900,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRegisterCustomerSoapIn {
-        #[yaserde(rename = "RegisterCustomer", default)]
+        #[yaserde(rename = "tns:RegisterCustomer", default)]
         pub body: ports::RegisterCustomerSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -6984,7 +6984,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRemoveAddressSoapIn {
-        #[yaserde(rename = "RemoveAddress", default)]
+        #[yaserde(rename = "tns:RemoveAddress", default)]
         pub body: ports::RemoveAddressSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -7068,7 +7068,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRemoveContactSoapIn {
-        #[yaserde(rename = "RemoveContact", default)]
+        #[yaserde(rename = "tns:RemoveContact", default)]
         pub body: ports::RemoveContactSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -7152,7 +7152,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRemoveCustomFieldSoapIn {
-        #[yaserde(rename = "RemoveCustomField", default)]
+        #[yaserde(rename = "tns:RemoveCustomField", default)]
         pub body: ports::RemoveCustomFieldSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -7236,7 +7236,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRemoveEmailAddressSoapIn {
-        #[yaserde(rename = "RemoveEmailAddress", default)]
+        #[yaserde(rename = "tns:RemoveEmailAddress", default)]
         pub body: ports::RemoveEmailAddressSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -7320,7 +7320,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRemovePhoneNumberSoapIn {
-        #[yaserde(rename = "RemovePhoneNumber", default)]
+        #[yaserde(rename = "tns:RemovePhoneNumber", default)]
         pub body: ports::RemovePhoneNumberSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -7404,7 +7404,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapRemoveSipUriSoapIn {
-        #[yaserde(rename = "RemoveSipUri", default)]
+        #[yaserde(rename = "tns:RemoveSipUri", default)]
         pub body: ports::RemoveSipUriSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -7488,7 +7488,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapSendADPasswordReminderSoapIn {
-        #[yaserde(rename = "SendADPasswordReminder", default)]
+        #[yaserde(rename = "tns:SendADPasswordReminder", default)]
         pub body: ports::SendADPasswordReminderSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -7572,7 +7572,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapSendPasswordReminderSoapIn {
-        #[yaserde(rename = "SendPasswordReminder", default)]
+        #[yaserde(rename = "tns:SendPasswordReminder", default)]
         pub body: ports::SendPasswordReminderSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -7656,7 +7656,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapSetAgentIDSoapIn {
-        #[yaserde(rename = "SetAgentID", default)]
+        #[yaserde(rename = "tns:SetAgentID", default)]
         pub body: ports::SetAgentIDSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -7740,7 +7740,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateCustomerSoapIn {
-        #[yaserde(rename = "UpdateCustomer", default)]
+        #[yaserde(rename = "tns:UpdateCustomer", default)]
         pub body: ports::UpdateCustomerSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -7824,7 +7824,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateFirstNameSoapIn {
-        #[yaserde(rename = "UpdateFirstName", default)]
+        #[yaserde(rename = "tns:UpdateFirstName", default)]
         pub body: ports::UpdateFirstNameSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -7908,7 +7908,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateLastNameSoapIn {
-        #[yaserde(rename = "UpdateLastName", default)]
+        #[yaserde(rename = "tns:UpdateLastName", default)]
         pub body: ports::UpdateLastNameSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -7992,7 +7992,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateLoginPageSoapIn {
-        #[yaserde(rename = "UpdateLoginPage", default)]
+        #[yaserde(rename = "tns:UpdateLoginPage", default)]
         pub body: ports::UpdateLoginPageSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -8076,7 +8076,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateObjectionSoapIn {
-        #[yaserde(rename = "UpdateObjection", default)]
+        #[yaserde(rename = "tns:UpdateObjection", default)]
         pub body: ports::UpdateObjectionSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -8160,7 +8160,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdatePasswordSoapIn {
-        #[yaserde(rename = "UpdatePassword", default)]
+        #[yaserde(rename = "tns:UpdatePassword", default)]
         pub body: ports::UpdatePasswordSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -8244,7 +8244,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdatePreferredAgentSoapIn {
-        #[yaserde(rename = "UpdatePreferredAgent", default)]
+        #[yaserde(rename = "tns:UpdatePreferredAgent", default)]
         pub body: ports::UpdatePreferredAgentSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -8328,7 +8328,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateRegisterDateSoapIn {
-        #[yaserde(rename = "UpdateRegisterDate", default)]
+        #[yaserde(rename = "tns:UpdateRegisterDate", default)]
         pub body: ports::UpdateRegisterDateSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -8412,7 +8412,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateTitleSoapIn {
-        #[yaserde(rename = "UpdateTitle", default)]
+        #[yaserde(rename = "tns:UpdateTitle", default)]
         pub body: ports::UpdateTitleSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -8496,7 +8496,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateUserNameSoapIn {
-        #[yaserde(rename = "UpdateUserName", default)]
+        #[yaserde(rename = "tns:UpdateUserName", default)]
         pub body: ports::UpdateUserNameSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,

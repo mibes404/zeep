@@ -1,7 +1,7 @@
 //! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
-//! version: 0.1.8
+//! version: 0.1.9
 //!
 
 #![allow(dead_code)]
@@ -865,7 +865,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetRequest {
-        #[yaserde(rename = "Get", default)]
+        #[yaserde(rename = "tns:Get", default)]
         pub body: ports::GetRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -953,7 +953,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateRequest {
-        #[yaserde(rename = "Update", default)]
+        #[yaserde(rename = "tns:Update", default)]
         pub body: ports::UpdateRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1041,7 +1041,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapDeleteRequest {
-        #[yaserde(rename = "Delete", default)]
+        #[yaserde(rename = "tns:Delete", default)]
         pub body: ports::DeleteRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1129,7 +1129,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupAgentIdsRequest {
-        #[yaserde(rename = "LookupAgentIds", default)]
+        #[yaserde(rename = "tns:LookupAgentIds", default)]
         pub body: ports::LookupAgentIdsRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1217,7 +1217,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupLRMIdsRequest {
-        #[yaserde(rename = "LookupLRMIds", default)]
+        #[yaserde(rename = "tns:LookupLRMIds", default)]
         pub body: ports::LookupLRMIdsRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1305,7 +1305,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupWorkgroupsRequest {
-        #[yaserde(rename = "LookupWorkgroups", default)]
+        #[yaserde(rename = "tns:LookupWorkgroups", default)]
         pub body: ports::LookupWorkgroupsRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1393,7 +1393,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupDomainsRequest {
-        #[yaserde(rename = "LookupDomains", default)]
+        #[yaserde(rename = "tns:LookupDomains", default)]
         pub body: ports::LookupDomainsRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1481,7 +1481,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupLinkGroupsRequest {
-        #[yaserde(rename = "LookupLinkGroups", default)]
+        #[yaserde(rename = "tns:LookupLinkGroups", default)]
         pub body: ports::LookupLinkGroupsRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1569,7 +1569,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupPhoneTypesRequest {
-        #[yaserde(rename = "LookupPhoneTypes", default)]
+        #[yaserde(rename = "tns:LookupPhoneTypes", default)]
         pub body: ports::LookupPhoneTypesRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1657,7 +1657,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupSitesRequest {
-        #[yaserde(rename = "LookupSites", default)]
+        #[yaserde(rename = "tns:LookupSites", default)]
         pub body: ports::LookupSitesRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1745,7 +1745,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCreateRequest {
-        #[yaserde(rename = "Create", default)]
+        #[yaserde(rename = "tns:Create", default)]
         pub body: ports::CreateRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,

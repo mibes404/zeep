@@ -1231,7 +1231,7 @@ impl FileWriter {
             Some(n) => n,
         };
 
-        let message_type_name = match self.message_types.get(operation_name) {
+        let mut message_type_name = match self.message_types.get(operation_name) {
             None => operation_name.to_string(),
             Some(mt) => Self::split_type(mt).to_string(),
         };
@@ -1269,6 +1269,13 @@ impl FileWriter {
             format!("{input_name}: {PORTS_MOD}::{input_type}")
         } else {
             String::new()
+        };
+
+        message_type_name = if let Some(_tns) = &self.target_name_space {
+            // todo: verify this
+            format!("tns:{message_type_name}")
+        } else {
+            message_type_name
         };
 
         let soap_wrapper_in = if has_input {

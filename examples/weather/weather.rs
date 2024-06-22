@@ -1,7 +1,7 @@
 //! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
-//! version: 0.1.8
+//! version: 0.1.9
 //!
 
 #![allow(dead_code)]
@@ -482,7 +482,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetWeatherInformationSoapIn {
-        #[yaserde(rename = "GetWeatherInformation", default)]
+        #[yaserde(rename = "tns:GetWeatherInformation", default)]
         pub body: ports::GetWeatherInformationSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -566,7 +566,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityForecastByZIPSoapIn {
-        #[yaserde(rename = "GetCityForecastByZIP", default)]
+        #[yaserde(rename = "tns:GetCityForecastByZIP", default)]
         pub body: ports::GetCityForecastByZIPSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -650,7 +650,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityWeatherByZIPSoapIn {
-        #[yaserde(rename = "GetCityWeatherByZIP", default)]
+        #[yaserde(rename = "tns:GetCityWeatherByZIP", default)]
         pub body: ports::GetCityWeatherByZIPSoapIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1036,7 +1036,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetWeatherInformationHttpGetIn {
-        #[yaserde(rename = "GetWeatherInformation", default)]
+        #[yaserde(rename = "tns:GetWeatherInformation", default)]
         pub body: ports::GetWeatherInformationHttpGetIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1120,7 +1120,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityForecastByZIPHttpGetIn {
-        #[yaserde(rename = "GetCityForecastByZIP", default)]
+        #[yaserde(rename = "tns:GetCityForecastByZIP", default)]
         pub body: ports::GetCityForecastByZIPHttpGetIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1204,7 +1204,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityWeatherByZIPHttpGetIn {
-        #[yaserde(rename = "GetCityWeatherByZIP", default)]
+        #[yaserde(rename = "tns:GetCityWeatherByZIP", default)]
         pub body: ports::GetCityWeatherByZIPHttpGetIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1441,7 +1441,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetWeatherInformationHttpPostIn {
-        #[yaserde(rename = "GetWeatherInformation", default)]
+        #[yaserde(rename = "tns:GetWeatherInformation", default)]
         pub body: ports::GetWeatherInformationHttpPostIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1525,7 +1525,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityForecastByZIPHttpPostIn {
-        #[yaserde(rename = "GetCityForecastByZIP", default)]
+        #[yaserde(rename = "tns:GetCityForecastByZIP", default)]
         pub body: ports::GetCityForecastByZIPHttpPostIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1609,7 +1609,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetCityWeatherByZIPHttpPostIn {
-        #[yaserde(rename = "GetCityWeatherByZIP", default)]
+        #[yaserde(rename = "tns:GetCityWeatherByZIP", default)]
         pub body: ports::GetCityWeatherByZIPHttpPostIn,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,

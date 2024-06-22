@@ -1,7 +1,7 @@
 //! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
-//! version: 0.1.8
+//! version: 0.1.9
 //!
 
 #![allow(dead_code)]
@@ -164,7 +164,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetBank {
-        #[yaserde(rename = "GetBank", default)]
+        #[yaserde(rename = "tns:GetBank", default)]
         pub body: ports::GetBank,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,

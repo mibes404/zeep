@@ -1,7 +1,7 @@
 //! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
-//! version: 0.1.8
+//! version: 0.1.9
 //!
 
 #![allow(dead_code)]
@@ -191,7 +191,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapNumberToWordsSoapRequest {
-        #[yaserde(rename = "NumberToWords", default)]
+        #[yaserde(rename = "tns:NumberToWords", default)]
         pub body: ports::NumberToWordsSoapRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -275,7 +275,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapNumberToDollarsSoapRequest {
-        #[yaserde(rename = "NumberToDollars", default)]
+        #[yaserde(rename = "tns:NumberToDollars", default)]
         pub body: ports::NumberToDollarsSoapRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
