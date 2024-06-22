@@ -862,7 +862,7 @@ pub mod bindings {
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapGetRequest {
-        #[yaserde(rename = "impl:Get", default)]
+        #[yaserde(rename = "tns:Get", default)]
         pub body: ports::GetRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -950,7 +950,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapUpdateRequest {
-        #[yaserde(rename = "impl:Update", default)]
+        #[yaserde(rename = "tns:Update", default)]
         pub body: ports::UpdateRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1038,7 +1038,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapDeleteRequest {
-        #[yaserde(rename = "impl:Delete", default)]
+        #[yaserde(rename = "tns:Delete", default)]
         pub body: ports::DeleteRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1126,7 +1126,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupAgentIdsRequest {
-        #[yaserde(rename = "impl:LookupAgentIds", default)]
+        #[yaserde(rename = "tns:LookupAgentIds", default)]
         pub body: ports::LookupAgentIdsRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1214,7 +1214,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupLRMIdsRequest {
-        #[yaserde(rename = "impl:LookupLRMIds", default)]
+        #[yaserde(rename = "tns:LookupLRMIds", default)]
         pub body: ports::LookupLRMIdsRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1302,7 +1302,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupWorkgroupsRequest {
-        #[yaserde(rename = "impl:LookupWorkgroups", default)]
+        #[yaserde(rename = "tns:LookupWorkgroups", default)]
         pub body: ports::LookupWorkgroupsRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1390,7 +1390,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupDomainsRequest {
-        #[yaserde(rename = "impl:LookupDomains", default)]
+        #[yaserde(rename = "tns:LookupDomains", default)]
         pub body: ports::LookupDomainsRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1478,7 +1478,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupLinkGroupsRequest {
-        #[yaserde(rename = "impl:LookupLinkGroups", default)]
+        #[yaserde(rename = "tns:LookupLinkGroups", default)]
         pub body: ports::LookupLinkGroupsRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1566,7 +1566,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupPhoneTypesRequest {
-        #[yaserde(rename = "impl:LookupPhoneTypes", default)]
+        #[yaserde(rename = "tns:LookupPhoneTypes", default)]
         pub body: ports::LookupPhoneTypesRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1654,7 +1654,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapLookupSitesRequest {
-        #[yaserde(rename = "impl:LookupSites", default)]
+        #[yaserde(rename = "tns:LookupSites", default)]
         pub body: ports::LookupSitesRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,
@@ -1742,7 +1742,7 @@ pub mod bindings {
 
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     pub struct SoapCreateRequest {
-        #[yaserde(rename = "impl:Create", default)]
+        #[yaserde(rename = "tns:Create", default)]
         pub body: ports::CreateRequest,
         #[yaserde(attribute)]
         pub xmlns: Option<String>,

@@ -1268,18 +1268,25 @@ impl FileWriter {
             String::new()
         };
 
-        message_type_name = if let Some(tns) = &self.target_name_space {
-            if let Some(namespace) = self.namespaces.iter().find(|(_k, v)| *v == tns).map(|(k, _v)|
-                k
-            ) {
-                format!("{namespace}:{message_type_name}")
-            } else {
-                message_type_name
-            }
+        // message_type_name = if let Some(tns) = &self.target_name_space {
+        //     if let Some(namespace) = self.namespaces.iter().find(|(_k, v)| *v == tns).map(|(k, _v)|
+        //         k
+        //     ) {
+        //         format!("{namespace}:{message_type_name}")
+        //     } else {
+        //         message_type_name
+        //     }
+        // } else {
+        //     message_type_name
+        // };
+
+        message_type_name = if let Some(_tns) = &self.target_name_space {
+            // todo: use lookup as per above
+            format!("tns:{message_type_name}")
         } else {
             message_type_name
         };
-
+        
         let soap_wrapper_in = if has_input {
             if self.have_seen_type(&input_soap_name, parent) {
                 None
