@@ -6,7 +6,9 @@
 
 #![allow(dead_code)]
 #![allow(unused_imports)]
-use log::{debug, warn};
+#![allow(non_local_definitions)]
+
+use log::{debug, trace, warn};
 use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 

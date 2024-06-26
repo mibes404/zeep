@@ -6,7 +6,9 @@
 
 #![allow(dead_code)]
 #![allow(unused_imports)]
-use log::{debug, warn};
+#![allow(non_local_definitions)]
+
+use log::{debug, trace, warn};
 use std::io::{Read, Write};
 use yaserde::{YaDeserialize, YaSerialize};
 
@@ -852,6 +854,7 @@ pub mod bindings {
             if let Some(credentials) = &self.credentials {
                 req = req.basic_auth(credentials.0.to_string(), Some(credentials.1.to_string()));
             }
+            trace!("SOAP Request: {:?}", req);
             let res = req.send().await?;
             let status = res.status();
             debug!("SOAP Status: {}", status);

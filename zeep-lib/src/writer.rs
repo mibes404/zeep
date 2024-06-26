@@ -144,7 +144,12 @@ impl FileWriter {
         self.process_xml(file_name, print_when_done, &xml)
     }
 
-    fn process_xml(&mut self, file_name: &str, print_when_done: bool, xml: &str) -> Result<(), WriterError> {
+    fn process_xml(
+        &mut self,
+        file_name: &str,
+        print_when_done: bool,
+        xml: &str,
+    ) -> Result<(), WriterError> {
         let doc = roxmltree::Document::parse(xml).map_err(|e| WriterError {
             message: format!("Unable to parse file {file_name}: {e}"),
         })?;
@@ -197,9 +202,11 @@ impl FileWriter {
             r#"
             #![allow(dead_code)]           
             #![allow(unused_imports)]
+            #![allow(non_local_definitions)]
+
             use yaserde::{YaSerialize, YaDeserialize};
             use std::io::{Read, Write};
-            use log::{warn, debug};
+            use log::{warn, debug, trace};
             
             pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
             "#,
@@ -956,6 +963,7 @@ impl FileWriter {
                             Some(credentials.1.to_string()),
                         );
                     }}
+                    trace!("SOAP Request: {{:?}}", req);
                     let res = req.send().await?;
                     let status = res.status();
                     debug!("SOAP Status: {{}}", status);
@@ -1290,7 +1298,7 @@ impl FileWriter {
         } else {
             message_type_name
         };
-        
+
         let soap_wrapper_in = if has_input {
             if self.have_seen_type(&input_soap_name, parent) {
                 None
@@ -1705,7 +1713,10 @@ mod test_wsdl {
         result
     }
 
-    fn prepare_file_writer(ns_prefix: Option<String>, default_ns: Option<String>) -> (FileWriter, DebugBuffer) {
+    fn prepare_file_writer(
+        ns_prefix: Option<String>,
+        default_ns: Option<String>,
+    ) -> (FileWriter, DebugBuffer) {
         let buffer = DebugBuffer::default();
         let mut fw = FileWriter::new_buffer(ns_prefix, default_ns, buffer.clone());
         fw.process_file("../resources/temp_converter/", "tempconverter.wsdl")
@@ -1720,14 +1731,18 @@ mod test_wsdl {
         let wsdl_ns = fw.namespaces.get("wsdl").expect("wsdl namespace not found");
         assert_eq!(wsdl_ns, "http://schemas.xmlsoap.org/wsdl/");
         assert!(!fw.namespaces.contains_key("definitions"));
-        assert_eq!(fw.target_name_space.as_deref(), Some("http://learnwebservices.com/services/tempconverter"));
+        assert_eq!(
+            fw.target_name_space.as_deref(),
+            Some("http://learnwebservices.com/services/tempconverter")
+        );
     }
 
     #[test]
     fn test_service() {
         let result = prepare_output(None, None);
         assert!(result.contains(r#"Self::new_client_with_url("https://apps.learnwebservices.com:443/services/tempconverter", credentials)"#));
-        assert!(result.contains(r#"#[yaserde(rename = "tns:CelsiusToFahrenheitRequest", default)]"#));
+        assert!(
+            result.contains(r#"#[yaserde(rename = "tns:CelsiusToFahrenheitRequest", default)]"#)
+        );
     }
-
 }

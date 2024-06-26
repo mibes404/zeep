@@ -6,9 +6,11 @@
 
             #![allow(dead_code)]           
             #![allow(unused_imports)]
+            #![allow(non_local_definitions)]
+
             use yaserde::{YaSerialize, YaDeserialize};
             use std::io::{Read, Write};
-            use log::{warn, debug};
+            use log::{warn, debug, trace};
             
             pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
             #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
