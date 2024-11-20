@@ -2,7 +2,7 @@
 
 Generate yaserde annotated structs for Rust based on XSD/WSDL. For WSDL input, client code is generated as well.
 
-The generated code depends on yaserde (0.10) and yaserde_derive for the XSD-generated types. The SOAP client needs tokio, log and reqwest in addition. 
+The generated code depends on yaserde (0.11) and yaserde_derive for the XSD-generated types. The SOAP client needs tokio, log and reqwest in addition. 
 The generated code does *not* have any dependencies on this library.
 
 Check the examples and the Cargo.toml for a complete list of dependencies.
@@ -12,7 +12,7 @@ Check the examples and the Cargo.toml for a complete list of dependencies.
 ```bash
 $ cargo install --git https://github.com/mibes404/zeep zeep
 $ zeep --version
-  Zeep - XSD/WSDL client generator for Rust 0.1.10
+  Zeep - XSD/WSDL client generator for Rust 0.1.11
 ```
 
 ## Usage

@@ -17,7 +17,7 @@ rustfmt --color=always --edition=2021 examples/aic/aic.rs
 rustfmt --color=always --edition=2021 examples/hello/hello.rs
 rustfmt --color=always --edition=2021 examples/temperature/tempconverter.rs
 rustfmt --color=always --edition=2021 examples/weather/weather.rs
-rustfmt --color=always --edition=2021 examples/smgr/smgr.rs
+rustfmt --color=always --edition=2021 examples/smgr/smgr_agent.rs
 rustfmt --color=always --edition=2021 examples/blz_service/blz.rs
 rustfmt --color=always --edition=2021 examples/number_services/number_services.rs
 rustfmt --color=always --edition=2021 examples/broadband_forum/cwmp.rs
