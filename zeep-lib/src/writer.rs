@@ -555,7 +555,7 @@ impl FileWriter {
             "short" => "i16".to_string(),
             "boolean" => "bool".to_string(),
             // use String for date types
-            "date" | "dateTime" | "time" => "String".to_string(),
+            "date" | "dateTime" | "time" | "language" => "String".to_string(),
             v => to_pascal_case(v),
         }
     }
@@ -610,9 +610,8 @@ impl FileWriter {
         }
 
         let mut parent_element = self.init_element(name, false);
-        let type_name = match Self::deconstruct_simplex_element(node) {
-            Ok(tn) => tn,
-            Err(_) => to_pascal_case(name),
+        let Ok(type_name) = Self::deconstruct_simplex_element(node) else {
+            return;
         };
 
         let mut field = Element::new("body", ElementType::Field);
@@ -695,6 +694,44 @@ impl FileWriter {
     }
 
     fn deconstruct_simplex_element(node: &Node) -> WriterResult<String> {
+        if let Ok(with_restriction) = Self::try_deconstruct_simplex_element_as_restriction(node) {
+            return Ok(with_restriction);
+        }
+
+        if let Ok(with_list) = Self::try_deconstruct_simplex_element_as_list(node) {
+            return Ok(with_list);
+        }
+
+        Self::try_deconstruct_simplex_element_as_union(node)
+    }
+
+    fn try_deconstruct_simplex_element_as_list(node: &Node) -> WriterResult<String> {
+        let list = match node.children().find(|c| c.has_tag_name("list")) {
+            None => {
+                return Err(WriterError {
+                    message: "list element is missing".to_string(),
+                })
+            }
+            Some(b) => b,
+        };
+
+        Self::try_deconstruct_simplex_element_as_restriction(&list)
+    }
+
+    fn try_deconstruct_simplex_element_as_union(node: &Node) -> WriterResult<String> {
+        let union = match node.children().find(|c| c.has_tag_name("union")) {
+            None => {
+                return Err(WriterError {
+                    message: "union element is missing".to_string(),
+                })
+            }
+            Some(b) => b,
+        };
+
+        Self::try_deconstruct_simplex_element_as_restriction(&union)
+    }
+
+    fn try_deconstruct_simplex_element_as_restriction(node: &Node) -> WriterResult<String> {
         let restriction = match node.children().find(|c| c.has_tag_name("restriction")) {
             None => {
                 return Err(WriterError {
