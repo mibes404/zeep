@@ -609,6 +609,14 @@ impl FileWriter {
             return;
         }
 
+        if let Some(union) = node.children().find(|c| c.has_tag_name("union")) {
+            let nested_simple_types = union.children().filter(|c| c.has_tag_name("simpleType"));
+            for simple_type in nested_simple_types {
+                self.print_simplex_element(&simple_type, name, module);
+            }
+            return;
+        }
+
         let mut parent_element = self.init_element(name, false);
         let Ok(type_name) = Self::deconstruct_simplex_element(node) else {
             return;
@@ -698,11 +706,7 @@ impl FileWriter {
             return Ok(with_restriction);
         }
 
-        if let Ok(with_list) = Self::try_deconstruct_simplex_element_as_list(node) {
-            return Ok(with_list);
-        }
-
-        Self::try_deconstruct_simplex_element_as_union(node)
+        Self::try_deconstruct_simplex_element_as_list(node)
     }
 
     fn try_deconstruct_simplex_element_as_list(node: &Node) -> WriterResult<String> {
@@ -715,20 +719,20 @@ impl FileWriter {
             Some(b) => b,
         };
 
-        Self::try_deconstruct_simplex_element_as_restriction(&list)
-    }
+        if let Some(item_type) = list.attribute("itemType") {
+            return Ok(item_type.to_string());
+        }
 
-    fn try_deconstruct_simplex_element_as_union(node: &Node) -> WriterResult<String> {
-        let union = match node.children().find(|c| c.has_tag_name("union")) {
+        let list_item = match list.children().find(|c| c.has_tag_name("simpleType")) {
             None => {
                 return Err(WriterError {
-                    message: "union element is missing".to_string(),
+                    message: "list element is missing".to_string(),
                 })
             }
             Some(b) => b,
         };
 
-        Self::try_deconstruct_simplex_element_as_restriction(&union)
+        Self::try_deconstruct_simplex_element_as_restriction(&list_item)
     }
 
     fn try_deconstruct_simplex_element_as_restriction(node: &Node) -> WriterResult<String> {
