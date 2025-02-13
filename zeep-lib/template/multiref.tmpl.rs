@@ -1,12 +1,13 @@
-//! This module contains the `MultiRef` type which is a wrapper around `Rc<RefCell<T>>` that implements `YaDeserialize` and `YaSerialize` for `T` and allows for multiple references to the same object.
+//! This module contains the `MultiRef` type which is a wrapper around `Arc<RwLock<T>>` that implements `YaDeserialize` and `YaSerialize` for `T` and allows for multiple references to the same object.
 //! Inspired by [this](https://github.com/media-io/yaserde/issues/165#issuecomment-1810243674) comment on the yaserde repository.
-//! Needs `xml-rs` and `yaserde` as dependencies.
+//! Needs `xml-rs`, `tokio` and `yaserde` as dependencies.
 
-use std::{cell::RefCell, ops::Deref, rc::Rc};
+use std::{ops::Deref, sync::Arc};
+use tokio::sync::RwLock;
 use yaserde::{YaDeserialize, YaSerialize};
 
 pub struct MultiRef<T> {
-    inner: Rc<RefCell<T>>,
+    inner: Arc<RwLock<T>>,
 }
 
 impl<T: YaDeserialize + YaSerialize> YaDeserialize for MultiRef<T> {
@@ -15,7 +16,7 @@ impl<T: YaDeserialize + YaSerialize> YaDeserialize for MultiRef<T> {
     ) -> Result<Self, String> {
         let inner = T::deserialize(reader)?;
         Ok(Self {
-            inner: Rc::new(RefCell::new(inner)),
+            inner: Arc::new(RwLock::new(inner)),
         })
     }
 }
@@ -25,7 +26,7 @@ impl<T: YaDeserialize + YaSerialize> YaSerialize for MultiRef<T> {
         &self,
         writer: &mut yaserde::ser::Serializer<W>,
     ) -> Result<(), String> {
-        self.inner.as_ref().borrow().serialize(writer)?;
+        self.inner.blocking_write().serialize(writer)?;
         Ok(())
     }
 
@@ -41,8 +42,7 @@ impl<T: YaDeserialize + YaSerialize> YaSerialize for MultiRef<T> {
         String,
     > {
         self.inner
-            .as_ref()
-            .borrow()
+            .blocking_read()
             .serialize_attributes(attributes, namespace)
     }
 }
@@ -50,7 +50,7 @@ impl<T: YaDeserialize + YaSerialize> YaSerialize for MultiRef<T> {
 impl<T: YaDeserialize + YaSerialize + Default> Default for MultiRef<T> {
     fn default() -> Self {
         Self {
-            inner: Rc::default(),
+            inner: Arc::default(),
         }
     }
 }
@@ -65,12 +65,12 @@ impl<T: YaDeserialize + YaSerialize> Clone for MultiRef<T> {
 
 impl<T: YaDeserialize + YaSerialize + std::fmt::Debug> std::fmt::Debug for MultiRef<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        self.inner.as_ref().borrow().fmt(f)
+        self.inner.blocking_read().fmt(f)
     }
 }
 
 impl<T> Deref for MultiRef<T> {
-    type Target = Rc<RefCell<T>>;
+    type Target = Arc<RwLock<T>>;
     fn deref(&self) -> &Self::Target {
         &self.inner
     }
