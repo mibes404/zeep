@@ -568,7 +568,7 @@ impl FileWriter {
     }
 
     fn split_type(node_type: &str) -> &str {
-        node_type.split(':').last().unwrap_or("String")
+        node_type.split(':').next_back().unwrap_or("String")
     }
 
     fn init_element(&self, name: &str, is_top_level: bool) -> Element {
@@ -961,12 +961,12 @@ impl FileWriter {
         let mut client = Element::new(&struct_name, ElementType::Static);
         client.set_content(
             format!(
-                r#"pub struct {struct_name} {{
+                r"pub struct {struct_name} {{
                 client: reqwest::Client,
                 url: String,
                 credentials: Option<(String,String)>
                 }}
-                "#
+                "
             )
             .as_str(),
         );
@@ -1048,7 +1048,7 @@ impl FileWriter {
         let mut e = Element::new(struct_name, ElementType::Static);
         e.set_content(
             format!(
-                r#"impl {struct_name} {{
+                r"impl {struct_name} {{
                 #[must_use]
                 pub fn new(url: &str, credentials: Option<(String,String)>) -> Self {{
                     {struct_name} {{
@@ -1058,7 +1058,7 @@ impl FileWriter {
                     }}
                 }}
         }}
-        "#
+        "
             )
             .as_str(),
         );
@@ -1606,9 +1606,9 @@ impl FileWriter {
 
         e.set_content(
             format!(
-                r#"pub struct {struct_name} {{}}
+                r"pub struct {struct_name} {{}}
                impl {struct_name} {{
-                "#,
+                ",
             )
             .as_str(),
         );

@@ -98,7 +98,7 @@ impl WritableElement for Element {
             ElementType::Field => self.render_field(),
             ElementType::Static => self.render_static(),
             ElementType::Alias => self.render_alias(),
-            ElementType::Module(content) => self.render_module(content),
+            ElementType::Module(content) => self.render_module(content.as_deref()),
             ElementType::Attribute => self.render_atribute(),
             ElementType::Trait => self.render_trait(),
             ElementType::TraitImpl => self.render_trait_impl(),
@@ -408,11 +408,11 @@ impl Element {
         }
     }
 
-    fn render_module(&self, static_content: &Option<String>) -> String {
+    fn render_module(&self, static_content: Option<&str>) -> String {
         let mut result = format!("pub mod {} {{\n", self.name);
 
         if let Some(c) = static_content {
-            result.push_str(c.as_str());
+            result.push_str(c);
             result.push_str("}\n\n");
             return result;
         }

@@ -1,6 +1,6 @@
 use std::{error, fmt};
 
-pub type WriterResult<T> = std::result::Result<T, WriterError>;
+pub type WriterResult<T> = Result<T, WriterError>;
 
 #[derive(Debug, Clone)]
 pub struct WriterError {
@@ -19,7 +19,7 @@ impl error::Error for WriterError {
     }
 }
 
-impl std::convert::From<std::io::Error> for WriterError {
+impl From<std::io::Error> for WriterError {
     fn from(err: std::io::Error) -> Self {
         WriterError {
             message: err.to_string(),
@@ -27,7 +27,7 @@ impl std::convert::From<std::io::Error> for WriterError {
     }
 }
 
-impl std::convert::From<roxmltree::Error> for WriterError {
+impl From<roxmltree::Error> for WriterError {
     fn from(err: roxmltree::Error) -> Self {
         WriterError {
             message: err.to_string(),
