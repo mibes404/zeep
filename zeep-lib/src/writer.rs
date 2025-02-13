@@ -43,12 +43,17 @@ pub struct FileWriter {
     writer: Option<Box<dyn Write>>,
     target_name_space: Option<String>,
     port_types: HashMap<String, PortType>,
-    message_types: HashMap<String, String>,
+    message_types: HashMap<String, PartType>,
     namespaces: HashMap<String, String>,
     import_count: u32,
     ns_prefix: String,
     default_namespace: Option<String>,
     root: Element,
+}
+
+pub struct PartType {
+    name: String,
+    part_type: String,
 }
 
 #[derive(Clone)]
@@ -309,7 +314,7 @@ impl FileWriter {
                     let mut_module = &mut *module.deref().borrow_mut();
                     self.print_element(&child, true, &mut None, mut_module)
                 }
-                "complexType" => {
+                "complexType" | "group" => {
                     if let Some(n) = Self::get_some_attribute(&child, "name") {
                         let module = self.pick_section(TYPES_MOD);
                         let mut_module = &mut *module.deref().borrow_mut();
@@ -412,9 +417,12 @@ impl FileWriter {
             }
         }
 
-        let element_name = match Self::get_some_attribute(node, "name") {
-            None => return Ok(()),
-            Some(n) => n,
+        let (element_name, is_ref) = match Self::get_some_attribute(node, "name") {
+            None => match Self::get_some_attribute(node, "ref") {
+                Some(n) => (n.split(':').next_back().unwrap_or(n), true),
+                None => return Ok(()),
+            },
+            Some(n) => (n, false),
         };
 
         let as_vec = {
@@ -444,7 +452,8 @@ impl FileWriter {
 
         let empty_element = node.children().count() == 0;
 
-        let mut type_name = match Self::get_some_attribute(node, "type") {
+        let type_attr_name = if is_ref { "ref" } else { "type" };
+        let mut type_name = match Self::get_some_attribute(node, type_attr_name) {
             None => {
                 if empty_element {
                     ANY_TYPE.to_string()
@@ -846,9 +855,9 @@ impl FileWriter {
             let mut element = Element::new(to_pascal_case(name).as_str(), ElementType::Struct);
             element.xml_name = Some(name.to_string());
 
-            let maybe_part = node.children().find(|child| child.has_tag_name("part"));
+            let maybe_parts = node.children().filter(|child| child.has_tag_name("part"));
 
-            if let Some(part) = maybe_part {
+            for part in maybe_parts {
                 if let Some(type_name) = Self::get_some_attribute(&part, "type") {
                     // simple type
                     self.print_simple_part(name, &part, type_name, &mut element);
@@ -880,8 +889,13 @@ impl FileWriter {
             element.field_type = Some(type_name.clone());
             parent.add(element);
 
-            self.message_types
-                .insert(message_name.to_string(), type_name);
+            self.message_types.insert(
+                message_name.to_string(),
+                PartType {
+                    name: element_name.to_string(),
+                    part_type: type_name,
+                },
+            );
         }
     }
 
@@ -906,8 +920,13 @@ impl FileWriter {
 
         parent.add(element);
 
-        self.message_types
-            .insert(message_name.to_string(), type_name.to_string());
+        self.message_types.insert(
+            message_name.to_string(),
+            PartType {
+                name: element_name.to_string(),
+                part_type: type_name.to_string(),
+            },
+        );
     }
 
     // WSDL Port Types
@@ -1245,7 +1264,7 @@ impl FileWriter {
             #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
             pub xsiattr: Option<String>,
             #[yaserde(rename = "Header", prefix = "soapenv")]
-            pub header: Option<Header>,
+            pub header: Option<{1}Header>,
             #[yaserde(rename = "Body", prefix = "soapenv")]
             pub body: {1},
         }}
@@ -1268,6 +1287,25 @@ impl FileWriter {
         )
     }
 
+    fn get_port_type_by_name(
+        &self,
+        bind_type_name: &str,
+        operation_name: &str,
+    ) -> Option<PortType> {
+        let port_type_name = format!("{bind_type_name}::{operation_name}");
+
+        match self.port_types.get(&port_type_name) {
+            None => {
+                warn!(
+                    "failed to find matching port type for binding: {} with type: {}",
+                    operation_name, port_type_name
+                );
+                None
+            }
+            Some(pt) => Some(pt.clone()),
+        }
+    }
+
     #[allow(clippy::too_many_lines)]
     fn print_binding_operation(
         &mut self,
@@ -1283,37 +1321,17 @@ impl FileWriter {
 
         let mut message_type_name = match self.message_types.get(operation_name) {
             None => operation_name.to_string(),
-            Some(mt) => Self::split_type(mt).to_string(),
+            Some(mt) => format!("{}_{}", mt.name, Self::split_type(&mt.part_type)),
         };
 
-        let port_type_name = format!("{bind_type_name}::{operation_name}");
-
-        let port_type = match self.port_types.get(&port_type_name) {
-            None => {
-                warn!(
-                    "failed to find matching port type for binding: {} with type: {}",
-                    operation_name, port_type_name
-                );
-                return;
-            }
-            Some(pt) => pt.clone(),
+        let Some(port_type) = self.get_port_type_by_name(bind_type_name, operation_name) else {
+            return;
         };
 
         let func_name = to_snake_case(operation_name);
 
-        let (input_name, input_type, input_soap_name, has_input) = match &port_type.input_type {
-            Some((input_name, Some(input_type))) => {
-                let soap_name = format!("Soap{input_type}");
-
-                (
-                    to_snake_case(input_name),
-                    input_type.clone(),
-                    soap_name,
-                    true,
-                )
-            }
-            _ => (String::new(), String::new(), String::new(), false),
-        };
+        let (input_name, input_type, input_soap_name, has_input) =
+            Self::get_input_fields_from_port_type(&port_type);
 
         let input_template = if has_input {
             format!("{input_name}: {PORTS_MOD}::{input_type}")
@@ -1321,17 +1339,25 @@ impl FileWriter {
             String::new()
         };
 
-        // message_type_name = if let Some(tns) = &self.target_name_space {
-        //     if let Some(namespace) = self.namespaces.iter().find(|(_k, v)| *v == tns).map(|(k, _v)|
-        //         k
-        //     ) {
-        //         format!("{namespace}:{message_type_name}")
-        //     } else {
-        //         message_type_name
-        //     }
-        // } else {
-        //     message_type_name
-        // };
+        let input_header_fields = Self::extract_input_headers(node)
+            .iter()
+            .filter_map(|h| self.get_port_type_by_name(bind_type_name, h))
+            .map(|p| Self::get_input_fields_from_port_type(&p))
+            .map(|(input_name, input_type, _input_soap_name, _has_input)| {
+                format!("{}: {}", to_snake_case(&input_name), input_type)
+            })
+            .collect::<Vec<String>>()
+            .join(",\n");
+
+        let output_header_fields = Self::extract_output_headers(node)
+            .iter()
+            .filter_map(|h| self.get_port_type_by_name(bind_type_name, h))
+            .map(|p| Self::get_input_fields_from_port_type(&p))
+            .map(|(input_name, input_type, _input_soap_name, _has_input)| {
+                format!("{}: {}", to_snake_case(&input_name), input_type)
+            })
+            .collect::<Vec<String>>()
+            .join(",\n");
 
         message_type_name = if let Some(_tns) = &self.target_name_space {
             // todo: use lookup as per above
@@ -1345,7 +1371,13 @@ impl FileWriter {
                 None
             } else {
                 Some(format!(
-                    r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+                    r#"
+                    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+                    pub struct {0}Header {{
+                        {5}
+                    }}
+                                        
+                    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
                     pub struct {0} {{
                         #[yaserde(rename = "{3}", default)]
                         pub body: {2}::{1},
@@ -1359,7 +1391,8 @@ impl FileWriter {
                     PORTS_MOD,
                     // this should be renamed when renaming is used
                     message_type_name,
-                    self.construct_soap_wrapper(input_type.as_str(), input_soap_name.as_str())
+                    self.construct_soap_wrapper(input_type.as_str(), input_soap_name.as_str()),
+                    input_header_fields
                 ))
             }
         } else {
@@ -1377,7 +1410,7 @@ impl FileWriter {
 
         let output_xml_type = match self.message_types.get(&output_xml_type) {
             None => output_xml_type.to_string(),
-            Some(mt) => Self::split_type(mt).to_string(),
+            Some(mt) => format!("{}_{}", mt.name, Self::split_type(&mt.part_type)),
         };
 
         let (_fault_type, _fault_xml_type, fault_soap_name, has_fault) = match &port_type.fault_type
@@ -1412,7 +1445,13 @@ impl FileWriter {
                 None
             } else {
                 Some(format!(
-                    r#"#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+                    r#"
+                    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+                    pub struct {0}Header {{
+                        {6}
+                    }}
+
+                    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
                     pub struct {0} {{
                     #[yaserde(rename = "{3}", default)]
                     pub body: Option<{2}::{1}>,
@@ -1426,6 +1465,7 @@ impl FileWriter {
                     output_xml_type,
                     soap_fault,
                     self.construct_soap_wrapper(output_type.as_str(), output_soap_name.as_str()),
+                    output_header_fields
                 ))
             }
         } else {
@@ -1636,6 +1676,46 @@ impl FileWriter {
         e.append_content("}\n");
 
         mut_parent.add(e);
+    }
+
+    fn extract_input_headers(node: &Node) -> Vec<String> {
+        if let Some(input_node) = node.children().find(|c| c.tag_name().name() == "input") {
+            return Self::extract_header_fields(&input_node);
+        }
+
+        vec![]
+    }
+
+    fn extract_output_headers(node: &Node) -> Vec<String> {
+        if let Some(output_node) = node.children().find(|c| c.tag_name().name() == "output") {
+            return Self::extract_header_fields(&output_node);
+        }
+
+        vec![]
+    }
+
+    fn extract_header_fields(node: &Node) -> Vec<String> {
+        let header_nodes = node.children().filter(|c| c.tag_name().name() == "header");
+        let header_field_types = header_nodes
+            .filter_map(|c| c.attribute("part"))
+            .map(ToString::to_string);
+        header_field_types.collect()
+    }
+
+    fn get_input_fields_from_port_type(port_type: &PortType) -> (String, String, String, bool) {
+        match &port_type.input_type {
+            Some((input_name, Some(input_type))) => {
+                let soap_name = format!("Soap{input_type}");
+
+                (
+                    to_snake_case(input_name),
+                    input_type.clone(),
+                    soap_name,
+                    true,
+                )
+            }
+            _ => (String::new(), String::new(), String::new(), false),
+        }
     }
 }
 
