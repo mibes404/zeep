@@ -1,9 +1,7 @@
 //! # Element
 //! Responsible for rendering elements to Rust code
 //!
-use std::cell::RefCell;
-use std::collections::HashMap;
-use std::rc::Rc;
+use std::{cell::RefCell, collections::HashMap, rc::Rc};
 
 pub enum ElementType {
     Root,
@@ -282,10 +280,7 @@ impl Element {
             Some(ft) => ft,
         };
 
-        let mut result = format!(
-            "#[async_trait]\n\timpl {0} for {1} {{\n",
-            field_type, self.name
-        );
+        let mut result = format!("#[async_trait]\n\timpl {0} for {1} {{\n", field_type, self.name);
 
         let r: String = self.children.iter().map(|c| c.borrow().render()).collect();
         result.push_str(&r);
@@ -527,18 +522,8 @@ pub struct SoapFault {
         soap_fault.xml_name = Some("Fault".to_string());
         soap_fault.add_ns("soapenv", "http://schemas.xmlsoap.org/soap/envelope/");
         soap_fault.prefix = Some("soapenv".to_string());
-        soap_fault.add(Element::new_field(
-            "fault_code",
-            "faultcode",
-            "String",
-            true,
-        ));
-        soap_fault.add(Element::new_field(
-            "fault_string",
-            "faultstring",
-            "String",
-            true,
-        ));
+        soap_fault.add(Element::new_field("fault_code", "faultcode", "String", true));
+        soap_fault.add(Element::new_field("fault_string", "faultstring", "String", true));
         assert_eq!(soap_fault.render(), expected.to_string());
     }
 

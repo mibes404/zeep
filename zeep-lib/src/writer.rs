@@ -1,9 +1,6 @@
 use crate::{
     debug::DebugBuffer,
-    element::{
-        root, Element, ElementType, NamespacedElement, ParentElement, StaticElement,
-        WritableElement,
-    },
+    element::{root, Element, ElementType, NamespacedElement, ParentElement, StaticElement, WritableElement},
     error::{WriterError, WriterResult},
 };
 use inflector::cases::{pascalcase::to_pascal_case, snakecase::to_snake_case};
@@ -92,11 +89,7 @@ impl FileWriter {
     }
 
     #[must_use]
-    pub fn new_file(
-        dest_file_name: File,
-        ns_prefix: Option<String>,
-        default_namespace: Option<String>,
-    ) -> Self {
+    pub fn new_file(dest_file_name: File, ns_prefix: Option<String>, default_namespace: Option<String>) -> Self {
         FileWriter {
             base_path: PathBuf::default(),
             writer: Some(Box::new(dest_file_name)),
@@ -113,11 +106,7 @@ impl FileWriter {
 
     #[allow(dead_code)]
     #[must_use]
-    pub fn new_buffer(
-        ns_prefix: Option<String>,
-        default_namespace: Option<String>,
-        buffer: DebugBuffer,
-    ) -> Self {
+    pub fn new_buffer(ns_prefix: Option<String>, default_namespace: Option<String>, buffer: DebugBuffer) -> Self {
         let mut fw = FileWriter::new(ns_prefix, default_namespace);
         fw.writer = Some(Box::from(buffer));
         fw
@@ -149,15 +138,9 @@ impl FileWriter {
         self.process_xml(file_name, print_when_done, &xml)
     }
 
-    fn process_xml(
-        &mut self,
-        file_name: &str,
-        print_when_done: bool,
-        xml: &str,
-    ) -> Result<(), WriterError> {
-        let doc = roxmltree::Document::parse(xml).map_err(|e| WriterError {
-            message: format!("Unable to parse file {file_name}: {e}"),
-        })?;
+    fn process_xml(&mut self, file_name: &str, print_when_done: bool, xml: &str) -> Result<(), WriterError> {
+        let doc = roxmltree::Document::parse(xml)
+            .map_err(|e| WriterError::new(format!("Unable to parse file {file_name}: {e}")))?;
         doc.root().children().try_for_each(|n| self.print(&n))?;
 
         if !print_when_done {
@@ -176,22 +159,16 @@ impl FileWriter {
     fn read_to_string(&self, file_name: &str) -> WriterResult<String> {
         if file_name.starts_with("http://") || file_name.starts_with("https://") {
             let body = reqwest::blocking::get(file_name)
-                .map_err(|e| WriterError {
-                    message: format!("Unable to retrieve {file_name}: {e}"),
-                })?
+                .map_err(|e| WriterError::new(format!("Unable to retrieve {file_name}: {e}")))?
                 .text()
-                .map_err(|e| WriterError {
-                    message: format!("Unable to get body from {file_name}: {e}"),
-                })?;
+                .map_err(|e| WriterError::new(format!("Unable to get body from {file_name}: {e}")))?;
             return Ok(body);
         }
 
         let mut f_in = self.base_path.clone();
         f_in.push(file_name);
 
-        std::fs::read_to_string(&f_in).map_err(|e| WriterError {
-            message: format!("Unable to read file {f_in:?}: {e}"),
-        })
+        std::fs::read_to_string(&f_in).map_err(|e| WriterError::new(format!("Unable to read file {f_in:?}: {e}")))
     }
 
     #[must_use]
@@ -226,26 +203,15 @@ impl FileWriter {
         soap_fault.xml_name = Some("Fault".to_string());
         soap_fault.add_ns("soapenv", "http://schemas.xmlsoap.org/soap/envelope/");
         soap_fault.prefix = Some("soapenv".to_string());
-        soap_fault.add(Element::new_field(
-            "fault_code",
-            "faultcode",
-            "String",
-            true,
-        ));
-        soap_fault.add(Element::new_field(
-            "fault_string",
-            "faultstring",
-            "String",
-            true,
-        ));
+        soap_fault.add(Element::new_field("fault_code", "faultcode", "String", true));
+        soap_fault.add(Element::new_field("fault_string", "faultstring", "String", true));
 
         // Error implementation for SoapFault
         let mut soap_fault_error = Element::new("SoapFaultError", ElementType::Static);
         soap_fault_error.set_content(ERROR_IMPL);
 
         let mut soap_response = Element::new("SoapResponse", ElementType::Alias);
-        soap_response.field_type =
-            Some("Result<(reqwest::StatusCode, String), reqwest::Error>".to_string());
+        soap_response.field_type = Some("Result<(reqwest::StatusCode, String), reqwest::Error>".to_string());
 
         self.root.add(header);
         self.root.add(soap_fault);
@@ -301,40 +267,38 @@ impl FileWriter {
     }
 
     fn print_xsd(&mut self, node: &Node) -> WriterResult<()> {
-        self.target_name_space =
-            Self::get_some_attribute(node, "targetNamespace").map(ToString::to_string);
+        self.target_name_space = Self::get_some_attribute(node, "targetNamespace").map(ToString::to_string);
 
         self.find_namespaces(node);
 
-        node.children()
-            .try_for_each(|child| match child.tag_name().name() {
-                "import" => self.import_file(&child),
-                "element" => {
+        node.children().try_for_each(|child| match child.tag_name().name() {
+            "import" => self.import_file(&child),
+            "element" => {
+                let module = self.pick_section(TYPES_MOD);
+                let mut_module = &mut *module.deref().borrow_mut();
+                self.print_element(&child, true, &mut None, mut_module)
+            }
+            "complexType" | "group" => {
+                if let Some(n) = Self::get_some_attribute(&child, "name") {
                     let module = self.pick_section(TYPES_MOD);
                     let mut_module = &mut *module.deref().borrow_mut();
-                    self.print_element(&child, true, &mut None, mut_module)
+                    self.print_complex_element(&child, n, false, mut_module)
+                } else {
+                    Ok(())
                 }
-                "complexType" | "group" => {
-                    if let Some(n) = Self::get_some_attribute(&child, "name") {
-                        let module = self.pick_section(TYPES_MOD);
-                        let mut_module = &mut *module.deref().borrow_mut();
-                        self.print_complex_element(&child, n, false, mut_module)
-                    } else {
-                        Ok(())
-                    }
+            }
+            "simpleType" => {
+                if let Some(n) = Self::get_some_attribute(&child, "name") {
+                    let module = self.pick_section(TYPES_MOD);
+                    let mut_module = &mut *module.deref().borrow_mut();
+                    self.print_simplex_element(&child, n, mut_module);
+                    Ok(())
+                } else {
+                    Ok(())
                 }
-                "simpleType" => {
-                    if let Some(n) = Self::get_some_attribute(&child, "name") {
-                        let module = self.pick_section(TYPES_MOD);
-                        let mut_module = &mut *module.deref().borrow_mut();
-                        self.print_simplex_element(&child, n, mut_module);
-                        Ok(())
-                    } else {
-                        Ok(())
-                    }
-                }
-                _ => Ok(()),
-            })?;
+            }
+            _ => Ok(()),
+        })?;
 
         Ok(())
     }
@@ -342,8 +306,7 @@ impl FileWriter {
     fn find_namespaces(&mut self, node: &Node) {
         node.namespaces().for_each(|ns| {
             if let Some(name) = ns.name() {
-                self.namespaces
-                    .insert(name.to_string(), ns.uri().to_string());
+                self.namespaces.insert(name.to_string(), ns.uri().to_string());
             }
         });
     }
@@ -379,9 +342,7 @@ impl FileWriter {
     }
 
     fn on_default_namespace(&self) -> bool {
-        if let (Some(default_namespace), Some(namespace)) =
-            (&self.default_namespace, &self.target_name_space)
-        {
+        if let (Some(default_namespace), Some(namespace)) = (&self.default_namespace, &self.target_name_space) {
             return default_namespace == namespace;
         }
 
@@ -398,19 +359,13 @@ impl FileWriter {
     ) -> WriterResult<()> {
         let as_enum = node.has_tag_name("choice");
         if as_enum {
-            let seq: Vec<Node> = node
-                .children()
-                .filter(|child| child.has_tag_name("sequence"))
-                .collect();
+            let seq: Vec<Node> = node.children().filter(|child| child.has_tag_name("sequence")).collect();
 
             for node in seq {
                 self.print_sequence(&node, parent, module)?;
             }
 
-            let elements: Vec<Node> = node
-                .children()
-                .filter(|child| child.has_tag_name("element"))
-                .collect();
+            let elements: Vec<Node> = node.children().filter(|child| child.has_tag_name("element")).collect();
 
             for node in elements {
                 self.print_element(&node, false, parent, module)?;
@@ -425,12 +380,7 @@ impl FileWriter {
             Some(n) => (n, false),
         };
 
-        let as_vec = {
-            !matches!(
-                Self::get_some_attribute(node, "maxOccurs"),
-                Some("1") | None
-            )
-        };
+        let as_vec = { !matches!(Self::get_some_attribute(node, "maxOccurs"), Some("1") | None) };
 
         let as_option = {
             matches!(
@@ -442,13 +392,9 @@ impl FileWriter {
             )
         };
 
-        let maybe_complex = node
-            .children()
-            .find(|child| child.has_tag_name("complexType"));
+        let maybe_complex = node.children().find(|child| child.has_tag_name("complexType"));
 
-        let maybe_simplex = node
-            .children()
-            .find(|child| child.has_tag_name("simpleType"));
+        let maybe_simplex = node.children().find(|child| child.has_tag_name("simpleType"));
 
         let empty_element = node.children().count() == 0;
 
@@ -549,13 +495,12 @@ impl FileWriter {
     fn fetch_type(node_type: &str) -> String {
         match Self::split_type(node_type) {
             "byte" => "i8".to_string(),
-            "string" | "normalizedString" | "base64Binary" | "hexBinary" | "anyURI" => {
-                "String".to_string()
-            }
+            "string" | "normalizedString" | "base64Binary" | "hexBinary" | "anyURI" => "String".to_string(),
             "decimal" | "double" => "f64".to_string(),
             "float" => "f32".to_string(),
-            "integer" | "int" | "negativeInteger" | "nonNegativeInteger" | "nonPositiveInteger"
-            | "positiveInteger" => "i32".to_string(),
+            "integer" | "int" | "negativeInteger" | "nonNegativeInteger" | "nonPositiveInteger" | "positiveInteger" => {
+                "i32".to_string()
+            }
             "long" => "i64".to_string(),
             "unsignedLong" => "u64".to_string(),
             "unsignedInt" => "u32".to_string(),
@@ -660,15 +605,11 @@ impl FileWriter {
 
         let maybe_sequence = node.children().find(|child| child.has_tag_name("sequence"));
 
-        let maybe_complex = node
-            .children()
-            .find(|child| child.has_tag_name("complexContent"));
+        let maybe_complex = node.children().find(|child| child.has_tag_name("complexContent"));
 
-        node.children()
-            .filter(|c| c.has_tag_name("attribute"))
-            .for_each(|c| {
-                Self::print_attribute(&c, &mut element);
-            });
+        node.children().filter(|c| c.has_tag_name("attribute")).for_each(|c| {
+            Self::print_attribute(&c, &mut element);
+        });
 
         if let Some(sequence) = maybe_sequence {
             self.print_sequence(&sequence, &mut Some(&mut element), module)?;
@@ -701,8 +642,7 @@ impl FileWriter {
             Some(a) => a != "required",
         };
 
-        let mut element =
-            Element::new(to_snake_case(element_name).as_str(), ElementType::Attribute);
+        let mut element = Element::new(to_snake_case(element_name).as_str(), ElementType::Attribute);
 
         element.xml_name = Some(element_name.to_string());
         element.field_type = Some(element_type);
@@ -720,11 +660,7 @@ impl FileWriter {
 
     fn try_deconstruct_simplex_element_as_list(node: &Node) -> WriterResult<String> {
         let list = match node.children().find(|c| c.has_tag_name("list")) {
-            None => {
-                return Err(WriterError {
-                    message: "list element is missing".to_string(),
-                })
-            }
+            None => return Err(WriterError::new("list element is missing".to_string())),
             Some(b) => b,
         };
 
@@ -733,11 +669,7 @@ impl FileWriter {
         }
 
         let list_item = match list.children().find(|c| c.has_tag_name("simpleType")) {
-            None => {
-                return Err(WriterError {
-                    message: "list element is missing".to_string(),
-                })
-            }
+            None => return Err(WriterError::new("list element is missing".to_string())),
             Some(b) => b,
         };
 
@@ -746,20 +678,12 @@ impl FileWriter {
 
     fn try_deconstruct_simplex_element_as_restriction(node: &Node) -> WriterResult<String> {
         let restriction = match node.children().find(|c| c.has_tag_name("restriction")) {
-            None => {
-                return Err(WriterError {
-                    message: "restriction element is missing".to_string(),
-                })
-            }
+            None => return Err(WriterError::new("restriction element is missing".to_string())),
             Some(b) => b,
         };
 
         let base = match Self::get_some_attribute(&restriction, "base") {
-            None => {
-                return Err(WriterError {
-                    message: "base type is missing".to_string(),
-                })
-            }
+            None => return Err(WriterError::new("base type is missing".to_string())),
             Some(b) => b,
         };
 
@@ -788,10 +712,7 @@ impl FileWriter {
         parent: &mut Option<&mut Element>,
         module: &mut Element,
     ) -> WriterResult<()> {
-        if let Some(extension) = node
-            .children()
-            .find(|child| child.has_tag_name("extension"))
-        {
+        if let Some(extension) = node.children().find(|child| child.has_tag_name("extension")) {
             Self::print_extension(&extension, parent);
 
             let maybe_sequence = extension
@@ -813,10 +734,7 @@ impl FileWriter {
                 Some(n) => n,
             };
 
-            let mut element = Element::new(
-                to_snake_case(&Self::fetch_type(base)).as_str(),
-                ElementType::Field,
-            );
+            let mut element = Element::new(to_snake_case(&Self::fetch_type(base)).as_str(), ElementType::Field);
             let field_type = Self::fetch_type(base);
             element.flatten = !Self::is_primitive(&field_type);
             element.field_type = Some(field_type);
@@ -899,13 +817,7 @@ impl FileWriter {
         }
     }
 
-    fn print_simple_part(
-        &mut self,
-        message_name: &str,
-        node: &Node,
-        type_name: &str,
-        parent: &mut Element,
-    ) {
+    fn print_simple_part(&mut self, message_name: &str, node: &Node, type_name: &str, parent: &mut Element) {
         let element_name = match Self::get_some_attribute(node, "name") {
             None => return,
             Some(n) => n,
@@ -943,12 +855,7 @@ impl FileWriter {
         let mut element = Element::new(struct_name.as_str(), ElementType::Trait);
 
         node.children().for_each(|child| {
-            self.print_operation(
-                to_pascal_case(element_name).as_str(),
-                &child,
-                &mut element,
-                mut_parent,
-            );
+            self.print_operation(to_pascal_case(element_name).as_str(), &child, &mut element, mut_parent);
         });
 
         mut_parent.add(element);
@@ -1006,7 +913,9 @@ impl FileWriter {
 
     fn print_binding_helpers(struct_name: &str, parent: &mut Element) {
         let mut e = Element::new(struct_name, ElementType::Static);
-        e.set_content(format!(r#"
+        e.set_content(
+            format!(
+                r#"
             impl {struct_name} {{
                 async fn send_soap_request<T: YaSerialize>(&self, request: &T, action: &str) -> SoapResponse {{
                     let body = to_string(request).expect("failed to generate xml");
@@ -1032,7 +941,10 @@ impl FileWriter {
                     Ok((status, txt))
                 }}
             }}
-            "#).as_str());
+            "#
+            )
+            .as_str(),
+        );
 
         parent.add(e);
     }
@@ -1100,13 +1012,7 @@ impl FileWriter {
         (name, msg)
     }
 
-    fn print_operation(
-        &mut self,
-        port_type_name: &str,
-        node: &Node,
-        parent: &mut Element,
-        module: &mut Element,
-    ) {
+    fn print_operation(&mut self, port_type_name: &str, node: &Node, parent: &mut Element, module: &mut Element) {
         let element_name = match Self::get_some_attribute(node, "name") {
             None => return,
             Some(n) => n,
@@ -1175,8 +1081,7 @@ impl FileWriter {
 
                     if let Some(mut args) = function_element.function_args.take() {
                         args.output_type = Some(to_pascal_case(type_name));
-                        args.fault_type =
-                            Some(format!("Option<Soap{}>", to_pascal_case(fault_name)));
+                        args.fault_type = Some(format!("Option<Soap{}>", to_pascal_case(fault_name)));
                         function_element.function_args.replace(args);
                     }
 
@@ -1287,11 +1192,7 @@ impl FileWriter {
         )
     }
 
-    fn get_port_type_by_name(
-        &self,
-        bind_type_name: &str,
-        operation_name: &str,
-    ) -> Option<PortType> {
+    fn get_port_type_by_name(&self, bind_type_name: &str, operation_name: &str) -> Option<PortType> {
         let port_type_name = format!("{bind_type_name}::{operation_name}");
 
         match self.port_types.get(&port_type_name) {
@@ -1330,8 +1231,7 @@ impl FileWriter {
 
         let func_name = to_snake_case(operation_name);
 
-        let (input_name, input_type, input_soap_name, has_input) =
-            Self::get_input_fields_from_port_type(&port_type);
+        let (input_name, input_type, input_soap_name, has_input) = Self::get_input_fields_from_port_type(&port_type);
 
         let input_template = if has_input {
             format!("{input_name}: {PORTS_MOD}::{input_type}")
@@ -1399,30 +1299,23 @@ impl FileWriter {
             None
         };
 
-        let (output_type, output_soap_name, output_xml_type, has_output) =
-            match &port_type.output_type {
-                Some((output_name, Some(output_type))) => {
-                    let soap_name = format!("Soap{output_type}");
-                    (output_type.clone(), soap_name, output_name.clone(), true)
-                }
-                _ => (String::new(), String::new(), String::new(), false),
-            };
+        let (output_type, output_soap_name, output_xml_type, has_output) = match &port_type.output_type {
+            Some((output_name, Some(output_type))) => {
+                let soap_name = format!("Soap{output_type}");
+                (output_type.clone(), soap_name, output_name.clone(), true)
+            }
+            _ => (String::new(), String::new(), String::new(), false),
+        };
 
         let output_xml_type = match self.message_types.get(&output_xml_type) {
             None => output_xml_type.to_string(),
             Some(mt) => format!("{}_{}", mt.name, Self::split_type(&mt.part_type)),
         };
 
-        let (_fault_type, _fault_xml_type, fault_soap_name, has_fault) = match &port_type.fault_type
-        {
+        let (_fault_type, _fault_xml_type, fault_soap_name, has_fault) = match &port_type.fault_type {
             Some((fault_name, Some(fault_type))) => {
                 let soap_name = format!("Soap{fault_type}");
-                (
-                    fault_type.to_string(),
-                    fault_name.to_string(),
-                    soap_name,
-                    true,
-                )
+                (fault_type.to_string(), fault_name.to_string(), soap_name, true)
             }
             _ => (String::new(), String::new(), String::new(), false),
         };
@@ -1474,9 +1367,7 @@ impl FileWriter {
 
         let output_template = if has_output {
             if has_fault {
-                format!(
-                    "-> Result<{PORTS_MOD}::{output_type}, Option<{PORTS_MOD}::{fault_soap_name}>>",
-                )
+                format!("-> Result<{PORTS_MOD}::{output_type}, Option<{PORTS_MOD}::{fault_soap_name}>>",)
             } else {
                 format!("-> Result<{PORTS_MOD}::{output_type}, Option<SoapFault>>")
             }
@@ -1492,10 +1383,7 @@ impl FileWriter {
 
         // todo: convert this to function
         let mut e = Element::new(&func_name, ElementType::Static);
-        e.set_content(
-            format!("\tasync fn {func_name} (&self, {input_template}) {output_template} {{\n",)
-                .as_str(),
-        );
+        e.set_content(format!("\tasync fn {func_name} (&self, {input_template}) {output_template} {{\n",).as_str());
 
         if has_input && has_output {
             self.print_reqwest_body(
@@ -1707,12 +1595,7 @@ impl FileWriter {
             Some((input_name, Some(input_type))) => {
                 let soap_name = format!("Soap{input_type}");
 
-                (
-                    to_snake_case(input_name),
-                    input_type.clone(),
-                    soap_name,
-                    true,
-                )
+                (to_snake_case(input_name), input_type.clone(), soap_name, true)
             }
             _ => (String::new(), String::new(), String::new(), false),
         }
@@ -1733,42 +1616,26 @@ mod test_xsd {
     ) -> String {
         let mut buffer = DebugBuffer::default();
         let mut fw = FileWriter::new_buffer(ns_prefix, default_ns, buffer.clone());
-        fw.process_file(base_path, filename)
-            .expect("can not open xsd");
+        fw.process_file(base_path, filename).expect("can not open xsd");
 
         let mut result = String::new();
-        buffer
-            .read_to_string(&mut result)
-            .expect("failed to get content");
+        buffer.read_to_string(&mut result).expect("failed to get content");
         result
     }
 
     fn prepare_smgr_output(ns_prefix: Option<String>, default_ns: Option<String>) -> String {
-        prepare_output(
-            "../resources/smgr/",
-            "agentCommProfile.xsd",
-            ns_prefix,
-            default_ns,
-        )
+        prepare_output("../resources/smgr/", "agentCommProfile.xsd", ns_prefix, default_ns)
     }
 
     #[test]
     fn test_attributes() {
-        let result = prepare_smgr_output(
-            None,
-            Some("http://xml.avaya.com/schema/import_csm_agent".to_string()),
-        );
-        assert!(
-            result.contains(r#"#[yaserde(rename="createTenantIfNotAlreadyPresent", attribute)]"#)
-        );
+        let result = prepare_smgr_output(None, Some("http://xml.avaya.com/schema/import_csm_agent".to_string()));
+        assert!(result.contains(r#"#[yaserde(rename="createTenantIfNotAlreadyPresent", attribute)]"#));
     }
 
     #[test]
     fn test_default_namespace() {
-        let result = prepare_smgr_output(
-            None,
-            Some("http://xml.avaya.com/schema/import_csm_agent".to_string()),
-        );
+        let result = prepare_smgr_output(None, Some("http://xml.avaya.com/schema/import_csm_agent".to_string()));
 
         // no prefix for default namespace
         assert!(result.contains(
@@ -1828,16 +1695,11 @@ mod test_wsdl {
     fn prepare_output(ns_prefix: Option<String>, default_ns: Option<String>) -> String {
         let (_, mut buffer) = prepare_file_writer(ns_prefix, default_ns);
         let mut result = String::new();
-        buffer
-            .read_to_string(&mut result)
-            .expect("failed to get content");
+        buffer.read_to_string(&mut result).expect("failed to get content");
         result
     }
 
-    fn prepare_file_writer(
-        ns_prefix: Option<String>,
-        default_ns: Option<String>,
-    ) -> (FileWriter, DebugBuffer) {
+    fn prepare_file_writer(ns_prefix: Option<String>, default_ns: Option<String>) -> (FileWriter, DebugBuffer) {
         let buffer = DebugBuffer::default();
         let mut fw = FileWriter::new_buffer(ns_prefix, default_ns, buffer.clone());
         fw.process_file("../resources/temp_converter/", "tempconverter.wsdl")
@@ -1861,9 +1723,9 @@ mod test_wsdl {
     #[test]
     fn test_service() {
         let result = prepare_output(None, None);
-        assert!(result.contains(r#"Self::new_client_with_url("https://apps.learnwebservices.com:443/services/tempconverter", credentials)"#));
-        assert!(
-            result.contains(r#"#[yaserde(rename = "tns:CelsiusToFahrenheitRequest", default)]"#)
-        );
+        assert!(result.contains(
+            r#"Self::new_client_with_url("https://apps.learnwebservices.com:443/services/tempconverter", credentials)"#
+        ));
+        assert!(result.contains(r#"#[yaserde(rename = "tns:CelsiusToFahrenheitRequest", default)]"#));
     }
 }

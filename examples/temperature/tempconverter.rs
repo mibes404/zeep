@@ -48,9 +48,7 @@ pub type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
 pub mod messages {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(rename = "CelsiusToFahrenheit")]
     pub struct CelsiusToFahrenheit {
@@ -80,9 +78,7 @@ pub mod messages {
 pub mod types {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         rename = "celsiusToFahrenheitRequest",
@@ -128,9 +124,7 @@ pub mod types {
 pub mod ports {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     pub type CelsiusToFahrenheit = messages::CelsiusToFahrenheit;
 
     pub type CelsiusToFahrenheitResponse = messages::CelsiusToFahrenheitResponse;
@@ -155,16 +149,10 @@ pub mod ports {
 pub mod bindings {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
 
     impl TempConverterEndpointServiceSoapBinding {
-        async fn send_soap_request<T: YaSerialize>(
-            &self,
-            request: &T,
-            action: &str,
-        ) -> SoapResponse {
+        async fn send_soap_request<T: YaSerialize>(&self, request: &T, action: &str) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -388,25 +376,22 @@ pub mod bindings {
                 xmlns: Some("http://learnwebservices.com/services/tempconverter".to_string()),
             });
 
-            let (status, response) =
-                self.send_soap_request(&__request, "")
-                    .await
-                    .map_err(|err| {
-                        warn!("Failed to send SOAP request: {:?}", err);
-                        None
-                    })?;
+            let (status, response) = self.send_soap_request(&__request, "").await.map_err(|err| {
+                warn!("Failed to send SOAP request: {:?}", err);
+                None
+            })?;
 
-            let r: CelsiusToFahrenheitResponseSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: CelsiusToFahrenheitResponseSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn fahrenheit_to_celsius(
             &self,
             fahrenheit_to_celsius: ports::FahrenheitToCelsius,
@@ -416,19 +401,15 @@ pub mod bindings {
                 xmlns: Some("http://learnwebservices.com/services/tempconverter".to_string()),
             });
 
-            let (status, response) =
-                self.send_soap_request(&__request, "")
-                    .await
-                    .map_err(|err| {
-                        warn!("Failed to send SOAP request: {:?}", err);
-                        None
-                    })?;
+            let (status, response) = self.send_soap_request(&__request, "").await.map_err(|err| {
+                warn!("Failed to send SOAP request: {:?}", err);
+                None
+            })?;
 
-            let r: FahrenheitToCelsiusResponseSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: FahrenheitToCelsiusResponseSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
@@ -441,15 +422,11 @@ pub mod bindings {
 pub mod services {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     pub struct TempConverterEndpointService {}
     impl TempConverterEndpointService {
         #[must_use]
-        pub fn new_client(
-            credentials: Option<(String, String)>,
-        ) -> bindings::TempConverterEndpointServiceSoapBinding {
+        pub fn new_client(credentials: Option<(String, String)>) -> bindings::TempConverterEndpointServiceSoapBinding {
             Self::new_client_with_url(
                 "https://apps.learnwebservices.com:443/services/tempconverter",
                 credentials,
@@ -479,9 +456,7 @@ pub mod multiref {
     }
 
     impl<T: YaDeserialize + YaSerialize> YaDeserialize for MultiRef<T> {
-        fn deserialize<R: std::io::prelude::Read>(
-            reader: &mut yaserde::de::Deserializer<R>,
-        ) -> Result<Self, String> {
+        fn deserialize<R: std::io::prelude::Read>(reader: &mut yaserde::de::Deserializer<R>) -> Result<Self, String> {
             let inner = T::deserialize(reader)?;
             Ok(Self {
                 inner: Rc::new(RefCell::new(inner)),
@@ -502,25 +477,14 @@ pub mod multiref {
             &self,
             attributes: Vec<xml::attribute::OwnedAttribute>,
             namespace: xml::namespace::Namespace,
-        ) -> Result<
-            (
-                Vec<xml::attribute::OwnedAttribute>,
-                xml::namespace::Namespace,
-            ),
-            String,
-        > {
-            self.inner
-                .as_ref()
-                .borrow()
-                .serialize_attributes(attributes, namespace)
+        ) -> Result<(Vec<xml::attribute::OwnedAttribute>, xml::namespace::Namespace), String> {
+            self.inner.as_ref().borrow().serialize_attributes(attributes, namespace)
         }
     }
 
     impl<T: YaDeserialize + YaSerialize + Default> Default for MultiRef<T> {
         fn default() -> Self {
-            Self {
-                inner: Rc::default(),
-            }
+            Self { inner: Rc::default() }
         }
     }
 
@@ -540,6 +504,7 @@ pub mod multiref {
 
     impl<T> Deref for MultiRef<T> {
         type Target = Rc<RefCell<T>>;
+
         fn deref(&self) -> &Self::Target {
             &self.inner
         }

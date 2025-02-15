@@ -48,9 +48,7 @@ pub type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
 pub mod messages {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(rename = "AddAddressSoapIn")]
     pub struct AddAddressSoapIn {
@@ -632,9 +630,7 @@ pub mod messages {
 pub mod types {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         rename = "AddAddress",
@@ -2335,8 +2331,7 @@ pub mod types {
         #[yaserde(rename = "LockedDateTime", prefix = "tns", default)]
         pub locked_date_time: Option<String>,
         #[yaserde(rename = "DispositionCodes", prefix = "tns", default)]
-        pub disposition_codes:
-            Option<ArrayOfDispositionCodePairOfDispositionCodesKeyDispositionCode>,
+        pub disposition_codes: Option<ArrayOfDispositionCodePairOfDispositionCodesKeyDispositionCode>,
         #[yaserde(rename = "CustomFields", prefix = "tns", default)]
         pub custom_fields: Option<ArrayOfCustomField>,
         #[yaserde(rename = "UseTimeZone", prefix = "tns", default)]
@@ -4121,9 +4116,7 @@ pub mod types {
 pub mod ports {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     pub type AddAddressSoapIn = messages::AddAddressSoapIn;
 
     pub type AddAddressSoapOut = messages::AddAddressSoapOut;
@@ -4516,16 +4509,10 @@ pub mod ports {
 pub mod bindings {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
 
     impl CustMultimediaSoap {
-        async fn send_soap_request<T: YaSerialize>(
-            &self,
-            request: &T,
-            action: &str,
-        ) -> SoapResponse {
+        async fn send_soap_request<T: YaSerialize>(&self, request: &T, action: &str) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -8634,6 +8621,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn add_contact(
             &self,
             add_contact_soap_in: ports::AddContactSoapIn,
@@ -8664,6 +8652,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn add_custom_field(
             &self,
             add_custom_field_soap_in: ports::AddCustomFieldSoapIn,
@@ -8694,6 +8683,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn add_email_address(
             &self,
             add_email_address_soap_in: ports::AddEmailAddressSoapIn,
@@ -8724,6 +8714,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn add_phone_number(
             &self,
             add_phone_number_soap_in: ports::AddPhoneNumberSoapIn,
@@ -8754,6 +8745,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn add_sip_uri(
             &self,
             add_sip_uri_soap_in: ports::AddSipUriSoapIn,
@@ -8784,6 +8776,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn carbon_copy(
             &self,
             carbon_copy_soap_in: ports::CarbonCopySoapIn,
@@ -8814,6 +8807,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn clean_customer(
             &self,
             clean_customer_soap_in: ports::CleanCustomerSoapIn,
@@ -8844,6 +8838,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn create_customer(
             &self,
             create_customer_soap_in: ports::CreateCustomerSoapIn,
@@ -8874,15 +8869,15 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn create_customer_by_sip_uri(
             &self,
             create_customer_by_sip_uri_soap_in: ports::CreateCustomerBySipUriSoapIn,
         ) -> Result<ports::CreateCustomerBySipUriSoapOut, Option<SoapFault>> {
-            let __request =
-                CreateCustomerBySipUriSoapInSoapEnvelope::new(SoapCreateCustomerBySipUriSoapIn {
-                    body: create_customer_by_sip_uri_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = CreateCustomerBySipUriSoapInSoapEnvelope::new(SoapCreateCustomerBySipUriSoapIn {
+                body: create_customer_by_sip_uri_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -8895,26 +8890,25 @@ pub mod bindings {
                     None
                 })?;
 
-            let r: CreateCustomerBySipUriSoapOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: CreateCustomerBySipUriSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn customer_association(
             &self,
             customer_association_soap_in: ports::CustomerAssociationSoapIn,
         ) -> Result<ports::CustomerAssociationSoapOut, Option<SoapFault>> {
-            let __request =
-                CustomerAssociationSoapInSoapEnvelope::new(SoapCustomerAssociationSoapIn {
-                    body: customer_association_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = CustomerAssociationSoapInSoapEnvelope::new(SoapCustomerAssociationSoapIn {
+                body: customer_association_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -8937,6 +8931,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn customer_search(
             &self,
             customer_search_soap_in: ports::CustomerSearchSoapIn,
@@ -8967,6 +8962,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn delete_customer(
             &self,
             delete_customer_soap_in: ports::DeleteCustomerSoapIn,
@@ -8997,6 +8993,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn get_all_customers(
             &self,
             get_all_customers_soap_in: ports::GetAllCustomersSoapIn,
@@ -9027,6 +9024,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn get_cust_sql_columns(
             &self,
             get_cust_sql_columns_soap_in: ports::GetCustSQLColumnsSoapIn,
@@ -9057,15 +9055,15 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn get_custom_field_templates(
             &self,
             get_custom_field_templates_soap_in: ports::GetCustomFieldTemplatesSoapIn,
         ) -> Result<ports::GetCustomFieldTemplatesSoapOut, Option<SoapFault>> {
-            let __request =
-                GetCustomFieldTemplatesSoapInSoapEnvelope::new(SoapGetCustomFieldTemplatesSoapIn {
-                    body: get_custom_field_templates_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = GetCustomFieldTemplatesSoapInSoapEnvelope::new(SoapGetCustomFieldTemplatesSoapIn {
+                body: get_custom_field_templates_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -9078,26 +9076,25 @@ pub mod bindings {
                     None
                 })?;
 
-            let r: GetCustomFieldTemplatesSoapOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: GetCustomFieldTemplatesSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn get_customer_by_contact_id(
             &self,
             get_customer_by_contact_id_soap_in: ports::GetCustomerByContactIdSoapIn,
         ) -> Result<ports::GetCustomerByContactIdSoapOut, Option<SoapFault>> {
-            let __request =
-                GetCustomerByContactIdSoapInSoapEnvelope::new(SoapGetCustomerByContactIdSoapIn {
-                    body: get_customer_by_contact_id_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = GetCustomerByContactIdSoapInSoapEnvelope::new(SoapGetCustomerByContactIdSoapIn {
+                body: get_customer_by_contact_id_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -9110,26 +9107,25 @@ pub mod bindings {
                     None
                 })?;
 
-            let r: GetCustomerByContactIdSoapOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: GetCustomerByContactIdSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn get_customer_by_email(
             &self,
             get_customer_by_email_soap_in: ports::GetCustomerByEmailSoapIn,
         ) -> Result<ports::GetCustomerByEmailSoapOut, Option<SoapFault>> {
-            let __request =
-                GetCustomerByEmailSoapInSoapEnvelope::new(SoapGetCustomerByEmailSoapIn {
-                    body: get_customer_by_email_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = GetCustomerByEmailSoapInSoapEnvelope::new(SoapGetCustomerByEmailSoapIn {
+                body: get_customer_by_email_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -9152,6 +9148,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn get_customer_by_name(
             &self,
             get_customer_by_name_soap_in: ports::GetCustomerByNameSoapIn,
@@ -9182,44 +9179,46 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn get_customer_by_phone_number(
             &self,
             get_customer_by_phone_number_soap_in: ports::GetCustomerByPhoneNumberSoapIn,
         ) -> Result<ports::GetCustomerByPhoneNumberSoapOut, Option<SoapFault>> {
-            let __request = GetCustomerByPhoneNumberSoapInSoapEnvelope::new(
-                SoapGetCustomerByPhoneNumberSoapIn {
-                    body: get_customer_by_phone_number_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                },
-            );
+            let __request = GetCustomerByPhoneNumberSoapInSoapEnvelope::new(SoapGetCustomerByPhoneNumberSoapIn {
+                body: get_customer_by_phone_number_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
-            let (status, response) = self.send_soap_request(&__request, "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByPhoneNumber")
-                    .await
-                    .map_err(|err| {
-                        warn!("Failed to send SOAP request: {:?}", err);
-                        None
-                    })?;
-
-            let r: GetCustomerByPhoneNumberSoapOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
+            let (status, response) = self
+                .send_soap_request(
+                    &__request,
+                    "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByPhoneNumber",
+                )
+                .await
+                .map_err(|err| {
+                    warn!("Failed to send SOAP request: {:?}", err);
                     None
                 })?;
+
+            let r: GetCustomerByPhoneNumberSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn get_customer_by_sip_uri(
             &self,
             get_customer_by_sip_uri_soap_in: ports::GetCustomerBySipUriSoapIn,
         ) -> Result<ports::GetCustomerBySipUriSoapOut, Option<SoapFault>> {
-            let __request =
-                GetCustomerBySipUriSoapInSoapEnvelope::new(SoapGetCustomerBySipUriSoapIn {
-                    body: get_customer_by_sip_uri_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = GetCustomerBySipUriSoapInSoapEnvelope::new(SoapGetCustomerBySipUriSoapIn {
+                body: get_customer_by_sip_uri_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -9242,15 +9241,15 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn get_customer_by_user_name(
             &self,
             get_customer_by_user_name_soap_in: ports::GetCustomerByUserNameSoapIn,
         ) -> Result<ports::GetCustomerByUserNameSoapOut, Option<SoapFault>> {
-            let __request =
-                GetCustomerByUserNameSoapInSoapEnvelope::new(SoapGetCustomerByUserNameSoapIn {
-                    body: get_customer_by_user_name_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = GetCustomerByUserNameSoapInSoapEnvelope::new(SoapGetCustomerByUserNameSoapIn {
+                body: get_customer_by_user_name_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -9263,26 +9262,25 @@ pub mod bindings {
                     None
                 })?;
 
-            let r: GetCustomerByUserNameSoapOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: GetCustomerByUserNameSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn get_no_cust_contacts_by_time(
             &self,
             get_no_cust_contacts_by_time_soap_in: ports::GetNoCustContactsByTimeSoapIn,
         ) -> Result<ports::GetNoCustContactsByTimeSoapOut, Option<SoapFault>> {
-            let __request =
-                GetNoCustContactsByTimeSoapInSoapEnvelope::new(SoapGetNoCustContactsByTimeSoapIn {
-                    body: get_no_cust_contacts_by_time_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = GetNoCustContactsByTimeSoapInSoapEnvelope::new(SoapGetNoCustContactsByTimeSoapIn {
+                body: get_no_cust_contacts_by_time_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -9295,26 +9293,25 @@ pub mod bindings {
                     None
                 })?;
 
-            let r: GetNoCustContactsByTimeSoapOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: GetNoCustContactsByTimeSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn get_searchable_fields(
             &self,
             get_searchable_fields_soap_in: ports::GetSearchableFieldsSoapIn,
         ) -> Result<ports::GetSearchableFieldsSoapOut, Option<SoapFault>> {
-            let __request =
-                GetSearchableFieldsSoapInSoapEnvelope::new(SoapGetSearchableFieldsSoapIn {
-                    body: get_searchable_fields_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = GetSearchableFieldsSoapInSoapEnvelope::new(SoapGetSearchableFieldsSoapIn {
+                body: get_searchable_fields_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -9337,15 +9334,15 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn impersonate_customer(
             &self,
             impersonate_customer_soap_in: ports::ImpersonateCustomerSoapIn,
         ) -> Result<ports::ImpersonateCustomerSoapOut, Option<SoapFault>> {
-            let __request =
-                ImpersonateCustomerSoapInSoapEnvelope::new(SoapImpersonateCustomerSoapIn {
-                    body: impersonate_customer_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = ImpersonateCustomerSoapInSoapEnvelope::new(SoapImpersonateCustomerSoapIn {
+                body: impersonate_customer_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -9368,6 +9365,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn read_customer(
             &self,
             read_customer_soap_in: ports::ReadCustomerSoapIn,
@@ -9398,15 +9396,15 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn read_customer_history(
             &self,
             read_customer_history_soap_in: ports::ReadCustomerHistorySoapIn,
         ) -> Result<ports::ReadCustomerHistorySoapOut, Option<SoapFault>> {
-            let __request =
-                ReadCustomerHistorySoapInSoapEnvelope::new(SoapReadCustomerHistorySoapIn {
-                    body: read_customer_history_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = ReadCustomerHistorySoapInSoapEnvelope::new(SoapReadCustomerHistorySoapIn {
+                body: read_customer_history_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -9429,35 +9427,38 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn register_anonymous_customer(
             &self,
             register_anonymous_customer_soap_in: ports::RegisterAnonymousCustomerSoapIn,
         ) -> Result<ports::RegisterAnonymousCustomerSoapOut, Option<SoapFault>> {
-            let __request = RegisterAnonymousCustomerSoapInSoapEnvelope::new(
-                SoapRegisterAnonymousCustomerSoapIn {
-                    body: register_anonymous_customer_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                },
-            );
+            let __request = RegisterAnonymousCustomerSoapInSoapEnvelope::new(SoapRegisterAnonymousCustomerSoapIn {
+                body: register_anonymous_customer_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
-            let (status, response) = self.send_soap_request(&__request, "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RegisterAnonymousCustomer")
-                    .await
-                    .map_err(|err| {
-                        warn!("Failed to send SOAP request: {:?}", err);
-                        None
-                    })?;
-
-            let r: RegisterAnonymousCustomerSoapOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
+            let (status, response) = self
+                .send_soap_request(
+                    &__request,
+                    "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RegisterAnonymousCustomer",
+                )
+                .await
+                .map_err(|err| {
+                    warn!("Failed to send SOAP request: {:?}", err);
                     None
                 })?;
+
+            let r: RegisterAnonymousCustomerSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn register_customer(
             &self,
             register_customer_soap_in: ports::RegisterCustomerSoapIn,
@@ -9488,6 +9489,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn remove_address(
             &self,
             remove_address_soap_in: ports::RemoveAddressSoapIn,
@@ -9518,6 +9520,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn remove_contact(
             &self,
             remove_contact_soap_in: ports::RemoveContactSoapIn,
@@ -9548,6 +9551,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn remove_custom_field(
             &self,
             remove_custom_field_soap_in: ports::RemoveCustomFieldSoapIn,
@@ -9578,15 +9582,15 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn remove_email_address(
             &self,
             remove_email_address_soap_in: ports::RemoveEmailAddressSoapIn,
         ) -> Result<ports::RemoveEmailAddressSoapOut, Option<SoapFault>> {
-            let __request =
-                RemoveEmailAddressSoapInSoapEnvelope::new(SoapRemoveEmailAddressSoapIn {
-                    body: remove_email_address_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = RemoveEmailAddressSoapInSoapEnvelope::new(SoapRemoveEmailAddressSoapIn {
+                body: remove_email_address_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -9609,6 +9613,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn remove_phone_number(
             &self,
             remove_phone_number_soap_in: ports::RemovePhoneNumberSoapIn,
@@ -9639,6 +9644,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn remove_sip_uri(
             &self,
             remove_sip_uri_soap_in: ports::RemoveSipUriSoapIn,
@@ -9669,15 +9675,15 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn send_ad_password_reminder(
             &self,
             send_ad_password_reminder_soap_in: ports::SendADPasswordReminderSoapIn,
         ) -> Result<ports::SendADPasswordReminderSoapOut, Option<SoapFault>> {
-            let __request =
-                SendADPasswordReminderSoapInSoapEnvelope::new(SoapSendADPasswordReminderSoapIn {
-                    body: send_ad_password_reminder_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = SendADPasswordReminderSoapInSoapEnvelope::new(SoapSendADPasswordReminderSoapIn {
+                body: send_ad_password_reminder_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -9690,26 +9696,25 @@ pub mod bindings {
                     None
                 })?;
 
-            let r: SendADPasswordReminderSoapOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: SendADPasswordReminderSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn send_password_reminder(
             &self,
             send_password_reminder_soap_in: ports::SendPasswordReminderSoapIn,
         ) -> Result<ports::SendPasswordReminderSoapOut, Option<SoapFault>> {
-            let __request =
-                SendPasswordReminderSoapInSoapEnvelope::new(SoapSendPasswordReminderSoapIn {
-                    body: send_password_reminder_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = SendPasswordReminderSoapInSoapEnvelope::new(SoapSendPasswordReminderSoapIn {
+                body: send_password_reminder_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -9722,17 +9727,17 @@ pub mod bindings {
                     None
                 })?;
 
-            let r: SendPasswordReminderSoapOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: SendPasswordReminderSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn set_agent_id(
             &self,
             set_agent_id_soap_in: ports::SetAgentIDSoapIn,
@@ -9763,6 +9768,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn update_customer(
             &self,
             update_customer_soap_in: ports::UpdateCustomerSoapIn,
@@ -9793,6 +9799,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn update_first_name(
             &self,
             update_first_name_soap_in: ports::UpdateFirstNameSoapIn,
@@ -9823,6 +9830,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn update_last_name(
             &self,
             update_last_name_soap_in: ports::UpdateLastNameSoapIn,
@@ -9853,6 +9861,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn update_login_page(
             &self,
             update_login_page_soap_in: ports::UpdateLoginPageSoapIn,
@@ -9883,6 +9892,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn update_objection(
             &self,
             update_objection_soap_in: ports::UpdateObjectionSoapIn,
@@ -9913,6 +9923,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn update_password(
             &self,
             update_password_soap_in: ports::UpdatePasswordSoapIn,
@@ -9943,15 +9954,15 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn update_preferred_agent(
             &self,
             update_preferred_agent_soap_in: ports::UpdatePreferredAgentSoapIn,
         ) -> Result<ports::UpdatePreferredAgentSoapOut, Option<SoapFault>> {
-            let __request =
-                UpdatePreferredAgentSoapInSoapEnvelope::new(SoapUpdatePreferredAgentSoapIn {
-                    body: update_preferred_agent_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = UpdatePreferredAgentSoapInSoapEnvelope::new(SoapUpdatePreferredAgentSoapIn {
+                body: update_preferred_agent_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -9964,26 +9975,25 @@ pub mod bindings {
                     None
                 })?;
 
-            let r: UpdatePreferredAgentSoapOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: UpdatePreferredAgentSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn update_register_date(
             &self,
             update_register_date_soap_in: ports::UpdateRegisterDateSoapIn,
         ) -> Result<ports::UpdateRegisterDateSoapOut, Option<SoapFault>> {
-            let __request =
-                UpdateRegisterDateSoapInSoapEnvelope::new(SoapUpdateRegisterDateSoapIn {
-                    body: update_register_date_soap_in,
-                    xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
-                });
+            let __request = UpdateRegisterDateSoapInSoapEnvelope::new(SoapUpdateRegisterDateSoapIn {
+                body: update_register_date_soap_in,
+                xmlns: Some("http://ws.db.ccmm.applications.nortel.com".to_string()),
+            });
 
             let (status, response) = self
                 .send_soap_request(
@@ -10006,6 +10016,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn update_title(
             &self,
             update_title_soap_in: ports::UpdateTitleSoapIn,
@@ -10036,6 +10047,7 @@ pub mod bindings {
                 Err(r.body.fault)
             }
         }
+
         async fn update_user_name(
             &self,
             update_user_name_soap_in: ports::UpdateUserNameSoapIn,
@@ -10072,24 +10084,16 @@ pub mod bindings {
 pub mod services {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     pub struct CustMultimedia {}
     impl CustMultimedia {
         #[must_use]
         pub fn new_client(credentials: Option<(String, String)>) -> bindings::CustMultimediaSoap {
-            Self::new_client_with_url(
-                "https://aacc1ver7:443/csp/multimedia/ws.Customer.cls",
-                credentials,
-            )
+            Self::new_client_with_url("https://aacc1ver7:443/csp/multimedia/ws.Customer.cls", credentials)
         }
 
         #[must_use]
-        pub fn new_client_with_url(
-            url: &str,
-            credentials: Option<(String, String)>,
-        ) -> bindings::CustMultimediaSoap {
+        pub fn new_client_with_url(url: &str, credentials: Option<(String, String)>) -> bindings::CustMultimediaSoap {
             bindings::CustMultimediaSoap::new(url, credentials)
         }
     }
@@ -10108,9 +10112,7 @@ pub mod multiref {
     }
 
     impl<T: YaDeserialize + YaSerialize> YaDeserialize for MultiRef<T> {
-        fn deserialize<R: std::io::prelude::Read>(
-            reader: &mut yaserde::de::Deserializer<R>,
-        ) -> Result<Self, String> {
+        fn deserialize<R: std::io::prelude::Read>(reader: &mut yaserde::de::Deserializer<R>) -> Result<Self, String> {
             let inner = T::deserialize(reader)?;
             Ok(Self {
                 inner: Rc::new(RefCell::new(inner)),
@@ -10131,25 +10133,14 @@ pub mod multiref {
             &self,
             attributes: Vec<xml::attribute::OwnedAttribute>,
             namespace: xml::namespace::Namespace,
-        ) -> Result<
-            (
-                Vec<xml::attribute::OwnedAttribute>,
-                xml::namespace::Namespace,
-            ),
-            String,
-        > {
-            self.inner
-                .as_ref()
-                .borrow()
-                .serialize_attributes(attributes, namespace)
+        ) -> Result<(Vec<xml::attribute::OwnedAttribute>, xml::namespace::Namespace), String> {
+            self.inner.as_ref().borrow().serialize_attributes(attributes, namespace)
         }
     }
 
     impl<T: YaDeserialize + YaSerialize + Default> Default for MultiRef<T> {
         fn default() -> Self {
-            Self {
-                inner: Rc::default(),
-            }
+            Self { inner: Rc::default() }
         }
     }
 
@@ -10169,6 +10160,7 @@ pub mod multiref {
 
     impl<T> Deref for MultiRef<T> {
         type Target = Rc<RefCell<T>>;
+
         fn deref(&self) -> &Self::Target {
             &self.inner
         }

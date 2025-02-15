@@ -11,12 +11,7 @@ fn main() {
         .version(VERSION)
         .author("Marcel Ibes <mibes@avaya.com>")
         .about("Generate Yaserde annotated Rust structs from XSD or WSDL")
-        .arg(
-            Arg::new("to_file")
-                .short('o')
-                .long("output")
-                .help("Output to file"),
-        )
+        .arg(Arg::new("to_file").short('o').long("output").help("Output to file"))
         .arg(
             Arg::new("from_file")
                 .short('i')
@@ -31,18 +26,8 @@ fn main() {
                 .required(true)
                 .help("Base path for the XSD file(s)"),
         )
-        .arg(
-            Arg::new("ns")
-                .short('n')
-                .long("ns")
-                .help("Namespace prefix"),
-        )
-        .arg(
-            Arg::new("dns")
-                .short('d')
-                .long("dns")
-                .help("Default namespace (URL)"),
-        )
+        .arg(Arg::new("ns").short('n').long("ns").help("Namespace prefix"))
+        .arg(Arg::new("dns").short('d').long("dns").help("Default namespace (URL)"))
         .get_matches();
 
     let to_file_name = matches.get_one::<String>("to_file");

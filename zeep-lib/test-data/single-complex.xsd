@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="types" elementFormDefault="qualified"
+           xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types"
+           targetNamespace="http://schemas.microsoft.com/exchange/services/2006/types"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+
+    <xs:complexType name="InstalledAppType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="Id" type="xs:string" minOccurs="0"/>
+            <xs:element name="MarketplaceAssetId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Enabled" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="ConsentState" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Type" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="LicenseStatus" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="TrialExpirationDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="ProviderName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="IconUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="HighResolutionIconUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="DisplayName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Requirements" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Version" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

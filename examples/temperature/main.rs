@@ -1,6 +1,6 @@
 use crate::tempconverter::{
-    messages::CelsiusToFahrenheit, ports::TempConverterEndpoint,
-    services::TempConverterEndpointService, types::CelsiusToFahrenheitRequest,
+    messages::CelsiusToFahrenheit, ports::TempConverterEndpoint, services::TempConverterEndpointService,
+    types::CelsiusToFahrenheitRequest,
 };
 
 mod tempconverter;
@@ -22,9 +22,7 @@ async fn main() {
 
     println!(
         "{:?}",
-        fahrenheit
-            .celsius_to_fahrenheit_response
-            .temperature_in_fahrenheit
+        fahrenheit.celsius_to_fahrenheit_response.temperature_in_fahrenheit
     );
 }
 
@@ -32,8 +30,7 @@ async fn main() {
 mod tests {
     use super::*;
     use crate::tempconverter::bindings::{
-        CelsiusToFahrenheitResponseSoapEnvelope, CelsiusToFahrenheitSoapEnvelope,
-        SoapCelsiusToFahrenheit,
+        CelsiusToFahrenheitResponseSoapEnvelope, CelsiusToFahrenheitSoapEnvelope, SoapCelsiusToFahrenheit,
     };
     use yaserde::ser::to_string;
 
@@ -51,9 +48,7 @@ mod tests {
                         temperature_in_celsius: 30.0,
                     },
                 },
-                xmlns: Option::from(
-                    "http://learnwebservices.com/services/tempconverter".to_string(),
-                ),
+                xmlns: Option::from("http://learnwebservices.com/services/tempconverter".to_string()),
             },
         };
 

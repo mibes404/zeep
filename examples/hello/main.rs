@@ -1,6 +1,4 @@
-use crate::hello::{
-    messages::SayHello, ports::HelloEndpoint, services::HelloEndpointService, types,
-};
+use crate::hello::{messages::SayHello, ports::HelloEndpoint, services::HelloEndpointService, types};
 
 mod hello;
 

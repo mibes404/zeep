@@ -2,4 +2,7 @@ mod debug;
 mod element;
 mod error;
 
-pub mod writer;
+mod model;
+mod reader;
+mod writer;
+mod yaserde_tests;

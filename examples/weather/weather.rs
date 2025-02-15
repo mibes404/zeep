@@ -48,9 +48,7 @@ pub type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
 pub mod messages {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(rename = "GetWeatherInformationSoapIn")]
     pub struct GetWeatherInformationSoapIn {
@@ -158,9 +156,7 @@ pub mod messages {
 pub mod types {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         rename = "GetWeatherInformation",
@@ -275,11 +271,7 @@ pub mod types {
         pub probability_of_precipiation: Pop,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        rename = "temp",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
-        prefix = "tns"
-    )]
+    #[yaserde(rename = "temp", namespace = "tns: http://ws.cdyne.com/WeatherWS/", prefix = "tns")]
     pub struct Temp {
         #[yaserde(rename = "MorningLow", prefix = "tns", default)]
         pub morning_low: Option<String>,
@@ -287,11 +279,7 @@ pub mod types {
         pub daytime_high: Option<String>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        rename = "POP",
-        namespace = "tns: http://ws.cdyne.com/WeatherWS/",
-        prefix = "tns"
-    )]
+    #[yaserde(rename = "POP", namespace = "tns: http://ws.cdyne.com/WeatherWS/", prefix = "tns")]
     pub struct Pop {
         #[yaserde(rename = "Nighttime", prefix = "tns", default)]
         pub nighttime: Option<String>,
@@ -361,9 +349,7 @@ pub mod types {
 pub mod ports {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     pub type GetWeatherInformationSoapIn = messages::GetWeatherInformationSoapIn;
 
     pub type GetWeatherInformationSoapOut = messages::GetWeatherInformationSoapOut;
@@ -450,16 +436,10 @@ pub mod ports {
 pub mod bindings {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
 
     impl WeatherSoap {
-        async fn send_soap_request<T: YaSerialize>(
-            &self,
-            request: &T,
-            action: &str,
-        ) -> SoapResponse {
+        async fn send_soap_request<T: YaSerialize>(&self, request: &T, action: &str) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -762,81 +742,69 @@ pub mod bindings {
             &self,
             get_weather_information_soap_in: ports::GetWeatherInformationSoapIn,
         ) -> Result<ports::GetWeatherInformationSoapOut, Option<SoapFault>> {
-            let __request =
-                GetWeatherInformationSoapInSoapEnvelope::new(SoapGetWeatherInformationSoapIn {
-                    body: get_weather_information_soap_in,
-                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
+            let __request = GetWeatherInformationSoapInSoapEnvelope::new(SoapGetWeatherInformationSoapIn {
+                body: get_weather_information_soap_in,
+                xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+            });
 
             let (status, response) = self
-                .send_soap_request(
-                    &__request,
-                    "http://ws.cdyne.com/WeatherWS/GetWeatherInformation",
-                )
+                .send_soap_request(&__request, "http://ws.cdyne.com/WeatherWS/GetWeatherInformation")
                 .await
                 .map_err(|err| {
                     warn!("Failed to send SOAP request: {:?}", err);
                     None
                 })?;
 
-            let r: GetWeatherInformationSoapOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: GetWeatherInformationSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn get_city_forecast_by_zip(
             &self,
             get_city_forecast_by_zip_soap_in: ports::GetCityForecastByZIPSoapIn,
         ) -> Result<ports::GetCityForecastByZIPSoapOut, Option<SoapFault>> {
-            let __request =
-                GetCityForecastByZIPSoapInSoapEnvelope::new(SoapGetCityForecastByZIPSoapIn {
-                    body: get_city_forecast_by_zip_soap_in,
-                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
+            let __request = GetCityForecastByZIPSoapInSoapEnvelope::new(SoapGetCityForecastByZIPSoapIn {
+                body: get_city_forecast_by_zip_soap_in,
+                xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+            });
 
             let (status, response) = self
-                .send_soap_request(
-                    &__request,
-                    "http://ws.cdyne.com/WeatherWS/GetCityForecastByZIP",
-                )
+                .send_soap_request(&__request, "http://ws.cdyne.com/WeatherWS/GetCityForecastByZIP")
                 .await
                 .map_err(|err| {
                     warn!("Failed to send SOAP request: {:?}", err);
                     None
                 })?;
 
-            let r: GetCityForecastByZIPSoapOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: GetCityForecastByZIPSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn get_city_weather_by_zip(
             &self,
             get_city_weather_by_zip_soap_in: ports::GetCityWeatherByZIPSoapIn,
         ) -> Result<ports::GetCityWeatherByZIPSoapOut, Option<SoapFault>> {
-            let __request =
-                GetCityWeatherByZIPSoapInSoapEnvelope::new(SoapGetCityWeatherByZIPSoapIn {
-                    body: get_city_weather_by_zip_soap_in,
-                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
+            let __request = GetCityWeatherByZIPSoapInSoapEnvelope::new(SoapGetCityWeatherByZIPSoapIn {
+                body: get_city_weather_by_zip_soap_in,
+                xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+            });
 
             let (status, response) = self
-                .send_soap_request(
-                    &__request,
-                    "http://ws.cdyne.com/WeatherWS/GetCityWeatherByZIP",
-                )
+                .send_soap_request(&__request, "http://ws.cdyne.com/WeatherWS/GetCityWeatherByZIP")
                 .await
                 .map_err(|err| {
                     warn!("Failed to send SOAP request: {:?}", err);
@@ -856,11 +824,7 @@ pub mod bindings {
     }
 
     impl WeatherSoap12 {
-        async fn send_soap_request<T: YaSerialize>(
-            &self,
-            request: &T,
-            action: &str,
-        ) -> SoapResponse {
+        async fn send_soap_request<T: YaSerialize>(&self, request: &T, action: &str) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -911,81 +875,69 @@ pub mod bindings {
             &self,
             get_weather_information_soap_in: ports::GetWeatherInformationSoapIn,
         ) -> Result<ports::GetWeatherInformationSoapOut, Option<SoapFault>> {
-            let __request =
-                GetWeatherInformationSoapInSoapEnvelope::new(SoapGetWeatherInformationSoapIn {
-                    body: get_weather_information_soap_in,
-                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
+            let __request = GetWeatherInformationSoapInSoapEnvelope::new(SoapGetWeatherInformationSoapIn {
+                body: get_weather_information_soap_in,
+                xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+            });
 
             let (status, response) = self
-                .send_soap_request(
-                    &__request,
-                    "http://ws.cdyne.com/WeatherWS/GetWeatherInformation",
-                )
+                .send_soap_request(&__request, "http://ws.cdyne.com/WeatherWS/GetWeatherInformation")
                 .await
                 .map_err(|err| {
                     warn!("Failed to send SOAP request: {:?}", err);
                     None
                 })?;
 
-            let r: GetWeatherInformationSoapOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: GetWeatherInformationSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn get_city_forecast_by_zip(
             &self,
             get_city_forecast_by_zip_soap_in: ports::GetCityForecastByZIPSoapIn,
         ) -> Result<ports::GetCityForecastByZIPSoapOut, Option<SoapFault>> {
-            let __request =
-                GetCityForecastByZIPSoapInSoapEnvelope::new(SoapGetCityForecastByZIPSoapIn {
-                    body: get_city_forecast_by_zip_soap_in,
-                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
+            let __request = GetCityForecastByZIPSoapInSoapEnvelope::new(SoapGetCityForecastByZIPSoapIn {
+                body: get_city_forecast_by_zip_soap_in,
+                xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+            });
 
             let (status, response) = self
-                .send_soap_request(
-                    &__request,
-                    "http://ws.cdyne.com/WeatherWS/GetCityForecastByZIP",
-                )
+                .send_soap_request(&__request, "http://ws.cdyne.com/WeatherWS/GetCityForecastByZIP")
                 .await
                 .map_err(|err| {
                     warn!("Failed to send SOAP request: {:?}", err);
                     None
                 })?;
 
-            let r: GetCityForecastByZIPSoapOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: GetCityForecastByZIPSoapOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn get_city_weather_by_zip(
             &self,
             get_city_weather_by_zip_soap_in: ports::GetCityWeatherByZIPSoapIn,
         ) -> Result<ports::GetCityWeatherByZIPSoapOut, Option<SoapFault>> {
-            let __request =
-                GetCityWeatherByZIPSoapInSoapEnvelope::new(SoapGetCityWeatherByZIPSoapIn {
-                    body: get_city_weather_by_zip_soap_in,
-                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
+            let __request = GetCityWeatherByZIPSoapInSoapEnvelope::new(SoapGetCityWeatherByZIPSoapIn {
+                body: get_city_weather_by_zip_soap_in,
+                xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+            });
 
             let (status, response) = self
-                .send_soap_request(
-                    &__request,
-                    "http://ws.cdyne.com/WeatherWS/GetCityWeatherByZIP",
-                )
+                .send_soap_request(&__request, "http://ws.cdyne.com/WeatherWS/GetCityWeatherByZIP")
                 .await
                 .map_err(|err| {
                     warn!("Failed to send SOAP request: {:?}", err);
@@ -1005,11 +957,7 @@ pub mod bindings {
     }
 
     impl WeatherHttpGet {
-        async fn send_soap_request<T: YaSerialize>(
-            &self,
-            request: &T,
-            action: &str,
-        ) -> SoapResponse {
+        async fn send_soap_request<T: YaSerialize>(&self, request: &T, action: &str) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -1312,93 +1260,79 @@ pub mod bindings {
             &self,
             get_weather_information_http_get_in: ports::GetWeatherInformationHttpGetIn,
         ) -> Result<ports::GetWeatherInformationHttpGetOut, Option<SoapFault>> {
-            let __request = GetWeatherInformationHttpGetInSoapEnvelope::new(
-                SoapGetWeatherInformationHttpGetIn {
-                    body: get_weather_information_http_get_in,
-                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
-                },
-            );
+            let __request = GetWeatherInformationHttpGetInSoapEnvelope::new(SoapGetWeatherInformationHttpGetIn {
+                body: get_weather_information_http_get_in,
+                xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+            });
 
             let (status, response) = self
-                .send_soap_request(
-                    &__request,
-                    "http://ws.cdyne.com/WeatherWS//GetWeatherInformation",
-                )
+                .send_soap_request(&__request, "http://ws.cdyne.com/WeatherWS//GetWeatherInformation")
                 .await
                 .map_err(|err| {
                     warn!("Failed to send SOAP request: {:?}", err);
                     None
                 })?;
 
-            let r: GetWeatherInformationHttpGetOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: GetWeatherInformationHttpGetOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn get_city_forecast_by_zip(
             &self,
             get_city_forecast_by_zip_http_get_in: ports::GetCityForecastByZIPHttpGetIn,
         ) -> Result<ports::GetCityForecastByZIPHttpGetOut, Option<SoapFault>> {
-            let __request =
-                GetCityForecastByZIPHttpGetInSoapEnvelope::new(SoapGetCityForecastByZIPHttpGetIn {
-                    body: get_city_forecast_by_zip_http_get_in,
-                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
+            let __request = GetCityForecastByZIPHttpGetInSoapEnvelope::new(SoapGetCityForecastByZIPHttpGetIn {
+                body: get_city_forecast_by_zip_http_get_in,
+                xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+            });
 
             let (status, response) = self
-                .send_soap_request(
-                    &__request,
-                    "http://ws.cdyne.com/WeatherWS//GetCityForecastByZIP",
-                )
+                .send_soap_request(&__request, "http://ws.cdyne.com/WeatherWS//GetCityForecastByZIP")
                 .await
                 .map_err(|err| {
                     warn!("Failed to send SOAP request: {:?}", err);
                     None
                 })?;
 
-            let r: GetCityForecastByZIPHttpGetOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: GetCityForecastByZIPHttpGetOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn get_city_weather_by_zip(
             &self,
             get_city_weather_by_zip_http_get_in: ports::GetCityWeatherByZIPHttpGetIn,
         ) -> Result<ports::GetCityWeatherByZIPHttpGetOut, Option<SoapFault>> {
-            let __request =
-                GetCityWeatherByZIPHttpGetInSoapEnvelope::new(SoapGetCityWeatherByZIPHttpGetIn {
-                    body: get_city_weather_by_zip_http_get_in,
-                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
+            let __request = GetCityWeatherByZIPHttpGetInSoapEnvelope::new(SoapGetCityWeatherByZIPHttpGetIn {
+                body: get_city_weather_by_zip_http_get_in,
+                xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+            });
 
             let (status, response) = self
-                .send_soap_request(
-                    &__request,
-                    "http://ws.cdyne.com/WeatherWS//GetCityWeatherByZIP",
-                )
+                .send_soap_request(&__request, "http://ws.cdyne.com/WeatherWS//GetCityWeatherByZIP")
                 .await
                 .map_err(|err| {
                     warn!("Failed to send SOAP request: {:?}", err);
                     None
                 })?;
 
-            let r: GetCityWeatherByZIPHttpGetOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: GetCityWeatherByZIPHttpGetOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
@@ -1408,11 +1342,7 @@ pub mod bindings {
     }
 
     impl WeatherHttpPost {
-        async fn send_soap_request<T: YaSerialize>(
-            &self,
-            request: &T,
-            action: &str,
-        ) -> SoapResponse {
+        async fn send_soap_request<T: YaSerialize>(&self, request: &T, action: &str) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -1715,94 +1645,79 @@ pub mod bindings {
             &self,
             get_weather_information_http_post_in: ports::GetWeatherInformationHttpPostIn,
         ) -> Result<ports::GetWeatherInformationHttpPostOut, Option<SoapFault>> {
-            let __request = GetWeatherInformationHttpPostInSoapEnvelope::new(
-                SoapGetWeatherInformationHttpPostIn {
-                    body: get_weather_information_http_post_in,
-                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
-                },
-            );
+            let __request = GetWeatherInformationHttpPostInSoapEnvelope::new(SoapGetWeatherInformationHttpPostIn {
+                body: get_weather_information_http_post_in,
+                xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+            });
 
             let (status, response) = self
-                .send_soap_request(
-                    &__request,
-                    "http://ws.cdyne.com/WeatherWS//GetWeatherInformation",
-                )
+                .send_soap_request(&__request, "http://ws.cdyne.com/WeatherWS//GetWeatherInformation")
                 .await
                 .map_err(|err| {
                     warn!("Failed to send SOAP request: {:?}", err);
                     None
                 })?;
 
-            let r: GetWeatherInformationHttpPostOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: GetWeatherInformationHttpPostOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn get_city_forecast_by_zip(
             &self,
             get_city_forecast_by_zip_http_post_in: ports::GetCityForecastByZIPHttpPostIn,
         ) -> Result<ports::GetCityForecastByZIPHttpPostOut, Option<SoapFault>> {
-            let __request = GetCityForecastByZIPHttpPostInSoapEnvelope::new(
-                SoapGetCityForecastByZIPHttpPostIn {
-                    body: get_city_forecast_by_zip_http_post_in,
-                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
-                },
-            );
+            let __request = GetCityForecastByZIPHttpPostInSoapEnvelope::new(SoapGetCityForecastByZIPHttpPostIn {
+                body: get_city_forecast_by_zip_http_post_in,
+                xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+            });
 
             let (status, response) = self
-                .send_soap_request(
-                    &__request,
-                    "http://ws.cdyne.com/WeatherWS//GetCityForecastByZIP",
-                )
+                .send_soap_request(&__request, "http://ws.cdyne.com/WeatherWS//GetCityForecastByZIP")
                 .await
                 .map_err(|err| {
                     warn!("Failed to send SOAP request: {:?}", err);
                     None
                 })?;
 
-            let r: GetCityForecastByZIPHttpPostOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: GetCityForecastByZIPHttpPostOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
                 Err(r.body.fault)
             }
         }
+
         async fn get_city_weather_by_zip(
             &self,
             get_city_weather_by_zip_http_post_in: ports::GetCityWeatherByZIPHttpPostIn,
         ) -> Result<ports::GetCityWeatherByZIPHttpPostOut, Option<SoapFault>> {
-            let __request =
-                GetCityWeatherByZIPHttpPostInSoapEnvelope::new(SoapGetCityWeatherByZIPHttpPostIn {
-                    body: get_city_weather_by_zip_http_post_in,
-                    xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
-                });
+            let __request = GetCityWeatherByZIPHttpPostInSoapEnvelope::new(SoapGetCityWeatherByZIPHttpPostIn {
+                body: get_city_weather_by_zip_http_post_in,
+                xmlns: Some("http://ws.cdyne.com/WeatherWS/".to_string()),
+            });
 
             let (status, response) = self
-                .send_soap_request(
-                    &__request,
-                    "http://ws.cdyne.com/WeatherWS//GetCityWeatherByZIP",
-                )
+                .send_soap_request(&__request, "http://ws.cdyne.com/WeatherWS//GetCityWeatherByZIP")
                 .await
                 .map_err(|err| {
                     warn!("Failed to send SOAP request: {:?}", err);
                     None
                 })?;
 
-            let r: GetCityWeatherByZIPHttpPostOutSoapEnvelope =
-                from_str(&response).map_err(|err| {
-                    warn!("Failed to unmarshal SOAP response: {:?}", err);
-                    None
-                })?;
+            let r: GetCityWeatherByZIPHttpPostOutSoapEnvelope = from_str(&response).map_err(|err| {
+                warn!("Failed to unmarshal SOAP response: {:?}", err);
+                None
+            })?;
             if status.is_success() {
                 Ok(r.body.body.expect("missing body"))
             } else {
@@ -1815,9 +1730,7 @@ pub mod bindings {
 pub mod services {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     pub struct Weather {}
     impl Weather {
         #[must_use]
@@ -1826,10 +1739,7 @@ pub mod services {
         }
 
         #[must_use]
-        pub fn new_client_with_url(
-            url: &str,
-            credentials: Option<(String, String)>,
-        ) -> bindings::WeatherSoap {
+        pub fn new_client_with_url(url: &str, credentials: Option<(String, String)>) -> bindings::WeatherSoap {
             bindings::WeatherSoap::new(url, credentials)
         }
     }
@@ -1848,9 +1758,7 @@ pub mod multiref {
     }
 
     impl<T: YaDeserialize + YaSerialize> YaDeserialize for MultiRef<T> {
-        fn deserialize<R: std::io::prelude::Read>(
-            reader: &mut yaserde::de::Deserializer<R>,
-        ) -> Result<Self, String> {
+        fn deserialize<R: std::io::prelude::Read>(reader: &mut yaserde::de::Deserializer<R>) -> Result<Self, String> {
             let inner = T::deserialize(reader)?;
             Ok(Self {
                 inner: Rc::new(RefCell::new(inner)),
@@ -1871,25 +1779,14 @@ pub mod multiref {
             &self,
             attributes: Vec<xml::attribute::OwnedAttribute>,
             namespace: xml::namespace::Namespace,
-        ) -> Result<
-            (
-                Vec<xml::attribute::OwnedAttribute>,
-                xml::namespace::Namespace,
-            ),
-            String,
-        > {
-            self.inner
-                .as_ref()
-                .borrow()
-                .serialize_attributes(attributes, namespace)
+        ) -> Result<(Vec<xml::attribute::OwnedAttribute>, xml::namespace::Namespace), String> {
+            self.inner.as_ref().borrow().serialize_attributes(attributes, namespace)
         }
     }
 
     impl<T: YaDeserialize + YaSerialize + Default> Default for MultiRef<T> {
         fn default() -> Self {
-            Self {
-                inner: Rc::default(),
-            }
+            Self { inner: Rc::default() }
         }
     }
 
@@ -1909,6 +1806,7 @@ pub mod multiref {
 
     impl<T> Deref for MultiRef<T> {
         type Target = Rc<RefCell<T>>;
+
         fn deref(&self) -> &Self::Target {
             &self.inner
         }

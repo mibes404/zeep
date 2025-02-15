@@ -48,9 +48,7 @@ pub type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
 pub mod messages {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(rename = "SayHelloResponse")]
     pub struct SayHelloResponse {
@@ -68,9 +66,7 @@ pub mod messages {
 pub mod types {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
     #[yaserde(
         rename = "helloRequest",
@@ -96,35 +92,24 @@ pub mod types {
 pub mod ports {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     pub type SayHello = messages::SayHello;
 
     pub type SayHelloResponse = messages::SayHelloResponse;
 
     #[async_trait]
     pub trait HelloEndpoint {
-        async fn say_hello(
-            &self,
-            say_hello: SayHello,
-        ) -> Result<SayHelloResponse, Option<SoapFault>>;
+        async fn say_hello(&self, say_hello: SayHello) -> Result<SayHelloResponse, Option<SoapFault>>;
     }
 }
 
 pub mod bindings {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
 
     impl HelloEndpointServiceSoapBinding {
-        async fn send_soap_request<T: YaSerialize>(
-            &self,
-            request: &T,
-            action: &str,
-        ) -> SoapResponse {
+        async fn send_soap_request<T: YaSerialize>(&self, request: &T, action: &str) -> SoapResponse {
             let body = to_string(request).expect("failed to generate xml");
             debug!("SOAP Request: {}", body);
             let mut req = self
@@ -255,22 +240,16 @@ pub mod bindings {
     }
     #[async_trait]
     impl ports::HelloEndpoint for HelloEndpointServiceSoapBinding {
-        async fn say_hello(
-            &self,
-            say_hello: ports::SayHello,
-        ) -> Result<ports::SayHelloResponse, Option<SoapFault>> {
+        async fn say_hello(&self, say_hello: ports::SayHello) -> Result<ports::SayHelloResponse, Option<SoapFault>> {
             let __request = SayHelloSoapEnvelope::new(SoapSayHello {
                 body: say_hello,
                 xmlns: Some("http://learnwebservices.com/services/hello".to_string()),
             });
 
-            let (status, response) =
-                self.send_soap_request(&__request, "")
-                    .await
-                    .map_err(|err| {
-                        warn!("Failed to send SOAP request: {:?}", err);
-                        None
-                    })?;
+            let (status, response) = self.send_soap_request(&__request, "").await.map_err(|err| {
+                warn!("Failed to send SOAP request: {:?}", err);
+                None
+            })?;
 
             let r: SayHelloResponseSoapEnvelope = from_str(&response).map_err(|err| {
                 warn!("Failed to unmarshal SOAP response: {:?}", err);
@@ -288,19 +267,12 @@ pub mod bindings {
 pub mod services {
     use super::*;
     use async_trait::async_trait;
-    use yaserde::de::from_str;
-    use yaserde::ser::to_string;
-    use yaserde::{YaDeserialize, YaSerialize};
+    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
     pub struct HelloEndpointService {}
     impl HelloEndpointService {
         #[must_use]
-        pub fn new_client(
-            credentials: Option<(String, String)>,
-        ) -> bindings::HelloEndpointServiceSoapBinding {
-            Self::new_client_with_url(
-                "https://apps.learnwebservices.com:443/services/hello",
-                credentials,
-            )
+        pub fn new_client(credentials: Option<(String, String)>) -> bindings::HelloEndpointServiceSoapBinding {
+            Self::new_client_with_url("https://apps.learnwebservices.com:443/services/hello", credentials)
         }
 
         #[must_use]
@@ -326,9 +298,7 @@ pub mod multiref {
     }
 
     impl<T: YaDeserialize + YaSerialize> YaDeserialize for MultiRef<T> {
-        fn deserialize<R: std::io::prelude::Read>(
-            reader: &mut yaserde::de::Deserializer<R>,
-        ) -> Result<Self, String> {
+        fn deserialize<R: std::io::prelude::Read>(reader: &mut yaserde::de::Deserializer<R>) -> Result<Self, String> {
             let inner = T::deserialize(reader)?;
             Ok(Self {
                 inner: Rc::new(RefCell::new(inner)),
@@ -349,25 +319,14 @@ pub mod multiref {
             &self,
             attributes: Vec<xml::attribute::OwnedAttribute>,
             namespace: xml::namespace::Namespace,
-        ) -> Result<
-            (
-                Vec<xml::attribute::OwnedAttribute>,
-                xml::namespace::Namespace,
-            ),
-            String,
-        > {
-            self.inner
-                .as_ref()
-                .borrow()
-                .serialize_attributes(attributes, namespace)
+        ) -> Result<(Vec<xml::attribute::OwnedAttribute>, xml::namespace::Namespace), String> {
+            self.inner.as_ref().borrow().serialize_attributes(attributes, namespace)
         }
     }
 
     impl<T: YaDeserialize + YaSerialize + Default> Default for MultiRef<T> {
         fn default() -> Self {
-            Self {
-                inner: Rc::default(),
-            }
+            Self { inner: Rc::default() }
         }
     }
 
@@ -387,6 +346,7 @@ pub mod multiref {
 
     impl<T> Deref for MultiRef<T> {
         type Target = Rc<RefCell<T>>;
+
         fn deref(&self) -> &Self::Target {
             &self.inner
         }

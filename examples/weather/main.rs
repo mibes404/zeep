@@ -1,6 +1,5 @@
 use crate::weather::{
-    messages::GetWeatherInformationSoapIn, ports::WeatherSoap, services::Weather,
-    types::GetWeatherInformation,
+    messages::GetWeatherInformationSoapIn, ports::WeatherSoap, services::Weather, types::GetWeatherInformation,
 };
 
 mod weather;

@@ -1,6 +1,8 @@
-use std::cell::RefCell;
-use std::fmt::{Arguments, Write};
-use std::rc::Rc;
+use std::{
+    cell::RefCell,
+    fmt::{Arguments, Write},
+    rc::Rc,
+};
 
 #[derive(Clone)]
 pub struct DebugBuffer {

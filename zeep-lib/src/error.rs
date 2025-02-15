@@ -1,36 +1,42 @@
-use std::{error, fmt};
+use std::{
+    error,
+    fmt::{self, Display},
+};
+use thiserror::Error;
 
 pub type WriterResult<T> = Result<T, WriterError>;
 
-#[derive(Debug, Clone)]
-pub struct WriterError {
-    pub message: String,
+#[derive(Error, Debug)]
+pub enum WriterError {
+    #[error("writer error: {0}")]
+    Message(String),
+    #[error("io error: {source}")]
+    Io {
+        #[from]
+        source: std::io::Error,
+    },
+    #[error("xml error: {source}")]
+    Xml {
+        #[from]
+        source: roxmltree::Error,
+    },
+    #[error("xml error: import node does not have a namespace attribute")]
+    NamespaceMissing,
+    #[error("xml error: import {0} can not be resolved")]
+    ImportNotFound(String),
+    #[error("xml error: node is not an element")]
+    NotAnElement,
+    #[error("xml error: node missed the attribute: {0}")]
+    AttributeMissing(String),
+    #[error("xml error: unsupported xsd type: {0}")]
+    UnsupportedXsdType(String),
 }
 
-impl fmt::Display for WriterError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "writer error: {}", self.message)
-    }
-}
-
-impl error::Error for WriterError {
-    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
-        None
-    }
-}
-
-impl From<std::io::Error> for WriterError {
-    fn from(err: std::io::Error) -> Self {
-        WriterError {
-            message: err.to_string(),
-        }
-    }
-}
-
-impl From<roxmltree::Error> for WriterError {
-    fn from(err: roxmltree::Error) -> Self {
-        WriterError {
-            message: err.to_string(),
-        }
+impl WriterError {
+    pub fn new<S>(message: S) -> Self
+    where
+        S: Display,
+    {
+        WriterError::Message(message.to_string())
     }
 }
