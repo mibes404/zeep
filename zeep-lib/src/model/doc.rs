@@ -1,6 +1,7 @@
 use crate::model::{node::RustNode, TargetNamespace};
 use std::rc::Rc;
 
+#[derive(Default)]
 pub struct RustDocument {
     pub target_namespaces: Vec<Rc<TargetNamespace>>,
     pub current_target_namespace: Option<Rc<TargetNamespace>>,
@@ -9,11 +10,7 @@ pub struct RustDocument {
 
 impl RustDocument {
     pub fn new() -> Self {
-        RustDocument {
-            target_namespaces: Vec::new(),
-            current_target_namespace: None,
-            nodes: Vec::new(),
-        }
+        Self::default()
     }
 
     pub fn switch_to_target_namespace(&mut self, namespace: &str) {
@@ -37,8 +34,8 @@ fn make_abbreviated_namespace(namespace: &str, existing_namespaces: &[Rc<TargetN
     let append: Option<u8> = None;
 
     loop {
-        let mut abbreviation = if let Some(last_segment) = namespace.split('/').last() {
-            if let Some(slashed) = last_segment.split('-').last() {
+        let mut abbreviation = if let Some(last_segment) = namespace.split('/').next_back() {
+            if let Some(slashed) = last_segment.split('-').next_back() {
                 take_three_chars_max(slashed)
             } else {
                 take_three_chars_max(last_segment)

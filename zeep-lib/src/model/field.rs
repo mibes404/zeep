@@ -126,6 +126,12 @@ impl Display for RustFieldType {
     }
 }
 
+impl From<&str> for RustFieldType {
+    fn from(value: &str) -> Self {
+        as_rust_type(value)
+    }
+}
+
 fn as_rust_type(node_type: &str) -> RustFieldType {
     match split_type(node_type) {
         "byte" => RustFieldType::I8,

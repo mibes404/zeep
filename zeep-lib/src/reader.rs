@@ -152,14 +152,14 @@ mod tests {
     use super::*;
     use crate::model::{
         field::RustFieldType,
-        rust_type::{RustType, StructProps},
+        structure::{RustType, SimpleProps, StructProps},
     };
 
     #[test]
     fn can_read_a_simple_xsd() {
         const XSD: &str = include_str!("../test-data/single-complex.xsd");
-        let files = Files::new("single-complex.xsd", XSD);
-        let (file_name, file) = files.map.get_key_value("single-complex.xsd").unwrap();
+        let files = Files::new("types.xsd", XSD);
+        let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
         let nodes = XmlReader.read_xml(file, file_name, &files).unwrap();
         assert_eq!(nodes.len(), 1);
         let node = nodes.first().unwrap();
@@ -185,5 +185,40 @@ mod tests {
             "http://schemas.microsoft.com/exchange/services/2006/types"
         );
         assert_eq!(target_namespace.as_ref().unwrap().abbreviation, "typ");
+    }
+
+    #[test]
+    fn can_read_nested_target_namespace() {
+        const XSD_MESSAGES: &str = include_str!("../test-data/single-simple-with-nested-tns.xsd");
+        const XSD_TYPES: &str = include_str!("../test-data/single-complex.xsd");
+        let mut files = Files::new("messages.xsd", XSD_MESSAGES);
+        files.add("types.xsd", XSD_TYPES);
+
+        let (file_name, file) = files.map.get_key_value("messages.xsd").unwrap();
+        let nodes = XmlReader.read_xml(file, file_name, &files).unwrap();
+        assert_eq!(nodes.len(), 2);
+
+        let type_node = nodes.first().unwrap();
+        let RustType::Struct(StructProps {
+            fields,
+            xml_name,
+            target_namespace,
+        }) = &type_node.rust_type
+        else {
+            panic!()
+        };
+        assert_eq!(xml_name, "InstalledAppType");
+
+        let message_node = nodes.last().unwrap();
+        let RustType::Simple(SimpleProps {
+            xml_name,
+            rust_type,
+            target_namespace,
+        }) = &message_node.rust_type
+        else {
+            panic!()
+        };
+        assert_eq!(xml_name, "ResponseCodeType");
+        assert_eq!(*rust_type, RustFieldType::String);
     }
 }

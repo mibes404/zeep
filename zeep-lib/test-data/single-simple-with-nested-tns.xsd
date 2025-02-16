@@ -1,0 +1,23 @@
+<xs:schema id="messages"
+    elementFormDefault="qualified"
+    xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages"
+    xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://schemas.microsoft.com/exchange/services/2006/messages">
+    <!-- Import common types. -->
+    <xs:import namespace="http://schemas.microsoft.com/exchange/services/2006/types" schemaLocation="types.xsd"/>
+    <!-- Basic response type -->
+    <!-- Common to all responses -->
+    <xs:simpleType name="ResponseCodeType">
+        <xs:annotation>
+            <xs:documentation>
+                Represents the message keys that can be returned by response error messages
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NoError"/>
+            <xs:enumeration value="ErrorAccessDenied"/>
+            <xs:enumeration value="ErrorAccessModeSpecified"/>           
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

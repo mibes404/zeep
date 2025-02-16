@@ -1,7 +1,7 @@
 pub mod doc;
 pub mod field;
 pub mod node;
-pub mod rust_type;
+pub mod structure;
 
 use crate::{
     error::WriterResult,
