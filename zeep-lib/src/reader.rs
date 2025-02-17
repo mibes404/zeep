@@ -214,6 +214,7 @@ mod tests {
             xml_name,
             rust_type,
             target_namespace,
+            restrictions,
         }) = &message_node.rust_type
         else {
             panic!()

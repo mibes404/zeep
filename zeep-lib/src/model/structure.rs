@@ -18,6 +18,25 @@ pub struct SimpleProps {
     pub xml_name: String,
     pub rust_type: RustFieldType,
     pub target_namespace: Option<Rc<TargetNamespace>>,
+    pub restrictions: Option<Restrictions>,
+}
+
+#[derive(Debug, PartialEq, Default)]
+pub struct Restrictions {
+    pub min_inclusive: Option<String>,
+    pub max_inclusive: Option<String>,
+    pub min_exclusive: Option<String>,
+    pub max_exclusive: Option<String>,
+    pub total_digits: Option<String>,
+    pub fraction_digits: Option<String>,
+    pub length: Option<String>,
+    pub min_length: Option<String>,
+    pub max_length: Option<String>,
+    pub enumeration: Option<Vec<String>>,
+    pub white_space: Option<String>,
+    pub pattern: Option<String>,
+    pub acceptable_union_types: Option<Vec<RustFieldType>>,
+    pub acceptable_list_type: Option<RustFieldType>,
 }
 
 #[derive(Debug, PartialEq)]
@@ -71,56 +90,209 @@ impl<'n> TryFromNode<'n> for SimpleProps {
             .to_string();
 
         // check if the node has restriction child
-        let rust_type = if let Some(restriction) = node
+        if let Some(restriction) = node
             .children()
             .find(|n| n.is_element() && n.tag_name().name() == "restriction")
         {
-            restriction
+            let rust_type = restriction
                 .attribute("base")
                 .map(RustFieldType::from)
-                .ok_or_else(|| WriterError::AttributeMissing("base".to_string()))?
-        } else {
-            // see if this is a list
-            if let Some(list) = node
-                .children()
-                .find(|n| n.is_element() && n.tag_name().name() == "list")
-            {
-                // list can have itemType attribute or a nested simpleType
-                if let Some(item_type) = list.attribute("itemType").map(RustFieldType::from) {
-                    item_type
-                } else {
-                    let simple_type = list
-                        .children()
-                        .find(|n| n.is_element() && n.tag_name().name() == "simpleType")
-                        .ok_or_else(|| WriterError::UnsupportedXsdType("list".to_string()))?;
+                .ok_or_else(|| WriterError::AttributeMissing("base".to_string()))?;
 
-                    return Self::try_from_node(simple_type, doc);
-                }
-            } else {
-                // check if this is a union type
-                if let Some(list) = node
-                    .children()
-                    .find(|n| n.is_element() && n.tag_name().name() == "union")
-                {
-                    // todo: at the moment we don't support union types, so we just include the first type
-                    let simple_type = list
-                        .children()
-                        .find(|n| n.is_element() && n.tag_name().name() == "simpleType")
-                        .ok_or_else(|| WriterError::UnsupportedXsdType("list".to_string()))?;
+            let restrictions = build_restrictions(restriction);
 
-                    return Self::try_from_node(simple_type, doc);
-                }
+            return Ok(SimpleProps {
+                xml_name,
+                rust_type,
+                target_namespace: doc.current_target_namespace.clone(),
+                restrictions: Some(restrictions),
+            });
+        }
 
-                return Err(WriterError::UnsupportedXsdType(xml_name));
-            }
-        };
+        // see if this is a list
+        if let Some(list) = node
+            .children()
+            .find(|n| n.is_element() && n.tag_name().name() == "list")
+        {
+            return build_simple_list_type(doc, xml_name, list);
+        }
 
-        Ok(SimpleProps {
+        // check if this is a union type
+        if let Some(list) = node
+            .children()
+            .find(|n| n.is_element() && n.tag_name().name() == "union")
+        {
+            return build_simple_union_type(doc, xml_name, list);
+        }
+
+        // unsupported type
+        Err(WriterError::UnsupportedXsdType(xml_name))
+    }
+}
+
+fn build_simple_union_type<'n>(
+    doc: &mut RustDocument,
+    xml_name: String,
+    list: Node<'n, 'n>,
+) -> WriterResult<SimpleProps> {
+    let rust_type = RustFieldType::String;
+    if let Some(member_types) = list.attribute("memberTypes") {
+        // split the member types and try to convert them to RustFieldTypes
+        let member_types = member_types
+            .split_whitespace()
+            .map(RustFieldType::from)
+            .collect::<Vec<RustFieldType>>();
+
+        let restrictions = Some(Restrictions {
+            acceptable_union_types: Some(member_types),
+            ..Restrictions::default()
+        });
+
+        return Ok(SimpleProps {
             xml_name,
             rust_type,
             target_namespace: doc.current_target_namespace.clone(),
-        })
+            restrictions,
+        });
     }
+
+    let simple_types = list
+        .children()
+        .filter(|n| n.is_element() && n.tag_name().name() == "simpleType");
+    let member_types = simple_types
+        .map(|n| {
+            n.attribute("base")
+                .map(RustFieldType::from)
+                .ok_or_else(|| WriterError::AttributeMissing("base".to_string()))
+        })
+        .collect::<WriterResult<Vec<RustFieldType>>>()?;
+    let restrictions = Some(Restrictions {
+        acceptable_union_types: Some(member_types),
+        ..Restrictions::default()
+    });
+
+    Ok(SimpleProps {
+        xml_name,
+        rust_type,
+        target_namespace: doc.current_target_namespace.clone(),
+        restrictions,
+    })
+}
+
+fn build_simple_list_type<'n>(
+    doc: &mut RustDocument,
+    xml_name: String,
+    list: Node<'n, 'n>,
+) -> WriterResult<SimpleProps> {
+    let rust_type = RustFieldType::String;
+    if let Some(item_type) = list.attribute("itemType").map(RustFieldType::from) {
+        let restrictions = Some(Restrictions {
+            acceptable_list_type: Some(item_type),
+            ..Restrictions::default()
+        });
+
+        return Ok(SimpleProps {
+            xml_name,
+            rust_type,
+            target_namespace: doc.current_target_namespace.clone(),
+            restrictions,
+        });
+    }
+
+    let simple_type = list
+        .children()
+        .find(|n| n.is_element() && n.tag_name().name() == "simpleType")
+        .ok_or_else(|| WriterError::UnsupportedXsdType("list".to_string()))?;
+    let restriction = simple_type
+        .children()
+        .find(|n| n.is_element() && n.tag_name().name() == "restriction")
+        .ok_or_else(|| WriterError::UnsupportedXsdType("list".to_string()))?;
+    let base = restriction
+        .attribute("base")
+        .map(RustFieldType::from)
+        .ok_or_else(|| WriterError::AttributeMissing("base".to_string()))?;
+    let mut restrictions = Restrictions {
+        acceptable_list_type: Some(base),
+        ..Restrictions::default()
+    };
+    let enumeration = restriction
+        .children()
+        .filter(|n| n.is_element() && n.tag_name().name() == "enumeration");
+    for enum_i in enumeration {
+        if let Some(value) = enum_i.attribute("value") {
+            if let Some(enumeration) = &mut restrictions.enumeration {
+                enumeration.push(value.to_string());
+            }
+        }
+    }
+
+    Ok(SimpleProps {
+        xml_name,
+        rust_type,
+        target_namespace: doc.current_target_namespace.clone(),
+        restrictions: Some(restrictions),
+    })
+}
+
+fn build_restrictions<'n>(restriction: Node<'n, 'n>) -> Restrictions {
+    // get the restrictions
+    let mut restrictions = Restrictions::default();
+
+    if let Some(min_inclusive) = restriction.attribute("minInclusive") {
+        restrictions.min_inclusive = Some(min_inclusive.to_string());
+    }
+
+    if let Some(max_inclusive) = restriction.attribute("maxInclusive") {
+        restrictions.max_inclusive = Some(max_inclusive.to_string());
+    }
+
+    if let Some(min_exclusive) = restriction.attribute("minExclusive") {
+        restrictions.min_exclusive = Some(min_exclusive.to_string());
+    }
+
+    if let Some(max_exclusive) = restriction.attribute("maxExclusive") {
+        restrictions.max_exclusive = Some(max_exclusive.to_string());
+    }
+
+    if let Some(total_digits) = restriction.attribute("totalDigits") {
+        restrictions.total_digits = Some(total_digits.to_string());
+    }
+
+    if let Some(fraction_digits) = restriction.attribute("fractionDigits") {
+        restrictions.fraction_digits = Some(fraction_digits.to_string());
+    }
+
+    if let Some(length) = restriction.attribute("length") {
+        restrictions.length = Some(length.to_string());
+    }
+
+    if let Some(min_length) = restriction.attribute("minLength") {
+        restrictions.min_length = Some(min_length.to_string());
+    }
+
+    if let Some(max_length) = restriction.attribute("maxLength") {
+        restrictions.max_length = Some(max_length.to_string());
+    }
+
+    if let Some(white_space) = restriction.attribute("whiteSpace") {
+        restrictions.white_space = Some(white_space.to_string());
+    }
+
+    if let Some(pattern) = restriction.attribute("pattern") {
+        restrictions.pattern = Some(pattern.to_string());
+    }
+
+    let enumeration = restriction
+        .children()
+        .filter(|n| n.is_element() && n.tag_name().name() == "enumeration")
+        .map(|n| n.attribute("value").unwrap().to_string())
+        .collect::<Vec<String>>();
+
+    if !enumeration.is_empty() {
+        restrictions.enumeration = Some(enumeration);
+    }
+
+    restrictions
 }
 
 impl<W> WriteNode<W> for RustType
@@ -156,6 +328,7 @@ where
                 xml_name,
                 rust_type,
                 target_namespace: _,
+                restrictions: _,
             }) => {
                 // for now write this as a type alias; we may want to change this to a newtype
                 // in the future

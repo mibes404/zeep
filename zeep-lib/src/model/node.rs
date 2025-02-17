@@ -60,7 +60,10 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::model::{field::RustFieldType, structure::SimpleProps};
+    use crate::model::{
+        field::RustFieldType,
+        structure::{Restrictions, SimpleProps},
+    };
 
     #[test]
     fn can_read_complex_sequence() {
@@ -117,6 +120,14 @@ mod tests {
                 xml_name: "ResponseCodeType".to_string(),
                 rust_type: RustFieldType::String,
                 target_namespace: None,
+                restrictions: Some(Restrictions {
+                    enumeration: Some(vec![
+                        "NoError".to_string(),
+                        "ErrorAccessDenied".to_string(),
+                        "ErrorAccessModeSpecified".to_string(),
+                    ]),
+                    ..Restrictions::default()
+                })
             })
         );
     }
