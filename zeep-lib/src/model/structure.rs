@@ -11,6 +11,7 @@ pub struct StructProps {
     pub xml_name: String,
     pub fields: Vec<Field>,
     pub target_namespace: Option<Rc<TargetNamespace>>,
+    pub comment: Option<String>,
 }
 
 #[derive(Debug, PartialEq)]
@@ -19,6 +20,7 @@ pub struct SimpleProps {
     pub rust_type: RustFieldType,
     pub target_namespace: Option<Rc<TargetNamespace>>,
     pub restrictions: Option<Restrictions>,
+    pub comment: Option<String>,
 }
 
 #[derive(Debug, PartialEq, Default)]
@@ -51,6 +53,7 @@ impl<'n> TryFromNode<'n> for StructProps {
 
     fn try_from_node(node: Node<'n, 'n>, doc: &mut RustDocument) -> Result<Self, Self::Error> {
         fn read_sequence_node(element_name: &str, node: Node, doc: &mut RustDocument) -> WriterResult<StructProps> {
+            let comment = parse_comment(node);
             let fields = node
                 .children()
                 .filter(Node::is_element)
@@ -61,6 +64,7 @@ impl<'n> TryFromNode<'n> for StructProps {
                 xml_name: element_name.to_string(),
                 fields,
                 target_namespace: doc.current_target_namespace.clone(),
+                comment,
             };
 
             Ok(struct_props)
@@ -80,6 +84,21 @@ impl<'n> TryFromNode<'n> for StructProps {
     }
 }
 
+/// check for documentation
+fn parse_comment<'n>(node: Node<'n, 'n>) -> Option<String> {
+    node.children()
+        .find(|n| n.is_element() && n.tag_name().name() == "annotation")
+        .and_then(|n| {
+            n.children()
+                .find(|n| n.is_element() && n.tag_name().name() == "documentation")
+                .and_then(|n| n.text())
+        })
+        .map(|s| {
+            // strip all whitespace and newlines from start and end
+            s.trim().to_string()
+        })
+}
+
 impl<'n> TryFromNode<'n> for SimpleProps {
     type Error = WriterError;
 
@@ -88,6 +107,9 @@ impl<'n> TryFromNode<'n> for SimpleProps {
             .attribute("name")
             .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?
             .to_string();
+
+        // check for documentation
+        let comment = parse_comment(node);
 
         // check if the node has restriction child
         if let Some(restriction) = node
@@ -106,6 +128,7 @@ impl<'n> TryFromNode<'n> for SimpleProps {
                 rust_type,
                 target_namespace: doc.current_target_namespace.clone(),
                 restrictions: Some(restrictions),
+                comment,
             });
         }
 
@@ -114,7 +137,7 @@ impl<'n> TryFromNode<'n> for SimpleProps {
             .children()
             .find(|n| n.is_element() && n.tag_name().name() == "list")
         {
-            return build_simple_list_type(doc, xml_name, list);
+            return build_simple_list_type(doc, xml_name, list, comment);
         }
 
         // check if this is a union type
@@ -122,7 +145,7 @@ impl<'n> TryFromNode<'n> for SimpleProps {
             .children()
             .find(|n| n.is_element() && n.tag_name().name() == "union")
         {
-            return build_simple_union_type(doc, xml_name, list);
+            return build_simple_union_type(doc, xml_name, list, comment);
         }
 
         // unsupported type
@@ -134,6 +157,7 @@ fn build_simple_union_type<'n>(
     doc: &mut RustDocument,
     xml_name: String,
     list: Node<'n, 'n>,
+    comment: Option<String>,
 ) -> WriterResult<SimpleProps> {
     let rust_type = RustFieldType::String;
     if let Some(member_types) = list.attribute("memberTypes") {
@@ -153,6 +177,7 @@ fn build_simple_union_type<'n>(
             rust_type,
             target_namespace: doc.current_target_namespace.clone(),
             restrictions,
+            comment,
         });
     }
 
@@ -176,6 +201,7 @@ fn build_simple_union_type<'n>(
         rust_type,
         target_namespace: doc.current_target_namespace.clone(),
         restrictions,
+        comment,
     })
 }
 
@@ -183,6 +209,7 @@ fn build_simple_list_type<'n>(
     doc: &mut RustDocument,
     xml_name: String,
     list: Node<'n, 'n>,
+    comment: Option<String>,
 ) -> WriterResult<SimpleProps> {
     let rust_type = RustFieldType::String;
     if let Some(item_type) = list.attribute("itemType").map(RustFieldType::from) {
@@ -196,6 +223,7 @@ fn build_simple_list_type<'n>(
             rust_type,
             target_namespace: doc.current_target_namespace.clone(),
             restrictions,
+            comment,
         });
     }
 
@@ -231,6 +259,7 @@ fn build_simple_list_type<'n>(
         rust_type,
         target_namespace: doc.current_target_namespace.clone(),
         restrictions: Some(restrictions),
+        comment,
     })
 }
 
@@ -306,6 +335,7 @@ where
                 xml_name,
                 fields,
                 target_namespace,
+                comment,
             }) => {
                 writeln!(writer, "#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]")?;
                 if let Some(tns) = &target_namespace {
@@ -329,6 +359,7 @@ where
                 rust_type,
                 target_namespace: _,
                 restrictions: _,
+                comment: _,
             }) => {
                 // for now write this as a type alias; we may want to change this to a newtype
                 // in the future
@@ -404,6 +435,7 @@ struct Person {
                 },
             ],
             target_namespace,
+            comment: None,
         }
     }
 }

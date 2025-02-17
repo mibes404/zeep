@@ -87,6 +87,7 @@ mod tests {
                     target_namespace: None,
                 }],
                 target_namespace: None,
+                comment: None,
             })
         );
     }
@@ -127,7 +128,10 @@ mod tests {
                         "ErrorAccessModeSpecified".to_string(),
                     ]),
                     ..Restrictions::default()
-                })
+                }),
+                comment: Some(
+                    "Represents the message keys that can be returned by response error messages".to_string()
+                ),
             })
         );
     }

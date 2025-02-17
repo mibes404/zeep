@@ -167,6 +167,7 @@ mod tests {
             fields,
             xml_name,
             target_namespace,
+            comment,
         }) = &node.rust_type
         else {
             panic!()
@@ -203,11 +204,17 @@ mod tests {
             fields,
             xml_name,
             target_namespace,
+            comment,
         }) = &type_node.rust_type
         else {
             panic!()
         };
         assert_eq!(xml_name, "InstalledAppType");
+        // check that a target namespace was set
+        assert_eq!(
+            target_namespace.as_ref().unwrap().namespace,
+            "http://schemas.microsoft.com/exchange/services/2006/types"
+        );
 
         let message_node = nodes.last().unwrap();
         let RustType::Simple(SimpleProps {
@@ -215,11 +222,17 @@ mod tests {
             rust_type,
             target_namespace,
             restrictions,
+            comment,
         }) = &message_node.rust_type
         else {
             panic!()
         };
         assert_eq!(xml_name, "ResponseCodeType");
         assert_eq!(*rust_type, RustFieldType::String);
+        // check that a target namespace was set
+        assert_eq!(
+            target_namespace.as_ref().unwrap().namespace,
+            "http://schemas.microsoft.com/exchange/services/2006/messages"
+        );
     }
 }
