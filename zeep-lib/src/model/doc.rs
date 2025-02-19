@@ -1,4 +1,8 @@
-use crate::model::{node::RustNode, TargetNamespace};
+use super::WriteXml;
+use crate::{
+    error::WriterResult,
+    model::{node::RustNode, TargetNamespace},
+};
 use std::rc::Rc;
 
 #[derive(Default)]
@@ -30,6 +34,37 @@ impl RustDocument {
             .iter()
             .find(|node| node.rust_type.xml_name().is_some_and(|n| n == xml_name))
     }
+}
+
+impl<W> WriteXml<W> for RustDocument
+where
+    W: std::io::Write,
+{
+    fn write_xml(&self, writer: &mut W) -> WriterResult<()> {
+        for namespace in &self.target_namespaces {
+            let module = create_mod_name_for_namespace(namespace);
+            writeln!(writer, "pub mod {module} {{")?;
+            for node in self
+                .nodes
+                .iter()
+                .filter(|n| n.in_namespace.as_deref() == Some(namespace))
+            {
+                node.write_xml(writer)?;
+            }
+            writeln!(writer, "}}")?;
+        }
+
+        // finally write the types that do not have a namespace
+        for node in self.nodes.iter().filter(|n| n.in_namespace.is_none()) {
+            node.write_xml(writer)?;
+        }
+
+        Ok(())
+    }
+}
+
+fn create_mod_name_for_namespace(namespace: &TargetNamespace) -> String {
+    format!("ns_{}", namespace.abbreviation)
 }
 
 fn make_abbreviated_namespace(namespace: &str, existing_namespaces: &[Rc<TargetNamespace>]) -> String {

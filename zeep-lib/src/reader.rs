@@ -147,6 +147,7 @@ mod tests {
     use crate::model::{
         field::RustFieldType,
         structures::{complex::ComplexProps, simple::SimpleProps, RustType},
+        WriteXml,
     };
 
     #[test]
@@ -240,7 +241,8 @@ mod tests {
         let files = Files::new("types.xsd", XSD_TYPES);
 
         let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
-        let nodes = XmlReader.read_xml(file, file_name, &files).unwrap().nodes;
+        let rust_doc = XmlReader.read_xml(file, file_name, &files).unwrap();
+        let nodes = &rust_doc.nodes;
         assert_eq!(nodes.len(), 4);
 
         let type_node = nodes.get(3).expect("Expected a third node");

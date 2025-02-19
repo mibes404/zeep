@@ -27,11 +27,11 @@ pub trait TryFromNode<'n>: Sized {
     fn try_from_node(node: Node<'n, 'n>, doc: &mut RustDocument) -> Result<Self, Self::Error>;
 }
 
-pub trait WriteNode<W>
+pub trait WriteXml<W>
 where
     W: io::Write,
 {
-    fn write_node(&self, writer: &mut W) -> WriterResult<()>;
+    fn write_xml(&self, writer: &mut W) -> WriterResult<()>;
 }
 
 fn split_type(node_type: &str) -> &str {

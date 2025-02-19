@@ -1,13 +1,17 @@
-use super::structures::{complex::ComplexProps, element::ElementProps, simple::SimpleProps, RustType};
+use super::{
+    structures::{complex::ComplexProps, element::ElementProps, simple::SimpleProps, RustType},
+    TargetNamespace,
+};
 use crate::{
     error::{WriterError, WriterResult},
-    model::{doc::RustDocument, field::Field, TryFromNode, WriteNode},
+    model::{doc::RustDocument, field::Field, TryFromNode, WriteXml},
 };
 use roxmltree::{Document, Node};
-use std::io;
+use std::{io, rc::Rc};
 
 pub struct RustNode {
     pub rust_type: RustType,
+    pub in_namespace: Option<Rc<TargetNamespace>>,
 }
 
 impl<'n> TryFromNode<'n> for RustNode {
@@ -39,20 +43,23 @@ impl<'n> TryFromNode<'n> for RustNode {
             _ => {}
         }
 
-        Ok(RustNode { rust_type })
+        Ok(RustNode {
+            rust_type,
+            in_namespace: doc.current_target_namespace.clone(),
+        })
     }
 }
 
-impl<W> WriteNode<W> for RustNode
+impl<W> WriteXml<W> for RustNode
 where
     W: io::Write,
 {
-    fn write_node(&self, writer: &mut W) -> WriterResult<()> {
+    fn write_xml(&self, writer: &mut W) -> WriterResult<()> {
         if self.rust_type == RustType::Ignore {
             return Ok(());
         }
 
-        self.rust_type.write_node(writer)
+        self.rust_type.write_xml(writer)
     }
 }
 

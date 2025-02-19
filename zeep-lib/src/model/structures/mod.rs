@@ -5,7 +5,7 @@ pub mod simple;
 use super::{field::RustFieldType, TryFromNode};
 use crate::{
     error::{WriterError, WriterResult},
-    model::{doc::RustDocument, field::Field, split_type, TargetNamespace, WriteNode},
+    model::{doc::RustDocument, field::Field, split_type, TargetNamespace, WriteXml},
 };
 use complex::ComplexProps;
 use element::ElementProps;
@@ -133,11 +133,11 @@ fn build_restrictions<'n>(restriction: Node<'n, 'n>) -> Restrictions {
     restrictions
 }
 
-impl<W> WriteNode<W> for RustType
+impl<W> WriteXml<W> for RustType
 where
     W: io::Write,
 {
-    fn write_node(&self, writer: &mut W) -> WriterResult<()> {
+    fn write_xml(&self, writer: &mut W) -> WriterResult<()> {
         match self {
             RustType::Ignore => Ok(()),
             RustType::Complex(props) => {
@@ -163,10 +163,10 @@ where
                 }
                 writeln!(writer, "struct {xml_name} {{")?;
                 for field in fields {
-                    field.write_node(writer)?;
+                    field.write_xml(writer)?;
                 }
 
-                write!(writer, "}}")?;
+                writeln!(writer, "}}")?;
                 Ok(())
             }
             RustType::Simple(props) => {
@@ -206,7 +206,7 @@ mod tests {
         let mut writer = Vec::new();
         let props = prep_struct_props(None);
         let rust_type = RustType::Complex(props.into());
-        rust_type.write_node(&mut writer).unwrap();
+        rust_type.write_xml(&mut writer).unwrap();
 
         let expected = r#"/// A person
 #[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
@@ -237,7 +237,7 @@ struct Person {
             abbreviation: "ex".to_string(),
         })));
         let rust_type = RustType::Complex(props.into());
-        rust_type.write_node(&mut writer).unwrap();
+        rust_type.write_xml(&mut writer).unwrap();
         assert_eq!(String::from_utf8(writer).unwrap(), EXPECTED);
     }
 
@@ -275,7 +275,7 @@ type Person = String;
         let mut writer = Vec::new();
         let props = prep_simple_props(None);
         let rust_type = RustType::Simple(props);
-        rust_type.write_node(&mut writer).unwrap();
+        rust_type.write_xml(&mut writer).unwrap();
         assert_eq!(String::from_utf8(writer).unwrap(), EXPECTED);
     }
 

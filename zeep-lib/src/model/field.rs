@@ -1,7 +1,7 @@
 use super::TargetNamespace;
 use crate::{
     error::{WriterError, WriterResult},
-    model::{doc::RustDocument, split_type, TryFromNode, WriteNode},
+    model::{doc::RustDocument, split_type, TryFromNode, WriteXml},
 };
 use inflector::cases::{pascalcase::to_pascal_case, snakecase::to_snake_case};
 use roxmltree::Node;
@@ -75,21 +75,17 @@ impl<'n> TryFromNode<'n> for Field {
     }
 }
 
-impl<W> WriteNode<W> for Field
+impl<W> WriteXml<W> for Field
 where
     W: std::io::Write,
 {
-    fn write_node(&self, writer: &mut W) -> WriterResult<()> {
-        let possibly_vec_field = if self.vec {
+    fn write_xml(&self, writer: &mut W) -> WriterResult<()> {
+        let possibly_optional_field = if self.vec {
             format!("Vec<{}>", self.rust_type)
+        } else if self.optional {
+            format!("Option<{}>", self.rust_type)
         } else {
             self.rust_type.to_string()
-        };
-
-        let possibly_optional_field = if self.optional {
-            format!("Option<{possibly_vec_field}>")
-        } else {
-            possibly_vec_field
         };
 
         if let Some(tns) = &self.target_namespace {
@@ -283,7 +279,7 @@ mod tests {
             target_namespace: None,
         };
         let mut buffer = Vec::new();
-        field.write_node(&mut buffer).unwrap();
+        field.write_xml(&mut buffer).unwrap();
         assert_eq!(
             String::from_utf8(buffer).unwrap(),
             "    #[yaserde(rename = \"Id\")]\n    pub id: String,\n"
@@ -301,7 +297,7 @@ mod tests {
             target_namespace: None,
         };
         let mut buffer = Vec::new();
-        field.write_node(&mut buffer).unwrap();
+        field.write_xml(&mut buffer).unwrap();
         assert_eq!(
             String::from_utf8(buffer).unwrap(),
             "    #[yaserde(rename = \"Id\")]\n    pub id: Option<String>,\n"
@@ -319,10 +315,10 @@ mod tests {
             target_namespace: None,
         };
         let mut buffer = Vec::new();
-        field.write_node(&mut buffer).unwrap();
+        field.write_xml(&mut buffer).unwrap();
         assert_eq!(
             String::from_utf8(buffer).unwrap(),
-            "    #[yaserde(rename = \"Id\")]\n    pub id: Option<Vec<String>>,\n"
+            "    #[yaserde(rename = \"Id\")]\n    pub id: Vec<String>,\n"
         );
     }
 }
