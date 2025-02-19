@@ -24,6 +24,12 @@ impl RustDocument {
             self.current_target_namespace = Some(tns);
         }
     }
+
+    pub fn find_node_by_xml_name(&self, xml_name: &str) -> Option<&RustNode> {
+        self.nodes
+            .iter()
+            .find(|node| node.rust_type.xml_name().is_some_and(|n| n == xml_name))
+    }
 }
 
 fn make_abbreviated_namespace(namespace: &str, existing_namespaces: &[Rc<TargetNamespace>]) -> String {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="types" elementFormDefault="qualified"
+           xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types"
+           targetNamespace="http://schemas.microsoft.com/exchange/services/2006/types"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+
+    <xs:complexType name="BasePathToElementType" abstract="true"/>
+
+    <xs:element name="Path" abstract="true" type="t:BasePathToElementType"/>
+
+    <xs:complexType name="ChangeDescriptionType" abstract="true">
+        <!-- This path element needs some explanation.  For update operations, only ONE
+            property can be modified within a single request.  That single property must be
+            referenced in the Path element.  The Item/Folder element in the derived classes
+            can then only hold a single property that is in agreement with the single path
+            element-->
+        <xs:sequence>
+            <xs:element ref="t:Path"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ItemChangeDescriptionType">
+        <xs:complexContent>
+            <xs:extension base="t:ChangeDescriptionType"/>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

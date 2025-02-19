@@ -54,30 +54,28 @@ impl Files {
 }
 
 impl XmlReader {
-    pub fn read_xml(&self, file: &File, file_name: &str, files: &Files) -> WriterResult<Vec<RustNode>> {
+    pub fn read_xml(&self, file: &File, file_name: &str, files: &Files) -> WriterResult<RustDocument> {
+        let mut rust_doc = RustDocument::new();
         if file.processed.load(std::sync::atomic::Ordering::SeqCst) {
-            return Ok(vec![]);
+            return Ok(rust_doc);
         }
 
         let xml = &file.xml;
         let doc = roxmltree::Document::parse(xml)
             .map_err(|e| WriterError::new(format!("Unable to parse file {file_name}: {e}")))?;
 
-        let mut rust_doc = RustDocument::new();
-        let mut nodes = vec![];
         for child in doc.root().children() {
-            let child_nodes = self.read(child, files, &mut rust_doc)?;
-            nodes.extend(child_nodes);
+            self.read(child, files, &mut rust_doc)?;
         }
 
         file.processed.store(true, std::sync::atomic::Ordering::SeqCst);
 
-        Ok(nodes)
+        Ok(rust_doc)
     }
 
-    fn read<'n>(&self, node: Node<'n, 'n>, files: &Files, doc: &mut RustDocument) -> WriterResult<Vec<RustNode>> {
+    fn read<'n>(&self, node: Node<'n, 'n>, files: &Files, doc: &mut RustDocument) -> WriterResult<()> {
         if !node.is_element() {
-            return Ok(vec![]);
+            return Ok(());
         }
 
         if let Some(target_namespace) = node.attribute("targetNamespace") {
@@ -87,39 +85,35 @@ impl XmlReader {
         let nodes = match node.tag_name().name() {
             "definitions" => self.read_wsdl(node, files, doc)?,
             "schema" => self.read_xsd(node, files, doc)?,
-            _ => return Ok(vec![]),
+            _ => return Ok(()),
         };
 
-        Ok(nodes)
+        Ok(())
     }
 
-    fn read_wsdl<'n>(&self, node: Node<'n, 'n>, files: &Files, doc: &mut RustDocument) -> WriterResult<Vec<RustNode>> {
-        let mut nodes = vec![];
-
+    fn read_wsdl<'n>(&self, node: Node<'n, 'n>, files: &Files, doc: &mut RustDocument) -> WriterResult<()> {
         for child in node.children() {
             if let Ok(child_node) = RustNode::try_from_node(child, doc) {
-                nodes.push(child_node);
+                doc.nodes.push(child_node);
             }
         }
 
-        Ok(nodes)
+        Ok(())
     }
 
-    fn read_xsd<'n>(&self, node: Node<'n, 'n>, files: &Files, doc: &mut RustDocument) -> WriterResult<Vec<RustNode>> {
-        let mut nodes = vec![];
-
+    fn read_xsd<'n>(&self, node: Node<'n, 'n>, files: &Files, doc: &mut RustDocument) -> WriterResult<()> {
         for child in node.children() {
             if child.tag_name().name() == "import" {
-                nodes.extend(self.process_import(child, files)?);
+                doc.nodes.extend(self.process_import(child, files)?);
                 continue;
             }
 
             if let Ok(child_node) = RustNode::try_from_node(child, doc) {
-                nodes.push(child_node);
+                doc.nodes.push(child_node);
             }
         }
 
-        Ok(nodes)
+        Ok(())
     }
 
     fn process_import(&self, node: Node, files: &Files) -> WriterResult<Vec<RustNode>> {
@@ -142,8 +136,8 @@ impl XmlReader {
             return Ok(vec![]);
         }
 
-        let nodes = self.read_xml(file, schema_location, files)?;
-        Ok(nodes)
+        let rust_doc = self.read_xml(file, schema_location, files)?;
+        Ok(rust_doc.nodes)
     }
 }
 
@@ -152,7 +146,7 @@ mod tests {
     use super::*;
     use crate::model::{
         field::RustFieldType,
-        structure::{RustType, SimpleProps, StructProps},
+        structures::{complex::ComplexProps, simple::SimpleProps, RustType},
     };
 
     #[test]
@@ -160,18 +154,19 @@ mod tests {
         const XSD: &str = include_str!("../test-data/single-complex.xsd");
         let files = Files::new("types.xsd", XSD);
         let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
-        let nodes = XmlReader.read_xml(file, file_name, &files).unwrap();
+        let nodes = XmlReader.read_xml(file, file_name, &files).unwrap().nodes;
         assert_eq!(nodes.len(), 1);
         let node = nodes.first().unwrap();
-        let RustType::Struct(StructProps {
+        let RustType::Complex(props) = &node.rust_type else {
+            panic!()
+        };
+
+        let ComplexProps {
             fields,
             xml_name,
             target_namespace,
             comment,
-        }) = &node.rust_type
-        else {
-            panic!()
-        };
+        } = &**props;
 
         assert_eq!(xml_name, "InstalledAppType");
         assert_eq!(fields.len(), 14);
@@ -196,19 +191,21 @@ mod tests {
         files.add("types.xsd", XSD_TYPES);
 
         let (file_name, file) = files.map.get_key_value("messages.xsd").unwrap();
-        let nodes = XmlReader.read_xml(file, file_name, &files).unwrap();
+        let nodes = XmlReader.read_xml(file, file_name, &files).unwrap().nodes;
         assert_eq!(nodes.len(), 2);
 
         let type_node = nodes.first().unwrap();
-        let RustType::Struct(StructProps {
+        let RustType::Complex(props) = &type_node.rust_type else {
+            panic!()
+        };
+
+        let ComplexProps {
             fields,
             xml_name,
             target_namespace,
             comment,
-        }) = &type_node.rust_type
-        else {
-            panic!()
-        };
+        } = &**props;
+
         assert_eq!(xml_name, "InstalledAppType");
         // check that a target namespace was set
         assert_eq!(
@@ -217,16 +214,17 @@ mod tests {
         );
 
         let message_node = nodes.last().unwrap();
-        let RustType::Simple(SimpleProps {
+        let RustType::Simple(props) = &message_node.rust_type else {
+            panic!()
+        };
+        let SimpleProps {
             xml_name,
             rust_type,
             target_namespace,
             restrictions,
             comment,
-        }) = &message_node.rust_type
-        else {
-            panic!()
-        };
+        } = &**props;
+
         assert_eq!(xml_name, "ResponseCodeType");
         assert_eq!(*rust_type, RustFieldType::String);
         // check that a target namespace was set
@@ -234,5 +232,48 @@ mod tests {
             target_namespace.as_ref().unwrap().namespace,
             "http://schemas.microsoft.com/exchange/services/2006/messages"
         );
+    }
+
+    #[test]
+    fn can_read_elements_with_extensions() {
+        const XSD_TYPES: &str = include_str!("../test-data/extensions.xsd");
+        let files = Files::new("types.xsd", XSD_TYPES);
+
+        let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
+        let nodes = XmlReader.read_xml(file, file_name, &files).unwrap().nodes;
+        assert_eq!(nodes.len(), 4);
+
+        let type_node = nodes.get(3).expect("Expected a third node");
+        let RustType::Complex(props) = &type_node.rust_type else {
+            panic!()
+        };
+
+        let ComplexProps {
+            fields,
+            xml_name,
+            target_namespace,
+            comment,
+        } = &**props;
+
+        assert_eq!(xml_name, "ItemChangeDescriptionType");
+        // check that a target namespace was set
+        assert_eq!(
+            target_namespace.as_ref().unwrap().namespace,
+            "http://schemas.microsoft.com/exchange/services/2006/types"
+        );
+
+        let message_node = nodes.last().unwrap();
+        let RustType::Complex(props) = &message_node.rust_type else {
+            panic!()
+        };
+        let ComplexProps {
+            xml_name,
+            fields,
+            target_namespace,
+            comment,
+        } = &**props;
+
+        // check the amount of fields, it should include the fields from the base type
+        assert_eq!(fields.len(), 1);
     }
 }

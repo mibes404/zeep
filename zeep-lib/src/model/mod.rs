@@ -1,7 +1,7 @@
 pub mod doc;
 pub mod field;
 pub mod node;
-pub mod structure;
+pub mod structures;
 
 use crate::{
     error::WriterResult,

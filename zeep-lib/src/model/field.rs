@@ -10,7 +10,7 @@ use std::{
     rc::Rc,
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Field {
     pub xml_name: String,
     pub rust_name: String,
@@ -30,6 +30,25 @@ impl<'n> TryFromNode<'n> for Field {
 
         if let Some(target_namespace) = node.attribute("targetNamespace") {
             doc.switch_to_target_namespace(target_namespace);
+        }
+
+        if let Some(ref_name) = node.attribute("ref") {
+            let xml_name = split_type(ref_name);
+            let ref_node = doc
+                .find_node_by_xml_name(xml_name)
+                .and_then(|n| n.rust_type.try_as_element())
+                .ok_or_else(|| WriterError::NodeNotFound(ref_name.to_string()))?;
+
+            let rust_name = rename_keywords(&to_snake_case(xml_name)).to_string();
+
+            return Ok(Field {
+                xml_name: ref_node.xml_name.clone(),
+                rust_name,
+                rust_type: ref_node.rust_type.clone(),
+                optional: false,
+                vec: false,
+                target_namespace: None,
+            });
         }
 
         let xml_name = node
@@ -89,7 +108,7 @@ where
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum RustFieldType {
     String,
     I8,

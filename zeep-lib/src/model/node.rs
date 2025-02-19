@@ -1,14 +1,9 @@
-use super::structure::SimpleProps;
+use super::structures::{complex::ComplexProps, element::ElementProps, simple::SimpleProps, RustType};
 use crate::{
     error::{WriterError, WriterResult},
-    model::{
-        doc::RustDocument,
-        field::Field,
-        structure::{RustType, StructProps},
-        TryFromNode, WriteNode,
-    },
+    model::{doc::RustDocument, field::Field, TryFromNode, WriteNode},
 };
-use roxmltree::Node;
+use roxmltree::{Document, Node};
 use std::io;
 
 pub struct RustNode {
@@ -31,11 +26,15 @@ impl<'n> TryFromNode<'n> for RustNode {
         match node.tag_name().name() {
             "complexType" => {
                 // determine complexType's-type: struct, enum, list
-                rust_type = RustType::Struct(StructProps::try_from_node(node, doc)?);
+                rust_type = RustType::Complex(ComplexProps::try_from_node(node, doc)?.into());
             }
             "simpleType" => {
                 // determine simpleType's-type: enum, list
-                rust_type = RustType::Simple(SimpleProps::try_from_node(node, doc)?);
+                rust_type = RustType::Simple(SimpleProps::try_from_node(node, doc)?.into());
+            }
+            "element" => {
+                // determine element's-type: struct, enum, list
+                rust_type = RustType::Element(ElementProps::try_from_node(node, doc)?.into());
             }
             _ => {}
         }
@@ -58,12 +57,25 @@ where
 }
 
 #[cfg(test)]
-mod tests {
+pub mod test_utils {
     use super::*;
-    use crate::model::{
-        field::RustFieldType,
-        structure::{Restrictions, SimpleProps},
-    };
+
+    pub fn parse_from_xml<'n, N>(doc: &'n Document<'n>) -> N
+    where
+        N: TryFromNode<'n>,
+        N::Error: std::fmt::Debug,
+    {
+        let node = doc.root_element();
+        let mut rust_doc = RustDocument::default();
+        let rust_node = N::try_from_node(node, &mut rust_doc).expect("Failed to parse node");
+        rust_node
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{test_utils::parse_from_xml, *};
+    use crate::model::{field::RustFieldType, structures::Restrictions};
 
     #[test]
     fn can_read_complex_sequence() {
@@ -74,30 +86,27 @@ mod tests {
     </xs:complexType>"#;
 
         let rust_node = node_from_xml(XML);
-        assert_eq!(
-            rust_node.rust_type,
-            RustType::Struct(StructProps {
-                xml_name: "InstalledAppType".to_string(),
-                fields: vec![Field {
-                    xml_name: "Id".to_string(),
-                    rust_name: "id".to_string(),
-                    rust_type: RustFieldType::String,
-                    optional: true,
-                    vec: false,
-                    target_namespace: None,
-                }],
+        let expected = ComplexProps {
+            xml_name: "InstalledAppType".to_string(),
+            fields: vec![Field {
+                xml_name: "Id".to_string(),
+                rust_name: "id".to_string(),
+                rust_type: RustFieldType::String,
+                optional: true,
+                vec: false,
                 target_namespace: None,
-                comment: None,
-            })
-        );
+            }],
+            target_namespace: None,
+            comment: None,
+        }
+        .into();
+
+        assert_eq!(rust_node.rust_type, RustType::Complex(expected));
     }
 
     fn node_from_xml(xml: &str) -> RustNode {
-        let doc = roxmltree::Document::parse(xml).unwrap();
-        let node = doc.root_element();
-        let mut rust_doc = RustDocument::default();
-        let rust_node = RustNode::try_from_node(node, &mut rust_doc).expect("Failed to parse node");
-        rust_node
+        let doc = Document::parse(xml).unwrap();
+        parse_from_xml(&doc)
     }
 
     #[test]
@@ -115,24 +124,22 @@ mod tests {
         </xs:restriction>
     </xs:simpleType>"#;
         let rust_node = node_from_xml(XML);
-        assert_eq!(
-            rust_node.rust_type,
-            RustType::Simple(SimpleProps {
-                xml_name: "ResponseCodeType".to_string(),
-                rust_type: RustFieldType::String,
-                target_namespace: None,
-                restrictions: Some(Restrictions {
-                    enumeration: Some(vec![
-                        "NoError".to_string(),
-                        "ErrorAccessDenied".to_string(),
-                        "ErrorAccessModeSpecified".to_string(),
-                    ]),
-                    ..Restrictions::default()
-                }),
-                comment: Some(
-                    "Represents the message keys that can be returned by response error messages".to_string()
-                ),
-            })
-        );
+        let expected = SimpleProps {
+            xml_name: "ResponseCodeType".to_string(),
+            rust_type: RustFieldType::String,
+            target_namespace: None,
+            restrictions: Some(Restrictions {
+                enumeration: Some(vec![
+                    "NoError".to_string(),
+                    "ErrorAccessDenied".to_string(),
+                    "ErrorAccessModeSpecified".to_string(),
+                ]),
+                ..Restrictions::default()
+            }),
+            comment: Some("Represents the message keys that can be returned by response error messages".to_string()),
+        }
+        .into();
+
+        assert_eq!(rust_node.rust_type, RustType::Simple(expected));
     }
 }

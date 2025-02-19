@@ -30,6 +30,8 @@ pub enum WriterError {
     AttributeMissing(String),
     #[error("xml error: unsupported xsd type: {0}")]
     UnsupportedXsdType(String),
+    #[error("xml error: node not found: {0}")]
+    NodeNotFound(String),
 }
 
 impl WriterError {
