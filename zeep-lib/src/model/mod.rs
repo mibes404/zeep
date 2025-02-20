@@ -5,13 +5,10 @@ pub mod structures;
 
 use crate::{
     error::WriterResult,
-    model::{doc::RustDocument, field::Field},
+    model::doc::RustDocument,
 };
 use roxmltree::Node;
-use std::{
-    fmt::{Display, Write},
-    io,
-};
+use std::io;
 
 #[derive(Debug, PartialEq)]
 pub struct Namespace {

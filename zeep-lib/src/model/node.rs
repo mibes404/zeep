@@ -1,12 +1,12 @@
 use super::{
-    structures::{complex::ComplexProps, element::ElementProps, simple::SimpleProps, RustType},
     Namespace,
+    structures::{RustType, complex::ComplexProps, element::ElementProps, simple::SimpleProps},
 };
 use crate::{
     error::{WriterError, WriterResult},
-    model::{doc::RustDocument, field::Field, TryFromNode, WriteXml},
+    model::{TryFromNode, WriteXml, doc::RustDocument},
 };
-use roxmltree::{Document, Node};
+use roxmltree::Node;
 use std::{io, rc::Rc};
 
 pub struct RustNode {
@@ -77,6 +77,7 @@ where
 #[cfg(test)]
 pub mod test_utils {
     use super::*;
+    use roxmltree::Document;
 
     pub fn parse_from_xml<'n, N>(doc: &'n Document<'n>) -> N
     where
@@ -93,7 +94,11 @@ pub mod test_utils {
 #[cfg(test)]
 mod tests {
     use super::{test_utils::parse_from_xml, *};
-    use crate::model::{field::RustFieldType, structures::restrictions::Restrictions};
+    use crate::model::{
+        field::{Field, RustFieldType},
+        structures::restrictions::Restrictions,
+    };
+    use roxmltree::Document;
 
     #[test]
     fn can_read_complex_sequence() {

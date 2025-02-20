@@ -1,7 +1,4 @@
-use std::{
-    error,
-    fmt::{self, Display},
-};
+use std::fmt::{Display};
 use thiserror::Error;
 
 pub type WriterResult<T> = Result<T, WriterError>;

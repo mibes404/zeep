@@ -1,6 +1,5 @@
 use super::*;
 use crate::model::field::resolve_type;
-use xml::namespace;
 
 #[derive(Debug, PartialEq)]
 pub struct ComplexProps {

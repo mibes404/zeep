@@ -2,11 +2,11 @@ use crate::{
     error::{WriterError, WriterResult},
     model::{
         doc::RustDocument,
-        node::{collect_namespaces_on_node, RustNode},
+        node::RustNode,
         TryFromNode,
     },
 };
-use roxmltree::{Document, Node};
+use roxmltree::Node;
 use std::{collections::HashMap, fmt::Display, sync::atomic::AtomicBool};
 
 const WELL_KNOWN_NAMESPACES: &[&str] = &[
@@ -152,7 +152,6 @@ mod tests {
     use crate::model::{
         field::RustFieldType,
         structures::{complex::ComplexProps, simple::SimpleProps, RustType},
-        WriteXml,
     };
 
     #[test]
