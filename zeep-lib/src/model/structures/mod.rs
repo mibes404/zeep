@@ -157,6 +157,7 @@ struct Person {
         let props = prep_struct_props(Some(Rc::new(Namespace {
             namespace: "http://example.com".to_string(),
             abbreviation: "ex".to_string(),
+            rust_mod_name: "mod_ex".to_string(),
         })));
         let rust_type = RustType::Complex(props.into());
         rust_type.write_xml(&mut writer).unwrap();

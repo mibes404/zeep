@@ -1,6 +1,10 @@
 use crate::{
     error::{WriterError, WriterResult},
-    model::{doc::RustDocument, node::RustNode, TryFromNode},
+    model::{
+        doc::RustDocument,
+        node::{collect_namespaces_on_node, RustNode},
+        TryFromNode,
+    },
 };
 use roxmltree::{Document, Node};
 use std::{collections::HashMap, fmt::Display, sync::atomic::AtomicBool};
@@ -55,14 +59,15 @@ impl Files {
 
 impl XmlReader {
     pub fn read_xml(&self, file: &File, file_name: &str, files: &Files) -> WriterResult<RustDocument> {
-        let mut rust_doc = RustDocument::new();
         if file.processed.load(std::sync::atomic::Ordering::SeqCst) {
+            let rust_doc = RustDocument::empty();
             return Ok(rust_doc);
         }
 
         let xml = &file.xml;
         let doc = roxmltree::Document::parse(xml)
             .map_err(|e| WriterError::new(format!("Unable to parse file {file_name}: {e}")))?;
+        let mut rust_doc = RustDocument::init(&doc);
 
         for child in doc.root().children() {
             self.read(child, files, &mut rust_doc)?;
@@ -242,6 +247,10 @@ mod tests {
 
         let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
         let rust_doc = XmlReader.read_xml(file, file_name, &files).unwrap();
+
+        // check that we found the two namespaces
+        assert_eq!(rust_doc.namespace_references.len(), 2, "Expected two namespaces");
+
         let nodes = &rust_doc.nodes;
         assert_eq!(nodes.len(), 4);
 

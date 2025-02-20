@@ -196,7 +196,10 @@ pub fn as_rust_type(node_type: &str, doc: &RustDocument) -> RustFieldType {
         "boolean" => RustFieldType::Bool,
         v => RustFieldType::Other(OtherRustType {
             name: to_pascal_case(v),
-            module: namespace.and_then(|ns| doc.find_module_name_from_namespace_reference(ns)),
+            module: namespace.and_then(|ns| {
+                doc.find_module_name_from_namespace_reference(ns)
+                    .map(ToString::to_string)
+            }),
         }),
     }
 }
@@ -245,7 +248,8 @@ mod tests {
         const STRING_FIELD: &str = r#"<element name="Id" type="string" minOccurs="0"/>"#;
         let doc = roxmltree::Document::parse(STRING_FIELD).unwrap();
         let node = doc.root_element();
-        let field = Field::try_from_node(node, &mut RustDocument::new()).unwrap();
+        let mut rust_doc = RustDocument::init(&doc);
+        let field = Field::try_from_node(node, &mut rust_doc).unwrap();
         assert_eq!(
             field,
             Field {
@@ -265,7 +269,8 @@ mod tests {
             r#"<xs:element name="Id" type="xs:string" minOccurs="0" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>"#;
         let doc = roxmltree::Document::parse(STRING_FIELD).unwrap();
         let node = doc.root_element();
-        let field = Field::try_from_node(node, &mut RustDocument::new()).unwrap();
+        let mut rust_doc = RustDocument::init(&doc);
+        let field = Field::try_from_node(node, &mut rust_doc).unwrap();
         assert_eq!(
             field,
             Field {
@@ -284,7 +289,8 @@ mod tests {
         const STRING_FIELD: &str = r#"<element name="Id" type="string" minOccurs="0" targetNamespace="http://schemas.microsoft.com/exchange/services/2006/types"/>"#;
         let doc = roxmltree::Document::parse(STRING_FIELD).unwrap();
         let node = doc.root_element();
-        let field = Field::try_from_node(node, &mut RustDocument::new()).unwrap();
+        let mut rust_doc = RustDocument::init(&doc);
+        let field = Field::try_from_node(node, &mut rust_doc).unwrap();
         assert_eq!(
             field,
             Field {
@@ -295,7 +301,8 @@ mod tests {
                 vec: false,
                 target_namespace: Some(Rc::new(Namespace {
                     namespace: "http://schemas.microsoft.com/exchange/services/2006/types".to_string(),
-                    abbreviation: "typ".to_string()
+                    abbreviation: "typ".to_string(),
+                    rust_mod_name: "mod_typ".to_string(),
                 }))
             }
         );

@@ -17,6 +17,7 @@ use std::{
 pub struct Namespace {
     pub namespace: String,
     pub abbreviation: String,
+    pub rust_mod_name: String,
 }
 
 pub trait TryFromNode<'n>: Sized {

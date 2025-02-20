@@ -27,11 +27,7 @@ impl<'n> TryFromNode<'n> for RustNode {
         }
 
         // check if the node has an attribute that starts with xmlns
-        for attr in node.attributes() {
-            if attr.name().starts_with("xmlns") {
-                doc.add_namespace_reference(attr.name(), attr.value());
-            }
-        }
+        collect_namespaces_on_node(node, doc);
 
         let mut rust_type = RustType::Ignore;
         match node.tag_name().name() {
@@ -54,6 +50,14 @@ impl<'n> TryFromNode<'n> for RustNode {
             rust_type,
             in_namespace: doc.current_target_namespace.clone(),
         })
+    }
+}
+
+pub fn collect_namespaces_on_node<'n>(node: Node<'n, 'n>, doc: &mut RustDocument) {
+    for ns in node.namespaces() {
+        if let Some(abbreviation) = ns.name() {
+            doc.add_namespace_reference(abbreviation, ns.uri());
+        }
     }
 }
 
@@ -80,7 +84,7 @@ pub mod test_utils {
         N::Error: std::fmt::Debug,
     {
         let node = doc.root_element();
-        let mut rust_doc = RustDocument::default();
+        let mut rust_doc = RustDocument::init(doc);
         let rust_node = N::try_from_node(node, &mut rust_doc).expect("Failed to parse node");
         rust_node
     }
