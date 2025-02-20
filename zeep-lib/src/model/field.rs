@@ -35,7 +35,7 @@ impl<'n> TryFromNode<'n> for Field {
             let (xml_name, namespace_ref) = split_type(ref_name);
             let namespace: Option<&Namespace> = namespace_ref
                 .and_then(|ns| doc.find_namespace(ns))
-                .map(|ns| ns.as_ref());
+                .map(std::convert::AsRef::as_ref);
             let ref_node = doc
                 .find_node_by_xml_name(xml_name, namespace)
                 .and_then(|n| n.rust_type.try_as_element())

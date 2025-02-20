@@ -71,8 +71,7 @@ impl RustDocument {
             let tns = self
                 .namespace_references
                 .values()
-                .find(|ns| ns.namespace == namespace)
-                .map(|ns| ns.clone())
+                .find(|ns| ns.namespace == namespace).cloned()
                 .unwrap_or_else(|| {
                     let abbreviation = make_abbreviated_namespace(namespace, &self.target_namespaces);
                     let rust_mod_name = create_mod_name_for_namespace(&abbreviation);
@@ -97,7 +96,7 @@ impl RustDocument {
 }
 
 fn create_mod_name_for_namespace(abbreviation: &str) -> String {
-    format!("mod_{}", abbreviation)
+    format!("mod_{abbreviation}")
 }
 
 impl<W> WriteXml<W> for RustDocument

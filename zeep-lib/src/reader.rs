@@ -87,11 +87,11 @@ impl XmlReader {
             doc.switch_to_target_namespace(target_namespace);
         }
 
-        let nodes = match node.tag_name().name() {
+        match node.tag_name().name() {
             "definitions" => self.read_wsdl(node, files, doc)?,
             "schema" => self.read_xsd(node, files, doc)?,
             _ => return Ok(()),
-        };
+        }
 
         Ok(())
     }

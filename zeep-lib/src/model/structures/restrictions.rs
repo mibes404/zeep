@@ -1,4 +1,4 @@
-use super::*;
+use super::{Node, RustFieldType};
 
 #[derive(Debug, PartialEq, Default)]
 pub struct Restrictions {

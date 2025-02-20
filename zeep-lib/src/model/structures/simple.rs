@@ -1,6 +1,6 @@
 use super::{
     restrictions::{build_restrictions, Restrictions},
-    *,
+    Namespace, Node, Rc, RustDocument, RustFieldType, TryFromNode, WriterError, WriterResult, parse_comment,
 };
 use crate::model::field::as_rust_type;
 
