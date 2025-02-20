@@ -4,5 +4,5 @@ mod error;
 
 mod model;
 mod reader;
-mod writer;
+// mod writer;
 mod yaserde_tests;

@@ -37,6 +37,10 @@ impl RustDocument {
     }
 
     pub fn add_namespace_reference(&mut self, original_abbreviation: &str, url: &str) {
+        if original_abbreviation.is_empty() {
+            return;
+        }
+
         // check if the namespace is already in the list
         if !self.namespace_references.contains_key(original_abbreviation) {
             let abbreviation = make_abbreviated_namespace(url, &self.target_namespaces);
@@ -128,35 +132,37 @@ fn make_abbreviated_namespace(namespace: &str, existing_namespaces: &[Rc<Namespa
         namespace.chars().take(3).collect()
     }
 
-    let append: Option<u8> = None;
+    let mut append: Option<u8> = None;
+
+    let abbreviation = if let Some(last_segment) = namespace.split('/').next_back() {
+        if let Some(slashed) = last_segment.split('-').next_back() {
+            take_three_chars_max(slashed)
+        } else {
+            take_three_chars_max(last_segment)
+        }
+    } else {
+        take_three_chars_max(namespace)
+    };
+
+    let abbreviation = abbreviation.to_lowercase();
 
     loop {
-        let mut abbreviation = if let Some(last_segment) = namespace.split('/').next_back() {
-            if let Some(slashed) = last_segment.split('-').next_back() {
-                take_three_chars_max(slashed)
-            } else {
-                take_three_chars_max(last_segment)
-            }
+        let use_abbreviation = if let Some(append) = append {
+            format!("{abbreviation}{append}")
         } else {
-            take_three_chars_max(namespace)
+            abbreviation.clone()
         };
 
-        if let Some(append) = append {
-            abbreviation.push_str(&append.to_string());
+        if !existing_namespaces.iter().any(|ns| ns.abbreviation == use_abbreviation) {
+            return use_abbreviation;
         }
 
-        let abbreviation = abbreviation.to_lowercase();
-
-        if !existing_namespaces.iter().any(|ns| ns.abbreviation == abbreviation) {
-            return abbreviation;
-        }
-
-        let append = match append {
-            None => 1,
-            Some(n) => n + 1,
+        append = match append {
+            None => Some(1),
+            Some(n) => Some(n + 1),
         };
 
-        assert_ne!(append, 255, "Too many namespaces with the same abbreviation");
+        assert_ne!(append, Some(255), "Too many namespaces with the same abbreviation");
     }
 }
 
@@ -188,10 +194,10 @@ mod tests {
     #[test]
     fn can_add_namespace_references_to_doc() {
         let mut doc = RustDocument::empty();
-        doc.add_namespace_reference("xmlns:t", "http://schemas.microsoft.com/exchange/services/2006/types");
-        doc.add_namespace_reference("xmlns:xs", "http://www.w3.org/2001/XMLSchema");
+        doc.add_namespace_reference("t", "http://schemas.microsoft.com/exchange/services/2006/types");
+        doc.add_namespace_reference("xs", "http://www.w3.org/2001/XMLSchema");
         // skip non-namespace references
-        doc.add_namespace_reference("xmls", "http://schemas.xmlsoap.org/wsdl/");
+        doc.add_namespace_reference("", "http://schemas.xmlsoap.org/wsdl/");
         // should have 2 references
         assert_eq!(doc.namespace_references.len(), 2);
         assert_eq!(

@@ -137,7 +137,8 @@ struct Person {
     pub name: String,
     #[yaserde(rename = "age")]
     pub age: i32,
-}"#;
+}
+"#;
         assert_eq!(String::from_utf8(writer).unwrap(), expected);
     }
 
@@ -151,7 +152,8 @@ struct Person {
     pub name: String,
     #[yaserde(rename = "age")]
     pub age: i32,
-}"#;
+}
+"#;
 
         let mut writer = Vec::new();
         let props = prep_struct_props(Some(Rc::new(Namespace {

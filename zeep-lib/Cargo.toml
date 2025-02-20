@@ -20,18 +20,18 @@ tokio = { version = "1", features = ["full"] }
 async-trait = "0.1"
 thiserror = "2"
 
-[[example]]
-name = "hello"
-path = "../examples/hello/main.rs"
+# [[example]]
+# name = "hello"
+# path = "../examples/hello/main.rs"
 
-[[example]]
-name = "weather"
-path = "../examples/weather/main.rs"
+# [[example]]
+# name = "weather"
+# path = "../examples/weather/main.rs"
 
-[[example]]
-name = "temperature"
-path = "../examples/temperature/main.rs"
+# [[example]]
+# name = "temperature"
+# path = "../examples/temperature/main.rs"
 
-[[example]]
-name = "aacc"
-path = "../examples/aacc/main.rs"
+# [[example]]
+# name = "aacc"
+# path = "../examples/aacc/main.rs"
