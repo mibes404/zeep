@@ -1,6 +1,6 @@
 use super::{
     structures::{complex::ComplexProps, element::ElementProps, simple::SimpleProps, RustType},
-    TargetNamespace,
+    Namespace,
 };
 use crate::{
     error::{WriterError, WriterResult},
@@ -11,7 +11,7 @@ use std::{io, rc::Rc};
 
 pub struct RustNode {
     pub rust_type: RustType,
-    pub in_namespace: Option<Rc<TargetNamespace>>,
+    pub in_namespace: Option<Rc<Namespace>>,
 }
 
 impl<'n> TryFromNode<'n> for RustNode {
@@ -24,6 +24,13 @@ impl<'n> TryFromNode<'n> for RustNode {
 
         if let Some(target_namespace) = node.attribute("targetNamespace") {
             doc.switch_to_target_namespace(target_namespace);
+        }
+
+        // check if the node has an attribute that starts with xmlns
+        for attr in node.attributes() {
+            if attr.name().starts_with("xmlns") {
+                doc.add_namespace_reference(attr.name(), attr.value());
+            }
         }
 
         let mut rust_type = RustType::Ignore;
@@ -82,7 +89,7 @@ pub mod test_utils {
 #[cfg(test)]
 mod tests {
     use super::{test_utils::parse_from_xml, *};
-    use crate::model::{field::RustFieldType, structures::Restrictions};
+    use crate::model::{field::RustFieldType, structures::restrictions::Restrictions};
 
     #[test]
     fn can_read_complex_sequence() {

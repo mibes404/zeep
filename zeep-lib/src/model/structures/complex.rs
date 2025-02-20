@@ -1,10 +1,12 @@
 use super::*;
+use crate::model::field::resolve_type;
+use xml::namespace;
 
 #[derive(Debug, PartialEq)]
 pub struct ComplexProps {
     pub xml_name: String,
     pub fields: Vec<Field>,
-    pub target_namespace: Option<Rc<TargetNamespace>>,
+    pub target_namespace: Option<Rc<Namespace>>,
     pub comment: Option<String>,
 }
 
@@ -101,9 +103,9 @@ fn import_extension_fields(node: &mut Node, doc: &mut RustDocument, base_fields:
         let xml_name = base
             .attribute("base")
             .ok_or_else(|| WriterError::AttributeMissing("base".to_string()))?;
-        let xml_name = split_type(xml_name);
+        let (xml_name, namespace_abbreviation) = resolve_type(xml_name, doc);
         let base_node = doc
-            .find_node_by_xml_name(xml_name)
+            .find_node_by_xml_name(xml_name, namespace_abbreviation.as_deref())
             .ok_or_else(|| WriterError::NodeNotFound(xml_name.to_string()))?;
 
         match &base_node.rust_type {

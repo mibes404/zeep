@@ -14,7 +14,7 @@ use std::{
 };
 
 #[derive(Debug, PartialEq)]
-pub struct TargetNamespace {
+pub struct Namespace {
     pub namespace: String,
     pub abbreviation: String,
 }
@@ -32,8 +32,4 @@ where
     W: io::Write,
 {
     fn write_xml(&self, writer: &mut W) -> WriterResult<()>;
-}
-
-fn split_type(node_type: &str) -> &str {
-    node_type.split(':').next_back().unwrap_or("String")
 }

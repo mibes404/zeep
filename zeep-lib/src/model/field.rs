@@ -1,8 +1,5 @@
-use super::TargetNamespace;
-use crate::{
-    error::{WriterError, WriterResult},
-    model::{doc::RustDocument, split_type, TryFromNode, WriteXml},
-};
+use super::{doc::RustDocument, Namespace, TryFromNode, WriteXml};
+use crate::error::{WriterError, WriterResult};
 use inflector::cases::{pascalcase::to_pascal_case, snakecase::to_snake_case};
 use roxmltree::Node;
 use std::{
@@ -17,7 +14,7 @@ pub struct Field {
     pub rust_type: RustFieldType,
     pub optional: bool,
     pub vec: bool,
-    pub target_namespace: Option<Rc<TargetNamespace>>,
+    pub target_namespace: Option<Rc<Namespace>>,
 }
 
 impl<'n> TryFromNode<'n> for Field {
@@ -28,14 +25,19 @@ impl<'n> TryFromNode<'n> for Field {
             return Err(WriterError::NotAnElement);
         }
 
-        if let Some(target_namespace) = node.attribute("targetNamespace") {
-            doc.switch_to_target_namespace(target_namespace);
+        let mut target_namespace = None;
+        if let Some(use_target_namespace) = node.attribute("targetNamespace") {
+            doc.switch_to_target_namespace(use_target_namespace);
+            target_namespace = doc.current_target_namespace.clone();
         }
 
         if let Some(ref_name) = node.attribute("ref") {
-            let xml_name = split_type(ref_name);
+            let (xml_name, namespace_ref) = split_type(ref_name);
+            let namespace: Option<&Namespace> = namespace_ref
+                .and_then(|ns| doc.find_namespace(ns))
+                .map(|ns| ns.as_ref());
             let ref_node = doc
-                .find_node_by_xml_name(xml_name)
+                .find_node_by_xml_name(xml_name, namespace)
                 .and_then(|n| n.rust_type.try_as_element())
                 .ok_or_else(|| WriterError::NodeNotFound(ref_name.to_string()))?;
 
@@ -59,7 +61,7 @@ impl<'n> TryFromNode<'n> for Field {
         let rust_name = rename_keywords(&to_snake_case(&xml_name)).to_string();
         let rust_type = node
             .attribute("type")
-            .map(as_rust_type)
+            .map(|t| as_rust_type(t, doc))
             .ok_or_else(|| WriterError::AttributeMissing("type".to_string()))?;
         let optional = node.attribute("minOccurs") == Some("0");
         let vec = Node::attribute(&node, "maxOccurs") == Some("unbounded");
@@ -70,7 +72,7 @@ impl<'n> TryFromNode<'n> for Field {
             rust_type,
             optional,
             vec,
-            target_namespace: doc.current_target_namespace.clone(),
+            target_namespace,
         })
     }
 }
@@ -116,9 +118,21 @@ pub enum RustFieldType {
     F32,
     F64,
     Bool,
-    Other(String),
+    Other(OtherRustType),
     U64,
     U32,
+}
+
+#[derive(Debug, PartialEq, Clone)]
+pub struct OtherRustType {
+    pub name: String,
+    pub module: Option<String>,
+}
+
+impl OtherRustType {
+    pub fn new(name: String, module: Option<String>) -> Self {
+        OtherRustType { name, module }
+    }
 }
 
 impl Display for RustFieldType {
@@ -136,19 +150,35 @@ impl Display for RustFieldType {
             RustFieldType::F32 => write!(f, "f32"),
             RustFieldType::F64 => write!(f, "f64"),
             RustFieldType::Bool => write!(f, "bool"),
-            RustFieldType::Other(s) => write!(f, "{s}"),
+            RustFieldType::Other(OtherRustType { name, module }) => {
+                if let Some(module) = module {
+                    write!(f, "{module}::{name}")
+                } else {
+                    write!(f, "{name}")
+                }
+            }
         }
     }
 }
 
-impl From<&str> for RustFieldType {
-    fn from(value: &str) -> Self {
-        as_rust_type(value)
+fn split_type(node_type: &str) -> (&str, Option<&str>) {
+    // split once. If there is a target namespace, it will be in the second part
+    if let Some((abbreviation, type_name)) = node_type.split_once(':') {
+        (type_name, Some(abbreviation))
+    } else {
+        (node_type, None)
     }
 }
 
-fn as_rust_type(node_type: &str) -> RustFieldType {
-    match split_type(node_type) {
+pub fn resolve_type<'n>(node_type: &'n str, doc: &RustDocument) -> (&'n str, Option<Rc<Namespace>>) {
+    let (node_type, namespace) = split_type(node_type);
+    let namespace = namespace.and_then(|ns| doc.find_namespace(ns));
+    (node_type, namespace.cloned())
+}
+
+pub fn as_rust_type(node_type: &str, doc: &RustDocument) -> RustFieldType {
+    let (node_type, namespace) = split_type(node_type);
+    match node_type {
         "byte" => RustFieldType::I8,
         "string" | "normalizedString" | "base64Binary" | "hexBinary" | "anyURI" | "date" | "dateTime" | "time"
         | "language" => RustFieldType::String,
@@ -164,7 +194,10 @@ fn as_rust_type(node_type: &str) -> RustFieldType {
         "unsignedByte" => RustFieldType::U8,
         "short" => RustFieldType::I16,
         "boolean" => RustFieldType::Bool,
-        v => RustFieldType::Other(to_pascal_case(v)),
+        v => RustFieldType::Other(OtherRustType {
+            name: to_pascal_case(v),
+            module: namespace.and_then(|ns| doc.find_module_name_from_namespace_reference(ns)),
+        }),
     }
 }
 
@@ -260,7 +293,7 @@ mod tests {
                 rust_type: RustFieldType::String,
                 optional: true,
                 vec: false,
-                target_namespace: Some(Rc::new(TargetNamespace {
+                target_namespace: Some(Rc::new(Namespace {
                     namespace: "http://schemas.microsoft.com/exchange/services/2006/types".to_string(),
                     abbreviation: "typ".to_string()
                 }))

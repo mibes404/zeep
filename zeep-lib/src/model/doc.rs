@@ -1,14 +1,16 @@
 use super::WriteXml;
 use crate::{
     error::WriterResult,
-    model::{node::RustNode, TargetNamespace},
+    model::{node::RustNode, Namespace},
 };
-use std::rc::Rc;
+use reqwest::dns::Name;
+use std::{collections::HashMap, rc::Rc};
 
 #[derive(Default)]
 pub struct RustDocument {
-    pub target_namespaces: Vec<Rc<TargetNamespace>>,
-    pub current_target_namespace: Option<Rc<TargetNamespace>>,
+    pub namespace_references: HashMap<String, Rc<Namespace>>,
+    pub target_namespaces: Vec<Rc<Namespace>>,
+    pub current_target_namespace: Option<Rc<Namespace>>,
     pub nodes: Vec<RustNode>,
 }
 
@@ -17,22 +19,58 @@ impl RustDocument {
         Self::default()
     }
 
+    pub fn add_namespace_reference(&mut self, node_name: &str, url: &str) {
+        // check if the namespace is already in the list
+        let Some(original_abbreviation) = node_name.split(':').last() else {
+            // not a namespace reference
+            return;
+        };
+
+        if !self.namespace_references.contains_key(original_abbreviation) {
+            let ns = Rc::new(Namespace {
+                abbreviation: make_abbreviated_namespace(url, &self.target_namespaces),
+                namespace: url.to_string(),
+            });
+
+            // extract the original abbreviation from the node_name
+            self.namespace_references.insert(original_abbreviation.to_string(), ns);
+        }
+    }
+
+    pub fn find_module_name_from_namespace_reference(&self, abbreviation: &str) -> Option<String> {
+        self.find_namespace(abbreviation)
+            .map(|ns| create_mod_name_for_namespace(ns))
+    }
+
+    pub fn find_namespace(&self, abbreviation: &str) -> Option<&Rc<Namespace>> {
+        self.namespace_references.get(abbreviation)
+    }
+
     pub fn switch_to_target_namespace(&mut self, namespace: &str) {
         // check if the namespace is already in the list
         if !self.target_namespaces.iter().any(|ns| ns.namespace == namespace) {
-            let tns = Rc::new(TargetNamespace {
-                abbreviation: make_abbreviated_namespace(namespace, &self.target_namespaces),
-                namespace: namespace.to_string(),
-            });
+            // Check if we already have a reference to this namespace. If so, use that one, otherwise create a new one.
+            let tns = self
+                .namespace_references
+                .values()
+                .find(|ns| ns.namespace == namespace)
+                .map(|ns| ns.clone())
+                .unwrap_or_else(|| {
+                    Rc::new(Namespace {
+                        abbreviation: make_abbreviated_namespace(namespace, &self.target_namespaces),
+                        namespace: namespace.to_string(),
+                    })
+                });
+
             self.target_namespaces.push(tns.clone());
             self.current_target_namespace = Some(tns);
         }
     }
 
-    pub fn find_node_by_xml_name(&self, xml_name: &str) -> Option<&RustNode> {
-        self.nodes
-            .iter()
-            .find(|node| node.rust_type.xml_name().is_some_and(|n| n == xml_name))
+    pub fn find_node_by_xml_name(&self, xml_name: &str, namespace: Option<&Namespace>) -> Option<&RustNode> {
+        self.nodes.iter().find(|node| {
+            node.rust_type.xml_name().is_some_and(|n| n == xml_name) && node.in_namespace.as_deref() == namespace
+        })
     }
 }
 
@@ -63,11 +101,11 @@ where
     }
 }
 
-fn create_mod_name_for_namespace(namespace: &TargetNamespace) -> String {
+pub fn create_mod_name_for_namespace(namespace: &Namespace) -> String {
     format!("ns_{}", namespace.abbreviation)
 }
 
-fn make_abbreviated_namespace(namespace: &str, existing_namespaces: &[Rc<TargetNamespace>]) -> String {
+fn make_abbreviated_namespace(namespace: &str, existing_namespaces: &[Rc<Namespace>]) -> String {
     fn take_three_chars_max(namespace: &str) -> String {
         namespace.chars().take(3).collect()
     }
@@ -119,12 +157,23 @@ mod tests {
         let abbr = make_abbreviated_namespace("http://www.w3.org/2001/XMLSchema-instance", &[]);
         assert_eq!(abbr, "ins");
 
-        let existing_namespaces = vec![Rc::new(TargetNamespace {
+        let existing_namespaces = vec![Rc::new(Namespace {
             namespace: "http://www.w3.org/2001/XMLSchema-instance".to_string(),
             abbreviation: abbr,
         })];
 
         let abbr = make_abbreviated_namespace("http://www.w3.org/2001/XMLSchema-instance", &existing_namespaces);
         assert_eq!(abbr, "ins1");
+    }
+
+    #[test]
+    fn can_add_namespace_references_to_doc() {
+        let mut doc = RustDocument::default();
+        doc.add_namespace_reference("xmlns:t", "http://schemas.microsoft.com/exchange/services/2006/types");
+        doc.add_namespace_reference("xmlns:xs", "http://www.w3.org/2001/XMLSchema");
+        // skip non-namespace references
+        doc.add_namespace_reference("xmls", "http://schemas.xmlsoap.org/wsdl/");
+        // should have 2 references
+        assert_eq!(doc.namespace_references.len(), 2);
     }
 }

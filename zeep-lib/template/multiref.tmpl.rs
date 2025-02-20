@@ -11,9 +11,7 @@ pub struct MultiRef<T> {
 }
 
 impl<T: YaDeserialize + YaSerialize> YaDeserialize for MultiRef<T> {
-    fn deserialize<R: std::io::prelude::Read>(
-        reader: &mut yaserde::de::Deserializer<R>,
-    ) -> Result<Self, String> {
+    fn deserialize<R: std::io::prelude::Read>(reader: &mut yaserde::de::Deserializer<R>) -> Result<Self, String> {
         let inner = T::deserialize(reader)?;
         Ok(Self {
             inner: Arc::new(RwLock::new(inner)),
@@ -22,10 +20,7 @@ impl<T: YaDeserialize + YaSerialize> YaDeserialize for MultiRef<T> {
 }
 
 impl<T: YaDeserialize + YaSerialize> YaSerialize for MultiRef<T> {
-    fn serialize<W: std::io::prelude::Write>(
-        &self,
-        writer: &mut yaserde::ser::Serializer<W>,
-    ) -> Result<(), String> {
+    fn serialize<W: std::io::prelude::Write>(&self, writer: &mut yaserde::ser::Serializer<W>) -> Result<(), String> {
         self.inner.blocking_write().serialize(writer)?;
         Ok(())
     }
@@ -34,24 +29,14 @@ impl<T: YaDeserialize + YaSerialize> YaSerialize for MultiRef<T> {
         &self,
         attributes: Vec<xml::attribute::OwnedAttribute>,
         namespace: xml::namespace::Namespace,
-    ) -> Result<
-        (
-            Vec<xml::attribute::OwnedAttribute>,
-            xml::namespace::Namespace,
-        ),
-        String,
-    > {
-        self.inner
-            .blocking_read()
-            .serialize_attributes(attributes, namespace)
+    ) -> Result<(Vec<xml::attribute::OwnedAttribute>, xml::namespace::Namespace), String> {
+        self.inner.blocking_read().serialize_attributes(attributes, namespace)
     }
 }
 
 impl<T: YaDeserialize + YaSerialize + Default> Default for MultiRef<T> {
     fn default() -> Self {
-        Self {
-            inner: Arc::default(),
-        }
+        Self { inner: Arc::default() }
     }
 }
 
@@ -71,6 +56,7 @@ impl<T: YaDeserialize + YaSerialize + std::fmt::Debug> std::fmt::Debug for Multi
 
 impl<T> Deref for MultiRef<T> {
     type Target = Arc<RwLock<T>>;
+
     fn deref(&self) -> &Self::Target {
         &self.inner
     }

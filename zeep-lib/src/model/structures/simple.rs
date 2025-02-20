@@ -1,10 +1,14 @@
-use super::*;
+use super::{
+    restrictions::{build_restrictions, Restrictions},
+    *,
+};
+use crate::model::field::as_rust_type;
 
 #[derive(Debug, PartialEq)]
 pub struct SimpleProps {
     pub xml_name: String,
     pub rust_type: RustFieldType,
-    pub target_namespace: Option<Rc<TargetNamespace>>,
+    pub target_namespace: Option<Rc<Namespace>>,
     pub restrictions: Option<Restrictions>,
     pub comment: Option<String>,
 }
@@ -28,7 +32,7 @@ impl<'n> TryFromNode<'n> for SimpleProps {
         {
             let rust_type = restriction
                 .attribute("base")
-                .map(RustFieldType::from)
+                .map(|b| as_rust_type(b, doc))
                 .ok_or_else(|| WriterError::AttributeMissing("base".to_string()))?;
 
             let restrictions = build_restrictions(restriction);
@@ -74,7 +78,7 @@ fn build_simple_union_type<'n>(
         // split the member types and try to convert them to RustFieldTypes
         let member_types = member_types
             .split_whitespace()
-            .map(RustFieldType::from)
+            .map(|m| as_rust_type(m, doc))
             .collect::<Vec<RustFieldType>>();
 
         let restrictions = Some(Restrictions {
@@ -97,7 +101,7 @@ fn build_simple_union_type<'n>(
     let member_types = simple_types
         .map(|n| {
             n.attribute("base")
-                .map(RustFieldType::from)
+                .map(|b| as_rust_type(b, doc))
                 .ok_or_else(|| WriterError::AttributeMissing("base".to_string()))
         })
         .collect::<WriterResult<Vec<RustFieldType>>>()?;
@@ -122,7 +126,7 @@ fn build_simple_list_type<'n>(
     comment: Option<String>,
 ) -> WriterResult<SimpleProps> {
     let rust_type = RustFieldType::String;
-    if let Some(item_type) = list.attribute("itemType").map(RustFieldType::from) {
+    if let Some(item_type) = list.attribute("itemType").map(|i| as_rust_type(i, doc)) {
         let restrictions = Some(Restrictions {
             acceptable_list_type: Some(item_type),
             ..Restrictions::default()
@@ -147,7 +151,7 @@ fn build_simple_list_type<'n>(
         .ok_or_else(|| WriterError::UnsupportedXsdType("list".to_string()))?;
     let base = restriction
         .attribute("base")
-        .map(RustFieldType::from)
+        .map(|b| as_rust_type(b, doc))
         .ok_or_else(|| WriterError::AttributeMissing("base".to_string()))?;
     let mut restrictions = Restrictions {
         acceptable_list_type: Some(base),
