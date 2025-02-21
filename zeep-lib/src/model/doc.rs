@@ -1,7 +1,7 @@
-use super::{node::collect_namespaces_on_node, WriteXml};
+use super::{WriteXml, node::collect_namespaces_on_node};
 use crate::{
     error::WriterResult,
-    model::{node::RustNode, Namespace},
+    model::{Namespace, node::RustNode},
 };
 use roxmltree::Document;
 use std::{collections::HashMap, rc::Rc};
@@ -71,7 +71,8 @@ impl RustDocument {
             let tns = self
                 .namespace_references
                 .values()
-                .find(|ns| ns.namespace == namespace).cloned()
+                .find(|ns| ns.namespace == namespace)
+                .cloned()
                 .unwrap_or_else(|| {
                     let abbreviation = make_abbreviated_namespace(namespace, &self.target_namespaces);
                     let rust_mod_name = create_mod_name_for_namespace(&abbreviation);

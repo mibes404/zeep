@@ -1,4 +1,4 @@
-use super::{doc::RustDocument, Namespace, TryFromNode, WriteXml};
+use super::{Namespace, TryFromNode, WriteXml, doc::RustDocument};
 use crate::error::{WriterError, WriterResult};
 use inflector::cases::{pascalcase::to_pascal_case, snakecase::to_snake_case};
 use roxmltree::Node;

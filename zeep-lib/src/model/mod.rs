@@ -3,10 +3,7 @@ pub mod field;
 pub mod node;
 pub mod structures;
 
-use crate::{
-    error::WriterResult,
-    model::doc::RustDocument,
-};
+use crate::{error::WriterResult, model::doc::RustDocument};
 use roxmltree::Node;
 use std::io;
 

@@ -1,4 +1,6 @@
-use super::{Field, Namespace, Node, Rc, RustDocument, RustType, TryFromNode, WriterError, WriterResult, parse_comment};
+use super::{
+    Field, Namespace, Node, Rc, RustDocument, RustType, TryFromNode, WriterError, WriterResult, parse_comment,
+};
 use crate::model::field::resolve_type;
 
 #[derive(Debug, PartialEq)]

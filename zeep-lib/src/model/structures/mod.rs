@@ -3,10 +3,10 @@ pub mod element;
 pub mod restrictions;
 pub mod simple;
 
-use super::{field::RustFieldType, TryFromNode};
+use super::{TryFromNode, field::RustFieldType};
 use crate::{
     error::{WriterError, WriterResult},
-    model::{doc::RustDocument, field::Field, Namespace, WriteXml},
+    model::{Namespace, WriteXml, doc::RustDocument, field::Field},
 };
 use complex::ComplexProps;
 use element::ElementProps;

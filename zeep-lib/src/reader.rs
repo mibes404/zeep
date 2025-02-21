@@ -1,10 +1,6 @@
 use crate::{
     error::{WriterError, WriterResult},
-    model::{
-        doc::RustDocument,
-        node::RustNode,
-        TryFromNode,
-    },
+    model::{TryFromNode, doc::RustDocument, node::RustNode},
 };
 use roxmltree::Node;
 use std::{collections::HashMap, fmt::Display, sync::atomic::AtomicBool};
@@ -151,7 +147,7 @@ mod tests {
     use super::*;
     use crate::model::{
         field::RustFieldType,
-        structures::{complex::ComplexProps, simple::SimpleProps, RustType},
+        structures::{RustType, complex::ComplexProps, simple::SimpleProps},
     };
 
     #[test]
