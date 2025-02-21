@@ -1,6 +1,8 @@
 pub mod doc;
 pub mod field;
+mod file_header;
 pub mod node;
+pub mod soap;
 pub mod structures;
 
 use crate::{error::WriterResult, model::doc::RustDocument};

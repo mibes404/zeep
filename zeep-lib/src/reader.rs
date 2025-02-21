@@ -1,9 +1,9 @@
 use crate::{
     error::{WriterError, WriterResult},
-    model::{TryFromNode, doc::RustDocument, node::RustNode},
+    model::{TryFromNode, doc::RustDocument, node::RustNode, soap::message::SoapMessage},
 };
 use roxmltree::Node;
-use std::{collections::HashMap, fmt::Display, io, sync::atomic::AtomicBool};
+use std::{collections::HashMap, fmt::Display, io, rc::Rc, sync::atomic::AtomicBool};
 
 const WELL_KNOWN_NAMESPACES: &[&str] = &[
     "http://www.w3.org/XML/1998/namespace",
@@ -129,8 +129,21 @@ impl XmlReader {
 
     fn read_wsdl<'n>(&self, node: Node<'n, 'n>, files: &Files, doc: &mut RustDocument) -> WriterResult<()> {
         for child in node.children() {
-            if let Ok(child_node) = RustNode::try_from_node(child, doc) {
-                doc.nodes.push(child_node);
+            let node_name = child.tag_name().name();
+            // first read the types as if it were an XSD
+            if node_name == "types" {
+                // get the schema node
+                let schema = child
+                    .children()
+                    .find(|n| n.tag_name().name() == "schema")
+                    .ok_or(WriterError::SchemaNotFound)?;
+                self.read_xsd(schema, files, doc)?;
+            }
+
+            // read soap messages
+            if node_name == "message" {
+                let message = SoapMessage::try_from_node(child, doc)?;
+                doc.soap_messages.push(message.into());
             }
         }
 
@@ -145,14 +158,14 @@ impl XmlReader {
             }
 
             if let Ok(child_node) = RustNode::try_from_node(child, doc) {
-                doc.nodes.push(child_node);
+                doc.nodes.push(child_node.into());
             }
         }
 
         Ok(())
     }
 
-    fn process_import(&self, node: Node, files: &Files) -> WriterResult<Vec<RustNode>> {
+    fn process_import(&self, node: Node, files: &Files) -> WriterResult<Vec<Rc<RustNode>>> {
         let namespace = node.attribute("namespace").ok_or(WriterError::NamespaceMissing)?;
 
         if WELL_KNOWN_NAMESPACES.contains(&namespace) {

@@ -101,6 +101,11 @@ where
                     comment,
                 } = &**props;
 
+                if rust_type.to_string().eq(xml_name) {
+                    // NOOP
+                    return Ok(());
+                }
+
                 // for now, write this as a type alias; we may want to change this to a newtype
                 // in the future
                 if let Some(comment) = comment {
@@ -112,6 +117,12 @@ where
             }
             RustType::Element(props) => {
                 let ElementProps { xml_name, rust_type } = &**props;
+
+                if rust_type.to_string().eq(xml_name) {
+                    // NOOP
+                    return Ok(());
+                }
+
                 writeln!(writer, "type {xml_name} = {rust_type};")?;
                 Ok(())
             }

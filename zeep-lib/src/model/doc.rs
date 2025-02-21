@@ -1,4 +1,4 @@
-use super::node::collect_namespaces_on_node;
+use super::{file_header::FileHeader, node::collect_namespaces_on_node, soap::message::SoapMessage};
 use crate::{
     error::WriterResult,
     model::{Namespace, node::RustNode},
@@ -11,18 +11,13 @@ pub struct RustDocument {
     pub(crate) namespace_references: HashMap<String, Rc<Namespace>>,
     pub(crate) target_namespaces: Vec<Rc<Namespace>>,
     pub(crate) current_target_namespace: Option<Rc<Namespace>>,
-    pub(crate) nodes: Vec<RustNode>,
+    pub(crate) nodes: Vec<Rc<RustNode>>,
+    pub(crate) soap_messages: Vec<Rc<SoapMessage>>,
 }
 
 impl RustDocument {
-    pub fn init<'n>(doc: &Document) -> Self {
-        let mut me = Self {
-            namespace_references: HashMap::new(),
-            target_namespaces: Vec::new(),
-            current_target_namespace: None,
-            nodes: Vec::new(),
-        };
-
+    pub fn init(doc: &Document) -> Self {
+        let mut me = Self::empty();
         // parse namespaces on the root element
         collect_namespaces_on_node(doc.root_element(), &mut me);
         me
@@ -34,6 +29,7 @@ impl RustDocument {
             target_namespaces: Vec::new(),
             current_target_namespace: None,
             nodes: Vec::new(),
+            soap_messages: Vec::new(),
         }
     }
 
@@ -90,7 +86,7 @@ impl RustDocument {
         }
     }
 
-    pub fn find_node_by_xml_name(&self, xml_name: &str, namespace: Option<&Namespace>) -> Option<&RustNode> {
+    pub fn find_node_by_xml_name(&self, xml_name: &str, namespace: Option<&Namespace>) -> Option<&Rc<RustNode>> {
         self.nodes.iter().find(|node| {
             node.rust_type.xml_name().is_some_and(|n| n == xml_name) && node.in_namespace.as_deref() == namespace
         })
@@ -106,6 +102,8 @@ where
     W: std::io::Write,
 {
     fn write_xml(&self, writer: &mut W) -> WriterResult<()> {
+        FileHeader.write_xml(writer)?;
+
         for namespace in &self.target_namespaces {
             let module = namespace.rust_mod_name.as_str();
             writeln!(writer, "pub mod {module} {{")?;

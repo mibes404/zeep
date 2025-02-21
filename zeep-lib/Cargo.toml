@@ -19,6 +19,8 @@ reqwest = { version = "0.12", default-features = false, features =["blocking", "
 tokio = { version = "1", features = ["full"] }
 async-trait = "0.1"
 thiserror = "2"
+const_format = { version = "0.2", features = ["fmt"] }
+
 
 # [[example]]
 # name = "hello"

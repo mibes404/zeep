@@ -31,6 +31,8 @@ pub enum WriterError {
     NodeNotFound(String),
     #[error("xml error: path not found")]
     PathNotFound,
+    #[error("xml error: schema not found")]
+    SchemaNotFound,
 }
 
 impl WriterError {
