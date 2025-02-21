@@ -48,3 +48,19 @@ impl<'n> TryFromNode<'n> for SoapMessage {
         Ok(SoapMessage { xml_name, parts })
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::reader::XmlReader;
+
+    #[test]
+    fn can_generate_soap_messages() {
+        const XML: &str = include_str!("../../../test-data/tempconverter.wsdl");
+        let doc = XmlReader::read_xml_from_file("tempconverter.wsdl", XML).unwrap();
+        assert_eq!(doc.soap_messages.len(), 4);
+        let first_message = &doc.soap_messages[0];
+        assert_eq!(first_message.xml_name, "CelsiusToFahrenheit");
+        let part = first_message.parts.get("CelsiusToFahrenheitRequest").unwrap();
+        assert_eq!(part.rust_type.xml_name(), Some("CelsiusToFahrenheitRequest"));
+    }
+}
