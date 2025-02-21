@@ -1,4 +1,8 @@
-use super::{file_header::FileHeader, node::collect_namespaces_on_node, soap::message::SoapMessage};
+use super::{
+    file_header::FileHeader,
+    node::collect_namespaces_on_node,
+    soap::{message::SoapMessage, port::SoapPort},
+};
 use crate::{
     error::WriterResult,
     model::{Namespace, node::RustNode},
@@ -13,6 +17,7 @@ pub struct RustDocument {
     pub(crate) current_target_namespace: Option<Rc<Namespace>>,
     pub(crate) nodes: Vec<Rc<RustNode>>,
     pub(crate) soap_messages: Vec<Rc<SoapMessage>>,
+    pub(crate) soap_ports: Vec<Rc<SoapPort>>,
 }
 
 impl RustDocument {
@@ -30,6 +35,7 @@ impl RustDocument {
             current_target_namespace: None,
             nodes: Vec::new(),
             soap_messages: Vec::new(),
+            soap_ports: Vec::new(),
         }
     }
 

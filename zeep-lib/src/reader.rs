@@ -1,6 +1,11 @@
 use crate::{
     error::{WriterError, WriterResult},
-    model::{TryFromNode, doc::RustDocument, node::RustNode, soap::message::SoapMessage},
+    model::{
+        TryFromNode,
+        doc::RustDocument,
+        node::RustNode,
+        soap::{message::SoapMessage, port::SoapPort},
+    },
 };
 use roxmltree::Node;
 use std::{collections::HashMap, fmt::Display, io, rc::Rc, sync::atomic::AtomicBool};
@@ -146,6 +151,12 @@ impl XmlReader {
             if node_name == "message" {
                 let message = SoapMessage::try_from_node(child, doc)?;
                 doc.soap_messages.push(message.into());
+            }
+
+            // read soap ports
+            if node_name == "portType" {
+                let port = SoapPort::try_from_node(child, doc)?;
+                doc.soap_ports.push(port.into());
             }
         }
 
