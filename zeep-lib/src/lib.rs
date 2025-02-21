@@ -3,6 +3,8 @@ mod element;
 mod error;
 
 mod model;
-mod reader;
+pub mod reader;
+
 // mod writer;
+pub mod utils;
 mod yaserde_tests;

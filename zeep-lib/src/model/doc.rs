@@ -1,16 +1,17 @@
-use super::{WriteXml, node::collect_namespaces_on_node};
+use super::node::collect_namespaces_on_node;
 use crate::{
     error::WriterResult,
     model::{Namespace, node::RustNode},
+    reader::WriteXml,
 };
 use roxmltree::Document;
 use std::{collections::HashMap, rc::Rc};
 
 pub struct RustDocument {
-    pub namespace_references: HashMap<String, Rc<Namespace>>,
-    pub target_namespaces: Vec<Rc<Namespace>>,
-    pub current_target_namespace: Option<Rc<Namespace>>,
-    pub nodes: Vec<RustNode>,
+    pub(crate) namespace_references: HashMap<String, Rc<Namespace>>,
+    pub(crate) target_namespaces: Vec<Rc<Namespace>>,
+    pub(crate) current_target_namespace: Option<Rc<Namespace>>,
+    pub(crate) nodes: Vec<RustNode>,
 }
 
 impl RustDocument {

@@ -4,7 +4,8 @@ use super::{
 };
 use crate::{
     error::{WriterError, WriterResult},
-    model::{TryFromNode, WriteXml, doc::RustDocument},
+    model::{TryFromNode, doc::RustDocument},
+    reader::WriteXml,
 };
 use roxmltree::Node;
 use std::{io, rc::Rc};

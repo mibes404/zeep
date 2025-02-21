@@ -18,8 +18,7 @@ impl<'n> TryFromNode<'n> for ElementProps {
 
         let rust_type = node
             .attribute("type")
-            .map(|t| as_rust_type(t, doc))
-            .ok_or_else(|| WriterError::AttributeMissing("type".to_string()))?;
+            .map_or(RustFieldType::String, |t| as_rust_type(t, doc));
 
         Ok(ElementProps { xml_name, rust_type })
     }

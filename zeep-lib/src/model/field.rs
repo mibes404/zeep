@@ -1,5 +1,8 @@
-use super::{Namespace, TryFromNode, WriteXml, doc::RustDocument};
-use crate::error::{WriterError, WriterResult};
+use super::{Namespace, TryFromNode, doc::RustDocument};
+use crate::{
+    error::{WriterError, WriterResult},
+    reader::WriteXml,
+};
 use inflector::cases::{pascalcase::to_pascal_case, snakecase::to_snake_case};
 use roxmltree::Node;
 use std::{
@@ -28,14 +31,12 @@ impl<'n> TryFromNode<'n> for Field {
         let mut target_namespace = None;
         if let Some(use_target_namespace) = node.attribute("targetNamespace") {
             doc.switch_to_target_namespace(use_target_namespace);
-            target_namespace = doc.current_target_namespace.clone();
+            target_namespace.clone_from(&doc.current_target_namespace);
         }
 
         if let Some(ref_name) = node.attribute("ref") {
             let (xml_name, namespace_ref) = split_type(ref_name);
-            let namespace: Option<&Namespace> = namespace_ref
-                .and_then(|ns| doc.find_namespace(ns))
-                .map(std::convert::AsRef::as_ref);
+            let namespace: Option<&Namespace> = namespace_ref.and_then(|ns| doc.find_namespace(ns)).map(AsRef::as_ref);
             let ref_node = doc
                 .find_node_by_xml_name(xml_name, namespace)
                 .and_then(|n| n.rust_type.try_as_element())
@@ -61,8 +62,7 @@ impl<'n> TryFromNode<'n> for Field {
         let rust_name = rename_keywords(&to_snake_case(&xml_name)).to_string();
         let rust_type = node
             .attribute("type")
-            .map(|t| as_rust_type(t, doc))
-            .ok_or_else(|| WriterError::AttributeMissing("type".to_string()))?;
+            .map_or(RustFieldType::String, |t| as_rust_type(t, doc));
         let optional = node.attribute("minOccurs") == Some("0");
         let vec = Node::attribute(&node, "maxOccurs") == Some("unbounded");
 

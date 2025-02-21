@@ -21,10 +21,3 @@ pub trait TryFromNode<'n>: Sized {
     /// Performs the conversion.
     fn try_from_node(node: Node<'n, 'n>, doc: &mut RustDocument) -> Result<Self, Self::Error>;
 }
-
-pub trait WriteXml<W>
-where
-    W: io::Write,
-{
-    fn write_xml(&self, writer: &mut W) -> WriterResult<()>;
-}

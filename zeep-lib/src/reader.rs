@@ -3,7 +3,7 @@ use crate::{
     model::{TryFromNode, doc::RustDocument, node::RustNode},
 };
 use roxmltree::Node;
-use std::{collections::HashMap, fmt::Display, sync::atomic::AtomicBool};
+use std::{collections::HashMap, fmt::Display, io, sync::atomic::AtomicBool};
 
 const WELL_KNOWN_NAMESPACES: &[&str] = &[
     "http://www.w3.org/XML/1998/namespace",
@@ -12,24 +12,34 @@ const WELL_KNOWN_NAMESPACES: &[&str] = &[
     "http://www.w3.org/2007/XMLSchema-versioning",
 ];
 
+pub trait WriteXml<W>
+where
+    W: io::Write,
+{
+    fn write_xml(&self, writer: &mut W) -> WriterResult<()>;
+}
+
 pub struct XmlReader;
 
-pub struct File {
+pub struct FileContent {
     xml: String,
     processed: AtomicBool,
 }
 
-impl File {
+impl FileContent {
+    #[must_use]
     pub fn new(xml: String) -> Self {
-        File {
+        FileContent {
             xml,
             processed: AtomicBool::new(false),
         }
     }
 }
 
+pub type Schemalocation = String;
+
 pub struct Files {
-    map: HashMap<String, File>,
+    map: HashMap<Schemalocation, FileContent>,
 }
 
 impl Files {
@@ -39,7 +49,7 @@ impl Files {
         X: Display,
     {
         Files {
-            map: HashMap::from([(file_name.to_string(), File::new(xml.to_string()))]),
+            map: HashMap::from([(file_name.to_string(), FileContent::new(xml.to_string()))]),
         }
     }
 
@@ -49,12 +59,37 @@ impl Files {
         X: Display,
     {
         let Files { map, .. } = self;
-        map.insert(file_name.to_string(), File::new(xml.to_string()));
+        map.insert(file_name.to_string(), FileContent::new(xml.to_string()));
+    }
+}
+
+pub struct FilesToRead {
+    start_with_file: String,
+    files: Files,
+}
+
+impl FilesToRead {
+    pub fn new(start_with_file: impl Display, files: Files) -> Self {
+        FilesToRead {
+            start_with_file: start_with_file.to_string(),
+            files,
+        }
+    }
+
+    fn inner(&self) -> (&FileContent, &str, &Files) {
+        let FilesToRead { start_with_file, files } = self;
+        let content = files.map.get(start_with_file).unwrap();
+        (content, start_with_file, files)
     }
 }
 
 impl XmlReader {
-    pub fn read_xml(&self, file: &File, file_name: &str, files: &Files) -> WriterResult<RustDocument> {
+    pub fn read_xml(&self, files_to_read: &FilesToRead) -> WriterResult<RustDocument> {
+        let (content, start_with_file, files) = files_to_read.inner();
+        self.read_xml_internal(content, start_with_file, files)
+    }
+
+    fn read_xml_internal(&self, file: &FileContent, file_name: &str, files: &Files) -> WriterResult<RustDocument> {
         if file.processed.load(std::sync::atomic::Ordering::SeqCst) {
             let rust_doc = RustDocument::empty();
             return Ok(rust_doc);
@@ -137,7 +172,7 @@ impl XmlReader {
             return Ok(vec![]);
         }
 
-        let rust_doc = self.read_xml(file, schema_location, files)?;
+        let rust_doc = self.read_xml_internal(file, schema_location, files)?;
         Ok(rust_doc.nodes)
     }
 }
@@ -155,7 +190,7 @@ mod tests {
         const XSD: &str = include_str!("../test-data/single-complex.xsd");
         let files = Files::new("types.xsd", XSD);
         let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
-        let nodes = XmlReader.read_xml(file, file_name, &files).unwrap().nodes;
+        let nodes = XmlReader.read_xml_internal(file, file_name, &files).unwrap().nodes;
         assert_eq!(nodes.len(), 1);
         let node = nodes.first().unwrap();
         let RustType::Complex(props) = &node.rust_type else {
@@ -192,7 +227,7 @@ mod tests {
         files.add("types.xsd", XSD_TYPES);
 
         let (file_name, file) = files.map.get_key_value("messages.xsd").unwrap();
-        let nodes = XmlReader.read_xml(file, file_name, &files).unwrap().nodes;
+        let nodes = XmlReader.read_xml_internal(file, file_name, &files).unwrap().nodes;
         assert_eq!(nodes.len(), 2);
 
         let type_node = nodes.first().unwrap();
@@ -241,7 +276,7 @@ mod tests {
         let files = Files::new("types.xsd", XSD_TYPES);
 
         let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
-        let rust_doc = XmlReader.read_xml(file, file_name, &files).unwrap();
+        let rust_doc = XmlReader.read_xml_internal(file, file_name, &files).unwrap();
 
         // check that we found the two namespaces
         assert_eq!(rust_doc.namespace_references.len(), 2, "Expected two namespaces");

@@ -1,6 +1,9 @@
 use clap::{Arg, Command};
-use std::fs::File;
-use zeep_lib::writer::FileWriter;
+use std::{fs::File, path::Path};
+use zeep_lib::{
+    reader::{WriteXml, XmlReader},
+    utils::read_input_file_and_xsd_files_at_path,
+};
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -19,15 +22,6 @@ fn main() {
                 .required(true)
                 .help("Input from XSD/WSDL file"),
         )
-        .arg(
-            Arg::new("path")
-                .short('p')
-                .long("path")
-                .required(true)
-                .help("Base path for the XSD file(s)"),
-        )
-        .arg(Arg::new("ns").short('n').long("ns").help("Namespace prefix"))
-        .arg(Arg::new("dns").short('d').long("dns").help("Default namespace (URL)"))
         .get_matches();
 
     let to_file_name = matches.get_one::<String>("to_file");
@@ -35,24 +29,13 @@ fn main() {
         .get_one::<String>("from_file")
         .map(ToString::to_string)
         .unwrap_or_default();
-    let base_path = matches
-        .get_one::<String>("path")
-        .map(ToString::to_string)
-        .unwrap_or_default();
-    let ns_prefix = matches.get_one::<String>("ns").map(ToString::to_string);
-    let default_namespace = matches.get_one::<String>("dns").map(ToString::to_string);
 
-    if let Some(output_file) = to_file_name {
-        let file = File::create(output_file).expect("can not create file");
-        let mut writer = FileWriter::new_file(file, ns_prefix, default_namespace);
-        println!("parsing {base_path}/{from_file_name} --> {output_file}");
-        if let Err(err) = writer.process_file(&base_path, &from_file_name) {
-            println!("Failed to process {from_file_name}: {err}");
-        }
-    } else {
-        let mut writer = FileWriter::new(ns_prefix, default_namespace);
-        if let Err(err) = writer.process_file(&base_path, &from_file_name) {
-            println!("Failed to process {from_file_name}: {err}");
-        }
-    }
+    let from_file_path = Path::new(&from_file_name);
+    let files = read_input_file_and_xsd_files_at_path(from_file_path).expect("can not read input file");
+
+    let output_file = to_file_name.map_or_else(|| from_file_path.with_extension("rs"), |f| Path::new(f).to_path_buf());
+
+    let mut file = File::create(output_file).expect("can not create file");
+    let document = XmlReader.read_xml(&files).expect("can not read xml");
+    document.write_xml(&mut file).expect("can not write xml");
 }

@@ -29,6 +29,8 @@ pub enum WriterError {
     UnsupportedXsdType(String),
     #[error("xml error: node not found: {0}")]
     NodeNotFound(String),
+    #[error("xml error: path not found")]
+    PathNotFound,
 }
 
 impl WriterError {

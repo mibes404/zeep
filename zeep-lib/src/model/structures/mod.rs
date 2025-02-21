@@ -6,7 +6,8 @@ pub mod simple;
 use super::{TryFromNode, field::RustFieldType};
 use crate::{
     error::{WriterError, WriterResult},
-    model::{Namespace, WriteXml, doc::RustDocument, field::Field},
+    model::{Namespace, doc::RustDocument, field::Field},
+    reader::WriteXml,
 };
 use complex::ComplexProps;
 use element::ElementProps;
