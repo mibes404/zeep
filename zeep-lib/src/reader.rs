@@ -4,7 +4,7 @@ use crate::{
         TryFromNode,
         doc::RustDocument,
         node::RustNode,
-        soap::{message::SoapMessage, port::SoapPort},
+        soap::{binding::SoapBinding, message::SoapMessage, port::SoapPort},
     },
 };
 use roxmltree::Node;
@@ -157,6 +157,12 @@ impl XmlReader {
             if node_name == "portType" {
                 let port = SoapPort::try_from_node(child, doc)?;
                 doc.soap_ports.push(port.into());
+            }
+
+            // read soap bindings
+            if node_name == "binding" {
+                let binding = SoapBinding::try_from_node(child, doc)?;
+                doc.soap_bindings.push(binding.into());
             }
         }
 

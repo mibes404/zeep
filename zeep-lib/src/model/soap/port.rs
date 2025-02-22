@@ -18,7 +18,6 @@ pub struct SoapOperation {
 }
 
 pub struct SoapOperationMapping {
-    pub xml_name: String,
     pub message: Rc<SoapMessage>,
 }
 
@@ -72,17 +71,14 @@ fn read_port_operation(
     doc: &mut crate::model::doc::RustDocument,
     n: roxmltree::Node<'_, '_>,
 ) -> WriterResult<SoapOperationMapping> {
-    let xml_name = n
+    let message_name = n
         .attribute("message")
         .ok_or_else(|| WriterError::AttributeMissing("message".to_string()))?;
-    let (xml_name, _namespace) = resolve_type(xml_name, doc);
+    let (xml_name, namespace) = resolve_type(message_name, doc);
     let soap_message = doc
-        .soap_messages
-        .iter()
-        .find(|m| m.xml_name == xml_name)
+        .find_message_by_xml_name(xml_name, namespace.as_deref())
         .ok_or(WriterError::MessageNotFound(xml_name.to_string()))?;
     Ok(SoapOperationMapping {
-        xml_name: xml_name.to_string(),
         message: soap_message.clone(),
     })
 }
@@ -100,9 +96,9 @@ mod tests {
         assert_eq!(port.operations.len(), 2);
         // check the first operation
         let first_operation = port.operations.get("CelsiusToFahrenheit").unwrap();
-        assert_eq!(first_operation.input.xml_name, "CelsiusToFahrenheit");
+        assert_eq!(first_operation.input.message.xml_name, "CelsiusToFahrenheit");
         assert_eq!(
-            first_operation.output.as_ref().unwrap().xml_name,
+            first_operation.output.as_ref().unwrap().message.xml_name,
             "CelsiusToFahrenheitResponse"
         );
     }

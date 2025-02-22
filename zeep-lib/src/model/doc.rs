@@ -1,7 +1,7 @@
 use super::{
     file_header::FileHeader,
     node::collect_namespaces_on_node,
-    soap::{message::SoapMessage, port::SoapPort},
+    soap::{binding::SoapBinding, message::SoapMessage, port::SoapPort},
 };
 use crate::{
     error::WriterResult,
@@ -18,6 +18,7 @@ pub struct RustDocument {
     pub(crate) nodes: Vec<Rc<RustNode>>,
     pub(crate) soap_messages: Vec<Rc<SoapMessage>>,
     pub(crate) soap_ports: Vec<Rc<SoapPort>>,
+    pub(crate) soap_bindings: Vec<Rc<SoapBinding>>,
 }
 
 impl RustDocument {
@@ -36,6 +37,7 @@ impl RustDocument {
             nodes: Vec::new(),
             soap_messages: Vec::new(),
             soap_ports: Vec::new(),
+            soap_bindings: Vec::new(),
         }
     }
 
@@ -96,6 +98,14 @@ impl RustDocument {
         self.nodes.iter().find(|node| {
             node.rust_type.xml_name().is_some_and(|n| n == xml_name) && node.in_namespace.as_deref() == namespace
         })
+    }
+
+    pub fn find_message_by_xml_name(&self, xml_name: &str, _namespace: Option<&Namespace>) -> Option<&Rc<SoapMessage>> {
+        self.soap_messages.iter().find(|msg| msg.xml_name == xml_name)
+    }
+
+    pub fn find_port_by_xml_name(&self, xml_name: &str, _namespace: Option<&Namespace>) -> Option<&Rc<SoapPort>> {
+        self.soap_ports.iter().find(|port| port.xml_name == xml_name)
     }
 }
 

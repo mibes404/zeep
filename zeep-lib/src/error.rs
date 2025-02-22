@@ -35,6 +35,8 @@ pub enum WriterError {
     SchemaNotFound,
     #[error("xml error: message not found: {0}")]
     MessageNotFound(String),
+    #[error("xml error: unsupported encoding: {0}")]
+    UnsupportedEncoding(String),
 }
 
 impl WriterError {

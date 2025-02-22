@@ -36,6 +36,6 @@ fn main() {
     let output_file = to_file_name.map_or_else(|| from_file_path.with_extension("rs"), |f| Path::new(f).to_path_buf());
 
     let mut file = File::create(output_file).expect("can not create file");
-    let document = XmlReader.read_xml(&files).expect("can not read xml");
+    let document = XmlReader::read_xml(&files).expect("can not read xml");
     document.write_xml(&mut file).expect("can not write xml");
 }
