@@ -100,6 +100,15 @@ pub mod multi_ref {
         inner: Arc<RwLock<T>>,
     }
 
+    impl<T> MultiRef<T> {
+        #[allow(dead_code)]
+        pub fn new(inner: T) -> Self {
+            Self {
+                inner: Arc::new(RwLock::new(inner)),
+            }
+        }
+    }
+
     impl<T: YaDeserialize> YaDeserialize for MultiRef<T> {
         fn deserialize<R: std::io::prelude::Read>(reader: &mut yaserde::de::Deserializer<R>) -> Result<Self, String> {
             let inner = T::deserialize(reader)?;

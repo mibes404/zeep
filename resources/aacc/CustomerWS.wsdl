@@ -1797,13 +1797,6 @@
           <s:element minOccurs="0" maxOccurs="unbounded" name="DispositionCode" nillable="true" type="s0:PairOfDispositionCodesKeyDispositionCode" />
         </s:sequence>
       </s:complexType>
-      <s:complexType name="PairOfDispositionCodesKeyDispositionCode">
-        <s:complexContent mixed="false">
-          <s:extension base="s0:DispositionCode">
-            <s:attribute name="DispositionCodesKey" type="s:string" use="required" />
-          </s:extension>
-        </s:complexContent>
-      </s:complexType>
       <s:complexType name="DispositionCode">
         <s:sequence>
           <s:element minOccurs="0" name="ID" type="s:long" />
@@ -1830,6 +1823,13 @@
           <s:element minOccurs="0" name="SaveAgentScript" type="s:boolean" />
           <s:element minOccurs="0" name="Type" type="s0:CodeMapping" />
         </s:sequence>
+      </s:complexType>
+      <s:complexType name="PairOfDispositionCodesKeyDispositionCode">
+        <s:complexContent mixed="false">
+          <s:extension base="s0:DispositionCode">
+            <s:attribute name="DispositionCodesKey" type="s:string" use="required" />
+          </s:extension>
+        </s:complexContent>
       </s:complexType>
       <s:complexType name="ArrayOfCustomField">
         <s:sequence>

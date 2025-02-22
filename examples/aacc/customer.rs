@@ -1540,6 +1540,32 @@ pub mod mod_wsd {
         pub r#type: Option<mod_wsd::CodeMapping>,
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
+    #[yaserde(prefix = "wsd", namespaces = {"wsd" = "http://ws.db.ccmm.applications.nortel.com"}, rename = "PairOfDispositionCodesKeyDispositionCode")]
+    pub struct PairOfDispositionCodesKeyDispositionCode {
+        #[yaserde(prefix = "wsd", rename = "ID")]
+        pub id: Option<i64>,
+        #[yaserde(prefix = "wsd", rename = "Name")]
+        pub name: Option<String>,
+        #[yaserde(prefix = "wsd", rename = "DisplayName")]
+        pub display_name: Option<String>,
+        #[yaserde(prefix = "wsd", rename = "RetryTimeout")]
+        pub retry_timeout: Option<i64>,
+        #[yaserde(prefix = "wsd", rename = "NumericValue")]
+        pub numeric_value: Option<i64>,
+        #[yaserde(prefix = "wsd", rename = "MaxRetryCount")]
+        pub max_retry_count: Option<i64>,
+        #[yaserde(prefix = "wsd", rename = "Deletable")]
+        pub deletable: Option<bool>,
+        #[yaserde(prefix = "wsd", rename = "CallRequired")]
+        pub call_required: Option<bool>,
+        #[yaserde(prefix = "wsd", rename = "MarkAsDeleted")]
+        pub mark_as_deleted: Option<bool>,
+        #[yaserde(prefix = "wsd", rename = "SaveAgentScript")]
+        pub save_agent_script: Option<bool>,
+        #[yaserde(prefix = "wsd", rename = "Type")]
+        pub r#type: Option<mod_wsd::CodeMapping>,
+    }
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "wsd", namespaces = {"wsd" = "http://ws.db.ccmm.applications.nortel.com"}, rename = "ArrayOfCustomField")]
     pub struct ArrayOfCustomField {
         #[yaserde(prefix = "wsd", rename = "CustomField")]
@@ -2221,7 +2247,6 @@ pub mod mod_wsd {
         #[yaserde(prefix = "wsd", rename = "sessionKey")]
         pub session_key: Option<String>,
     }
-
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "wsd", namespaces = {"wsd" = "http://ws.db.ccmm.applications.nortel.com"}, rename = "GetSearchableFieldsResponse")]
     pub struct GetSearchableFieldsResponse {
@@ -2658,1060 +2683,6 @@ pub mod mod_wsd {
     }
 }
 
-/* RegisterCustomer */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterCustomerInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RegisterCustomer")]
-    pub register_customer: mod_wsd::RegisterCustomer,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterCustomerInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RegisterCustomerInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterCustomerOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RegisterCustomerResponse")]
-    pub register_customer_response: mod_wsd::RegisterCustomerResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterCustomerOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RegisterCustomerOutputEnvelopeBody,
-}
-pub async fn register_customer(
-    req: RegisterCustomerInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RegisterCustomerOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RegisterCustomer";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* SendADPasswordReminder */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendADPasswordReminderInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "SendADPasswordReminder")]
-    pub send_ad_password_reminder: mod_wsd::SendADPasswordReminder,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendADPasswordReminderInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SendADPasswordReminderInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendADPasswordReminderOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "SendADPasswordReminderResponse")]
-    pub send_ad_password_reminder_response: mod_wsd::SendADPasswordReminderResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendADPasswordReminderOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SendADPasswordReminderOutputEnvelopeBody,
-}
-pub async fn send_ad_password_reminder(
-    req: SendADPasswordReminderInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SendADPasswordReminderOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.SendADPasswordReminder";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetCustomerByPhoneNumber */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByPhoneNumberInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByPhoneNumber")]
-    pub get_customer_by_phone_number: mod_wsd::GetCustomerByPhoneNumber,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByPhoneNumberInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByPhoneNumberInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByPhoneNumberOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByPhoneNumberResponse")]
-    pub get_customer_by_phone_number_response: mod_wsd::GetCustomerByPhoneNumberResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByPhoneNumberOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByPhoneNumberOutputEnvelopeBody,
-}
-pub async fn get_customer_by_phone_number(
-    req: GetCustomerByPhoneNumberInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetCustomerByPhoneNumberOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByPhoneNumber";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* ImpersonateCustomer */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ImpersonateCustomerInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "ImpersonateCustomer")]
-    pub impersonate_customer: mod_wsd::ImpersonateCustomer,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ImpersonateCustomerInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ImpersonateCustomerInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ImpersonateCustomerOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "ImpersonateCustomerResponse")]
-    pub impersonate_customer_response: mod_wsd::ImpersonateCustomerResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ImpersonateCustomerOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ImpersonateCustomerOutputEnvelopeBody,
-}
-pub async fn impersonate_customer(
-    req: ImpersonateCustomerInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<ImpersonateCustomerOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.ImpersonateCustomer";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddCustomField */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddCustomFieldInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddCustomField")]
-    pub add_custom_field: mod_wsd::AddCustomField,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddCustomFieldInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddCustomFieldInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddCustomFieldOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddCustomFieldResponse")]
-    pub add_custom_field_response: mod_wsd::AddCustomFieldResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddCustomFieldOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddCustomFieldOutputEnvelopeBody,
-}
-pub async fn add_custom_field(
-    req: AddCustomFieldInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddCustomFieldOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddCustomField";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddAddress */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddAddressInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddAddress")]
-    pub add_address: mod_wsd::AddAddress,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddAddressInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddAddressInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddAddressOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddAddressResponse")]
-    pub add_address_response: mod_wsd::AddAddressResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddAddressOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddAddressOutputEnvelopeBody,
-}
-pub async fn add_address(
-    req: AddAddressInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddAddressOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddAddress";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* DeleteCustomer */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct DeleteCustomerInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "DeleteCustomer")]
-    pub delete_customer: mod_wsd::DeleteCustomer,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct DeleteCustomerInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteCustomerInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct DeleteCustomerOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "DeleteCustomerResponse")]
-    pub delete_customer_response: mod_wsd::DeleteCustomerResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct DeleteCustomerOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteCustomerOutputEnvelopeBody,
-}
-pub async fn delete_customer(
-    req: DeleteCustomerInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<DeleteCustomerOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.DeleteCustomer";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetCustomerByContactId */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByContactIdInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByContactId")]
-    pub get_customer_by_contact_id: mod_wsd::GetCustomerByContactId,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByContactIdInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByContactIdInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByContactIdOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByContactIdResponse")]
-    pub get_customer_by_contact_id_response: mod_wsd::GetCustomerByContactIdResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByContactIdOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByContactIdOutputEnvelopeBody,
-}
-pub async fn get_customer_by_contact_id(
-    req: GetCustomerByContactIdInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetCustomerByContactIdOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByContactId";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetCustomerByName */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByNameInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByName")]
-    pub get_customer_by_name: mod_wsd::GetCustomerByName,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByNameInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByNameInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByNameOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByNameResponse")]
-    pub get_customer_by_name_response: mod_wsd::GetCustomerByNameResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByNameOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByNameOutputEnvelopeBody,
-}
-pub async fn get_customer_by_name(
-    req: GetCustomerByNameInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetCustomerByNameOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByName";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CustomerAssociation */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CustomerAssociationInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CustomerAssociation")]
-    pub customer_association: mod_wsd::CustomerAssociation,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CustomerAssociationInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CustomerAssociationInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CustomerAssociationOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CustomerAssociationResponse")]
-    pub customer_association_response: mod_wsd::CustomerAssociationResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CustomerAssociationOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CustomerAssociationOutputEnvelopeBody,
-}
-pub async fn customer_association(
-    req: CustomerAssociationInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CustomerAssociationOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CustomerAssociation";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* ReadCustomerHistory */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerHistoryInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "ReadCustomerHistory")]
-    pub read_customer_history: mod_wsd::ReadCustomerHistory,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerHistoryInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ReadCustomerHistoryInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerHistoryOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "ReadCustomerHistoryResponse")]
-    pub read_customer_history_response: mod_wsd::ReadCustomerHistoryResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerHistoryOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ReadCustomerHistoryOutputEnvelopeBody,
-}
-pub async fn read_customer_history(
-    req: ReadCustomerHistoryInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<ReadCustomerHistoryOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.ReadCustomerHistory";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RemoveEmailAddress */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveEmailAddressInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveEmailAddress")]
-    pub remove_email_address: mod_wsd::RemoveEmailAddress,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveEmailAddressInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveEmailAddressInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveEmailAddressOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveEmailAddressResponse")]
-    pub remove_email_address_response: mod_wsd::RemoveEmailAddressResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveEmailAddressOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveEmailAddressOutputEnvelopeBody,
-}
-pub async fn remove_email_address(
-    req: RemoveEmailAddressInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RemoveEmailAddressOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveEmailAddress";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateFirstName */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateFirstNameInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateFirstName")]
-    pub update_first_name: mod_wsd::UpdateFirstName,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateFirstNameInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateFirstNameInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateFirstNameOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateFirstNameResponse")]
-    pub update_first_name_response: mod_wsd::UpdateFirstNameResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateFirstNameOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateFirstNameOutputEnvelopeBody,
-}
-pub async fn update_first_name(
-    req: UpdateFirstNameInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateFirstNameOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateFirstName";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RegisterAnonymousCustomer */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterAnonymousCustomerInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RegisterAnonymousCustomer")]
-    pub register_anonymous_customer: mod_wsd::RegisterAnonymousCustomer,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterAnonymousCustomerInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RegisterAnonymousCustomerInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterAnonymousCustomerOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RegisterAnonymousCustomerResponse")]
-    pub register_anonymous_customer_response: mod_wsd::RegisterAnonymousCustomerResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterAnonymousCustomerOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RegisterAnonymousCustomerOutputEnvelopeBody,
-}
-pub async fn register_anonymous_customer(
-    req: RegisterAnonymousCustomerInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RegisterAnonymousCustomerOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RegisterAnonymousCustomer";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RemovePhoneNumber */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemovePhoneNumberInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemovePhoneNumber")]
-    pub remove_phone_number: mod_wsd::RemovePhoneNumber,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemovePhoneNumberInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemovePhoneNumberInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemovePhoneNumberOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemovePhoneNumberResponse")]
-    pub remove_phone_number_response: mod_wsd::RemovePhoneNumberResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemovePhoneNumberOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemovePhoneNumberOutputEnvelopeBody,
-}
-pub async fn remove_phone_number(
-    req: RemovePhoneNumberInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RemovePhoneNumberOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemovePhoneNumber";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdatePreferredAgent */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdatePreferredAgentInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdatePreferredAgent")]
-    pub update_preferred_agent: mod_wsd::UpdatePreferredAgent,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdatePreferredAgentInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdatePreferredAgentInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdatePreferredAgentOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdatePreferredAgentResponse")]
-    pub update_preferred_agent_response: mod_wsd::UpdatePreferredAgentResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdatePreferredAgentOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdatePreferredAgentOutputEnvelopeBody,
-}
-pub async fn update_preferred_agent(
-    req: UpdatePreferredAgentInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdatePreferredAgentOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdatePreferredAgent";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetAllCustomers */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetAllCustomersInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetAllCustomers")]
-    pub get_all_customers: mod_wsd::GetAllCustomers,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetAllCustomersInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetAllCustomersInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetAllCustomersOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetAllCustomersResponse")]
-    pub get_all_customers_response: mod_wsd::GetAllCustomersResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetAllCustomersOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetAllCustomersOutputEnvelopeBody,
-}
-pub async fn get_all_customers(
-    req: GetAllCustomersInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetAllCustomersOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetAllCustomers";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateLoginPage */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateLoginPageInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateLoginPage")]
-    pub update_login_page: mod_wsd::UpdateLoginPage,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateLoginPageInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateLoginPageInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateLoginPageOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateLoginPageResponse")]
-    pub update_login_page_response: mod_wsd::UpdateLoginPageResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateLoginPageOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateLoginPageOutputEnvelopeBody,
-}
-pub async fn update_login_page(
-    req: UpdateLoginPageInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateLoginPageOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateLoginPage";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateRegisterDate */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateRegisterDateInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateRegisterDate")]
-    pub update_register_date: mod_wsd::UpdateRegisterDate,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateRegisterDateInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateRegisterDateInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateRegisterDateOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateRegisterDateResponse")]
-    pub update_register_date_response: mod_wsd::UpdateRegisterDateResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateRegisterDateOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateRegisterDateOutputEnvelopeBody,
-}
-pub async fn update_register_date(
-    req: UpdateRegisterDateInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateRegisterDateOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateRegisterDate";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RemoveCustomField */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveCustomFieldInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveCustomField")]
-    pub remove_custom_field: mod_wsd::RemoveCustomField,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveCustomFieldInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveCustomFieldInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveCustomFieldOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveCustomFieldResponse")]
-    pub remove_custom_field_response: mod_wsd::RemoveCustomFieldResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveCustomFieldOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveCustomFieldOutputEnvelopeBody,
-}
-pub async fn remove_custom_field(
-    req: RemoveCustomFieldInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RemoveCustomFieldOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveCustomField";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CreateCustomer */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CreateCustomerInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CreateCustomer")]
-    pub create_customer: mod_wsd::CreateCustomer,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CreateCustomerInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateCustomerInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CreateCustomerOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CreateCustomerResponse")]
-    pub create_customer_response: mod_wsd::CreateCustomerResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CreateCustomerOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateCustomerOutputEnvelopeBody,
-}
-pub async fn create_customer(
-    req: CreateCustomerInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CreateCustomerOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CreateCustomer";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddContact */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddContactInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddContact")]
-    pub add_contact: mod_wsd::AddContact,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddContactInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddContactInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddContactOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddContactResponse")]
-    pub add_contact_response: mod_wsd::AddContactResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddContactOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddContactOutputEnvelopeBody,
-}
-pub async fn add_contact(
-    req: AddContactInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddContactOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddContact";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetCustSQLColumns */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustSQLColumnsInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustSQLColumns")]
-    pub get_cust_sql_columns: mod_wsd::GetCustSQLColumns,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustSQLColumnsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustSQLColumnsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustSQLColumnsOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustSQLColumnsResponse")]
-    pub get_cust_sql_columns_response: mod_wsd::GetCustSQLColumnsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustSQLColumnsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustSQLColumnsOutputEnvelopeBody,
-}
-pub async fn get_cust_sql_columns(
-    req: GetCustSQLColumnsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetCustSQLColumnsOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustSQLColumns";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetSearchableFields */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetSearchableFieldsInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetSearchableFields")]
-    pub get_searchable_fields: mod_wsd::GetSearchableFields,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetSearchableFieldsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetSearchableFieldsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetSearchableFieldsOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetSearchableFieldsResponse")]
-    pub get_searchable_fields_response: mod_wsd::GetSearchableFieldsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetSearchableFieldsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetSearchableFieldsOutputEnvelopeBody,
-}
-pub async fn get_searchable_fields(
-    req: GetSearchableFieldsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetSearchableFieldsOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetSearchableFields";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* ReadCustomer */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "ReadCustomer")]
-    pub read_customer: mod_wsd::ReadCustomer,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ReadCustomerInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "ReadCustomerResponse")]
-    pub read_customer_response: mod_wsd::ReadCustomerResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ReadCustomerOutputEnvelopeBody,
-}
-pub async fn read_customer(
-    req: ReadCustomerInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<ReadCustomerOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.ReadCustomer";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateTitle */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateTitleInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateTitle")]
-    pub update_title: mod_wsd::UpdateTitle,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateTitleInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateTitleInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateTitleOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateTitleResponse")]
-    pub update_title_response: mod_wsd::UpdateTitleResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateTitleOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateTitleOutputEnvelopeBody,
-}
-pub async fn update_title(
-    req: UpdateTitleInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateTitleOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateTitle";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetNoCustContactsByTime */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetNoCustContactsByTimeInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetNoCustContactsByTime")]
-    pub get_no_cust_contacts_by_time: mod_wsd::GetNoCustContactsByTime,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetNoCustContactsByTimeInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetNoCustContactsByTimeInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetNoCustContactsByTimeOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetNoCustContactsByTimeResponse")]
-    pub get_no_cust_contacts_by_time_response: mod_wsd::GetNoCustContactsByTimeResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetNoCustContactsByTimeOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetNoCustContactsByTimeOutputEnvelopeBody,
-}
-pub async fn get_no_cust_contacts_by_time(
-    req: GetNoCustContactsByTimeInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetNoCustContactsByTimeOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetNoCustContactsByTime";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddSipUri */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddSipUriInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddSipUri")]
-    pub add_sip_uri: mod_wsd::AddSipUri,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddSipUriInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddSipUriInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddSipUriOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddSipUriResponse")]
-    pub add_sip_uri_response: mod_wsd::AddSipUriResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddSipUriOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddSipUriOutputEnvelopeBody,
-}
-pub async fn add_sip_uri(
-    req: AddSipUriInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddSipUriOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddSipUri";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetCustomerBySipUri */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerBySipUriInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerBySipUri")]
-    pub get_customer_by_sip_uri: mod_wsd::GetCustomerBySipUri,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerBySipUriInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerBySipUriInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerBySipUriOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerBySipUriResponse")]
-    pub get_customer_by_sip_uri_response: mod_wsd::GetCustomerBySipUriResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerBySipUriOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerBySipUriOutputEnvelopeBody,
-}
-pub async fn get_customer_by_sip_uri(
-    req: GetCustomerBySipUriInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetCustomerBySipUriOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerBySipUri";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateLastName */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateLastNameInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateLastName")]
-    pub update_last_name: mod_wsd::UpdateLastName,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateLastNameInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateLastNameInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateLastNameOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateLastNameResponse")]
-    pub update_last_name_response: mod_wsd::UpdateLastNameResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateLastNameOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateLastNameOutputEnvelopeBody,
-}
-pub async fn update_last_name(
-    req: UpdateLastNameInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateLastNameOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateLastName";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdatePassword */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdatePasswordInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdatePassword")]
-    pub update_password: mod_wsd::UpdatePassword,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdatePasswordInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdatePasswordInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdatePasswordOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdatePasswordResponse")]
-    pub update_password_response: mod_wsd::UpdatePasswordResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdatePasswordOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdatePasswordOutputEnvelopeBody,
-}
-pub async fn update_password(
-    req: UpdatePasswordInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdatePasswordOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdatePassword";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
 /* GetCustomerByEmail */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -3743,414 +2714,6 @@ pub async fn get_customer_by_email(
     credentials: Option<(String, String)>,
 ) -> error::SoapResult<GetCustomerByEmailOutputEnvelope> {
     let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByEmail";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddPhoneNumber */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddPhoneNumberInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddPhoneNumber")]
-    pub add_phone_number: mod_wsd::AddPhoneNumber,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddPhoneNumberInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddPhoneNumberInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddPhoneNumberOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddPhoneNumberResponse")]
-    pub add_phone_number_response: mod_wsd::AddPhoneNumberResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddPhoneNumberOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddPhoneNumberOutputEnvelopeBody,
-}
-pub async fn add_phone_number(
-    req: AddPhoneNumberInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddPhoneNumberOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddPhoneNumber";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetCustomFieldTemplates */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomFieldTemplatesInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomFieldTemplates")]
-    pub get_custom_field_templates: mod_wsd::GetCustomFieldTemplates,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomFieldTemplatesInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomFieldTemplatesInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomFieldTemplatesOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomFieldTemplatesResponse")]
-    pub get_custom_field_templates_response: mod_wsd::GetCustomFieldTemplatesResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomFieldTemplatesOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomFieldTemplatesOutputEnvelopeBody,
-}
-pub async fn get_custom_field_templates(
-    req: GetCustomFieldTemplatesInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetCustomFieldTemplatesOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomFieldTemplates";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* SendPasswordReminder */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendPasswordReminderInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "SendPasswordReminder")]
-    pub send_password_reminder: mod_wsd::SendPasswordReminder,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendPasswordReminderInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SendPasswordReminderInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendPasswordReminderOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "SendPasswordReminderResponse")]
-    pub send_password_reminder_response: mod_wsd::SendPasswordReminderResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendPasswordReminderOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SendPasswordReminderOutputEnvelopeBody,
-}
-pub async fn send_password_reminder(
-    req: SendPasswordReminderInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SendPasswordReminderOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.SendPasswordReminder";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetCustomerByUserName */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByUserNameInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByUserName")]
-    pub get_customer_by_user_name: mod_wsd::GetCustomerByUserName,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByUserNameInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByUserNameInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByUserNameOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByUserNameResponse")]
-    pub get_customer_by_user_name_response: mod_wsd::GetCustomerByUserNameResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByUserNameOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByUserNameOutputEnvelopeBody,
-}
-pub async fn get_customer_by_user_name(
-    req: GetCustomerByUserNameInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetCustomerByUserNameOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByUserName";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateUserName */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateUserNameInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateUserName")]
-    pub update_user_name: mod_wsd::UpdateUserName,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateUserNameInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateUserNameInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateUserNameOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateUserNameResponse")]
-    pub update_user_name_response: mod_wsd::UpdateUserNameResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateUserNameOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateUserNameOutputEnvelopeBody,
-}
-pub async fn update_user_name(
-    req: UpdateUserNameInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateUserNameOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateUserName";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CreateCustomerBySipUri */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CreateCustomerBySipUriInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CreateCustomerBySipUri")]
-    pub create_customer_by_sip_uri: mod_wsd::CreateCustomerBySipUri,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CreateCustomerBySipUriInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateCustomerBySipUriInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CreateCustomerBySipUriOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CreateCustomerBySipUriResponse")]
-    pub create_customer_by_sip_uri_response: mod_wsd::CreateCustomerBySipUriResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CreateCustomerBySipUriOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateCustomerBySipUriOutputEnvelopeBody,
-}
-pub async fn create_customer_by_sip_uri(
-    req: CreateCustomerBySipUriInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CreateCustomerBySipUriOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CreateCustomerBySipUri";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* SetAgentID */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SetAgentIDInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "SetAgentID")]
-    pub set_agent_id: mod_wsd::SetAgentID,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SetAgentIDInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetAgentIDInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SetAgentIDOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "SetAgentIDResponse")]
-    pub set_agent_id_response: mod_wsd::SetAgentIDResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SetAgentIDOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetAgentIDOutputEnvelopeBody,
-}
-pub async fn set_agent_id(
-    req: SetAgentIDInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SetAgentIDOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.SetAgentID";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateObjection */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateObjectionInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateObjection")]
-    pub update_objection: mod_wsd::UpdateObjection,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateObjectionInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateObjectionInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateObjectionOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateObjectionResponse")]
-    pub update_objection_response: mod_wsd::UpdateObjectionResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateObjectionOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateObjectionOutputEnvelopeBody,
-}
-pub async fn update_objection(
-    req: UpdateObjectionInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateObjectionOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateObjection";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddEmailAddress */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddEmailAddressInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddEmailAddress")]
-    pub add_email_address: mod_wsd::AddEmailAddress,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddEmailAddressInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddEmailAddressInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddEmailAddressOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddEmailAddressResponse")]
-    pub add_email_address_response: mod_wsd::AddEmailAddressResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddEmailAddressOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddEmailAddressOutputEnvelopeBody,
-}
-pub async fn add_email_address(
-    req: AddEmailAddressInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddEmailAddressOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddEmailAddress";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RemoveAddress */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveAddressInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveAddress")]
-    pub remove_address: mod_wsd::RemoveAddress,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveAddressInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveAddressInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveAddressOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveAddressResponse")]
-    pub remove_address_response: mod_wsd::RemoveAddressResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveAddressOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveAddressOutputEnvelopeBody,
-}
-pub async fn remove_address(
-    req: RemoveAddressInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RemoveAddressOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveAddress";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CleanCustomer */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CleanCustomerInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CleanCustomer")]
-    pub clean_customer: mod_wsd::CleanCustomer,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CleanCustomerInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CleanCustomerInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CleanCustomerOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CleanCustomerResponse")]
-    pub clean_customer_response: mod_wsd::CleanCustomerResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CleanCustomerOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CleanCustomerOutputEnvelopeBody,
-}
-pub async fn clean_customer(
-    req: CleanCustomerInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CleanCustomerOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CleanCustomer";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CarbonCopy */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CarbonCopyInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CarbonCopy")]
-    pub carbon_copy: mod_wsd::CarbonCopy,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CarbonCopyInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CarbonCopyInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CarbonCopyOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CarbonCopyResponse")]
-    pub carbon_copy_response: mod_wsd::CarbonCopyResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CarbonCopyOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CarbonCopyOutputEnvelopeBody,
-}
-pub async fn carbon_copy(
-    req: CarbonCopyInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CarbonCopyOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CarbonCopy";
     helpers::send_soap_request(url, credentials, req).await
 }
 
@@ -4188,37 +2751,71 @@ pub async fn customer_search(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* RemoveContact */
+/* ReadCustomerHistory */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveContactInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveContact")]
-    pub remove_contact: mod_wsd::RemoveContact,
+pub struct ReadCustomerHistoryInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "ReadCustomerHistory")]
+    pub read_customer_history: mod_wsd::ReadCustomerHistory,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveContactInputEnvelope {
+pub struct ReadCustomerHistoryInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveContactInputEnvelopeBody,
+    pub body: ReadCustomerHistoryInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveContactOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveContactResponse")]
-    pub remove_contact_response: mod_wsd::RemoveContactResponse,
+pub struct ReadCustomerHistoryOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "ReadCustomerHistoryResponse")]
+    pub read_customer_history_response: mod_wsd::ReadCustomerHistoryResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveContactOutputEnvelope {
+pub struct ReadCustomerHistoryOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveContactOutputEnvelopeBody,
+    pub body: ReadCustomerHistoryOutputEnvelopeBody,
 }
-pub async fn remove_contact(
-    req: RemoveContactInputEnvelope,
+pub async fn read_customer_history(
+    req: ReadCustomerHistoryInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<RemoveContactOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveContact";
+) -> error::SoapResult<ReadCustomerHistoryOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.ReadCustomerHistory";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateTitle */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateTitleInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateTitle")]
+    pub update_title: mod_wsd::UpdateTitle,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateTitleInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateTitleInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateTitleOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateTitleResponse")]
+    pub update_title_response: mod_wsd::UpdateTitleResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateTitleOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateTitleOutputEnvelopeBody,
+}
+pub async fn update_title(
+    req: UpdateTitleInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateTitleOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateTitle";
     helpers::send_soap_request(url, credentials, req).await
 }
 
@@ -4256,6 +2853,40 @@ pub async fn remove_sip_uri(
     helpers::send_soap_request(url, credentials, req).await
 }
 
+/* CleanCustomer */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CleanCustomerInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CleanCustomer")]
+    pub clean_customer: mod_wsd::CleanCustomer,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CleanCustomerInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CleanCustomerInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CleanCustomerOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CleanCustomerResponse")]
+    pub clean_customer_response: mod_wsd::CleanCustomerResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CleanCustomerOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CleanCustomerOutputEnvelopeBody,
+}
+pub async fn clean_customer(
+    req: CleanCustomerInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CleanCustomerOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CleanCustomer";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
 /* UpdateCustomer */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -4289,6 +2920,1400 @@ pub async fn update_customer(
     let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateCustomer";
     helpers::send_soap_request(url, credentials, req).await
 }
+
+/* UpdateLastName */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateLastNameInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateLastName")]
+    pub update_last_name: mod_wsd::UpdateLastName,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateLastNameInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateLastNameInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateLastNameOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateLastNameResponse")]
+    pub update_last_name_response: mod_wsd::UpdateLastNameResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateLastNameOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateLastNameOutputEnvelopeBody,
+}
+pub async fn update_last_name(
+    req: UpdateLastNameInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateLastNameOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateLastName";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateUserName */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateUserNameInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateUserName")]
+    pub update_user_name: mod_wsd::UpdateUserName,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateUserNameInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateUserNameInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateUserNameOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateUserNameResponse")]
+    pub update_user_name_response: mod_wsd::UpdateUserNameResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateUserNameOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateUserNameOutputEnvelopeBody,
+}
+pub async fn update_user_name(
+    req: UpdateUserNameInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateUserNameOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateUserName";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* AddEmailAddress */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddEmailAddressInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddEmailAddress")]
+    pub add_email_address: mod_wsd::AddEmailAddress,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddEmailAddressInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddEmailAddressInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddEmailAddressOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddEmailAddressResponse")]
+    pub add_email_address_response: mod_wsd::AddEmailAddressResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddEmailAddressOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddEmailAddressOutputEnvelopeBody,
+}
+pub async fn add_email_address(
+    req: AddEmailAddressInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddEmailAddressOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddEmailAddress";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetCustomerBySipUri */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerBySipUriInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerBySipUri")]
+    pub get_customer_by_sip_uri: mod_wsd::GetCustomerBySipUri,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerBySipUriInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerBySipUriInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerBySipUriOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerBySipUriResponse")]
+    pub get_customer_by_sip_uri_response: mod_wsd::GetCustomerBySipUriResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerBySipUriOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerBySipUriOutputEnvelopeBody,
+}
+pub async fn get_customer_by_sip_uri(
+    req: GetCustomerBySipUriInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetCustomerBySipUriOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerBySipUri";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetCustomerByName */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByNameInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByName")]
+    pub get_customer_by_name: mod_wsd::GetCustomerByName,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByNameInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerByNameInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByNameOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByNameResponse")]
+    pub get_customer_by_name_response: mod_wsd::GetCustomerByNameResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByNameOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerByNameOutputEnvelopeBody,
+}
+pub async fn get_customer_by_name(
+    req: GetCustomerByNameInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetCustomerByNameOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByName";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RemovePhoneNumber */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemovePhoneNumberInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemovePhoneNumber")]
+    pub remove_phone_number: mod_wsd::RemovePhoneNumber,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemovePhoneNumberInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemovePhoneNumberInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemovePhoneNumberOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemovePhoneNumberResponse")]
+    pub remove_phone_number_response: mod_wsd::RemovePhoneNumberResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemovePhoneNumberOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemovePhoneNumberOutputEnvelopeBody,
+}
+pub async fn remove_phone_number(
+    req: RemovePhoneNumberInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RemovePhoneNumberOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemovePhoneNumber";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetAllCustomers */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetAllCustomersInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetAllCustomers")]
+    pub get_all_customers: mod_wsd::GetAllCustomers,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetAllCustomersInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetAllCustomersInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetAllCustomersOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetAllCustomersResponse")]
+    pub get_all_customers_response: mod_wsd::GetAllCustomersResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetAllCustomersOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetAllCustomersOutputEnvelopeBody,
+}
+pub async fn get_all_customers(
+    req: GetAllCustomersInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetAllCustomersOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetAllCustomers";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetSearchableFields */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetSearchableFieldsInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetSearchableFields")]
+    pub get_searchable_fields: mod_wsd::GetSearchableFields,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetSearchableFieldsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetSearchableFieldsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetSearchableFieldsOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetSearchableFieldsResponse")]
+    pub get_searchable_fields_response: mod_wsd::GetSearchableFieldsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetSearchableFieldsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetSearchableFieldsOutputEnvelopeBody,
+}
+pub async fn get_searchable_fields(
+    req: GetSearchableFieldsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetSearchableFieldsOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetSearchableFields";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* AddContact */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddContactInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddContact")]
+    pub add_contact: mod_wsd::AddContact,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddContactInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddContactInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddContactOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddContactResponse")]
+    pub add_contact_response: mod_wsd::AddContactResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddContactOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddContactOutputEnvelopeBody,
+}
+pub async fn add_contact(
+    req: AddContactInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddContactOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddContact";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* DeleteCustomer */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct DeleteCustomerInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "DeleteCustomer")]
+    pub delete_customer: mod_wsd::DeleteCustomer,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct DeleteCustomerInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteCustomerInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct DeleteCustomerOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "DeleteCustomerResponse")]
+    pub delete_customer_response: mod_wsd::DeleteCustomerResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct DeleteCustomerOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteCustomerOutputEnvelopeBody,
+}
+pub async fn delete_customer(
+    req: DeleteCustomerInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<DeleteCustomerOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.DeleteCustomer";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CarbonCopy */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CarbonCopyInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CarbonCopy")]
+    pub carbon_copy: mod_wsd::CarbonCopy,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CarbonCopyInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CarbonCopyInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CarbonCopyOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CarbonCopyResponse")]
+    pub carbon_copy_response: mod_wsd::CarbonCopyResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CarbonCopyOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CarbonCopyOutputEnvelopeBody,
+}
+pub async fn carbon_copy(
+    req: CarbonCopyInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CarbonCopyOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CarbonCopy";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RemoveAddress */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveAddressInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveAddress")]
+    pub remove_address: mod_wsd::RemoveAddress,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveAddressInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveAddressInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveAddressOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveAddressResponse")]
+    pub remove_address_response: mod_wsd::RemoveAddressResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveAddressOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveAddressOutputEnvelopeBody,
+}
+pub async fn remove_address(
+    req: RemoveAddressInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RemoveAddressOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveAddress";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CreateCustomer */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CreateCustomerInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CreateCustomer")]
+    pub create_customer: mod_wsd::CreateCustomer,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CreateCustomerInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateCustomerInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CreateCustomerOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CreateCustomerResponse")]
+    pub create_customer_response: mod_wsd::CreateCustomerResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CreateCustomerOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateCustomerOutputEnvelopeBody,
+}
+pub async fn create_customer(
+    req: CreateCustomerInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CreateCustomerOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CreateCustomer";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RegisterCustomer */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterCustomerInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RegisterCustomer")]
+    pub register_customer: mod_wsd::RegisterCustomer,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterCustomerInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RegisterCustomerInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterCustomerOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RegisterCustomerResponse")]
+    pub register_customer_response: mod_wsd::RegisterCustomerResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterCustomerOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RegisterCustomerOutputEnvelopeBody,
+}
+pub async fn register_customer(
+    req: RegisterCustomerInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RegisterCustomerOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RegisterCustomer";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* AddPhoneNumber */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddPhoneNumberInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddPhoneNumber")]
+    pub add_phone_number: mod_wsd::AddPhoneNumber,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddPhoneNumberInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddPhoneNumberInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddPhoneNumberOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddPhoneNumberResponse")]
+    pub add_phone_number_response: mod_wsd::AddPhoneNumberResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddPhoneNumberOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddPhoneNumberOutputEnvelopeBody,
+}
+pub async fn add_phone_number(
+    req: AddPhoneNumberInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddPhoneNumberOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddPhoneNumber";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetNoCustContactsByTime */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetNoCustContactsByTimeInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetNoCustContactsByTime")]
+    pub get_no_cust_contacts_by_time: mod_wsd::GetNoCustContactsByTime,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetNoCustContactsByTimeInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetNoCustContactsByTimeInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetNoCustContactsByTimeOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetNoCustContactsByTimeResponse")]
+    pub get_no_cust_contacts_by_time_response: mod_wsd::GetNoCustContactsByTimeResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetNoCustContactsByTimeOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetNoCustContactsByTimeOutputEnvelopeBody,
+}
+pub async fn get_no_cust_contacts_by_time(
+    req: GetNoCustContactsByTimeInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetNoCustContactsByTimeOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetNoCustContactsByTime";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RegisterAnonymousCustomer */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterAnonymousCustomerInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RegisterAnonymousCustomer")]
+    pub register_anonymous_customer: mod_wsd::RegisterAnonymousCustomer,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterAnonymousCustomerInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RegisterAnonymousCustomerInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterAnonymousCustomerOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RegisterAnonymousCustomerResponse")]
+    pub register_anonymous_customer_response: mod_wsd::RegisterAnonymousCustomerResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterAnonymousCustomerOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RegisterAnonymousCustomerOutputEnvelopeBody,
+}
+pub async fn register_anonymous_customer(
+    req: RegisterAnonymousCustomerInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RegisterAnonymousCustomerOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RegisterAnonymousCustomer";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetCustomerByPhoneNumber */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByPhoneNumberInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByPhoneNumber")]
+    pub get_customer_by_phone_number: mod_wsd::GetCustomerByPhoneNumber,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByPhoneNumberInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerByPhoneNumberInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByPhoneNumberOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByPhoneNumberResponse")]
+    pub get_customer_by_phone_number_response: mod_wsd::GetCustomerByPhoneNumberResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByPhoneNumberOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerByPhoneNumberOutputEnvelopeBody,
+}
+pub async fn get_customer_by_phone_number(
+    req: GetCustomerByPhoneNumberInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetCustomerByPhoneNumberOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByPhoneNumber";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CreateCustomerBySipUri */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CreateCustomerBySipUriInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CreateCustomerBySipUri")]
+    pub create_customer_by_sip_uri: mod_wsd::CreateCustomerBySipUri,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CreateCustomerBySipUriInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateCustomerBySipUriInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CreateCustomerBySipUriOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CreateCustomerBySipUriResponse")]
+    pub create_customer_by_sip_uri_response: mod_wsd::CreateCustomerBySipUriResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CreateCustomerBySipUriOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateCustomerBySipUriOutputEnvelopeBody,
+}
+pub async fn create_customer_by_sip_uri(
+    req: CreateCustomerBySipUriInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CreateCustomerBySipUriOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CreateCustomerBySipUri";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetCustomerByContactId */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByContactIdInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByContactId")]
+    pub get_customer_by_contact_id: mod_wsd::GetCustomerByContactId,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByContactIdInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerByContactIdInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByContactIdOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByContactIdResponse")]
+    pub get_customer_by_contact_id_response: mod_wsd::GetCustomerByContactIdResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByContactIdOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerByContactIdOutputEnvelopeBody,
+}
+pub async fn get_customer_by_contact_id(
+    req: GetCustomerByContactIdInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetCustomerByContactIdOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByContactId";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* ImpersonateCustomer */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ImpersonateCustomerInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "ImpersonateCustomer")]
+    pub impersonate_customer: mod_wsd::ImpersonateCustomer,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ImpersonateCustomerInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ImpersonateCustomerInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ImpersonateCustomerOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "ImpersonateCustomerResponse")]
+    pub impersonate_customer_response: mod_wsd::ImpersonateCustomerResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ImpersonateCustomerOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ImpersonateCustomerOutputEnvelopeBody,
+}
+pub async fn impersonate_customer(
+    req: ImpersonateCustomerInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<ImpersonateCustomerOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.ImpersonateCustomer";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CustomerAssociation */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CustomerAssociationInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CustomerAssociation")]
+    pub customer_association: mod_wsd::CustomerAssociation,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CustomerAssociationInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CustomerAssociationInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CustomerAssociationOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CustomerAssociationResponse")]
+    pub customer_association_response: mod_wsd::CustomerAssociationResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CustomerAssociationOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CustomerAssociationOutputEnvelopeBody,
+}
+pub async fn customer_association(
+    req: CustomerAssociationInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CustomerAssociationOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CustomerAssociation";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* ReadCustomer */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ReadCustomerInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "ReadCustomer")]
+    pub read_customer: mod_wsd::ReadCustomer,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ReadCustomerInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ReadCustomerInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ReadCustomerOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "ReadCustomerResponse")]
+    pub read_customer_response: mod_wsd::ReadCustomerResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ReadCustomerOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ReadCustomerOutputEnvelopeBody,
+}
+pub async fn read_customer(
+    req: ReadCustomerInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<ReadCustomerOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.ReadCustomer";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RemoveContact */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveContactInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveContact")]
+    pub remove_contact: mod_wsd::RemoveContact,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveContactInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveContactInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveContactOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveContactResponse")]
+    pub remove_contact_response: mod_wsd::RemoveContactResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveContactOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveContactOutputEnvelopeBody,
+}
+pub async fn remove_contact(
+    req: RemoveContactInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RemoveContactOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveContact";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* AddCustomField */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddCustomFieldInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddCustomField")]
+    pub add_custom_field: mod_wsd::AddCustomField,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddCustomFieldInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddCustomFieldInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddCustomFieldOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddCustomFieldResponse")]
+    pub add_custom_field_response: mod_wsd::AddCustomFieldResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddCustomFieldOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddCustomFieldOutputEnvelopeBody,
+}
+pub async fn add_custom_field(
+    req: AddCustomFieldInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddCustomFieldOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddCustomField";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdatePassword */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdatePasswordInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdatePassword")]
+    pub update_password: mod_wsd::UpdatePassword,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdatePasswordInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdatePasswordInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdatePasswordOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdatePasswordResponse")]
+    pub update_password_response: mod_wsd::UpdatePasswordResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdatePasswordOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdatePasswordOutputEnvelopeBody,
+}
+pub async fn update_password(
+    req: UpdatePasswordInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdatePasswordOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdatePassword";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateRegisterDate */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateRegisterDateInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateRegisterDate")]
+    pub update_register_date: mod_wsd::UpdateRegisterDate,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateRegisterDateInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateRegisterDateInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateRegisterDateOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateRegisterDateResponse")]
+    pub update_register_date_response: mod_wsd::UpdateRegisterDateResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateRegisterDateOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateRegisterDateOutputEnvelopeBody,
+}
+pub async fn update_register_date(
+    req: UpdateRegisterDateInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateRegisterDateOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateRegisterDate";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SendPasswordReminder */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendPasswordReminderInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "SendPasswordReminder")]
+    pub send_password_reminder: mod_wsd::SendPasswordReminder,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendPasswordReminderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SendPasswordReminderInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendPasswordReminderOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "SendPasswordReminderResponse")]
+    pub send_password_reminder_response: mod_wsd::SendPasswordReminderResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendPasswordReminderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SendPasswordReminderOutputEnvelopeBody,
+}
+pub async fn send_password_reminder(
+    req: SendPasswordReminderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SendPasswordReminderOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.SendPasswordReminder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetCustSQLColumns */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustSQLColumnsInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustSQLColumns")]
+    pub get_cust_sql_columns: mod_wsd::GetCustSQLColumns,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustSQLColumnsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustSQLColumnsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustSQLColumnsOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustSQLColumnsResponse")]
+    pub get_cust_sql_columns_response: mod_wsd::GetCustSQLColumnsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustSQLColumnsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustSQLColumnsOutputEnvelopeBody,
+}
+pub async fn get_cust_sql_columns(
+    req: GetCustSQLColumnsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetCustSQLColumnsOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustSQLColumns";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* AddSipUri */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddSipUriInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddSipUri")]
+    pub add_sip_uri: mod_wsd::AddSipUri,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddSipUriInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddSipUriInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddSipUriOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddSipUriResponse")]
+    pub add_sip_uri_response: mod_wsd::AddSipUriResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddSipUriOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddSipUriOutputEnvelopeBody,
+}
+pub async fn add_sip_uri(
+    req: AddSipUriInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddSipUriOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddSipUri";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SendADPasswordReminder */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendADPasswordReminderInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "SendADPasswordReminder")]
+    pub send_ad_password_reminder: mod_wsd::SendADPasswordReminder,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendADPasswordReminderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SendADPasswordReminderInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendADPasswordReminderOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "SendADPasswordReminderResponse")]
+    pub send_ad_password_reminder_response: mod_wsd::SendADPasswordReminderResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendADPasswordReminderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SendADPasswordReminderOutputEnvelopeBody,
+}
+pub async fn send_ad_password_reminder(
+    req: SendADPasswordReminderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SendADPasswordReminderOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.SendADPasswordReminder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateFirstName */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateFirstNameInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateFirstName")]
+    pub update_first_name: mod_wsd::UpdateFirstName,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateFirstNameInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateFirstNameInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateFirstNameOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateFirstNameResponse")]
+    pub update_first_name_response: mod_wsd::UpdateFirstNameResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateFirstNameOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateFirstNameOutputEnvelopeBody,
+}
+pub async fn update_first_name(
+    req: UpdateFirstNameInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateFirstNameOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateFirstName";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateObjection */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateObjectionInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateObjection")]
+    pub update_objection: mod_wsd::UpdateObjection,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateObjectionInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateObjectionInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateObjectionOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateObjectionResponse")]
+    pub update_objection_response: mod_wsd::UpdateObjectionResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateObjectionOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateObjectionOutputEnvelopeBody,
+}
+pub async fn update_objection(
+    req: UpdateObjectionInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateObjectionOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateObjection";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdatePreferredAgent */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdatePreferredAgentInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdatePreferredAgent")]
+    pub update_preferred_agent: mod_wsd::UpdatePreferredAgent,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdatePreferredAgentInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdatePreferredAgentInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdatePreferredAgentOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdatePreferredAgentResponse")]
+    pub update_preferred_agent_response: mod_wsd::UpdatePreferredAgentResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdatePreferredAgentOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdatePreferredAgentOutputEnvelopeBody,
+}
+pub async fn update_preferred_agent(
+    req: UpdatePreferredAgentInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdatePreferredAgentOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdatePreferredAgent";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* AddAddress */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddAddressInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddAddress")]
+    pub add_address: mod_wsd::AddAddress,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddAddressInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddAddressInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddAddressOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddAddressResponse")]
+    pub add_address_response: mod_wsd::AddAddressResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddAddressOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddAddressOutputEnvelopeBody,
+}
+pub async fn add_address(
+    req: AddAddressInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddAddressOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddAddress";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetCustomerByUserName */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByUserNameInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByUserName")]
+    pub get_customer_by_user_name: mod_wsd::GetCustomerByUserName,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByUserNameInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerByUserNameInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByUserNameOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByUserNameResponse")]
+    pub get_customer_by_user_name_response: mod_wsd::GetCustomerByUserNameResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByUserNameOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerByUserNameOutputEnvelopeBody,
+}
+pub async fn get_customer_by_user_name(
+    req: GetCustomerByUserNameInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetCustomerByUserNameOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByUserName";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RemoveCustomField */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveCustomFieldInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveCustomField")]
+    pub remove_custom_field: mod_wsd::RemoveCustomField,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveCustomFieldInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveCustomFieldInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveCustomFieldOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveCustomFieldResponse")]
+    pub remove_custom_field_response: mod_wsd::RemoveCustomFieldResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveCustomFieldOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveCustomFieldOutputEnvelopeBody,
+}
+pub async fn remove_custom_field(
+    req: RemoveCustomFieldInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RemoveCustomFieldOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveCustomField";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetCustomFieldTemplates */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomFieldTemplatesInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomFieldTemplates")]
+    pub get_custom_field_templates: mod_wsd::GetCustomFieldTemplates,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomFieldTemplatesInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomFieldTemplatesInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomFieldTemplatesOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomFieldTemplatesResponse")]
+    pub get_custom_field_templates_response: mod_wsd::GetCustomFieldTemplatesResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomFieldTemplatesOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomFieldTemplatesOutputEnvelopeBody,
+}
+pub async fn get_custom_field_templates(
+    req: GetCustomFieldTemplatesInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetCustomFieldTemplatesOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomFieldTemplates";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SetAgentID */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SetAgentIDInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "SetAgentID")]
+    pub set_agent_id: mod_wsd::SetAgentID,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SetAgentIDInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SetAgentIDInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SetAgentIDOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "SetAgentIDResponse")]
+    pub set_agent_id_response: mod_wsd::SetAgentIDResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SetAgentIDOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SetAgentIDOutputEnvelopeBody,
+}
+pub async fn set_agent_id(
+    req: SetAgentIDInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SetAgentIDOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.SetAgentID";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateLoginPage */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateLoginPageInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateLoginPage")]
+    pub update_login_page: mod_wsd::UpdateLoginPage,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateLoginPageInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateLoginPageInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateLoginPageOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateLoginPageResponse")]
+    pub update_login_page_response: mod_wsd::UpdateLoginPageResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateLoginPageOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateLoginPageOutputEnvelopeBody,
+}
+pub async fn update_login_page(
+    req: UpdateLoginPageInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateLoginPageOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateLoginPage";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RemoveEmailAddress */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveEmailAddressInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveEmailAddress")]
+    pub remove_email_address: mod_wsd::RemoveEmailAddress,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveEmailAddressInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveEmailAddressInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveEmailAddressOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveEmailAddressResponse")]
+    pub remove_email_address_response: mod_wsd::RemoveEmailAddressResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveEmailAddressOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveEmailAddressOutputEnvelopeBody,
+}
+pub async fn remove_email_address(
+    req: RemoveEmailAddressInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RemoveEmailAddressOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveEmailAddress";
+    helpers::send_soap_request(url, credentials, req).await
+}
 pub struct CustMultimedia {
     pub client: reqwest::Client,
     pub location: String,
@@ -4303,333 +4328,10 @@ impl CustMultimedia {
         }
     }
 
-    pub async fn register_customer(
-        &self,
-        req: RegisterCustomerInputEnvelope,
-    ) -> error::SoapResult<RegisterCustomerOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn send_ad_password_reminder(
-        &self,
-        req: SendADPasswordReminderInputEnvelope,
-    ) -> error::SoapResult<SendADPasswordReminderOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_customer_by_phone_number(
-        &self,
-        req: GetCustomerByPhoneNumberInputEnvelope,
-    ) -> error::SoapResult<GetCustomerByPhoneNumberOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn impersonate_customer(
-        &self,
-        req: ImpersonateCustomerInputEnvelope,
-    ) -> error::SoapResult<ImpersonateCustomerOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn add_custom_field(
-        &self,
-        req: AddCustomFieldInputEnvelope,
-    ) -> error::SoapResult<AddCustomFieldOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn add_address(&self, req: AddAddressInputEnvelope) -> error::SoapResult<AddAddressOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn delete_customer(
-        &self,
-        req: DeleteCustomerInputEnvelope,
-    ) -> error::SoapResult<DeleteCustomerOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_customer_by_contact_id(
-        &self,
-        req: GetCustomerByContactIdInputEnvelope,
-    ) -> error::SoapResult<GetCustomerByContactIdOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_customer_by_name(
-        &self,
-        req: GetCustomerByNameInputEnvelope,
-    ) -> error::SoapResult<GetCustomerByNameOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn customer_association(
-        &self,
-        req: CustomerAssociationInputEnvelope,
-    ) -> error::SoapResult<CustomerAssociationOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn read_customer_history(
-        &self,
-        req: ReadCustomerHistoryInputEnvelope,
-    ) -> error::SoapResult<ReadCustomerHistoryOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn remove_email_address(
-        &self,
-        req: RemoveEmailAddressInputEnvelope,
-    ) -> error::SoapResult<RemoveEmailAddressOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_first_name(
-        &self,
-        req: UpdateFirstNameInputEnvelope,
-    ) -> error::SoapResult<UpdateFirstNameOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn register_anonymous_customer(
-        &self,
-        req: RegisterAnonymousCustomerInputEnvelope,
-    ) -> error::SoapResult<RegisterAnonymousCustomerOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn remove_phone_number(
-        &self,
-        req: RemovePhoneNumberInputEnvelope,
-    ) -> error::SoapResult<RemovePhoneNumberOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_preferred_agent(
-        &self,
-        req: UpdatePreferredAgentInputEnvelope,
-    ) -> error::SoapResult<UpdatePreferredAgentOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_all_customers(
-        &self,
-        req: GetAllCustomersInputEnvelope,
-    ) -> error::SoapResult<GetAllCustomersOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_login_page(
-        &self,
-        req: UpdateLoginPageInputEnvelope,
-    ) -> error::SoapResult<UpdateLoginPageOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_register_date(
-        &self,
-        req: UpdateRegisterDateInputEnvelope,
-    ) -> error::SoapResult<UpdateRegisterDateOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn remove_custom_field(
-        &self,
-        req: RemoveCustomFieldInputEnvelope,
-    ) -> error::SoapResult<RemoveCustomFieldOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn create_customer(
-        &self,
-        req: CreateCustomerInputEnvelope,
-    ) -> error::SoapResult<CreateCustomerOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn add_contact(&self, req: AddContactInputEnvelope) -> error::SoapResult<AddContactOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_cust_sql_columns(
-        &self,
-        req: GetCustSQLColumnsInputEnvelope,
-    ) -> error::SoapResult<GetCustSQLColumnsOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_searchable_fields(
-        &self,
-        req: GetSearchableFieldsInputEnvelope,
-    ) -> error::SoapResult<GetSearchableFieldsOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn read_customer(&self, req: ReadCustomerInputEnvelope) -> error::SoapResult<ReadCustomerOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_title(&self, req: UpdateTitleInputEnvelope) -> error::SoapResult<UpdateTitleOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_no_cust_contacts_by_time(
-        &self,
-        req: GetNoCustContactsByTimeInputEnvelope,
-    ) -> error::SoapResult<GetNoCustContactsByTimeOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn add_sip_uri(&self, req: AddSipUriInputEnvelope) -> error::SoapResult<AddSipUriOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_customer_by_sip_uri(
-        &self,
-        req: GetCustomerBySipUriInputEnvelope,
-    ) -> error::SoapResult<GetCustomerBySipUriOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_last_name(
-        &self,
-        req: UpdateLastNameInputEnvelope,
-    ) -> error::SoapResult<UpdateLastNameOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_password(
-        &self,
-        req: UpdatePasswordInputEnvelope,
-    ) -> error::SoapResult<UpdatePasswordOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
     pub async fn get_customer_by_email(
         &self,
         req: GetCustomerByEmailInputEnvelope,
     ) -> error::SoapResult<GetCustomerByEmailOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn add_phone_number(
-        &self,
-        req: AddPhoneNumberInputEnvelope,
-    ) -> error::SoapResult<AddPhoneNumberOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_custom_field_templates(
-        &self,
-        req: GetCustomFieldTemplatesInputEnvelope,
-    ) -> error::SoapResult<GetCustomFieldTemplatesOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn send_password_reminder(
-        &self,
-        req: SendPasswordReminderInputEnvelope,
-    ) -> error::SoapResult<SendPasswordReminderOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_customer_by_user_name(
-        &self,
-        req: GetCustomerByUserNameInputEnvelope,
-    ) -> error::SoapResult<GetCustomerByUserNameOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_user_name(
-        &self,
-        req: UpdateUserNameInputEnvelope,
-    ) -> error::SoapResult<UpdateUserNameOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn create_customer_by_sip_uri(
-        &self,
-        req: CreateCustomerBySipUriInputEnvelope,
-    ) -> error::SoapResult<CreateCustomerBySipUriOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn set_agent_id(&self, req: SetAgentIDInputEnvelope) -> error::SoapResult<SetAgentIDOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_objection(
-        &self,
-        req: UpdateObjectionInputEnvelope,
-    ) -> error::SoapResult<UpdateObjectionOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn add_email_address(
-        &self,
-        req: AddEmailAddressInputEnvelope,
-    ) -> error::SoapResult<AddEmailAddressOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn remove_address(
-        &self,
-        req: RemoveAddressInputEnvelope,
-    ) -> error::SoapResult<RemoveAddressOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn clean_customer(
-        &self,
-        req: CleanCustomerInputEnvelope,
-    ) -> error::SoapResult<CleanCustomerOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn carbon_copy(&self, req: CarbonCopyInputEnvelope) -> error::SoapResult<CarbonCopyOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
@@ -4642,10 +4344,15 @@ impl CustMultimedia {
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 
-    pub async fn remove_contact(
+    pub async fn read_customer_history(
         &self,
-        req: RemoveContactInputEnvelope,
-    ) -> error::SoapResult<RemoveContactOutputEnvelope> {
+        req: ReadCustomerHistoryInputEnvelope,
+    ) -> error::SoapResult<ReadCustomerHistoryOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_title(&self, req: UpdateTitleInputEnvelope) -> error::SoapResult<UpdateTitleOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
@@ -4658,10 +4365,328 @@ impl CustMultimedia {
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 
+    pub async fn clean_customer(
+        &self,
+        req: CleanCustomerInputEnvelope,
+    ) -> error::SoapResult<CleanCustomerOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
     pub async fn update_customer(
         &self,
         req: UpdateCustomerInputEnvelope,
     ) -> error::SoapResult<UpdateCustomerOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_last_name(
+        &self,
+        req: UpdateLastNameInputEnvelope,
+    ) -> error::SoapResult<UpdateLastNameOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_user_name(
+        &self,
+        req: UpdateUserNameInputEnvelope,
+    ) -> error::SoapResult<UpdateUserNameOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn add_email_address(
+        &self,
+        req: AddEmailAddressInputEnvelope,
+    ) -> error::SoapResult<AddEmailAddressOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_customer_by_sip_uri(
+        &self,
+        req: GetCustomerBySipUriInputEnvelope,
+    ) -> error::SoapResult<GetCustomerBySipUriOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_customer_by_name(
+        &self,
+        req: GetCustomerByNameInputEnvelope,
+    ) -> error::SoapResult<GetCustomerByNameOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn remove_phone_number(
+        &self,
+        req: RemovePhoneNumberInputEnvelope,
+    ) -> error::SoapResult<RemovePhoneNumberOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_all_customers(
+        &self,
+        req: GetAllCustomersInputEnvelope,
+    ) -> error::SoapResult<GetAllCustomersOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_searchable_fields(
+        &self,
+        req: GetSearchableFieldsInputEnvelope,
+    ) -> error::SoapResult<GetSearchableFieldsOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn add_contact(&self, req: AddContactInputEnvelope) -> error::SoapResult<AddContactOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn delete_customer(
+        &self,
+        req: DeleteCustomerInputEnvelope,
+    ) -> error::SoapResult<DeleteCustomerOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn carbon_copy(&self, req: CarbonCopyInputEnvelope) -> error::SoapResult<CarbonCopyOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn remove_address(
+        &self,
+        req: RemoveAddressInputEnvelope,
+    ) -> error::SoapResult<RemoveAddressOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn create_customer(
+        &self,
+        req: CreateCustomerInputEnvelope,
+    ) -> error::SoapResult<CreateCustomerOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn register_customer(
+        &self,
+        req: RegisterCustomerInputEnvelope,
+    ) -> error::SoapResult<RegisterCustomerOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn add_phone_number(
+        &self,
+        req: AddPhoneNumberInputEnvelope,
+    ) -> error::SoapResult<AddPhoneNumberOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_no_cust_contacts_by_time(
+        &self,
+        req: GetNoCustContactsByTimeInputEnvelope,
+    ) -> error::SoapResult<GetNoCustContactsByTimeOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn register_anonymous_customer(
+        &self,
+        req: RegisterAnonymousCustomerInputEnvelope,
+    ) -> error::SoapResult<RegisterAnonymousCustomerOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_customer_by_phone_number(
+        &self,
+        req: GetCustomerByPhoneNumberInputEnvelope,
+    ) -> error::SoapResult<GetCustomerByPhoneNumberOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn create_customer_by_sip_uri(
+        &self,
+        req: CreateCustomerBySipUriInputEnvelope,
+    ) -> error::SoapResult<CreateCustomerBySipUriOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_customer_by_contact_id(
+        &self,
+        req: GetCustomerByContactIdInputEnvelope,
+    ) -> error::SoapResult<GetCustomerByContactIdOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn impersonate_customer(
+        &self,
+        req: ImpersonateCustomerInputEnvelope,
+    ) -> error::SoapResult<ImpersonateCustomerOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn customer_association(
+        &self,
+        req: CustomerAssociationInputEnvelope,
+    ) -> error::SoapResult<CustomerAssociationOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn read_customer(&self, req: ReadCustomerInputEnvelope) -> error::SoapResult<ReadCustomerOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn remove_contact(
+        &self,
+        req: RemoveContactInputEnvelope,
+    ) -> error::SoapResult<RemoveContactOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn add_custom_field(
+        &self,
+        req: AddCustomFieldInputEnvelope,
+    ) -> error::SoapResult<AddCustomFieldOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_password(
+        &self,
+        req: UpdatePasswordInputEnvelope,
+    ) -> error::SoapResult<UpdatePasswordOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_register_date(
+        &self,
+        req: UpdateRegisterDateInputEnvelope,
+    ) -> error::SoapResult<UpdateRegisterDateOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn send_password_reminder(
+        &self,
+        req: SendPasswordReminderInputEnvelope,
+    ) -> error::SoapResult<SendPasswordReminderOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_cust_sql_columns(
+        &self,
+        req: GetCustSQLColumnsInputEnvelope,
+    ) -> error::SoapResult<GetCustSQLColumnsOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn add_sip_uri(&self, req: AddSipUriInputEnvelope) -> error::SoapResult<AddSipUriOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn send_ad_password_reminder(
+        &self,
+        req: SendADPasswordReminderInputEnvelope,
+    ) -> error::SoapResult<SendADPasswordReminderOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_first_name(
+        &self,
+        req: UpdateFirstNameInputEnvelope,
+    ) -> error::SoapResult<UpdateFirstNameOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_objection(
+        &self,
+        req: UpdateObjectionInputEnvelope,
+    ) -> error::SoapResult<UpdateObjectionOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_preferred_agent(
+        &self,
+        req: UpdatePreferredAgentInputEnvelope,
+    ) -> error::SoapResult<UpdatePreferredAgentOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn add_address(&self, req: AddAddressInputEnvelope) -> error::SoapResult<AddAddressOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_customer_by_user_name(
+        &self,
+        req: GetCustomerByUserNameInputEnvelope,
+    ) -> error::SoapResult<GetCustomerByUserNameOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn remove_custom_field(
+        &self,
+        req: RemoveCustomFieldInputEnvelope,
+    ) -> error::SoapResult<RemoveCustomFieldOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_custom_field_templates(
+        &self,
+        req: GetCustomFieldTemplatesInputEnvelope,
+    ) -> error::SoapResult<GetCustomFieldTemplatesOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn set_agent_id(&self, req: SetAgentIDInputEnvelope) -> error::SoapResult<SetAgentIDOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_login_page(
+        &self,
+        req: UpdateLoginPageInputEnvelope,
+    ) -> error::SoapResult<UpdateLoginPageOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn remove_email_address(
+        &self,
+        req: RemoveEmailAddressInputEnvelope,
+    ) -> error::SoapResult<RemoveEmailAddressOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
@@ -4766,6 +4791,15 @@ pub mod multi_ref {
 
     pub struct MultiRef<T> {
         inner: Arc<RwLock<T>>,
+    }
+
+    impl<T> MultiRef<T> {
+        #[allow(dead_code)]
+        pub fn new(inner: T) -> Self {
+            Self {
+                inner: Arc::new(RwLock::new(inner)),
+            }
+        }
     }
 
     impl<T: YaDeserialize> YaDeserialize for MultiRef<T> {
