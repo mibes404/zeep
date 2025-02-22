@@ -19,9 +19,16 @@ impl<'n> TryFromNode<'n> for ComplexProps {
         // check if the node has an attribute that starts with xmlns
         collect_namespaces_on_node(node, doc);
 
-        let element_name = node
-            .attribute("name")
-            .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?;
+        let mut element_name = node.attribute("name");
+
+        // check if the complexType is wrapped in an element and the name is on the element
+        if element_name.is_none() {
+            element_name = node.parent().and_then(|n| n.attribute("name"));
+        }
+
+        let Some(element_name) = element_name else {
+            return Err(WriterError::AttributeMissing("name".to_string()));
+        };
 
         for n in node.children().filter(Node::is_element) {
             // check if this node is an extension of another node, if so, find the base node and copy all the fields

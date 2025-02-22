@@ -187,7 +187,7 @@ where
 
 fn make_abbreviated_namespace(namespace: &str, existing_namespaces: &[Rc<Namespace>]) -> String {
     fn take_three_chars_max(namespace: &str) -> String {
-        namespace.chars().take(3).collect()
+        namespace.chars().filter(|c| c != &'.').take(3).collect()
     }
 
     let mut append: Option<u8> = None;

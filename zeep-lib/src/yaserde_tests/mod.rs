@@ -1,6 +1,6 @@
 use yaserde_derive::{YaDeserialize, YaSerialize};
 
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "ex", namespaces = {"ex" = "http://example.com"}, rename = "Person")]
 struct Person {
     #[yaserde(prefix = "ex", namespaces = {"ex" = "http://example.com"}, rename = "name")]

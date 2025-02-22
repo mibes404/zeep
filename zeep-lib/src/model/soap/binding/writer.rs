@@ -58,17 +58,17 @@ where
     if let Some(res_name) = res_name {
         writeln!(
             writer,
-            "pub async fn {rust_fn_name}(req: {req_name}, credentials: Option<(String, String)) -> error::SoapResult<{res_name}> {{"
+            "pub async fn {rust_fn_name}(req: {req_name}, credentials: Option<(String, String)>) -> error::SoapResult<{res_name}> {{"
         )?;
     } else {
         writeln!(
             writer,
-            "pub async fn {rust_fn_name}(req: {req_name}, credentials: Option<(String, String)) -> error::SoapResult<()> {{"
+            "pub async fn {rust_fn_name}(req: {req_name}, credentials: Option<(String, String)>) -> error::SoapResult<()> {{"
         )?;
     }
 
     writeln!(writer, "    let url = \"{action}\";")?;
-    writeln!(writer, "    helpers::send_soap_request(url, req, credentials).await")?;
+    writeln!(writer, "    helpers::send_soap_request(url, credentials, req).await")?;
     writeln!(writer, "}}")?;
 
     Ok(())
@@ -99,7 +99,7 @@ where
     let yaserde_ns_header = format!("namespaces = {{ {namespaces} }}");
 
     if !soap_operation.headers.is_empty() {
-        writeln!(writer, "#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]")?;
+        writeln!(writer, "#[derive(Debug, Default, YaSerialize, YaDeserialize)]")?;
         writeln!(writer, "#[yaserde(prefix = \"soapenv\", {yaserde_ns_header})]")?;
         writeln!(writer, "pub struct {envelope_name}Header {{")?;
         for (part_name, header) in &soap_operation.headers {
@@ -121,7 +121,7 @@ where
     let body_field_name = as_field_name(&to_snake_case(body));
     let xml_name = soap_operation.body.rust_type.xml_name().expect("xml_name not found");
 
-    writeln!(writer, "#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]")?;
+    writeln!(writer, "#[derive(Debug, Default, YaSerialize, YaDeserialize)]")?;
 
     if let Some(namespace) = soap_operation.body.in_namespace.as_ref() {
         let abbreviation = namespace.abbreviation.as_str();
@@ -145,7 +145,7 @@ where
     }
     writeln!(writer, "}}")?;
 
-    writeln!(writer, "#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]")?;
+    writeln!(writer, "#[derive(Debug, Default, YaSerialize, YaDeserialize)]")?;
     writeln!(
         writer,
         "#[yaserde(prefix = \"soapenv\", rename = \"Envelope\", {yaserde_ns_header})]"

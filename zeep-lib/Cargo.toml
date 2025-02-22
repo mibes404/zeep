@@ -22,9 +22,9 @@ thiserror = "2"
 const_format = { version = "0.2", features = ["fmt"] }
 
 
-# [[example]]
-# name = "hello"
-# path = "../examples/hello/main.rs"
+[[example]]
+name = "hello"
+path = "../examples/hello/main.rs"
 
 # [[example]]
 # name = "weather"
@@ -35,5 +35,9 @@ name = "temperature"
 path = "../examples/temperature/main.rs"
 
 # [[example]]
-# name = "aacc"
-# path = "../examples/aacc/main.rs"
+# name = "aic"
+# path = "../examples/aic/main.rs"
+
+[[example]]
+name = "aacc"
+path = "../examples/aacc/main.rs"

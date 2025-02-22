@@ -10,7 +10,7 @@ use crate::{
     reader::WriteXml,
 };
 use complex::ComplexProps;
-use element::ElementProps;
+use element::{ElementProps, ElementType};
 use inflector::cases::pascalcase::to_pascal_case;
 use roxmltree::Node;
 use simple::SimpleProps;
@@ -68,37 +68,7 @@ where
     fn write_xml(&self, writer: &mut W) -> WriterResult<()> {
         match self {
             RustType::Ignore => Ok(()),
-            RustType::Complex(props) => {
-                let ComplexProps {
-                    xml_name,
-                    fields,
-                    target_namespace,
-                    comment,
-                } = &**props;
-
-                let rust_name = xml_name_to_rust_name(xml_name);
-
-                if let Some(comment) = comment {
-                    writeln!(writer, "/// {comment}")?;
-                }
-
-                writeln!(writer, "#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]")?;
-                if let Some(tns) = &target_namespace {
-                    let namespaces = format!("\"{}\" = \"{}\"", tns.abbreviation, tns.namespace);
-                    writeln!(
-                        writer,
-                        "#[yaserde(prefix = \"{}\", namespaces = {{{}}}, rename = \"{}\")]",
-                        tns.abbreviation, namespaces, xml_name
-                    )?;
-                }
-                writeln!(writer, "pub struct {rust_name} {{")?;
-                for field in fields {
-                    field.write_xml(writer)?;
-                }
-
-                writeln!(writer, "}}")?;
-                Ok(())
-            }
+            RustType::Complex(props) => write_complex_type(writer, props),
             RustType::Simple(props) => {
                 let SimpleProps {
                     xml_name,
@@ -124,19 +94,65 @@ where
                 Ok(())
             }
             RustType::Element(props) => {
-                let ElementProps { xml_name, rust_type } = &**props;
-
+                let ElementProps { xml_name, element_type } = &**props;
                 let rust_name = xml_name_to_rust_name(xml_name);
-                if rust_type.to_string().eq(&rust_name) {
-                    // NOOP
-                    return Ok(());
+
+                match element_type {
+                    ElementType::RustType(rust_type) => {
+                        if rust_type.to_string().eq(&rust_name) {
+                            // NOOP
+                            return Ok(());
+                        }
+
+                        writeln!(writer, "pub type {rust_name} = {rust_type};")?;
+                    }
+                    ElementType::ComplexType(props) => {
+                        write_complex_type(writer, props)?;
+                    }
+                    ElementType::Unsupported => {
+                        // NOOP
+                    }
                 }
 
-                writeln!(writer, "pub type {rust_name} = {rust_type};")?;
                 Ok(())
             }
         }
     }
+}
+
+fn write_complex_type<W>(writer: &mut W, props: &ComplexProps) -> WriterResult<()>
+where
+    W: io::Write,
+{
+    let ComplexProps {
+        xml_name,
+        fields,
+        target_namespace,
+        comment,
+    } = &props;
+
+    let rust_name = xml_name_to_rust_name(xml_name);
+
+    if let Some(comment) = comment {
+        writeln!(writer, "/// {comment}")?;
+    }
+
+    writeln!(writer, "#[derive(Debug, Default, YaSerialize, YaDeserialize)]")?;
+    if let Some(tns) = &target_namespace {
+        let namespaces = format!("\"{}\" = \"{}\"", tns.abbreviation, tns.namespace);
+        writeln!(
+            writer,
+            "#[yaserde(prefix = \"{}\", namespaces = {{{}}}, rename = \"{}\")]",
+            tns.abbreviation, namespaces, xml_name
+        )?;
+    }
+    writeln!(writer, "pub struct {rust_name} {{")?;
+    for field in fields {
+        field.write_xml(writer)?;
+    }
+
+    writeln!(writer, "}}")?;
+    Ok(())
 }
 
 #[cfg(test)]
@@ -152,7 +168,7 @@ mod tests {
         rust_type.write_xml(&mut writer).unwrap();
 
         let expected = r#"/// A person
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 pub struct Person {
     #[yaserde(rename = "name")]
     pub name: String,
@@ -166,7 +182,7 @@ pub struct Person {
     #[test]
     fn can_write_a_struct_type_with_namespace_to_rust() {
         const EXPECTED: &str = r#"/// A person
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "ex", namespaces = {"ex" = "http://example.com"}, rename = "Person")]
 pub struct Person {
     #[yaserde(rename = "name")]

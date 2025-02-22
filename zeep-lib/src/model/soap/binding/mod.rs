@@ -97,18 +97,20 @@ fn read_soap_operation<'n>(
         .collect::<WriterResult<Vec<SoapAction>>>()?;
     let action = soap_actions.pop();
 
+    let operation_name = node.attribute("name");
+
     // find the input and output nodes
     let input = node
         .children()
         .find(|n| n.is_element() && n.tag_name().name() == "input")
         .map_or(Err(WriterError::NodeNotFound("input".to_string())), |n| {
-            read_port_operation(doc, n, port_operation, InputOrOutput::Input)
+            read_port_operation(doc, n, port_operation, InputOrOutput::Input, operation_name)
         })?;
 
     let output = node
         .children()
         .find(|n| n.is_element() && n.tag_name().name() == "output")
-        .and_then(|n| read_port_operation(doc, n, port_operation, InputOrOutput::Output).ok());
+        .and_then(|n| read_port_operation(doc, n, port_operation, InputOrOutput::Output, operation_name).ok());
 
     Ok(SoapOperation { action, input, output })
 }
@@ -118,9 +120,8 @@ fn read_port_operation<'n>(
     n: Node<'n, 'n>,
     port_operation: &port::SoapOperation,
     in_or_out: InputOrOutput,
+    operation_name: Option<&str>,
 ) -> WriterResult<SoapEnvelope> {
-    let operation_name = n.attribute("name");
-
     // lookup the body and header messages on the port type
     let body = n
         .children()

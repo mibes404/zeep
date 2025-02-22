@@ -1,7 +1,7 @@
 //! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
-//! version: 0.1.11
+//! version: 0.2.0
 //!
 
 #![allow(dead_code)]
@@ -10,308 +10,187 @@
 
 use log::{debug, trace, warn};
 use std::io::{Read, Write};
-use yaserde::{YaDeserialize, YaSerialize};
+use yaserde_derive::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
-#[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-pub struct Header {}
-#[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-#[yaserde(
-    rename = "Fault",
-    namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-    prefix = "soapenv"
-)]
-pub struct SoapFault {
-    #[yaserde(rename = "faultcode", default)]
-    pub fault_code: Option<String>,
-    #[yaserde(rename = "faultstring", default)]
-    pub fault_string: Option<String>,
-}
-impl std::error::Error for SoapFault {}
-
-impl std::fmt::Display for SoapFault {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match (&self.fault_code, &self.fault_string) {
-            (None, None) => Ok(()),
-            (None, Some(fault_string)) => f.write_str(fault_string),
-            (Some(fault_code), None) => f.write_str(fault_code),
-            (Some(fault_code), Some(fault_string)) => {
-                f.write_str(fault_code)?;
-                f.write_str(": ")?;
-                f.write_str(fault_string)
-            }
-        }
-    }
-}
-pub type SoapResponse = Result<(reqwest::StatusCode, String), reqwest::Error>;
-
-pub mod messages {
+pub mod mod_hel {
     use super::*;
-    use async_trait::async_trait;
-    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(rename = "SayHelloResponse")]
-    pub struct SayHelloResponse {
-        #[yaserde(flatten, default)]
-        pub hello_response: types::HelloResponse,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(rename = "SayHello")]
-    pub struct SayHello {
-        #[yaserde(flatten, default)]
-        pub hello_request: types::HelloRequest,
-    }
-}
-
-pub mod types {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        rename = "helloRequest",
-        namespace = "tns: http://learnwebservices.com/services/hello",
-        prefix = "tns"
-    )]
+    #[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+    #[yaserde(prefix = "hel", namespaces = {"hel" = "http://learnwebservices.com/services/hello"}, rename = "helloRequest")]
     pub struct HelloRequest {
-        #[yaserde(rename = "Name", prefix = "tns", default)]
+        #[yaserde(prefix = "hel", rename = "Name")]
         pub name: String,
     }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize, Clone)]
-    #[yaserde(
-        rename = "helloResponse",
-        namespace = "tns: http://learnwebservices.com/services/hello",
-        prefix = "tns"
-    )]
+    #[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+    #[yaserde(prefix = "hel", namespaces = {"hel" = "http://learnwebservices.com/services/hello"}, rename = "helloResponse")]
     pub struct HelloResponse {
-        #[yaserde(rename = "Message", prefix = "tns", default)]
+        #[yaserde(prefix = "hel", rename = "Message")]
         pub message: String,
     }
 }
 
-pub mod ports {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
-    pub type SayHello = messages::SayHello;
+/* SayHello */
 
-    pub type SayHelloResponse = messages::SayHelloResponse;
+#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "hel", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "hel" = "http://learnwebservices.com/services/hello" })]
+pub struct SayHelloInputEnvelopeBody {
+    #[yaserde(prefix = "hel", rename = "HelloRequest")]
+    pub hello_request: mod_hel::HelloRequest,
+}
+#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "hel" = "http://learnwebservices.com/services/hello" })]
+pub struct SayHelloInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SayHelloInputEnvelopeBody,
+}
+#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "hel", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "hel" = "http://learnwebservices.com/services/hello" })]
+pub struct SayHelloOutputEnvelopeBody {
+    #[yaserde(prefix = "hel", rename = "HelloResponse")]
+    pub hello_response: mod_hel::HelloResponse,
+}
+#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "hel" = "http://learnwebservices.com/services/hello" })]
+pub struct SayHelloOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SayHelloOutputEnvelopeBody,
+}
+pub struct HelloEndpointService {
+    pub client: reqwest::Client,
+    pub location: String,
+    pub credentials: Option<(String, String)>,
+}
+impl HelloEndpointService {
+    pub fn new(credentials: Option<(String, String)>) -> Self {
+        Self {
+            client: reqwest::Client::new(),
+            location: "https://apps.learnwebservices.com/services/hello".to_string(),
+            credentials,
+        }
+    }
 
-    #[async_trait]
-    pub trait HelloEndpoint {
-        async fn say_hello(&self, say_hello: SayHello) -> Result<SayHelloResponse, Option<SoapFault>>;
+    pub async fn say_hello(&self, req: SayHelloInputEnvelope) -> error::SoapResult<SayHelloOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 }
+pub mod error {
+    #![allow(dead_code)]
 
-pub mod bindings {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
+    use std::error::Error;
 
-    impl HelloEndpointServiceSoapBinding {
-        async fn send_soap_request<T: YaSerialize>(&self, request: &T, action: &str) -> SoapResponse {
-            let body = to_string(request).expect("failed to generate xml");
-            debug!("SOAP Request: {}", body);
-            let mut req = self
-                .client
-                .post(&self.url)
-                .body(body)
-                .header("Content-Type", "text/xml")
-                .header("Soapaction", action);
-            if let Some(credentials) = &self.credentials {
-                req = req.basic_auth(credentials.0.to_string(), Some(credentials.1.to_string()));
-            }
-            trace!("SOAP Request: {:?}", req);
-            let res = req.send().await?;
-            let status = res.status();
-            debug!("SOAP Status: {}", status);
-            let txt = res.text().await.unwrap_or_default();
-            debug!("SOAP Response: {}", txt);
-            Ok((status, txt))
-        }
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapSayHello {
-        #[yaserde(rename = "tns:HelloRequest", default)]
-        pub body: ports::SayHello,
-        #[yaserde(attribute)]
-        pub xmlns: Option<String>,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        rename = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct SayHelloSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: Option<String>,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapSayHello,
+    #[derive(Debug)]
+    pub enum SoapError {
+        YaserdeError(String),
+        Http(reqwest::Error),
     }
 
-    impl SayHelloSoapEnvelope {
-        #[must_use]
-        pub fn new(body: SoapSayHello) -> Self {
-            SayHelloSoapEnvelope {
-                encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Some("http://learnwebservices.com/services/hello".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
+    pub type SoapResult<T> = Result<T, SoapError>;
+
+    impl std::fmt::Display for SoapError {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            match self {
+                SoapError::YaserdeError(e) => write!(f, "Yaserde error: {e}"),
+                SoapError::Http(e) => write!(f, "HTTP error: {e}"),
             }
         }
     }
 
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    pub struct SoapSayHelloResponse {
-        #[yaserde(rename = "HelloResponse", default)]
-        pub body: Option<ports::SayHelloResponse>,
-        #[yaserde(rename = "Fault", default)]
-        pub fault: Option<SoapFault>,
-    }
-    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(
-        rename = "Envelope",
-        namespace = "soapenv: http://schemas.xmlsoap.org/soap/envelope/",
-        prefix = "soapenv"
-    )]
-    pub struct SayHelloResponseSoapEnvelope {
-        #[yaserde(rename = "encodingStyle", prefix = "soapenv", attribute)]
-        pub encoding_style: Option<String>,
-        #[yaserde(rename = "tns", prefix = "xmlns", attribute)]
-        pub tnsattr: Option<String>,
-        #[yaserde(rename = "urn", prefix = "xmlns", attribute)]
-        pub urnattr: Option<String>,
-        #[yaserde(rename = "xsi", prefix = "xmlns", attribute)]
-        pub xsiattr: Option<String>,
-        #[yaserde(rename = "Header", prefix = "soapenv")]
-        pub header: Option<Header>,
-        #[yaserde(rename = "Body", prefix = "soapenv")]
-        pub body: SoapSayHelloResponse,
-    }
-
-    impl SayHelloResponseSoapEnvelope {
-        #[must_use]
-        pub fn new(body: SoapSayHelloResponse) -> Self {
-            SayHelloResponseSoapEnvelope {
-                encoding_style: Some(SOAP_ENCODING.to_string()),
-                tnsattr: Some("http://learnwebservices.com/services/hello".to_string()),
-                body,
-                urnattr: None,
-                xsiattr: None,
-                header: None,
+    impl Error for SoapError {
+        fn source(&self) -> Option<&(dyn Error + 'static)> {
+            match self {
+                SoapError::YaserdeError(_) => None,
+                SoapError::Http(e) => Some(e),
             }
+        }
+
+        fn cause(&self) -> Option<&dyn Error> {
+            self.source()
         }
     }
 
-    impl Default for HelloEndpointServiceSoapBinding {
-        fn default() -> Self {
-            HelloEndpointServiceSoapBinding {
-                client: reqwest::Client::new(),
-                url: "http://learnwebservices.com/services/hello".to_string(),
-                credentials: None,
-            }
-        }
-    }
-    impl HelloEndpointServiceSoapBinding {
-        #[must_use]
-        pub fn new(url: &str, credentials: Option<(String, String)>) -> Self {
-            HelloEndpointServiceSoapBinding {
-                client: reqwest::Client::new(),
-                url: url.to_string(),
-                credentials,
-            }
-        }
-    }
-    pub struct HelloEndpointServiceSoapBinding {
-        client: reqwest::Client,
-        url: String,
-        credentials: Option<(String, String)>,
-    }
-    #[async_trait]
-    impl ports::HelloEndpoint for HelloEndpointServiceSoapBinding {
-        async fn say_hello(&self, say_hello: ports::SayHello) -> Result<ports::SayHelloResponse, Option<SoapFault>> {
-            let __request = SayHelloSoapEnvelope::new(SoapSayHello {
-                body: say_hello,
-                xmlns: Some("http://learnwebservices.com/services/hello".to_string()),
-            });
-
-            let (status, response) = self.send_soap_request(&__request, "").await.map_err(|err| {
-                warn!("Failed to send SOAP request: {:?}", err);
-                None
-            })?;
-
-            let r: SayHelloResponseSoapEnvelope = from_str(&response).map_err(|err| {
-                warn!("Failed to unmarshal SOAP response: {:?}", err);
-                None
-            })?;
-            if status.is_success() {
-                Ok(r.body.body.expect("missing body"))
-            } else {
-                Err(r.body.fault)
-            }
+    impl From<reqwest::Error> for SoapError {
+        fn from(e: reqwest::Error) -> Self {
+            SoapError::Http(e)
         }
     }
 }
 
-pub mod services {
-    use super::*;
-    use async_trait::async_trait;
-    use yaserde::{de::from_str, ser::to_string, YaDeserialize, YaSerialize};
-    pub struct HelloEndpointService {}
-    impl HelloEndpointService {
-        #[must_use]
-        pub fn new_client(credentials: Option<(String, String)>) -> bindings::HelloEndpointServiceSoapBinding {
-            Self::new_client_with_url("https://apps.learnwebservices.com:443/services/hello", credentials)
-        }
+mod helpers {
+    #![allow(dead_code)]
 
-        #[must_use]
-        pub fn new_client_with_url(
-            url: &str,
-            credentials: Option<(String, String)>,
-        ) -> bindings::HelloEndpointServiceSoapBinding {
-            bindings::HelloEndpointServiceSoapBinding::new(url, credentials)
+    use super::error::{SoapError, SoapResult};
+    use reqwest::Client;
+    use std::fmt;
+    use yaserde::{YaDeserialize, YaSerialize};
+
+    pub(super) async fn send_soap_request<YI, YO, U, P>(
+        url: &str,
+        credentials: Option<(U, P)>,
+        req: YI,
+    ) -> SoapResult<YO>
+    where
+        YI: YaSerialize,
+        YO: YaDeserialize,
+        U: fmt::Display,
+        P: fmt::Display,
+    {
+        let client = Client::new();
+        send_soap_request_using_client(&client, url, credentials, req).await
+    }
+
+    pub(super) async fn send_soap_request_using_client<YI, YO, U, P>(
+        client: &Client,
+        url: &str,
+        credentials: Option<(U, P)>,
+        req: YI,
+    ) -> SoapResult<YO>
+    where
+        YI: YaSerialize,
+        YO: YaDeserialize,
+        U: fmt::Display,
+        P: fmt::Display,
+    {
+        let body = yaserde::ser::to_string(&req).map_err(SoapError::YaserdeError)?;
+        let mut req = client.post(url).body(body);
+        if let Some((username, password)) = credentials {
+            req = req.basic_auth(username, Some(password));
         }
+        let res = req.send().await?;
+        res.error_for_status_ref()?;
+        let response_body = res.text().await?;
+        let response = yaserde::de::from_str(&response_body).map_err(SoapError::YaserdeError)?;
+        Ok(response)
     }
 }
 
-pub mod multiref {
-    //! This module contains the `MultiRef` type which is a wrapper around `Rc<RefCell<T>>` that implements `YaDeserialize` and `YaSerialize` for `T` and allows for multiple references to the same object.
-    //! Inspired by [this](https://github.com/media-io/yaserde/issues/165#issuecomment-1810243674) comment on the yaserde repository.
-    //! Needs `xml-rs` and `yaserde` as dependencies.
-
-    use std::{cell::RefCell, ops::Deref, rc::Rc};
+/// This module contains the `MultiRef` type which is a wrapper around `Arc<RwLock<T>>` that implements `YaDeserialize` and `YaSerialize` for `T` and allows for multiple references to the same object.
+/// Inspired by [this](https://github.com/media-io/yaserde/issues/165#issuecomment-1810243674) comment on the yaserde repository.
+/// Needs `xml-rs`, `tokio` and `yaserde` as dependencies.
+pub mod multi_ref {
+    use std::{ops::Deref, sync::Arc};
+    use tokio::sync::RwLock;
     use yaserde::{YaDeserialize, YaSerialize};
 
     pub struct MultiRef<T> {
-        inner: Rc<RefCell<T>>,
+        inner: Arc<RwLock<T>>,
     }
 
-    impl<T: YaDeserialize + YaSerialize> YaDeserialize for MultiRef<T> {
+    impl<T: YaDeserialize> YaDeserialize for MultiRef<T> {
         fn deserialize<R: std::io::prelude::Read>(reader: &mut yaserde::de::Deserializer<R>) -> Result<Self, String> {
             let inner = T::deserialize(reader)?;
             Ok(Self {
-                inner: Rc::new(RefCell::new(inner)),
+                inner: Arc::new(RwLock::new(inner)),
             })
         }
     }
 
-    impl<T: YaDeserialize + YaSerialize> YaSerialize for MultiRef<T> {
+    impl<T: YaSerialize> YaSerialize for MultiRef<T> {
         fn serialize<W: std::io::prelude::Write>(
             &self,
             writer: &mut yaserde::ser::Serializer<W>,
         ) -> Result<(), String> {
-            self.inner.as_ref().borrow().serialize(writer)?;
+            self.inner.blocking_write().serialize(writer)?;
             Ok(())
         }
 
@@ -320,17 +199,17 @@ pub mod multiref {
             attributes: Vec<xml::attribute::OwnedAttribute>,
             namespace: xml::namespace::Namespace,
         ) -> Result<(Vec<xml::attribute::OwnedAttribute>, xml::namespace::Namespace), String> {
-            self.inner.as_ref().borrow().serialize_attributes(attributes, namespace)
+            self.inner.blocking_read().serialize_attributes(attributes, namespace)
         }
     }
 
-    impl<T: YaDeserialize + YaSerialize + Default> Default for MultiRef<T> {
+    impl<T: Default> Default for MultiRef<T> {
         fn default() -> Self {
-            Self { inner: Rc::default() }
+            Self { inner: Arc::default() }
         }
     }
 
-    impl<T: YaDeserialize + YaSerialize> Clone for MultiRef<T> {
+    impl<T: Clone> Clone for MultiRef<T> {
         fn clone(&self) -> Self {
             Self {
                 inner: self.inner.clone(),
@@ -338,14 +217,14 @@ pub mod multiref {
         }
     }
 
-    impl<T: YaDeserialize + YaSerialize + std::fmt::Debug> std::fmt::Debug for MultiRef<T> {
+    impl<T: std::fmt::Debug> std::fmt::Debug for MultiRef<T> {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            self.inner.as_ref().borrow().fmt(f)
+            self.inner.blocking_read().fmt(f)
         }
     }
 
     impl<T> Deref for MultiRef<T> {
-        type Target = Rc<RefCell<T>>;
+        type Target = Arc<RwLock<T>>;
 
         fn deref(&self) -> &Self::Target {
             &self.inner

@@ -50,7 +50,7 @@ impl<'n> TryFromNode<'n> for Field {
             return Ok(Field {
                 xml_name: ref_node.xml_name.clone(),
                 rust_name,
-                rust_type: ref_node.rust_type.clone(),
+                rust_type: ref_node.rust_type().expect("expected a rust_type on ref node"),
                 optional: false,
                 vec: false,
                 target_namespace: None,
