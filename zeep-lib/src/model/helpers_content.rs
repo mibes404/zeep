@@ -93,28 +93,23 @@ mod helpers {
 /// Needs `xml-rs`, `tokio` and `yaserde` as dependencies.
 pub mod multi_ref {
     use std::{ops::Deref, sync::Arc};
-    use tokio::sync::RwLock;
     use yaserde::{YaDeserialize, YaSerialize};
 
     pub struct MultiRef<T> {
-        inner: Arc<RwLock<T>>,
+        inner: Arc<T>,
     }
 
     impl<T> MultiRef<T> {
         #[allow(dead_code)]
         pub fn new(inner: T) -> Self {
-            Self {
-                inner: Arc::new(RwLock::new(inner)),
-            }
+            Self { inner: Arc::new(inner) }
         }
     }
 
     impl<T: YaDeserialize> YaDeserialize for MultiRef<T> {
         fn deserialize<R: std::io::prelude::Read>(reader: &mut yaserde::de::Deserializer<R>) -> Result<Self, String> {
             let inner = T::deserialize(reader)?;
-            Ok(Self {
-                inner: Arc::new(RwLock::new(inner)),
-            })
+            Ok(Self { inner: Arc::new(inner) })
         }
     }
 
@@ -123,7 +118,7 @@ pub mod multi_ref {
             &self,
             writer: &mut yaserde::ser::Serializer<W>,
         ) -> Result<(), String> {
-            self.inner.blocking_write().serialize(writer)?;
+            self.inner.serialize(writer)?;
             Ok(())
         }
 
@@ -132,7 +127,7 @@ pub mod multi_ref {
             attributes: Vec<xml::attribute::OwnedAttribute>,
             namespace: xml::namespace::Namespace,
         ) -> Result<(Vec<xml::attribute::OwnedAttribute>, xml::namespace::Namespace), String> {
-            self.inner.blocking_read().serialize_attributes(attributes, namespace)
+            self.inner.serialize_attributes(attributes, namespace)
         }
     }
 
@@ -152,12 +147,12 @@ pub mod multi_ref {
 
     impl<T: std::fmt::Debug> std::fmt::Debug for MultiRef<T> {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            self.inner.blocking_read().fmt(f)
+            self.inner.fmt(f)
         }
     }
 
     impl<T> Deref for MultiRef<T> {
-        type Target = Arc<RwLock<T>>;
+        type Target = Arc<T>;
 
         fn deref(&self) -> &Self::Target {
             &self.inner
