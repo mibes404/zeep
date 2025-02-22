@@ -117,13 +117,40 @@ where
         writeln!(writer, "}}")?;
     }
 
+    let body = soap_operation.body.rust_type.xml_name().expect("xml_name not found");
+    let body_field_name = as_field_name(&to_snake_case(body));
+    let xml_name = soap_operation.body.rust_type.xml_name().expect("xml_name not found");
+
+    writeln!(writer, "#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]")?;
+
+    if let Some(namespace) = soap_operation.body.in_namespace.as_ref() {
+        let abbreviation = namespace.abbreviation.as_str();
+        writeln!(writer, "#[yaserde(prefix = \"{abbreviation}\", {yaserde_ns_header})]")?;
+    } else {
+        writeln!(writer, "#[yaserde(rename = \"Envelope\", {yaserde_ns_header})]")?;
+    }
+
+    writeln!(writer, "pub struct {envelope_name}Body {{")?;
+    if let Some(namespace) = soap_operation.body.in_namespace.as_ref() {
+        let mod_name = namespace.rust_mod_name.as_str();
+        let abbreviation = namespace.abbreviation.as_str();
+        writeln!(
+            writer,
+            "    #[yaserde(prefix = \"{abbreviation}\", rename = \"{xml_name}\")]"
+        )?;
+        writeln!(writer, "    pub {body_field_name}: {mod_name}::{body},",)?;
+    } else {
+        writeln!(writer, "    #[yaserde(rename = \"{xml_name}\")]")?;
+        writeln!(writer, "    pub {body_field_name}: {body},")?;
+    }
+    writeln!(writer, "}}")?;
+
     writeln!(writer, "#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]")?;
     writeln!(
         writer,
         "#[yaserde(prefix = \"soapenv\", rename = \"Envelope\", {yaserde_ns_header})]"
     )?;
     writeln!(writer, "pub struct {envelope_name} {{")?;
-    let body = soap_operation.body.rust_type.xml_name().expect("xml_name not found");
 
     if !soap_operation.headers.is_empty() {
         writeln!(writer, "    #[yaserde(prefix = \"soapenv\", rename = \"Header\")]")?;
@@ -132,12 +159,7 @@ where
 
     writeln!(writer, "    #[yaserde(prefix = \"soapenv\", rename = \"Body\")]")?;
 
-    if let Some(namespace) = soap_operation.body.in_namespace.as_ref() {
-        let mod_name = namespace.rust_mod_name.as_str();
-        writeln!(writer, "    pub body: {mod_name}::{body},",)?;
-    } else {
-        writeln!(writer, "    pub body: {body},")?;
-    }
+    writeln!(writer, "    pub body: {envelope_name}Body,",)?;
 
     writeln!(writer, "}}")?;
     Ok(())

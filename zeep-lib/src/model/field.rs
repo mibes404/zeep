@@ -31,8 +31,9 @@ impl<'n> TryFromNode<'n> for Field {
         let mut target_namespace = None;
         if let Some(use_target_namespace) = node.attribute("targetNamespace") {
             doc.switch_to_target_namespace(use_target_namespace);
-            target_namespace.clone_from(&doc.current_target_namespace);
         }
+
+        target_namespace.clone_from(&doc.current_target_namespace);
 
         if let Some(ref_name) = node.attribute("ref") {
             let (xml_name, namespace_ref) = split_type(ref_name);
@@ -93,11 +94,10 @@ where
         };
 
         if let Some(tns) = &self.target_namespace {
-            let namespaces = format!("\"{}\" = \"{}\"", tns.abbreviation, tns.namespace);
             writeln!(
                 writer,
-                "    #[yaserde(prefix = \"{}\", namespaces = {{{}}}, rename = \"{}\")]",
-                tns.abbreviation, namespaces, self.xml_name
+                "    #[yaserde(prefix = \"{}\", rename = \"{}\")]",
+                tns.abbreviation, self.xml_name
             )?;
         } else {
             writeln!(writer, "    #[yaserde(rename = \"{}\")]", self.xml_name)?;
