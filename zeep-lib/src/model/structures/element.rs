@@ -1,5 +1,5 @@
 use super::{Node, RustDocument, RustFieldType, TryFromNode, WriterError};
-use crate::model::field::as_rust_type;
+use crate::model::{field::as_rust_type, node::collect_namespaces_on_node};
 
 #[derive(Debug, PartialEq)]
 pub struct ElementProps {
@@ -11,6 +11,9 @@ impl<'n> TryFromNode<'n> for ElementProps {
     type Error = WriterError;
 
     fn try_from_node(node: Node<'n, 'n>, doc: &mut RustDocument) -> Result<Self, Self::Error> {
+        // check if the node has an attribute that starts with xmlns
+        collect_namespaces_on_node(node, doc);
+
         let xml_name = node
             .attribute("name")
             .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?

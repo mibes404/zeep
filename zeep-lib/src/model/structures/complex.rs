@@ -1,7 +1,7 @@
 use super::{
     Field, Namespace, Node, Rc, RustDocument, RustType, TryFromNode, WriterError, WriterResult, parse_comment,
 };
-use crate::model::field::resolve_type;
+use crate::model::{field::resolve_type, node::collect_namespaces_on_node};
 
 #[derive(Debug, PartialEq)]
 pub struct ComplexProps {
@@ -16,6 +16,9 @@ impl<'n> TryFromNode<'n> for ComplexProps {
 
     // This is used for complex types
     fn try_from_node(node: Node<'n, 'n>, doc: &mut RustDocument) -> Result<Self, Self::Error> {
+        // check if the node has an attribute that starts with xmlns
+        collect_namespaces_on_node(node, doc);
+
         let element_name = node
             .attribute("name")
             .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?;

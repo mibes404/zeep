@@ -153,7 +153,7 @@ mod tests {
 
         let expected = r#"/// A person
 #[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
-struct Person {
+pub struct Person {
     #[yaserde(rename = "name")]
     pub name: String,
     #[yaserde(rename = "age")]
@@ -168,7 +168,7 @@ struct Person {
         const EXPECTED: &str = r#"/// A person
 #[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "ex", namespaces = {"ex" = "http://example.com"}, rename = "Person")]
-struct Person {
+pub struct Person {
     #[yaserde(rename = "name")]
     pub name: String,
     #[yaserde(rename = "age")]
@@ -216,7 +216,7 @@ struct Person {
     #[test]
     fn can_write_a_simple_type_to_rust() {
         const EXPECTED: &str = r"/// A person
-type Person = String;
+pub type Person = String;
 ";
         let mut writer = Vec::new();
         let props = prep_simple_props(None);

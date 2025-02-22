@@ -2,7 +2,7 @@ use super::{
     Namespace, Node, Rc, RustDocument, RustFieldType, TryFromNode, WriterError, WriterResult, parse_comment,
     restrictions::{Restrictions, build_restrictions},
 };
-use crate::model::field::as_rust_type;
+use crate::model::{field::as_rust_type, node::collect_namespaces_on_node};
 
 #[derive(Debug, PartialEq)]
 pub struct SimpleProps {
@@ -17,6 +17,9 @@ impl<'n> TryFromNode<'n> for SimpleProps {
     type Error = WriterError;
 
     fn try_from_node(node: Node<'n, 'n>, doc: &mut RustDocument) -> Result<Self, Self::Error> {
+        // check if the node has an attribute that starts with xmlns
+        collect_namespaces_on_node(node, doc);
+
         let xml_name = node
             .attribute("name")
             .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?

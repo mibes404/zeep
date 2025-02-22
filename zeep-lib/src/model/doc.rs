@@ -47,7 +47,7 @@ impl RustDocument {
     }
 
     pub fn add_namespace_reference(&mut self, original_abbreviation: &str, url: &str) {
-        if original_abbreviation.is_empty() {
+        if original_abbreviation.is_empty() || url.is_empty() {
             return;
         }
 
@@ -66,7 +66,8 @@ impl RustDocument {
             return;
         }
 
-        let abbreviation = make_abbreviated_namespace(url, &self.target_namespaces);
+        let abbreviation = make_abbreviated_namespace(url, &self.namespaces);
+
         let rust_mod_name = create_mod_name_for_namespace(&abbreviation);
         let ns = Rc::new(Namespace {
             abbreviation,
@@ -76,11 +77,13 @@ impl RustDocument {
 
         self.namespace_lookup
             .insert(original_abbreviation.to_string(), ns.clone());
+
         self.namespaces.push(ns);
     }
 
     pub fn find_module_name_from_namespace_reference(&self, abbreviation: &str) -> Option<&str> {
-        self.find_namespace(abbreviation).map(|ns| ns.rust_mod_name.as_str())
+        self.find_namespace_by_abbreviation(abbreviation)
+            .map(|ns| ns.rust_mod_name.as_str())
     }
 
     pub fn find_namespace_by_abbreviation(&self, abbreviation: &str) -> Option<&Rc<Namespace>> {
@@ -112,6 +115,7 @@ impl RustDocument {
                 });
 
             self.target_namespaces.push(tns.clone());
+            self.namespaces.push(tns.clone());
             self.current_target_namespace = Some(tns);
         }
     }

@@ -3,7 +3,7 @@ pub mod writer;
 use super::port::{self, SoapPort};
 use crate::{
     error::{WriterError, WriterResult},
-    model::{TryFromNode, doc::RustDocument, field::resolve_type, node::RustNode},
+    model::{Namespace, TryFromNode, doc::RustDocument, field::resolve_type, node::RustNode},
 };
 use reqwest::Url;
 use roxmltree::Node;
@@ -15,6 +15,7 @@ pub type SoapAction = Url;
 pub struct SoapBinding {
     pub name: XmlName,
     pub operations: HashMap<XmlName, SoapOperation>,
+    pub target_namespaces: Vec<Rc<Namespace>>,
 }
 
 pub struct SoapOperation {
@@ -66,7 +67,12 @@ impl<'n> TryFromNode<'n> for SoapBinding {
             })
             .collect::<WriterResult<HashMap<XmlName, SoapOperation>>>()?;
 
-        Ok(SoapBinding { name, operations })
+        let target_namespaces = doc.target_namespaces.clone();
+        Ok(SoapBinding {
+            name,
+            operations,
+            target_namespaces,
+        })
     }
 }
 

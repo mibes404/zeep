@@ -335,7 +335,7 @@ mod tests {
         let nodes = &rust_doc.nodes;
         assert_eq!(nodes.len(), 4);
 
-        let type_node = nodes.get(3).expect("Expected a third node");
+        let type_node = nodes.get(3).expect("Expected a fourth node");
         let RustType::Complex(props) = &type_node.rust_type else {
             panic!()
         };

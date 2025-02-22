@@ -36,7 +36,9 @@ impl<'n> TryFromNode<'n> for Field {
 
         if let Some(ref_name) = node.attribute("ref") {
             let (xml_name, namespace_ref) = split_type(ref_name);
-            let namespace: Option<&Namespace> = namespace_ref.and_then(|ns| doc.find_namespace(ns)).map(AsRef::as_ref);
+            let namespace: Option<&Namespace> = namespace_ref
+                .and_then(|ns| doc.find_namespace_by_abbreviation(ns))
+                .map(AsRef::as_ref);
             let ref_node = doc
                 .find_node_by_xml_name(xml_name, namespace)
                 .and_then(|n| n.rust_type.try_as_element())
@@ -178,6 +180,7 @@ pub fn resolve_type<'n>(node_type: &'n str, doc: &RustDocument) -> (&'n str, Opt
 
 pub fn as_rust_type(node_type: &str, doc: &RustDocument) -> RustFieldType {
     let (node_type, namespace) = split_type(node_type);
+
     match node_type {
         "byte" => RustFieldType::I8,
         "string" | "normalizedString" | "base64Binary" | "hexBinary" | "anyURI" | "date" | "dateTime" | "time"

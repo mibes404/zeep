@@ -1,8 +1,12 @@
 use super::SoapBinding;
-use crate::{error::WriterResult, model::field::as_field_name, reader::WriteXml};
+use crate::{
+    error::WriterResult,
+    model::{Namespace, field::as_field_name},
+    reader::WriteXml,
+};
 use inflector::cases::{pascalcase::to_pascal_case, snakecase::to_snake_case};
 use reqwest::Url;
-use std::io;
+use std::{io, rc::Rc};
 
 impl<W> WriteXml<W> for SoapBinding
 where
@@ -16,12 +20,12 @@ where
             let operation_name = to_pascal_case(operation_name);
             let envelope_name = format!("{operation_name}InputEnvelope");
             let soap_operation = &operation.input;
-            write_soap_operation(writer, &envelope_name, soap_operation)?;
+            write_soap_operation(writer, &envelope_name, soap_operation, &self.target_namespaces)?;
 
             // output
             if let Some(output) = &operation.output {
                 let envelope_name = format!("{operation_name}OutputEnvelope");
-                write_soap_operation(writer, &envelope_name, output)?;
+                write_soap_operation(writer, &envelope_name, output, &self.target_namespaces)?;
             }
 
             // action
@@ -74,12 +78,29 @@ fn write_soap_operation<W>(
     writer: &mut W,
     envelope_name: &str,
     soap_operation: &super::SoapEnvelope,
+    target_namespaces: &[Rc<Namespace>],
 ) -> WriterResult<()>
 where
     W: io::Write,
 {
+    // build the list of xmlns namespaces to include in the envelope
+    // start with: soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    let mut xmlns = vec![("soapenv", "http://schemas.xmlsoap.org/soap/envelope/")];
+    for namespace in target_namespaces {
+        xmlns.push((namespace.abbreviation.as_str(), namespace.namespace.as_str()));
+    }
+    let namespaces = xmlns
+        .iter()
+        .map(|(k, v)| format!("\"{k}\" = \"{v}\""))
+        .collect::<Vec<String>>()
+        .join(", ");
+
+    // yaserde namespaces header
+    let yaserde_ns_header = format!("namespaces = {{ {namespaces} }}");
+
     if !soap_operation.headers.is_empty() {
         writeln!(writer, "#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]")?;
+        writeln!(writer, "#[yaserde(prefix = \"soapenv\", {yaserde_ns_header})]")?;
         writeln!(writer, "pub struct {envelope_name}Header {{")?;
         for (part_name, header) in &soap_operation.headers {
             let field_name = as_field_name(part_name);
@@ -97,15 +118,19 @@ where
     }
 
     writeln!(writer, "#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]")?;
+    writeln!(
+        writer,
+        "#[yaserde(prefix = \"soapenv\", rename = \"Envelope\", {yaserde_ns_header})]"
+    )?;
     writeln!(writer, "pub struct {envelope_name} {{")?;
     let body = soap_operation.body.rust_type.xml_name().expect("xml_name not found");
 
     if !soap_operation.headers.is_empty() {
-        writeln!(writer, "    #[yaserde(rename = \"Header\")]")?;
+        writeln!(writer, "    #[yaserde(prefix = \"soapenv\", rename = \"Header\")]")?;
         writeln!(writer, "    pub header: {envelope_name}Header,")?;
     }
 
-    writeln!(writer, "    #[yaserde(rename = \"Body\")]")?;
+    writeln!(writer, "    #[yaserde(prefix = \"soapenv\", rename = \"Body\")]")?;
 
     if let Some(namespace) = soap_operation.body.in_namespace.as_ref() {
         let mod_name = namespace.rust_mod_name.as_str();
