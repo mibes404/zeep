@@ -98,9 +98,7 @@ fn read_port_operation<'n>(
     port_operation: &port::SoapOperation,
     in_or_out: InputOrOutput,
 ) -> WriterResult<SoapEnvelope> {
-    let operation_name = n
-        .attribute("name")
-        .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?;
+    let operation_name = n.attribute("name");
 
     // lookup the body and header messages on the port type
     let body = n
@@ -124,7 +122,7 @@ fn read_body_port_message<'n>(
     node: Node<'n, 'n>,
     port_operation: &port::SoapOperation,
     in_or_out: InputOrOutput,
-    operation_name: &str,
+    operation_name: Option<&str>,
 ) -> WriterResult<Rc<RustNode>> {
     // for now we only support literal encoding
     let encoding = node
@@ -142,6 +140,10 @@ fn read_body_port_message<'n>(
         let rust_node = map_to_rust_node(doc, port_operation, in_or_out, parts)?;
         return Ok(rust_node);
     }
+
+    let Some(operation_name) = operation_name else {
+        return Err(WriterError::NodeNotFound("operation_name".to_string()));
+    };
 
     // if there are no parts defined we assume that the message is the same as the operation name
     let (_name, rust_node) = match in_or_out {
@@ -191,7 +193,7 @@ fn read_header_port_message<'n>(
     n: Node<'n, 'n>,
     port_operation: &port::SoapOperation,
     in_or_out: InputOrOutput,
-    _operation_name: &str,
+    _operation_name: Option<&str>,
 ) -> WriterResult<Rc<RustNode>> {
     // get header part
     let part = n
@@ -205,7 +207,8 @@ fn read_header_port_message<'n>(
 
 #[cfg(test)]
 mod tests {
-    use crate::reader::XmlReader;
+    use crate::{reader::XmlReader, utils::read_input_file_and_xsd_files_at_path};
+    use std::path::Path;
 
     #[test]
     fn can_read_soap_binding() {
@@ -224,5 +227,16 @@ mod tests {
             first_operation.output.as_ref().unwrap().body.rust_type.xml_name(),
             Some("CelsiusToFahrenheitResponse")
         );
+    }
+
+    #[test]
+    fn can_read_soap_binding_with_multiple_parts() {
+        let wsdl_path = Path::new("./test-data/exchange/services.wsdl");
+        let files = read_input_file_and_xsd_files_at_path(wsdl_path).expect("can not read input file");
+        let document = XmlReader::read_xml(&files).expect("can not read xml");
+        assert_eq!(document.soap_bindings.len(), 1);
+        let binding = &document.soap_bindings[0];
+        assert_eq!(binding.name, "ExchangeServiceBinding");
+        assert_eq!(binding.operations.len(), 122);
     }
 }
