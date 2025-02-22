@@ -252,7 +252,7 @@ mod tests {
             fields,
             xml_name,
             target_namespace,
-            comment,
+            ..
         } = &**props;
 
         assert_eq!(xml_name, "InstalledAppType");
@@ -287,10 +287,9 @@ mod tests {
         };
 
         let ComplexProps {
-            fields,
             xml_name,
             target_namespace,
-            comment,
+            ..
         } = &**props;
 
         assert_eq!(xml_name, "InstalledAppType");
@@ -308,8 +307,7 @@ mod tests {
             xml_name,
             rust_type,
             target_namespace,
-            restrictions,
-            comment,
+            ..
         } = &**props;
 
         assert_eq!(xml_name, "ResponseCodeType");
@@ -341,10 +339,9 @@ mod tests {
         };
 
         let ComplexProps {
-            fields,
             xml_name,
             target_namespace,
-            comment,
+            ..
         } = &**props;
 
         assert_eq!(xml_name, "ItemChangeDescriptionType");
@@ -358,12 +355,7 @@ mod tests {
         let RustType::Complex(props) = &message_node.rust_type else {
             panic!()
         };
-        let ComplexProps {
-            xml_name,
-            fields,
-            target_namespace,
-            comment,
-        } = &**props;
+        let ComplexProps { fields, .. } = &**props;
 
         // check the amount of fields, it should include the fields from the base type
         assert_eq!(fields.len(), 1);

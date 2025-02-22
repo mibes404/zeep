@@ -7,9 +7,8 @@ pub mod node;
 pub mod soap;
 pub mod structures;
 
-use crate::{error::WriterResult, model::doc::RustDocument};
+use crate::model::doc::RustDocument;
 use roxmltree::Node;
-use std::io;
 
 #[derive(Debug, PartialEq)]
 pub struct Namespace {

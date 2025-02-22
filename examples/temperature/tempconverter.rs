@@ -14,7 +14,7 @@ use yaserde_derive::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub mod mod_tem {
-    use super::*;
+    use super::{Write, YaDeserialize, YaSerialize};
     #[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "tem", namespaces = {"tem" = "http://learnwebservices.com/services/tempconverter"}, rename = "celsiusToFahrenheitRequest")]
     pub struct CelsiusToFahrenheitRequest {

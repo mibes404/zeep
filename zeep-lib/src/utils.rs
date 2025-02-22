@@ -1,6 +1,6 @@
 use crate::{
     error::{WriterError, WriterResult},
-    reader::{FileContent, Files, FilesToRead},
+    reader::{Files, FilesToRead},
 };
 use std::path::Path;
 
