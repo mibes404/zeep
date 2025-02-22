@@ -167,7 +167,7 @@ fn read_body_port_message<'n>(
     };
 
     // if there are no parts defined we assume that the message is the same as the operation name
-    let (_name, (rust_node, namespace)) = match in_or_out {
+    let (_name, (rust_node, _namespace)) = match in_or_out {
         InputOrOutput::Input => port_operation
             .input
             .message
@@ -192,7 +192,7 @@ fn map_to_rust_node(
     parts: &str,
 ) -> WriterResult<Rc<RustNode>> {
     let (xml_name, _namespace) = resolve_type(parts, doc);
-    let (rust_node, namespace) = if in_or_out == InputOrOutput::Input {
+    let (rust_node, _namespace) = if in_or_out == InputOrOutput::Input {
         port_operation
             .input
             .message

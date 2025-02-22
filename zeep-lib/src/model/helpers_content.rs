@@ -1,4 +1,6 @@
 pub mod error {
+    #![allow(dead_code)]
+
     use std::error::Error;
 
     #[derive(Debug)]
@@ -39,6 +41,8 @@ pub mod error {
 }
 
 mod helpers {
+    #![allow(dead_code)]
+
     use super::error::{SoapError, SoapResult};
     use reqwest::Client;
     use std::fmt;
