@@ -191,7 +191,7 @@ impl XmlReader {
     fn read_xsd<'n>(node: Node<'n, 'n>, files: &Files, doc: &mut RustDocument) -> WriterResult<()> {
         for child in node.children() {
             if child.tag_name().name() == "import" {
-                doc.nodes.extend(Self::process_import(child, files)?);
+                doc.extend(Self::process_import(child, files)?);
                 continue;
             }
 
@@ -203,15 +203,15 @@ impl XmlReader {
         Ok(())
     }
 
-    fn process_import(node: Node, files: &Files) -> WriterResult<Vec<Rc<RustNode>>> {
+    fn process_import(node: Node, files: &Files) -> WriterResult<RustDocument> {
         let namespace = node.attribute("namespace").ok_or(WriterError::NamespaceMissing)?;
 
         if WELL_KNOWN_NAMESPACES.contains(&namespace) {
-            return Ok(vec![]);
+            return Ok(RustDocument::empty());
         }
 
         let Some(schema_location) = node.attribute("schemaLocation") else {
-            return Ok(vec![]);
+            return Ok(RustDocument::empty());
         };
 
         let file = files
@@ -220,11 +220,11 @@ impl XmlReader {
             .ok_or_else(|| WriterError::ImportNotFound(schema_location.to_string()))?;
 
         if file.processed.load(std::sync::atomic::Ordering::Relaxed) {
-            return Ok(vec![]);
+            return Ok(RustDocument::empty());
         }
 
         let rust_doc = Self::read_xml_internal(file, schema_location, files)?;
-        Ok(rust_doc.nodes)
+        Ok(rust_doc)
     }
 }
 

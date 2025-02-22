@@ -136,3 +136,24 @@ fn import_extension_fields(node: &mut Node, doc: &mut RustDocument, base_fields:
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn can_parse_complex_content() {
+        const XML: &str = r#"
+  <xs:complexType name="AddDelegateType">
+    <xs:complexContent>
+      <xs:extension base="m:BaseDelegateType">
+        <xs:sequence>
+          <xs:element name="DelegateUsers" type="t:ArrayOfDelegateUserType" />
+          <xs:element name="DeliverMeetingRequests" type="t:DeliverMeetingRequestsType" minOccurs="0" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+"#;
+    }
+}

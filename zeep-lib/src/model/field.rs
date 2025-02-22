@@ -125,6 +125,12 @@ pub enum RustFieldType {
     U32,
 }
 
+impl RustFieldType {
+    pub fn is_string(&self) -> bool {
+        matches!(self, RustFieldType::String)
+    }
+}
+
 #[derive(Debug, PartialEq, Clone)]
 pub struct OtherRustType {
     pub name: String,

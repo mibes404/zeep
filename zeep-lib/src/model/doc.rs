@@ -32,6 +32,17 @@ impl RustDocument {
         me
     }
 
+    pub fn extend(&mut self, other: RustDocument) {
+        self.namespace_lookup.extend(other.namespace_lookup);
+        self.namespaces.extend(other.namespaces);
+        self.target_namespaces.extend(other.target_namespaces);
+        self.nodes.extend(other.nodes);
+        self.soap_messages.extend(other.soap_messages);
+        self.soap_ports.extend(other.soap_ports);
+        self.soap_bindings.extend(other.soap_bindings);
+        self.soap_services.extend(other.soap_services);
+    }
+
     pub fn empty() -> Self {
         Self {
             namespace_lookup: HashMap::new(),
@@ -118,6 +129,19 @@ impl RustDocument {
             self.namespaces.push(tns.clone());
             self.current_target_namespace = Some(tns);
         }
+    }
+
+    pub fn return_from_namespace(&mut self) -> Option<Rc<Namespace>> {
+        let current_namespace = self.current_target_namespace.as_ref()?;
+
+        let mut namespaces = self.namespaces.iter().rev();
+        while let Some(ns) = namespaces.next() {
+            if ns == current_namespace {
+                return namespaces.next().cloned();
+            }
+        }
+
+        None
     }
 
     pub fn find_node_by_xml_name(&self, xml_name: &str, namespace: Option<&Namespace>) -> Option<&Rc<RustNode>> {

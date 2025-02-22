@@ -34,9 +34,9 @@ path = "../examples/hello/main.rs"
 name = "temperature"
 path = "../examples/temperature/main.rs"
 
-# [[example]]
-# name = "aic"
-# path = "../examples/aic/main.rs"
+[[example]]
+name = "exchange"
+path = "../examples/exchange/main.rs"
 
 [[example]]
 name = "aacc"
