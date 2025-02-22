@@ -37,6 +37,8 @@ pub enum WriterError {
     MessageNotFound(String),
     #[error("xml error: unsupported encoding: {0}")]
     UnsupportedEncoding(String),
+    #[error("xml error: invalid url")]
+    InvalidUrl,
 }
 
 impl WriterError {

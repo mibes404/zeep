@@ -1,6 +1,8 @@
 pub mod doc;
 pub mod field;
 mod file_header;
+mod helpers;
+mod helpers_content;
 pub mod node;
 pub mod soap;
 pub mod structures;

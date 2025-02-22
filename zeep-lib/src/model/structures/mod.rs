@@ -11,6 +11,7 @@ use crate::{
 };
 use complex::ComplexProps;
 use element::ElementProps;
+use inflector::cases::pascalcase::to_pascal_case;
 use roxmltree::Node;
 use simple::SimpleProps;
 use std::{io, rc::Rc};
@@ -56,6 +57,10 @@ fn parse_comment<'n>(node: Node<'n, 'n>) -> Option<String> {
         })
 }
 
+pub fn xml_name_to_rust_name(xml_name: &str) -> String {
+    to_pascal_case(xml_name)
+}
+
 impl<W> WriteXml<W> for RustType
 where
     W: io::Write,
@@ -71,6 +76,8 @@ where
                     comment,
                 } = &**props;
 
+                let rust_name = xml_name_to_rust_name(xml_name);
+
                 if let Some(comment) = comment {
                     writeln!(writer, "/// {comment}")?;
                 }
@@ -84,7 +91,7 @@ where
                         tns.abbreviation, namespaces, xml_name
                     )?;
                 }
-                writeln!(writer, "struct {xml_name} {{")?;
+                writeln!(writer, "pub struct {rust_name} {{")?;
                 for field in fields {
                     field.write_xml(writer)?;
                 }
@@ -101,7 +108,8 @@ where
                     comment,
                 } = &**props;
 
-                if rust_type.to_string().eq(xml_name) {
+                let rust_name = xml_name_to_rust_name(xml_name);
+                if rust_type.to_string().eq(&rust_name) {
                     // NOOP
                     return Ok(());
                 }
@@ -112,18 +120,19 @@ where
                     writeln!(writer, "/// {comment}")?;
                 }
 
-                writeln!(writer, "type {xml_name} = {rust_type};")?;
+                writeln!(writer, "pub type {rust_name} = {rust_type};")?;
                 Ok(())
             }
             RustType::Element(props) => {
                 let ElementProps { xml_name, rust_type } = &**props;
 
-                if rust_type.to_string().eq(xml_name) {
+                let rust_name = xml_name_to_rust_name(xml_name);
+                if rust_type.to_string().eq(&rust_name) {
                     // NOOP
                     return Ok(());
                 }
 
-                writeln!(writer, "type {xml_name} = {rust_type};")?;
+                writeln!(writer, "pub type {rust_name} = {rust_type};")?;
                 Ok(())
             }
         }

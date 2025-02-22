@@ -1,24 +1,27 @@
 use super::{
     file_header::FileHeader,
+    helpers::Helpers,
     node::collect_namespaces_on_node,
-    soap::{binding::SoapBinding, message::SoapMessage, port::SoapPort},
+    soap::{binding::SoapBinding, message::SoapMessage, port::SoapPort, service::SoapService},
 };
 use crate::{
     error::WriterResult,
     model::{Namespace, node::RustNode},
-    reader::WriteXml,
+    reader::{WELL_KNOWN_NAMESPACES, WriteXml},
 };
 use roxmltree::Document;
 use std::{collections::HashMap, rc::Rc};
 
 pub struct RustDocument {
-    pub(crate) namespace_references: HashMap<String, Rc<Namespace>>,
+    pub(crate) namespace_lookup: HashMap<String, Rc<Namespace>>,
+    pub(crate) namespaces: Vec<Rc<Namespace>>,
     pub(crate) target_namespaces: Vec<Rc<Namespace>>,
     pub(crate) current_target_namespace: Option<Rc<Namespace>>,
     pub(crate) nodes: Vec<Rc<RustNode>>,
     pub(crate) soap_messages: Vec<Rc<SoapMessage>>,
     pub(crate) soap_ports: Vec<Rc<SoapPort>>,
     pub(crate) soap_bindings: Vec<Rc<SoapBinding>>,
+    pub(crate) soap_services: Vec<SoapService>,
 }
 
 impl RustDocument {
@@ -31,13 +34,15 @@ impl RustDocument {
 
     pub fn empty() -> Self {
         Self {
-            namespace_references: HashMap::new(),
+            namespace_lookup: HashMap::new(),
+            namespaces: Vec::new(),
             target_namespaces: Vec::new(),
             current_target_namespace: None,
             nodes: Vec::new(),
             soap_messages: Vec::new(),
             soap_ports: Vec::new(),
             soap_bindings: Vec::new(),
+            soap_services: Vec::new(),
         }
     }
 
@@ -46,27 +51,44 @@ impl RustDocument {
             return;
         }
 
-        // check if the namespace is already in the list
-        if !self.namespace_references.contains_key(original_abbreviation) {
-            let abbreviation = make_abbreviated_namespace(url, &self.target_namespaces);
-            let rust_mod_name = create_mod_name_for_namespace(&abbreviation);
-            let ns = Rc::new(Namespace {
-                abbreviation,
-                namespace: url.to_string(),
-                rust_mod_name,
-            });
-
-            // extract the original abbreviation from the node_name
-            self.namespace_references.insert(original_abbreviation.to_string(), ns);
+        if WELL_KNOWN_NAMESPACES.contains(&url) {
+            return;
         }
+
+        // check if the abbreviation is already in use
+        if self.namespace_lookup.contains_key(original_abbreviation) {
+            return;
+        }
+
+        if let Some(existing) = self.namespaces.iter().find(|ns| ns.namespace == url) {
+            self.namespace_lookup
+                .insert(original_abbreviation.to_string(), existing.clone());
+            return;
+        }
+
+        let abbreviation = make_abbreviated_namespace(url, &self.target_namespaces);
+        let rust_mod_name = create_mod_name_for_namespace(&abbreviation);
+        let ns = Rc::new(Namespace {
+            abbreviation,
+            namespace: url.to_string(),
+            rust_mod_name,
+        });
+
+        self.namespace_lookup
+            .insert(original_abbreviation.to_string(), ns.clone());
+        self.namespaces.push(ns);
     }
 
     pub fn find_module_name_from_namespace_reference(&self, abbreviation: &str) -> Option<&str> {
         self.find_namespace(abbreviation).map(|ns| ns.rust_mod_name.as_str())
     }
 
-    pub fn find_namespace(&self, abbreviation: &str) -> Option<&Rc<Namespace>> {
-        self.namespace_references.get(abbreviation)
+    pub fn find_namespace_by_abbreviation(&self, abbreviation: &str) -> Option<&Rc<Namespace>> {
+        self.namespace_lookup.get(abbreviation)
+    }
+
+    pub fn find_namespace(&self, url: &str) -> Option<&Rc<Namespace>> {
+        self.namespaces.iter().find(|ns| ns.namespace == url)
     }
 
     pub fn switch_to_target_namespace(&mut self, namespace: &str) {
@@ -74,8 +96,8 @@ impl RustDocument {
         if !self.target_namespaces.iter().any(|ns| ns.namespace == namespace) {
             // Check if we already have a reference to this namespace. If so, use that one, otherwise create a new one.
             let tns = self
-                .namespace_references
-                .values()
+                .namespaces
+                .iter()
                 .find(|ns| ns.namespace == namespace)
                 .cloned()
                 .unwrap_or_else(|| {
@@ -107,6 +129,10 @@ impl RustDocument {
     pub fn find_port_by_xml_name(&self, xml_name: &str, _namespace: Option<&Namespace>) -> Option<&Rc<SoapPort>> {
         self.soap_ports.iter().find(|port| port.xml_name == xml_name)
     }
+
+    pub fn find_binding_by_xml_name(&self, xml_name: &str, _namespace: Option<&Namespace>) -> Option<&Rc<SoapBinding>> {
+        self.soap_bindings.iter().find(|port| port.name == xml_name)
+    }
 }
 
 fn create_mod_name_for_namespace(abbreviation: &str) -> String {
@@ -123,6 +149,7 @@ where
         for namespace in &self.target_namespaces {
             let module = namespace.rust_mod_name.as_str();
             writeln!(writer, "pub mod {module} {{")?;
+            writeln!(writer, "    use super::*;")?;
             for node in self
                 .nodes
                 .iter()
@@ -137,6 +164,18 @@ where
         for node in self.nodes.iter().filter(|n| n.in_namespace.is_none()) {
             node.write_xml(writer)?;
         }
+
+        // write the soap bindings
+        for binding in &self.soap_bindings {
+            binding.write_xml(writer)?;
+        }
+
+        // write the soap services
+        for service in &self.soap_services {
+            service.write_xml(writer)?;
+        }
+
+        Helpers.write_xml(writer)?;
 
         Ok(())
     }
@@ -214,14 +253,25 @@ mod tests {
         // skip non-namespace references
         doc.add_namespace_reference("", "http://schemas.xmlsoap.org/wsdl/");
         // should have 2 references
-        assert_eq!(doc.namespace_references.len(), 2);
+        assert_eq!(doc.namespaces.len(), 1);
+        let ns = doc
+            .namespaces
+            .iter()
+            .find(|ns| ns.namespace == "http://schemas.microsoft.com/exchange/services/2006/types")
+            .unwrap();
         assert_eq!(
-            doc.namespace_references.get("t").unwrap().namespace,
+            ns.namespace,
             "http://schemas.microsoft.com/exchange/services/2006/types"
         );
+        assert_eq!(ns.abbreviation, "typ");
+
+        // can lookup the namespace by abbreviation
+        let ns = doc.find_namespace_by_abbreviation("t").unwrap();
         assert_eq!(
-            doc.namespace_references.get("xs").unwrap().namespace,
-            "http://www.w3.org/2001/XMLSchema"
+            ns.namespace,
+            "http://schemas.microsoft.com/exchange/services/2006/types"
         );
+        assert_eq!(ns.abbreviation, "typ");
+        assert_eq!(ns.rust_mod_name, "mod_typ");
     }
 }

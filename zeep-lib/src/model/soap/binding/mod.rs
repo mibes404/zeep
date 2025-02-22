@@ -1,12 +1,16 @@
+pub mod writer;
+
 use super::port::{self, SoapPort};
 use crate::{
     error::{WriterError, WriterResult},
     model::{TryFromNode, doc::RustDocument, field::resolve_type, node::RustNode},
 };
+use reqwest::Url;
 use roxmltree::Node;
 use std::{collections::HashMap, rc::Rc};
 
 pub type XmlName = String;
+pub type SoapAction = Url;
 
 pub struct SoapBinding {
     pub name: XmlName,
@@ -14,12 +18,13 @@ pub struct SoapBinding {
 }
 
 pub struct SoapOperation {
+    pub action: Option<SoapAction>,
     pub input: SoapEnvelope,
     pub output: Option<SoapEnvelope>,
 }
 
 pub struct SoapEnvelope {
-    pub headers: Vec<Rc<RustNode>>,
+    pub headers: Vec<(XmlName, Rc<RustNode>)>,
     pub body: Rc<RustNode>,
 }
 
@@ -76,6 +81,16 @@ fn read_soap_operation<'n>(
         .get(operation_name)
         .ok_or(WriterError::NodeNotFound(operation_name.to_string()))?;
 
+    // see if there is an embedded soap action
+    let mut soap_actions = node
+        .children()
+        .filter(|n| n.is_element() && n.tag_name().name() == "operation")
+        .filter_map(|o| o.attribute("soapAction"))
+        .filter(|a| !a.is_empty())
+        .map(|a| a.parse().map_err(|_| WriterError::InvalidUrl))
+        .collect::<WriterResult<Vec<SoapAction>>>()?;
+    let action = soap_actions.pop();
+
     // find the input and output nodes
     let input = node
         .children()
@@ -89,7 +104,7 @@ fn read_soap_operation<'n>(
         .find(|n| n.is_element() && n.tag_name().name() == "output")
         .and_then(|n| read_port_operation(doc, n, port_operation, InputOrOutput::Output).ok());
 
-    Ok(SoapOperation { input, output })
+    Ok(SoapOperation { action, input, output })
 }
 
 fn read_port_operation<'n>(
@@ -112,7 +127,7 @@ fn read_port_operation<'n>(
         .children()
         .filter(|n| n.is_element() && n.tag_name().name() == "header")
         .map(|n| read_header_port_message(doc, n, port_operation, in_or_out, operation_name))
-        .collect::<WriterResult<Vec<Rc<RustNode>>>>()?;
+        .collect::<WriterResult<Vec<(XmlName, Rc<RustNode>)>>>()?;
 
     Ok(SoapEnvelope { headers, body })
 }
@@ -146,7 +161,7 @@ fn read_body_port_message<'n>(
     };
 
     // if there are no parts defined we assume that the message is the same as the operation name
-    let (_name, rust_node) = match in_or_out {
+    let (_name, (rust_node, namespace)) = match in_or_out {
         InputOrOutput::Input => port_operation
             .input
             .message
@@ -171,7 +186,7 @@ fn map_to_rust_node(
     parts: &str,
 ) -> WriterResult<Rc<RustNode>> {
     let (xml_name, _namespace) = resolve_type(parts, doc);
-    let rust_node = if in_or_out == InputOrOutput::Input {
+    let (rust_node, namespace) = if in_or_out == InputOrOutput::Input {
         port_operation
             .input
             .message
@@ -194,7 +209,7 @@ fn read_header_port_message<'n>(
     port_operation: &port::SoapOperation,
     in_or_out: InputOrOutput,
     _operation_name: Option<&str>,
-) -> WriterResult<Rc<RustNode>> {
+) -> WriterResult<(XmlName, Rc<RustNode>)> {
     // get header part
     let part = n
         .attribute("part")
@@ -202,7 +217,7 @@ fn read_header_port_message<'n>(
 
     // lookup the message on the port type
     let rust_node = map_to_rust_node(doc, port_operation, in_or_out, part)?;
-    Ok(rust_node)
+    Ok((part.to_string(), rust_node))
 }
 
 #[cfg(test)]
@@ -212,7 +227,7 @@ mod tests {
 
     #[test]
     fn can_read_soap_binding() {
-        const XML: &str = include_str!("../../../test-data/tempconverter.wsdl");
+        const XML: &str = include_str!("../../../../test-data/tempconverter.wsdl");
         let doc = XmlReader::read_xml_from_file("tempconverter.wsdl", XML).unwrap();
         assert_eq!(doc.soap_bindings.len(), 1);
         let binding = &doc.soap_bindings[0];

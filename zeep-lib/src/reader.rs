@@ -4,13 +4,13 @@ use crate::{
         TryFromNode,
         doc::RustDocument,
         node::RustNode,
-        soap::{binding::SoapBinding, message::SoapMessage, port::SoapPort},
+        soap::{binding::SoapBinding, message::SoapMessage, port::SoapPort, service::SoapService},
     },
 };
 use roxmltree::Node;
 use std::{collections::HashMap, fmt::Display, io, rc::Rc, sync::atomic::AtomicBool};
 
-const WELL_KNOWN_NAMESPACES: &[&str] = &[
+pub const WELL_KNOWN_NAMESPACES: &[&str] = &[
     "http://www.w3.org/XML/1998/namespace",
     "http://www.w3.org/2001/XMLSchema",
     "http://www.w3.org/2001/XMLSchema-instance",
@@ -163,6 +163,12 @@ impl XmlReader {
             if node_name == "binding" {
                 let binding = SoapBinding::try_from_node(child, doc)?;
                 doc.soap_bindings.push(binding.into());
+            }
+
+            // read soap services
+            if node_name == "service" {
+                let service = SoapService::try_from_node(child, doc)?;
+                doc.soap_services.push(service);
             }
         }
 
@@ -324,7 +330,7 @@ mod tests {
         let rust_doc = XmlReader::read_xml_internal(file, file_name, &files).unwrap();
 
         // check that we found the two namespaces
-        assert_eq!(rust_doc.namespace_references.len(), 2, "Expected two namespaces");
+        assert_eq!(rust_doc.namespaces.len(), 2, "Expected two namespaces");
 
         let nodes = &rust_doc.nodes;
         assert_eq!(nodes.len(), 4);

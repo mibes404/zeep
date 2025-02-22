@@ -1,6 +1,6 @@
 use crate::{
     error::{WriterError, WriterResult},
-    model::{TryFromNode, field::resolve_type, node::RustNode},
+    model::{Namespace, TryFromNode, field::resolve_type, node::RustNode},
 };
 use roxmltree::Node;
 use std::{collections::HashMap, rc::Rc};
@@ -11,7 +11,7 @@ type XmlName = String;
 /// These are just used for lookup and are not written to the output
 pub struct SoapMessage {
     pub xml_name: String,
-    pub parts: HashMap<XmlName, Rc<RustNode>>,
+    pub parts: HashMap<XmlName, (Rc<RustNode>, Option<Rc<Namespace>>)>,
 }
 
 impl<'n> TryFromNode<'n> for SoapMessage {
@@ -41,9 +41,9 @@ impl<'n> TryFromNode<'n> for SoapMessage {
                     .find_node_by_xml_name(xml_name, namespace.as_deref())
                     .ok_or(WriterError::NodeNotFound(xml_name.to_string()))?;
 
-                Ok((part_name, rust_node.clone()))
+                Ok((part_name, (rust_node.clone(), namespace.clone())))
             })
-            .collect::<WriterResult<HashMap<XmlName, Rc<RustNode>>>>()?;
+            .collect::<WriterResult<HashMap<XmlName, (Rc<RustNode>, Option<Rc<Namespace>>)>>>()?;
 
         Ok(SoapMessage { xml_name, parts })
     }
@@ -60,7 +60,9 @@ mod tests {
         assert_eq!(doc.soap_messages.len(), 4);
         let first_message = &doc.soap_messages[0];
         assert_eq!(first_message.xml_name, "CelsiusToFahrenheit");
-        let part = first_message.parts.get("FahrenheitToCelsius").unwrap();
+        let (part, ns) = first_message.parts.get("CelsiusToFahrenheitRequest").unwrap();
         assert_eq!(part.rust_type.xml_name(), Some("CelsiusToFahrenheitRequest"));
+        let namespace = ns.as_ref().unwrap();
+        assert_eq!(namespace.rust_mod_name, "mod_tem");
     }
 }

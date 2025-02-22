@@ -172,7 +172,7 @@ fn split_type(node_type: &str) -> (&str, Option<&str>) {
 
 pub fn resolve_type<'n>(node_type: &'n str, doc: &RustDocument) -> (&'n str, Option<Rc<Namespace>>) {
     let (node_type, namespace) = split_type(node_type);
-    let namespace = namespace.and_then(|ns| doc.find_namespace(ns));
+    let namespace = namespace.and_then(|ns| doc.find_namespace_by_abbreviation(ns));
     (node_type, namespace.cloned())
 }
 
@@ -204,8 +204,13 @@ pub fn as_rust_type(node_type: &str, doc: &RustDocument) -> RustFieldType {
     }
 }
 
+pub fn as_field_name(xml_name: &str) -> String {
+    let field_name = to_snake_case(xml_name);
+    rename_keywords(&field_name).to_string()
+}
+
 /// renamed the Rust keyword and quote the field name
-fn rename_keywords(field_name: &str) -> &str {
+pub fn rename_keywords(field_name: &str) -> &str {
     match field_name {
         "type" => "r#type",
         "as" => "r#as",

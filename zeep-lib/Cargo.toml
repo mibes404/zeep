@@ -30,9 +30,9 @@ const_format = { version = "0.2", features = ["fmt"] }
 # name = "weather"
 # path = "../examples/weather/main.rs"
 
-# [[example]]
-# name = "temperature"
-# path = "../examples/temperature/main.rs"
+[[example]]
+name = "temperature"
+path = "../examples/temperature/main.rs"
 
 # [[example]]
 # name = "aacc"
