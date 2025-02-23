@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="messages" elementFormDefault="qualified"
+           xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages"
+           xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://schemas.microsoft.com/exchange/services/2006/messages">
+
+    <xs:complexType name="AddDelegateType">
+        <xs:complexContent>
+            <xs:extension base="m:BaseDelegateType">
+                <xs:sequence>
+                    <xs:element name="DelegateUsers" type="t:ArrayOfDelegateUserType"/>
+                    <xs:element name="DeliverMeetingRequests" type="t:DeliverMeetingRequestsType" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="BaseDelegateType" abstract="true">
+        <xs:sequence>
+            <xs:element name="Mailbox" type="t:EmailAddressType"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
