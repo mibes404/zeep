@@ -15,7 +15,7 @@ yaserde = "0.12"
 yaserde_derive = "0.12"
 clap = "4"
 xml-rs = "0.8"
-reqwest = { version = "0.12", default-features = false, features =["blocking", "rustls-tls"]}
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls"] }
 tokio = { version = "1", features = ["full"] }
 async-trait = "0.1"
 thiserror = "2"

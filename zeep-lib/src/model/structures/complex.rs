@@ -27,7 +27,7 @@ impl<'n> TryFromNode<'n> for ComplexProps {
         }
 
         let Some(element_name) = element_name else {
-            return Err(WriterError::AttributeMissing("name".to_string()));
+            return Err(WriterError::attribute_missing(&node, "name"));
         };
 
         for n in node.children().filter(Node::is_element) {
@@ -113,10 +113,10 @@ fn import_extension_fields(node: &mut Node, doc: &mut RustDocument, base_fields:
         // look in doc for the node with the same xml_name
         let xml_name = base
             .attribute("base")
-            .ok_or_else(|| WriterError::AttributeMissing("base".to_string()))?;
+            .ok_or_else(|| WriterError::attribute_missing(node, "base"))?;
         let (xml_name, namespace_abbreviation) = resolve_type(xml_name, doc);
         let base_node = doc
-            .find_node_by_xml_name(xml_name, namespace_abbreviation.as_deref())
+            .find_node_by_xml_name(&node, xml_name, namespace_abbreviation.as_deref())
             .ok_or_else(|| WriterError::NodeNotFound(xml_name.to_string()))?;
 
         match &base_node.rust_type {
@@ -135,25 +135,4 @@ fn import_extension_fields(node: &mut Node, doc: &mut RustDocument, base_fields:
         }
     }
     Ok(())
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn can_parse_complex_content() {
-        const XML: &str = r#"
-  <xs:complexType name="AddDelegateType">
-    <xs:complexContent>
-      <xs:extension base="m:BaseDelegateType">
-        <xs:sequence>
-          <xs:element name="DelegateUsers" type="t:ArrayOfDelegateUserType" />
-          <xs:element name="DeliverMeetingRequests" type="t:DeliverMeetingRequestsType" minOccurs="0" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-"#;
-    }
 }

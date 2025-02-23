@@ -37,11 +37,13 @@ impl<'n> TryFromNode<'n> for Field {
 
         if let Some(ref_name) = node.attribute("ref") {
             let (xml_name, namespace_ref) = split_type(ref_name);
-            let namespace: Option<&Namespace> = namespace_ref
+            let namespace: Option<Rc<Namespace>> = namespace_ref
                 .and_then(|ns| doc.find_namespace_by_abbreviation(ns))
-                .map(AsRef::as_ref);
-            let ref_node = doc
-                .find_node_by_xml_name(xml_name, namespace)
+                .cloned();
+
+            let ref_node = doc.find_node_by_xml_name(&node, xml_name, namespace.as_deref());
+            let ref_node = ref_node
+                .as_ref()
                 .and_then(|n| n.rust_type.try_as_element())
                 .ok_or_else(|| WriterError::NodeNotFound(ref_name.to_string()))?;
 
@@ -59,7 +61,7 @@ impl<'n> TryFromNode<'n> for Field {
 
         let xml_name = node
             .attribute("name")
-            .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?
+            .ok_or_else(|| WriterError::attribute_missing(&node, "name"))?
             .to_string();
 
         let rust_name = rename_keywords(&to_snake_case(&xml_name)).to_string();

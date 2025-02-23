@@ -42,7 +42,7 @@ impl<'n> TryFromNode<'n> for ElementProps {
 
         let xml_name = node
             .attribute("name")
-            .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?
+            .ok_or_else(|| WriterError::attribute_missing(&node, "name"))?
             .to_string();
 
         if let Some(rust_type) = node.attribute("type").map(|t| as_rust_type(t, doc)) {

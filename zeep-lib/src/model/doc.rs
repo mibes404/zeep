@@ -1,15 +1,16 @@
 use super::{
+    TryFromNode,
     file_header::FileHeader,
     helpers::Helpers,
     node::collect_namespaces_on_node,
     soap::{binding::SoapBinding, message::SoapMessage, port::SoapPort, service::SoapService},
 };
 use crate::{
-    error::WriterResult,
-    model::{Namespace, node::RustNode},
+    error::{WriterError, WriterResult},
+    model::{Namespace, field::resolve_type, node::RustNode},
     reader::{WELL_KNOWN_NAMESPACES, WriteXml},
 };
-use roxmltree::Document;
+use roxmltree::{Document, Node};
 use std::{collections::HashMap, rc::Rc};
 
 pub struct RustDocument {
@@ -34,8 +35,10 @@ impl RustDocument {
 
     pub fn extend(&mut self, other: RustDocument) {
         self.namespace_lookup.extend(other.namespace_lookup);
-        self.namespaces.extend(other.namespaces);
-        self.target_namespaces.extend(other.target_namespaces);
+
+        extend_no_duplicates(&mut self.namespaces, other.namespaces);
+        extend_no_duplicates(&mut self.target_namespaces, other.target_namespaces);
+
         self.nodes.extend(other.nodes);
         self.soap_messages.extend(other.soap_messages);
         self.soap_ports.extend(other.soap_ports);
@@ -131,23 +134,23 @@ impl RustDocument {
         }
     }
 
-    pub fn return_from_namespace(&mut self) -> Option<Rc<Namespace>> {
-        let current_namespace = self.current_target_namespace.as_ref()?;
+    pub fn find_node_by_xml_name<'n>(
+        &mut self,
+        start_node: &Node<'n, 'n>,
+        xml_name: &str,
+        namespace: Option<&Namespace>,
+    ) -> Option<Rc<RustNode>> {
+        let rust_node = self.nodes.iter().find(|node| {
+            node.rust_type.xml_name().is_some_and(|n| n == xml_name) && node.in_namespace.as_deref() == namespace
+        });
 
-        let mut namespaces = self.namespaces.iter().rev();
-        while let Some(ns) = namespaces.next() {
-            if ns == current_namespace {
-                return namespaces.next().cloned();
-            }
+        if let Some(rust_node) = rust_node {
+            return Some(rust_node.clone());
         }
 
-        None
-    }
-
-    pub fn find_node_by_xml_name(&self, xml_name: &str, namespace: Option<&Namespace>) -> Option<&Rc<RustNode>> {
-        self.nodes.iter().find(|node| {
-            node.rust_type.xml_name().is_some_and(|n| n == xml_name) && node.in_namespace.as_deref() == namespace
-        })
+        let alt_node =
+            try_to_find_node_by_xml_name_in_xml_doc(start_node, xml_name, namespace.as_deref(), self).ok()?;
+        Some(alt_node.into())
     }
 
     pub fn find_message_by_xml_name(&self, xml_name: &str, _namespace: Option<&Namespace>) -> Option<&Rc<SoapMessage>> {
@@ -163,8 +166,46 @@ impl RustDocument {
     }
 }
 
+fn extend_no_duplicates<T: PartialEq>(me: &mut Vec<T>, other: Vec<T>) {
+    for item in other {
+        if !me.contains(&item) {
+            me.push(item);
+        }
+    }
+}
+
 fn create_mod_name_for_namespace(abbreviation: &str) -> String {
     format!("mod_{abbreviation}")
+}
+
+fn try_to_find_node_by_xml_name_in_xml_doc<'n>(
+    start_node: &'n Node<'n, 'n>,
+    xml_name: &str,
+    namespace: Option<&Namespace>,
+    doc: &mut RustDocument,
+) -> WriterResult<RustNode> {
+    // get to the root of the document from the start node
+    let mut start_node = *start_node;
+    while let Some(parent) = start_node.parent() {
+        start_node = parent;
+    }
+
+    // iterate over all subsequent nodes in the XML tree to find the node with the given name
+    for node in start_node.descendants() {
+        if node.is_element() {
+            // do a quick check on the name of the node, so we can skip the more expensive try_from_node
+            if let Some(node_name) = node.attribute("name") {
+                let (node_name, node_namespace) = resolve_type(node_name, doc);
+                if node_name != xml_name {
+                    continue;
+                }
+
+                let rust_node = RustNode::try_from_node(node, doc)?;
+                return Ok(rust_node);
+            }
+        }
+    }
+    Err(WriterError::NodeNotFound(xml_name.to_string()))
 }
 
 impl<W> WriteXml<W> for RustDocument

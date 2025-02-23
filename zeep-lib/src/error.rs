@@ -1,3 +1,4 @@
+use roxmltree::Node;
 use std::fmt::Display;
 use thiserror::Error;
 
@@ -23,8 +24,8 @@ pub enum WriterError {
     ImportNotFound(String),
     #[error("xml error: node is not an element")]
     NotAnElement,
-    #[error("xml error: node missed the attribute: {0}")]
-    AttributeMissing(String),
+    #[error("xml error: node {0} missed the attribute: {1}")]
+    AttributeMissing(String, String),
     #[error("xml error: unsupported xsd type: {0}")]
     UnsupportedXsdType(String),
     #[error("xml error: node not found: {0}")]
@@ -47,5 +48,12 @@ impl WriterError {
         S: Display,
     {
         WriterError::Message(message.to_string())
+    }
+
+    pub fn attribute_missing<'n, S>(node: &Node<'n, 'n>, attribute: S) -> Self
+    where
+        S: Display,
+    {
+        WriterError::AttributeMissing(format!("{node:?}"), attribute.to_string())
     }
 }

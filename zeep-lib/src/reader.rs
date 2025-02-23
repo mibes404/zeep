@@ -357,7 +357,21 @@ mod tests {
         };
         let ComplexProps { fields, .. } = &**props;
 
-        // check the amount of fields, it should include the fields from the base type
+        // check the number of fields, it should include the fields from the base type
         assert_eq!(fields.len(), 1);
+    }
+
+    #[test]
+    fn can_parse_forward_pointing_base_type() {
+        const XSD_TYPES: &str = include_str!("../test-data/forward-pointing-type.xsd");
+        let files = Files::new("types.xsd", XSD_TYPES);
+
+        let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
+        let rust_doc = XmlReader::read_xml_internal(file, file_name, &files).unwrap();
+        assert_eq!(rust_doc.nodes.len(), 2);
+
+        // check node name
+        let node = rust_doc.nodes.first().unwrap();
+        assert_eq!(node.rust_type.xml_name(), Some("AddDelegateType"));
     }
 }

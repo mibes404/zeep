@@ -22,7 +22,7 @@ impl<'n> TryFromNode<'n> for SimpleProps {
 
         let xml_name = node
             .attribute("name")
-            .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?
+            .ok_or_else(|| WriterError::attribute_missing(&node, "name"))?
             .to_string();
 
         // check for documentation
@@ -36,7 +36,7 @@ impl<'n> TryFromNode<'n> for SimpleProps {
             let rust_type = restriction
                 .attribute("base")
                 .map(|b| as_rust_type(b, doc))
-                .ok_or_else(|| WriterError::AttributeMissing("base".to_string()))?;
+                .ok_or_else(|| WriterError::attribute_missing(&node, "base"))?;
 
             let restrictions = build_restrictions(restriction);
 
@@ -105,7 +105,7 @@ fn build_simple_union_type<'n>(
         .map(|n| {
             n.attribute("base")
                 .map(|b| as_rust_type(b, doc))
-                .ok_or_else(|| WriterError::AttributeMissing("base".to_string()))
+                .ok_or_else(|| WriterError::attribute_missing(&n, "base"))
         })
         .collect::<WriterResult<Vec<RustFieldType>>>()?;
     let restrictions = Some(Restrictions {
@@ -155,7 +155,7 @@ fn build_simple_list_type<'n>(
     let base = restriction
         .attribute("base")
         .map(|b| as_rust_type(b, doc))
-        .ok_or_else(|| WriterError::AttributeMissing("base".to_string()))?;
+        .ok_or_else(|| WriterError::attribute_missing(&restriction, "base"))?;
     let mut restrictions = Restrictions {
         acceptable_list_type: Some(base),
         ..Restrictions::default()

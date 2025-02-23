@@ -41,12 +41,12 @@ impl<'n> TryFromNode<'n> for SoapBinding {
     fn try_from_node(node: Node<'n, 'n>, doc: &mut RustDocument) -> WriterResult<Self> {
         let name = node
             .attribute("name")
-            .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?
+            .ok_or_else(|| WriterError::attribute_missing(&node, "name"))?
             .to_string();
 
         let port_type = node
             .attribute("type")
-            .ok_or_else(|| WriterError::AttributeMissing("type".to_string()))?;
+            .ok_or_else(|| WriterError::attribute_missing(&node, "type"))?;
         let (port_type_name, namespace) = resolve_type(port_type, doc);
         let port_type_node = doc
             .find_port_by_xml_name(port_type_name, namespace.as_deref())
@@ -59,7 +59,7 @@ impl<'n> TryFromNode<'n> for SoapBinding {
             .map(|o| {
                 let operation_name = o
                     .attribute("name")
-                    .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?
+                    .ok_or_else(|| WriterError::attribute_missing(&o, "name"))?
                     .to_string();
 
                 let opp = read_soap_operation(o, doc, &port_type_node, &operation_name)?;
@@ -149,7 +149,7 @@ fn read_body_port_message<'n>(
     // for now we only support literal encoding
     let encoding = node
         .attribute("use")
-        .ok_or_else(|| WriterError::AttributeMissing("use".to_string()))?;
+        .ok_or_else(|| WriterError::attribute_missing(&node, "use"))?;
 
     if encoding != "literal" {
         return Err(WriterError::UnsupportedEncoding(encoding.to_string()));
@@ -220,7 +220,7 @@ fn read_header_port_message<'n>(
     // get header part
     let part = n
         .attribute("part")
-        .ok_or_else(|| WriterError::AttributeMissing("part".to_string()))?;
+        .ok_or_else(|| WriterError::attribute_missing(&n, "part"))?;
 
     // lookup the message on the port type
     let rust_node = map_to_rust_node(doc, port_operation, in_or_out, part)?;

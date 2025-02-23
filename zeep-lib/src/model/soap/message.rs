@@ -20,7 +20,7 @@ impl<'n> TryFromNode<'n> for SoapMessage {
     fn try_from_node(node: Node<'n, 'n>, doc: &mut crate::model::doc::RustDocument) -> WriterResult<Self> {
         let xml_name = node
             .attribute("name")
-            .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?
+            .ok_or_else(|| WriterError::attribute_missing(&node, "name"))?
             .to_string();
 
         let parts = node
@@ -29,16 +29,16 @@ impl<'n> TryFromNode<'n> for SoapMessage {
             .map(|n| {
                 let part_name = n
                     .attribute("name")
-                    .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?
+                    .ok_or_else(|| WriterError::attribute_missing(&n, "name"))?
                     .to_string();
 
                 let element = n
                     .attribute("element")
-                    .ok_or_else(|| WriterError::AttributeMissing("element".to_string()))?;
+                    .ok_or_else(|| WriterError::attribute_missing(&n, "element"))?;
 
                 let (xml_name, namespace) = resolve_type(element, doc);
                 let rust_node = doc
-                    .find_node_by_xml_name(xml_name, namespace.as_deref())
+                    .find_node_by_xml_name(&node, xml_name, namespace.as_deref())
                     .ok_or(WriterError::NodeNotFound(xml_name.to_string()))?;
 
                 Ok((part_name, (rust_node.clone(), namespace.clone())))

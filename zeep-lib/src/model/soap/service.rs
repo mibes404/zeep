@@ -22,17 +22,17 @@ impl<'n> TryFromNode<'n> for SoapService {
     fn try_from_node(node: roxmltree::Node<'n, 'n>, doc: &mut crate::model::doc::RustDocument) -> WriterResult<Self> {
         let name = node
             .attribute("name")
-            .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?
+            .ok_or_else(|| WriterError::attribute_missing(&node, "name"))?
             .to_string();
 
         let port = node
             .children()
             .find(|n| n.is_element() && n.tag_name().name() == "port")
-            .ok_or_else(|| WriterError::NodeNotFound("port".to_string()))?;
+            .ok_or_else(|| WriterError::attribute_missing(&node, "port"))?;
 
         let binding = port
             .attribute("binding")
-            .ok_or_else(|| WriterError::AttributeMissing("binding".to_string()))?;
+            .ok_or_else(|| WriterError::attribute_missing(&port, "binding"))?;
         let (binding_name, namespace) = resolve_type(binding, doc);
         let binding_node = doc
             .find_binding_by_xml_name(binding_name, namespace.as_deref())
@@ -44,7 +44,7 @@ impl<'n> TryFromNode<'n> for SoapService {
             .find(|n| n.is_element() && n.tag_name().name() == "address")
             .ok_or_else(|| WriterError::NodeNotFound("address".to_string()))?
             .attribute("location")
-            .ok_or_else(|| WriterError::AttributeMissing("location".to_string()))?
+            .ok_or_else(|| WriterError::attribute_missing(&port, "location"))?
             .parse()
             .map_err(|_| WriterError::InvalidUrl)?;
 

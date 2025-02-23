@@ -27,7 +27,7 @@ impl<'n> TryFromNode<'n> for SoapPort {
     fn try_from_node(node: roxmltree::Node<'n, 'n>, doc: &mut crate::model::doc::RustDocument) -> WriterResult<Self> {
         let xml_name = node
             .attribute("name")
-            .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?
+            .ok_or_else(|| WriterError::attribute_missing(&node, "name"))?
             .to_string();
 
         let operations = node
@@ -36,7 +36,7 @@ impl<'n> TryFromNode<'n> for SoapPort {
             .map(|o| {
                 let name = o
                     .attribute("name")
-                    .ok_or_else(|| WriterError::AttributeMissing("name".to_string()))?
+                    .ok_or_else(|| WriterError::attribute_missing(&o, "name"))?
                     .to_string();
                 let opp = SoapOperation::try_from_node(o, doc)?;
                 Ok((name, opp))
@@ -73,7 +73,7 @@ fn read_port_operation(
 ) -> WriterResult<SoapOperationMapping> {
     let message_name = n
         .attribute("message")
-        .ok_or_else(|| WriterError::AttributeMissing("message".to_string()))?;
+        .ok_or_else(|| WriterError::attribute_missing(&n, "message"))?;
     let (xml_name, namespace) = resolve_type(message_name, doc);
     let soap_message = doc
         .find_message_by_xml_name(xml_name, namespace.as_deref())
