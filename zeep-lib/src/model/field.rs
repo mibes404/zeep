@@ -195,6 +195,10 @@ impl RustFieldType {
     pub fn is_string(&self) -> bool {
         matches!(self, RustFieldType::String)
     }
+
+    pub fn is_other(&self) -> bool {
+        matches!(self, RustFieldType::Other(_))
+    }
 }
 
 #[derive(Debug, PartialEq, Clone)]

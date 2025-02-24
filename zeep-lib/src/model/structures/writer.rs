@@ -92,12 +92,16 @@ where
     writeln!(writer, "pub struct {rust_name} {{")?;
     if rust_type.is_string() {
         writeln!(writer, "    #[yaserde(text = true)]")?;
-    } else {
+        writeln!(writer, "    pub inner: {rust_type}")?;
+    } else if rust_type.is_other() {
         writeln!(writer, "    #[yaserde(flatten = true)]")?;
+        writeln!(writer, "    pub inner: {rust_type}")?;
+    } else {
+        // todo: flatten is not supported for other types
+        writeln!(writer, "    #[yaserde(text = true)]")?;
+        writeln!(writer, "    pub inner: String")?;
     }
 
-    // todo: flatten is not supported on non-String fields, neither is text, so we ignore the type for now
-    writeln!(writer, "    pub inner: String")?;
     writeln!(writer, "}}")?;
     Ok(())
 }
