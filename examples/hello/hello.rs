@@ -15,13 +15,13 @@ use yaserde_derive::{YaDeserialize, YaSerialize};
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub mod mod_hel {
     use super::*;
-    #[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "hel", namespaces = {"hel" = "http://learnwebservices.com/services/hello"}, rename = "helloRequest")]
     pub struct HelloRequest {
         #[yaserde(prefix = "hel", rename = "Name")]
         pub name: String,
     }
-    #[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "hel", namespaces = {"hel" = "http://learnwebservices.com/services/hello"}, rename = "helloResponse")]
     pub struct HelloResponse {
         #[yaserde(prefix = "hel", rename = "Message")]
@@ -31,25 +31,25 @@ pub mod mod_hel {
 
 /* SayHello */
 
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "hel", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "hel" = "http://learnwebservices.com/services/hello" })]
 pub struct SayHelloInputEnvelopeBody {
     #[yaserde(prefix = "hel", rename = "HelloRequest")]
     pub hello_request: mod_hel::HelloRequest,
 }
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "hel" = "http://learnwebservices.com/services/hello" })]
 pub struct SayHelloInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
     pub body: SayHelloInputEnvelopeBody,
 }
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "hel", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "hel" = "http://learnwebservices.com/services/hello" })]
 pub struct SayHelloOutputEnvelopeBody {
     #[yaserde(prefix = "hel", rename = "HelloResponse")]
     pub hello_response: mod_hel::HelloResponse,
 }
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "hel" = "http://learnwebservices.com/services/hello" })]
 pub struct SayHelloOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
@@ -156,9 +156,9 @@ mod helpers {
         if let Some((username, password)) = credentials {
             req = req.basic_auth(username, Some(password));
         }
-        let res = req.send().await?;
-        res.error_for_status_ref()?;
-        let response_body = res.text().await?;
+        let response = req.send().await?;
+        response.error_for_status_ref()?;
+        let response_body = response.text().await?;
         let response = yaserde::de::from_str(&response_body).map_err(SoapError::YaserdeError)?;
         Ok(response)
     }
@@ -169,19 +169,23 @@ mod helpers {
 /// Needs `xml-rs`, `tokio` and `yaserde` as dependencies.
 pub mod multi_ref {
     use std::{ops::Deref, sync::Arc};
-    use tokio::sync::RwLock;
     use yaserde::{YaDeserialize, YaSerialize};
 
     pub struct MultiRef<T> {
-        inner: Arc<RwLock<T>>,
+        inner: Arc<T>,
+    }
+
+    impl<T> MultiRef<T> {
+        #[allow(dead_code)]
+        pub fn new(inner: T) -> Self {
+            Self { inner: Arc::new(inner) }
+        }
     }
 
     impl<T: YaDeserialize> YaDeserialize for MultiRef<T> {
         fn deserialize<R: std::io::prelude::Read>(reader: &mut yaserde::de::Deserializer<R>) -> Result<Self, String> {
             let inner = T::deserialize(reader)?;
-            Ok(Self {
-                inner: Arc::new(RwLock::new(inner)),
-            })
+            Ok(Self { inner: Arc::new(inner) })
         }
     }
 
@@ -190,7 +194,7 @@ pub mod multi_ref {
             &self,
             writer: &mut yaserde::ser::Serializer<W>,
         ) -> Result<(), String> {
-            self.inner.blocking_write().serialize(writer)?;
+            self.inner.serialize(writer)?;
             Ok(())
         }
 
@@ -199,7 +203,7 @@ pub mod multi_ref {
             attributes: Vec<xml::attribute::OwnedAttribute>,
             namespace: xml::namespace::Namespace,
         ) -> Result<(Vec<xml::attribute::OwnedAttribute>, xml::namespace::Namespace), String> {
-            self.inner.blocking_read().serialize_attributes(attributes, namespace)
+            self.inner.serialize_attributes(attributes, namespace)
         }
     }
 
@@ -219,12 +223,12 @@ pub mod multi_ref {
 
     impl<T: std::fmt::Debug> std::fmt::Debug for MultiRef<T> {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            self.inner.blocking_read().fmt(f)
+            self.inner.fmt(f)
         }
     }
 
     impl<T> Deref for MultiRef<T> {
-        type Target = Arc<RwLock<T>>;
+        type Target = Arc<T>;
 
         fn deref(&self) -> &Self::Target {
             &self.inner

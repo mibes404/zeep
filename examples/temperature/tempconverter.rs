@@ -14,26 +14,26 @@ use yaserde_derive::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub mod mod_tem {
-    use super::{Write, YaDeserialize, YaSerialize};
-    #[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+    use super::*;
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "tem", namespaces = {"tem" = "http://learnwebservices.com/services/tempconverter"}, rename = "celsiusToFahrenheitRequest")]
     pub struct CelsiusToFahrenheitRequest {
         #[yaserde(prefix = "tem", rename = "TemperatureInCelsius")]
         pub temperature_in_celsius: f64,
     }
-    #[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "tem", namespaces = {"tem" = "http://learnwebservices.com/services/tempconverter"}, rename = "celsiusToFahrenheitResponse")]
     pub struct CelsiusToFahrenheitResponse {
         #[yaserde(prefix = "tem", rename = "TemperatureInFahrenheit")]
         pub temperature_in_fahrenheit: f64,
     }
-    #[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "tem", namespaces = {"tem" = "http://learnwebservices.com/services/tempconverter"}, rename = "fahrenheitToCelsiusRequest")]
     pub struct FahrenheitToCelsiusRequest {
         #[yaserde(prefix = "tem", rename = "TemperatureInFahrenheit")]
         pub temperature_in_fahrenheit: f64,
     }
-    #[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+    #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "tem", namespaces = {"tem" = "http://learnwebservices.com/services/tempconverter"}, rename = "fahrenheitToCelsiusResponse")]
     pub struct FahrenheitToCelsiusResponse {
         #[yaserde(prefix = "tem", rename = "TemperatureInCelsius")]
@@ -43,25 +43,25 @@ pub mod mod_tem {
 
 /* FahrenheitToCelsius */
 
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "tem", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "tem" = "http://learnwebservices.com/services/tempconverter" })]
 pub struct FahrenheitToCelsiusInputEnvelopeBody {
     #[yaserde(prefix = "tem", rename = "FahrenheitToCelsiusRequest")]
     pub fahrenheit_to_celsius_request: mod_tem::FahrenheitToCelsiusRequest,
 }
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "tem" = "http://learnwebservices.com/services/tempconverter" })]
 pub struct FahrenheitToCelsiusInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
     pub body: FahrenheitToCelsiusInputEnvelopeBody,
 }
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "tem", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "tem" = "http://learnwebservices.com/services/tempconverter" })]
 pub struct FahrenheitToCelsiusOutputEnvelopeBody {
     #[yaserde(prefix = "tem", rename = "FahrenheitToCelsiusResponse")]
     pub fahrenheit_to_celsius_response: mod_tem::FahrenheitToCelsiusResponse,
 }
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "tem" = "http://learnwebservices.com/services/tempconverter" })]
 pub struct FahrenheitToCelsiusOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
@@ -70,25 +70,25 @@ pub struct FahrenheitToCelsiusOutputEnvelope {
 
 /* CelsiusToFahrenheit */
 
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "tem", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "tem" = "http://learnwebservices.com/services/tempconverter" })]
 pub struct CelsiusToFahrenheitInputEnvelopeBody {
     #[yaserde(prefix = "tem", rename = "CelsiusToFahrenheitRequest")]
     pub celsius_to_fahrenheit_request: mod_tem::CelsiusToFahrenheitRequest,
 }
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "tem" = "http://learnwebservices.com/services/tempconverter" })]
 pub struct CelsiusToFahrenheitInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
     pub body: CelsiusToFahrenheitInputEnvelopeBody,
 }
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "tem", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "tem" = "http://learnwebservices.com/services/tempconverter" })]
 pub struct CelsiusToFahrenheitOutputEnvelopeBody {
     #[yaserde(prefix = "tem", rename = "CelsiusToFahrenheitResponse")]
     pub celsius_to_fahrenheit_response: mod_tem::CelsiusToFahrenheitResponse,
 }
-#[derive(PartialEq, Debug, YaSerialize, YaDeserialize)]
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "tem" = "http://learnwebservices.com/services/tempconverter" })]
 pub struct CelsiusToFahrenheitOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
@@ -125,6 +125,8 @@ impl TempConverterEndpointService {
     }
 }
 pub mod error {
+    #![allow(dead_code)]
+
     use std::error::Error;
 
     #[derive(Debug)]
@@ -165,6 +167,8 @@ pub mod error {
 }
 
 mod helpers {
+    #![allow(dead_code)]
+
     use super::error::{SoapError, SoapResult};
     use reqwest::Client;
     use std::fmt;
@@ -202,9 +206,9 @@ mod helpers {
         if let Some((username, password)) = credentials {
             req = req.basic_auth(username, Some(password));
         }
-        let res = req.send().await?;
-        res.error_for_status_ref()?;
-        let response_body = res.text().await?;
+        let response = req.send().await?;
+        response.error_for_status_ref()?;
+        let response_body = response.text().await?;
         let response = yaserde::de::from_str(&response_body).map_err(SoapError::YaserdeError)?;
         Ok(response)
     }
@@ -215,19 +219,23 @@ mod helpers {
 /// Needs `xml-rs`, `tokio` and `yaserde` as dependencies.
 pub mod multi_ref {
     use std::{ops::Deref, sync::Arc};
-    use tokio::sync::RwLock;
     use yaserde::{YaDeserialize, YaSerialize};
 
     pub struct MultiRef<T> {
-        inner: Arc<RwLock<T>>,
+        inner: Arc<T>,
+    }
+
+    impl<T> MultiRef<T> {
+        #[allow(dead_code)]
+        pub fn new(inner: T) -> Self {
+            Self { inner: Arc::new(inner) }
+        }
     }
 
     impl<T: YaDeserialize> YaDeserialize for MultiRef<T> {
         fn deserialize<R: std::io::prelude::Read>(reader: &mut yaserde::de::Deserializer<R>) -> Result<Self, String> {
             let inner = T::deserialize(reader)?;
-            Ok(Self {
-                inner: Arc::new(RwLock::new(inner)),
-            })
+            Ok(Self { inner: Arc::new(inner) })
         }
     }
 
@@ -236,7 +244,7 @@ pub mod multi_ref {
             &self,
             writer: &mut yaserde::ser::Serializer<W>,
         ) -> Result<(), String> {
-            self.inner.blocking_write().serialize(writer)?;
+            self.inner.serialize(writer)?;
             Ok(())
         }
 
@@ -245,7 +253,7 @@ pub mod multi_ref {
             attributes: Vec<xml::attribute::OwnedAttribute>,
             namespace: xml::namespace::Namespace,
         ) -> Result<(Vec<xml::attribute::OwnedAttribute>, xml::namespace::Namespace), String> {
-            self.inner.blocking_read().serialize_attributes(attributes, namespace)
+            self.inner.serialize_attributes(attributes, namespace)
         }
     }
 
@@ -265,12 +273,12 @@ pub mod multi_ref {
 
     impl<T: std::fmt::Debug> std::fmt::Debug for MultiRef<T> {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            self.inner.blocking_read().fmt(f)
+            self.inner.fmt(f)
         }
     }
 
     impl<T> Deref for MultiRef<T> {
-        type Target = Arc<RwLock<T>>;
+        type Target = Arc<T>;
 
         fn deref(&self) -> &Self::Target {
             &self.inner
