@@ -15,9 +15,11 @@ where
 
                 match element_type {
                     ElementType::RustType(rust_type) => {
-                        if rust_type.to_string().ends_with(&rust_name) {
-                            // NOOP
-                            return Ok(());
+                        if let Some(segment) = rust_type.to_string().split(':').next_back() {
+                            if segment == rust_name {
+                                // NOOP
+                                return Ok(());
+                            }
                         }
 
                         writeln!(writer, "pub type {rust_name} = {rust_type};")?;
@@ -49,9 +51,11 @@ where
     } = &props;
 
     let rust_name = xml_name_to_rust_name(xml_name);
-    if rust_type.to_string().ends_with(&rust_name) {
-        // NOOP
-        return Ok(());
+    if let Some(segment) = rust_type.to_string().split(':').next_back() {
+        if segment == rust_name {
+            // NOOP
+            return Ok(());
+        }
     }
 
     // for now, write this as a type alias; we may want to change this to a newtype
@@ -91,7 +95,9 @@ where
     } else {
         writeln!(writer, "    #[yaserde(flatten = true)]")?;
     }
-    writeln!(writer, "    pub inner: {rust_type}")?;
+
+    // todo: flatten is not supported on non-String fields, neither is text, so we ignore the type for now
+    writeln!(writer, "    pub inner: String")?;
     writeln!(writer, "}}")?;
     Ok(())
 }

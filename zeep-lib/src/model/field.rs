@@ -39,6 +39,17 @@ impl<'n> TryFromNode<'n> for Field {
 
         target_namespace.clone_from(&doc.current_target_namespace);
 
+        let is_attribute = node.tag_name().name() == "attribute";
+
+        let is_optional = if is_attribute {
+            node.attribute("use") != Some("required")
+        } else {
+            node.attribute("minOccurs") == Some("0")
+        };
+
+        let is_vec = Node::attribute(&node, "maxOccurs") == Some("unbounded");
+        let is_choice = node.parent().map_or(false, |n| n.tag_name().name() == "choice");
+
         // check if this is an any type
         if node.tag_name().name() == "any" {
             return Ok(Field {
@@ -56,6 +67,22 @@ impl<'n> TryFromNode<'n> for Field {
 
         if let Some(ref_name) = node.attribute("ref") {
             let (xml_name, namespace_ref) = split_type(ref_name);
+            let rust_name = rename_keywords(&to_snake_case(xml_name)).to_string();
+
+            if ref_name.starts_with("xml") {
+                return Ok(Field {
+                    xml_name: xml_name.to_string(),
+                    rust_name: rust_name.to_string(),
+                    rust_type: RustFieldType::String,
+                    is_optional: false,
+                    is_vec: false,
+                    target_namespace: None,
+                    is_attribute: false,
+                    is_choice: false,
+                    is_any: false,
+                });
+            }
+
             let namespace: Option<Rc<Namespace>> = namespace_ref
                 .and_then(|ns| doc.find_namespace_by_abbreviation(ns))
                 .cloned();
@@ -65,7 +92,6 @@ impl<'n> TryFromNode<'n> for Field {
                 .as_ref()
                 .ok_or_else(|| WriterError::NodeNotFound(ref_name.to_string()))?;
 
-            let rust_name = rename_keywords(&to_snake_case(xml_name)).to_string();
             let is_choice = node.parent().map_or(false, |n| n.tag_name().name() == "choice");
             let module = namespace.map(|n| n.rust_mod_name.clone());
 
@@ -98,17 +124,6 @@ impl<'n> TryFromNode<'n> for Field {
         let rust_type = node
             .attribute("type")
             .map_or(RustFieldType::String, |t| as_rust_type(t, doc));
-
-        let is_attribute = node.tag_name().name() == "attribute";
-
-        let is_optional = if is_attribute {
-            node.attribute("use") != Some("required")
-        } else {
-            node.attribute("minOccurs") == Some("0")
-        };
-
-        let is_vec = Node::attribute(&node, "maxOccurs") == Some("unbounded");
-        let is_choice = node.parent().map_or(false, |n| n.tag_name().name() == "choice");
 
         Ok(Field {
             xml_name,

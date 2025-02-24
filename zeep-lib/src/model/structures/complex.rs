@@ -187,4 +187,20 @@ mod tests {
         let rust_node = parse_from_xml::<ComplexProps>(&doc);
         assert_eq!(rust_node.xml_name, "SearchDiagnosticsType");
     }
+
+    #[test]
+    fn can_parse_sequence_and_attribute() {
+        const XML: &str = r#"
+<xs:complexType name="ReplyBody" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Message" type="xs:string" />
+    </xs:sequence>
+    <xs:attribute ref="xml:lang" use="optional" />
+</xs:complexType>
+"#;
+
+        let doc = roxmltree::Document::parse(XML).unwrap();
+        let rust_node = parse_from_xml::<ComplexProps>(&doc);
+        assert_eq!(rust_node.xml_name, "ReplyBody");
+    }
 }
