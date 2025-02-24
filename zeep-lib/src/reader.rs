@@ -8,7 +8,7 @@ use crate::{
     },
 };
 use roxmltree::Node;
-use std::{collections::HashMap, fmt::Display, io, rc::Rc, sync::atomic::AtomicBool};
+use std::{collections::HashMap, fmt::Display, io, sync::atomic::AtomicBool};
 
 pub const WELL_KNOWN_NAMESPACES: &[&str] = &[
     "http://www.w3.org/XML/1998/namespace",
@@ -21,6 +21,10 @@ pub trait WriteXml<W>
 where
     W: io::Write,
 {
+    /// Generate XML from the Rust type
+    ///
+    /// # Errors
+    /// Returns an error if the XML could not be written to the writer
     fn write_xml(&self, writer: &mut W) -> WriterResult<()>;
 }
 
@@ -89,6 +93,10 @@ impl FilesToRead {
 }
 
 impl XmlReader {
+    /// Read the XML and convert it to a `RustDocument`
+    ///
+    /// # Errors
+    /// Returns an error if the XSD/WSDL is invalid
     pub fn read_xml(files_to_read: &FilesToRead) -> WriterResult<RustDocument> {
         let (content, start_with_file, files) = files_to_read.inner();
         Self::read_xml_internal(content, start_with_file, files)

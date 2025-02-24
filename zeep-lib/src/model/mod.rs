@@ -10,6 +10,7 @@ pub mod structures;
 use crate::model::doc::RustDocument;
 use roxmltree::Node;
 
+#[allow(clippy::struct_field_names)]
 #[derive(Debug, PartialEq)]
 pub struct Namespace {
     pub namespace: String,

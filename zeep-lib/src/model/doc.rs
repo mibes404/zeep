@@ -148,8 +148,7 @@ impl RustDocument {
             return Some(rust_node.clone());
         }
 
-        let alt_node =
-            try_to_find_node_by_xml_name_in_xml_doc(start_node, xml_name, namespace.as_deref(), self).ok()?;
+        let alt_node = try_to_find_node_by_xml_name_in_xml_doc(start_node, xml_name, namespace, self).ok()?;
         Some(alt_node.into())
     }
 
@@ -181,7 +180,7 @@ fn create_mod_name_for_namespace(abbreviation: &str) -> String {
 fn try_to_find_node_by_xml_name_in_xml_doc<'n>(
     start_node: &'n Node<'n, 'n>,
     xml_name: &str,
-    namespace: Option<&Namespace>,
+    _namespace: Option<&Namespace>,
     doc: &mut RustDocument,
 ) -> WriterResult<RustNode> {
     // get to the root of the document from the start node
@@ -195,7 +194,7 @@ fn try_to_find_node_by_xml_name_in_xml_doc<'n>(
         if node.is_element() {
             // do a quick check on the name of the node, so we can skip the more expensive try_from_node
             if let Some(node_name) = node.attribute("name") {
-                let (node_name, node_namespace) = resolve_type(node_name, doc);
+                let (node_name, _node_namespace) = resolve_type(node_name, doc);
                 if node_name != xml_name {
                     continue;
                 }

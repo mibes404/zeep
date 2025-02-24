@@ -7,11 +7,9 @@ use crate::{
     model::{
         TryFromNode,
         doc::RustDocument,
-        field::{RustFieldType, as_rust_type},
     },
     reader::WriteXml,
 };
-use inflector::cases::camelcase::to_camel_case;
 use roxmltree::Node;
 use std::{io, rc::Rc};
 

@@ -49,21 +49,21 @@ where
 {
     // generate an async fn for the operation
     let rust_fn_name = to_snake_case(operation_name);
-    let req_name = format!("{operation_name}InputEnvelope");
-    let res_name = operation
+    let request_name = format!("{operation_name}InputEnvelope");
+    let response_name = operation
         .output
         .as_ref()
         .map(|_| format!("{operation_name}OutputEnvelope"));
 
-    if let Some(res_name) = res_name {
+    if let Some(res_name) = response_name {
         writeln!(
             writer,
-            "pub async fn {rust_fn_name}(req: {req_name}, credentials: Option<(String, String)>) -> error::SoapResult<{res_name}> {{"
+            "pub async fn {rust_fn_name}(req: {request_name}, credentials: Option<(String, String)>) -> error::SoapResult<{res_name}> {{"
         )?;
     } else {
         writeln!(
             writer,
-            "pub async fn {rust_fn_name}(req: {req_name}, credentials: Option<(String, String)>) -> error::SoapResult<()> {{"
+            "pub async fn {rust_fn_name}(req: {request_name}, credentials: Option<(String, String)>) -> error::SoapResult<()> {{"
         )?;
     }
 

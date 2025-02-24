@@ -1,8 +1,8 @@
-mod error;
+#![warn(clippy::pedantic)]
 
-mod model;
 pub mod reader;
-
-// mod writer;
 pub mod utils;
+
+mod error;
+mod model;
 mod yaserde_tests;

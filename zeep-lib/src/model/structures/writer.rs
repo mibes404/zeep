@@ -1,4 +1,7 @@
-use super::*;
+use super::{
+    ComplexProps, ElementProps, ElementType, Namespace, Rc, RustFieldType, RustType, SimpleProps, WriteXml,
+    WriterError, WriterResult, io, xml_name_to_rust_name,
+};
 
 impl<W> WriteXml<W> for RustType
 where
@@ -146,7 +149,7 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::model::field::RustFieldType;
+    use crate::model::field::{Field, RustFieldType};
 
     #[test]
     fn can_write_a_struct_type_to_rust() {

@@ -169,7 +169,7 @@ fn import_extension_fields(node: &mut Node, doc: &mut RustDocument, base_fields:
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::model::{node::test_utils::parse_from_xml, structures::element::ElementProps};
+    use crate::model::node::test_utils::parse_from_xml;
 
     #[test]
     fn can_read_nested_sequence_of_any_type() {

@@ -48,7 +48,7 @@ impl<'n> TryFromNode<'n> for Field {
         };
 
         let is_vec = Node::attribute(&node, "maxOccurs") == Some("unbounded");
-        let is_choice = node.parent().map_or(false, |n| n.tag_name().name() == "choice");
+        let is_choice = node.parent().is_some_and(|n| n.tag_name().name() == "choice");
 
         // check if this is an any type
         if node.tag_name().name() == "any" {
@@ -92,7 +92,7 @@ impl<'n> TryFromNode<'n> for Field {
                 .as_ref()
                 .ok_or_else(|| WriterError::NodeNotFound(ref_name.to_string()))?;
 
-            let is_choice = node.parent().map_or(false, |n| n.tag_name().name() == "choice");
+            let is_choice = node.parent().is_some_and(|n| n.tag_name().name() == "choice");
             let module = namespace.map(|n| n.rust_mod_name.clone());
 
             let xml_name = ref_node.xml_name().ok_or(WriterError::InvalidReference)?;

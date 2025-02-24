@@ -80,9 +80,9 @@ mod helpers {
         if let Some((username, password)) = credentials {
             req = req.basic_auth(username, Some(password));
         }
-        let res = req.send().await?;
-        res.error_for_status_ref()?;
-        let response_body = res.text().await?;
+        let response = req.send().await?;
+        response.error_for_status_ref()?;
+        let response_body = response.text().await?;
         let response = yaserde::de::from_str(&response_body).map_err(SoapError::YaserdeError)?;
         Ok(response)
     }
