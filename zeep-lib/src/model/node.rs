@@ -4,15 +4,26 @@ use super::{
 };
 use crate::{
     error::{WriterError, WriterResult},
-    model::{TryFromNode, doc::RustDocument},
+    model::{
+        TryFromNode,
+        doc::RustDocument,
+        field::{RustFieldType, as_rust_type},
+    },
     reader::WriteXml,
 };
+use inflector::cases::camelcase::to_camel_case;
 use roxmltree::Node;
 use std::{io, rc::Rc};
 
 pub struct RustNode {
     pub rust_type: RustType,
     pub in_namespace: Option<Rc<Namespace>>,
+}
+
+impl RustNode {
+    pub fn xml_name(&self) -> Option<&str> {
+        self.rust_type.xml_name()
+    }
 }
 
 impl<'n> TryFromNode<'n> for RustNode {
@@ -32,7 +43,7 @@ impl<'n> TryFromNode<'n> for RustNode {
 
         let mut rust_type = RustType::Ignore;
         match node.tag_name().name() {
-            "complexType" => {
+            "complexType" | "group" => {
                 // determine complexType's-type: struct, enum, list
                 rust_type = RustType::Complex(ComplexProps::try_from_node(node, doc)?.into());
             }
@@ -142,7 +153,7 @@ mod tests {
         <xs:restriction base="xs:string">
             <xs:enumeration value="NoError"/>
             <xs:enumeration value="ErrorAccessDenied"/>
-            <xs:enumeration value="ErrorAccessModeSpecified"/>           
+            <xs:enumeration value="ErrorAccessModeSpecified"/>
         </xs:restriction>
     </xs:simpleType>"#;
         let rust_node = node_from_xml(XML);

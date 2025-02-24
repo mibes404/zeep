@@ -374,4 +374,18 @@ mod tests {
         let node = rust_doc.nodes.first().unwrap();
         assert_eq!(node.rust_type.xml_name(), Some("AddDelegateType"));
     }
+
+    #[test]
+    fn can_parse_groups() {
+        const XSD_TYPES: &str = include_str!("../test-data/use-of-groups.xsd");
+        let files = Files::new("types.xsd", XSD_TYPES);
+
+        let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
+        let rust_doc = XmlReader::read_xml_internal(file, file_name, &files).unwrap();
+        assert_eq!(rust_doc.nodes.len(), 3);
+
+        // check node name
+        let node = rust_doc.nodes.last().unwrap();
+        assert_eq!(node.rust_type.xml_name(), Some("TimeChangeType"));
+    }
 }

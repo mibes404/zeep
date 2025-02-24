@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="types" elementFormDefault="qualified"
+           xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types"
+           targetNamespace="http://schemas.microsoft.com/exchange/services/2006/types"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:complexType name="RelativeYearlyRecurrencePatternType">
+        <xs:sequence>
+            <xs:element name="DaysOfWeek" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:group name="TimeChangePatternTypes">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="RelativeYearlyRecurrence" type="t:RelativeYearlyRecurrencePatternType"/>
+                <xs:element name="AbsoluteDate" type="xs:date"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:complexType name="TimeChangeType">
+        <xs:sequence>
+            <xs:element name="Offset" type="xs:duration"/>
+            <xs:group ref="t:TimeChangePatternTypes" minOccurs="0"/>
+            <xs:element name="Time" type="xs:time"/>
+        </xs:sequence>
+        <xs:attribute name="TimeZoneName" type="xs:string" use="optional"/>
+    </xs:complexType>
+</xs:schema>

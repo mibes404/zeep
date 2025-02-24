@@ -26,9 +26,9 @@ const_format = { version = "0.2", features = ["fmt"] }
 name = "hello"
 path = "../examples/hello/main.rs"
 
-# [[example]]
-# name = "weather"
-# path = "../examples/weather/main.rs"
+#[[example]]
+#name = "weather"
+#path = "../examples/weather/main.rs"
 
 [[example]]
 name = "temperature"

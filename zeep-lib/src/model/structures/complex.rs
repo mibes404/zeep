@@ -30,25 +30,32 @@ impl<'n> TryFromNode<'n> for ComplexProps {
             return Err(WriterError::attribute_missing(&node, "name"));
         };
 
-        for n in node.children().filter(Node::is_element) {
-            // check if this node is an extension of another node, if so, find the base node and copy all the fields
-            // from that node.
-            if n.tag_name().name() == "complexContent" {
-                return read_complex_content_node(element_name, n, doc);
-            }
-
-            if n.tag_name().name() == "sequence" {
-                return read_sequence_node(element_name, n, doc);
-            }
-        }
-
-        // empty struct
-        Ok(ComplexProps {
+        let mut result = ComplexProps {
             xml_name: element_name.to_string(),
             fields: vec![],
             target_namespace: doc.current_target_namespace.clone(),
             comment: parse_comment(node),
-        })
+        };
+
+        for n in node.children().filter(Node::is_element) {
+            // check if this node is an extension of another node, if so, find the base node and copy all the fields
+            // from that node.
+            if n.tag_name().name() == "complexContent" {
+                result = read_complex_content_node(element_name, n, doc)?;
+            }
+
+            if n.tag_name().name() == "sequence" {
+                result = read_sequence_node(element_name, n, doc)?;
+            }
+
+            if n.tag_name().name() == "attribute" {
+                // read it as a field and add it to the fields
+                let field = Field::try_from_node(n, doc)?;
+                result.fields.push(field);
+            }
+        }
+
+        Ok(result)
     }
 }
 

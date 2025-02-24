@@ -40,6 +40,8 @@ pub enum WriterError {
     UnsupportedEncoding(String),
     #[error("xml error: invalid url")]
     InvalidUrl,
+    #[error("xml error: invalid reference")]
+    InvalidReference,
 }
 
 impl WriterError {

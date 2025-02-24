@@ -6,7 +6,7 @@ cargo build
 ./target/debug/zeep --input ./resources/temp_converter/tempconverter.wsdl --output ./examples/temperature/tempconverter.rs
 ./target/debug/zeep --input ./resources/hello/hello.wsdl --output ./examples/hello/hello.rs
 ./target/debug/zeep --input ./resources/exchange/services.wsdl --output ./examples/exchange/services.rs
-./target/debug/zeep -p resources/weather -i weather.wsdl -o examples/weather/weather.rs
+./target/debug/zeep --input ./resources/weather/weather.wsdl -o examples/weather/weather.rs
 ./target/debug/zeep -p resources/smgr -i agentCommProfile.xsd -o examples/smgr/smgr_agent.rs
 ./target/debug/zeep -p resources/blz_service -i blz.wsdl -o examples/blz_service/blz.rs
 ./target/debug/zeep -p resources/number_services -i number_services.wsdl -o examples/number_services/number_services.rs -n 'm'

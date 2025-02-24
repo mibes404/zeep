@@ -63,16 +63,22 @@ impl<'n> TryFromNode<'n> for Field {
             let ref_node = doc.find_node_by_xml_name(&node, xml_name, namespace.as_deref());
             let ref_node = ref_node
                 .as_ref()
-                .and_then(|n| n.rust_type.try_as_element())
                 .ok_or_else(|| WriterError::NodeNotFound(ref_name.to_string()))?;
 
             let rust_name = rename_keywords(&to_snake_case(xml_name)).to_string();
             let is_choice = node.parent().map_or(false, |n| n.tag_name().name() == "choice");
+            let module = namespace.map(|n| n.rust_mod_name.clone());
+
+            let xml_name = ref_node.xml_name().ok_or(WriterError::InvalidReference)?;
+            let rust_type = RustFieldType::Other(OtherRustType {
+                name: to_pascal_case(xml_name),
+                module,
+            });
 
             return Ok(Field {
-                xml_name: ref_node.xml_name.clone(),
+                xml_name: xml_name.to_string(),
                 rust_name,
-                rust_type: ref_node.rust_type().expect("expected a rust_type on ref node"),
+                rust_type,
                 is_optional: false,
                 is_vec: false,
                 target_namespace: None,
@@ -235,7 +241,7 @@ pub fn as_rust_type(node_type: &str, doc: &RustDocument) -> RustFieldType {
     match node_type {
         "byte" => RustFieldType::I8,
         "string" | "normalizedString" | "base64Binary" | "hexBinary" | "anyURI" | "date" | "dateTime" | "time"
-        | "language" => RustFieldType::String,
+        | "language" | "duration" => RustFieldType::String,
         "decimal" | "double" => RustFieldType::F64,
         "float" => RustFieldType::F32,
         "integer" | "int" | "negativeInteger" | "nonNegativeInteger" | "nonPositiveInteger" | "positiveInteger" => {
