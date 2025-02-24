@@ -3,7 +3,7 @@ use super::{
 };
 use crate::model::{field::resolve_type, node::collect_namespaces_on_node};
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Default)]
 pub struct ComplexProps {
     pub xml_name: String,
     pub fields: Vec<Field>,
@@ -94,15 +94,37 @@ fn import_sequence_node_fields(
     doc: &mut RustDocument,
     base_fields: &mut Vec<Field>,
 ) -> Result<(), WriterError> {
-    let fields = node
-        .children()
-        .filter(Node::is_element)
-        .map(|n| Field::try_from_node(n, doc))
-        .collect::<WriterResult<Vec<Field>>>()?;
+    let children = node.children().filter(Node::is_element);
 
-    // add the fields to the base fields to maintain the order
-    base_fields.extend(fields);
+    for mut child in children {
+        let tag_name = child.tag_name().name();
+
+        if tag_name == "choice" {
+            import_choice_fields(&mut child, doc, base_fields)?;
+            continue;
+        }
+
+        if tag_name == "sequence" {
+            // nested sequence
+            return import_sequence_node_fields(&mut child, doc, base_fields);
+        }
+
+        // regular field
+        let field = Field::try_from_node(child, doc)?;
+
+        // add the fields to the base fields to maintain the order
+        base_fields.push(field);
+    }
+
     Ok(())
+}
+
+fn import_choice_fields(
+    node: &mut Node,
+    doc: &mut RustDocument,
+    base_fields: &mut Vec<Field>,
+) -> Result<(), WriterError> {
+    import_sequence_node_fields(node, doc, base_fields)
 }
 
 fn import_extension_fields(node: &mut Node, doc: &mut RustDocument, base_fields: &mut Vec<Field>) -> WriterResult<()> {
@@ -116,7 +138,7 @@ fn import_extension_fields(node: &mut Node, doc: &mut RustDocument, base_fields:
             .ok_or_else(|| WriterError::attribute_missing(node, "base"))?;
         let (xml_name, namespace_abbreviation) = resolve_type(xml_name, doc);
         let base_node = doc
-            .find_node_by_xml_name(&node, xml_name, namespace_abbreviation.as_deref())
+            .find_node_by_xml_name(node, xml_name, namespace_abbreviation.as_deref())
             .ok_or_else(|| WriterError::NodeNotFound(xml_name.to_string()))?;
 
         match &base_node.rust_type {
@@ -135,4 +157,27 @@ fn import_extension_fields(node: &mut Node, doc: &mut RustDocument, base_fields:
         }
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::model::{node::test_utils::parse_from_xml, structures::element::ElementProps};
+
+    #[test]
+    fn can_read_nested_sequence_of_any_type() {
+        const XML: &str = r#"
+<xs:complexType name="SearchDiagnosticsType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:sequence>
+      <xs:sequence>
+        <xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded" namespace="\#\#any"/>
+      </xs:sequence>
+    </xs:sequence>
+ </xs:complexType>
+ "#;
+
+        let doc = roxmltree::Document::parse(XML).unwrap();
+        let rust_node = parse_from_xml::<ComplexProps>(&doc);
+        assert_eq!(rust_node.xml_name, "SearchDiagnosticsType");
+    }
 }

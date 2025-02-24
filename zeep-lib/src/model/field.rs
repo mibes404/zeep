@@ -10,14 +10,18 @@ use std::{
     rc::Rc,
 };
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Default)]
+#[allow(clippy::struct_excessive_bools)]
 pub struct Field {
     pub xml_name: String,
     pub rust_name: String,
     pub rust_type: RustFieldType,
-    pub optional: bool,
-    pub vec: bool,
+    pub is_optional: bool,
+    pub is_vec: bool,
     pub target_namespace: Option<Rc<Namespace>>,
+    pub is_attribute: bool,
+    pub is_choice: bool,
+    pub is_any: bool,
 }
 
 impl<'n> TryFromNode<'n> for Field {
@@ -35,6 +39,21 @@ impl<'n> TryFromNode<'n> for Field {
 
         target_namespace.clone_from(&doc.current_target_namespace);
 
+        // check if this is an any type
+        if node.tag_name().name() == "any" {
+            return Ok(Field {
+                xml_name: "body".to_string(),
+                rust_name: "body".to_string(),
+                rust_type: RustFieldType::String,
+                is_optional: true,
+                is_vec: false,
+                target_namespace: None,
+                is_attribute: false,
+                is_choice: false,
+                is_any: true,
+            });
+        }
+
         if let Some(ref_name) = node.attribute("ref") {
             let (xml_name, namespace_ref) = split_type(ref_name);
             let namespace: Option<Rc<Namespace>> = namespace_ref
@@ -48,14 +67,18 @@ impl<'n> TryFromNode<'n> for Field {
                 .ok_or_else(|| WriterError::NodeNotFound(ref_name.to_string()))?;
 
             let rust_name = rename_keywords(&to_snake_case(xml_name)).to_string();
+            let is_choice = node.parent().map_or(false, |n| n.tag_name().name() == "choice");
 
             return Ok(Field {
                 xml_name: ref_node.xml_name.clone(),
                 rust_name,
                 rust_type: ref_node.rust_type().expect("expected a rust_type on ref node"),
-                optional: false,
-                vec: false,
+                is_optional: false,
+                is_vec: false,
                 target_namespace: None,
+                is_attribute: false,
+                is_choice,
+                is_any: false,
             });
         }
 
@@ -65,19 +88,32 @@ impl<'n> TryFromNode<'n> for Field {
             .to_string();
 
         let rust_name = rename_keywords(&to_snake_case(&xml_name)).to_string();
+
         let rust_type = node
             .attribute("type")
             .map_or(RustFieldType::String, |t| as_rust_type(t, doc));
-        let optional = node.attribute("minOccurs") == Some("0");
-        let vec = Node::attribute(&node, "maxOccurs") == Some("unbounded");
+
+        let is_attribute = node.tag_name().name() == "attribute";
+
+        let is_optional = if is_attribute {
+            node.attribute("use") != Some("required")
+        } else {
+            node.attribute("minOccurs") == Some("0")
+        };
+
+        let is_vec = Node::attribute(&node, "maxOccurs") == Some("unbounded");
+        let is_choice = node.parent().map_or(false, |n| n.tag_name().name() == "choice");
 
         Ok(Field {
             xml_name,
             rust_name,
             rust_type,
-            optional,
-            vec,
+            is_optional,
+            is_vec,
             target_namespace,
+            is_attribute,
+            is_choice,
+            is_any: false,
         })
     }
 }
@@ -87,22 +123,28 @@ where
     W: std::io::Write,
 {
     fn write_xml(&self, writer: &mut W) -> WriterResult<()> {
-        let possibly_optional_field = if self.vec {
+        let possibly_optional_field = if self.is_vec {
             format!("Vec<{}>", self.rust_type)
-        } else if self.optional {
+        } else if self.is_optional {
             format!("Option<{}>", self.rust_type)
         } else {
             self.rust_type.to_string()
         };
 
+        let attribute_header = if self.is_attribute { ", attribute = true" } else { "" };
+
         if let Some(tns) = &self.target_namespace {
             writeln!(
                 writer,
-                "    #[yaserde(prefix = \"{}\", rename = \"{}\")]",
+                "    #[yaserde(prefix = \"{}\", rename = \"{}\"{attribute_header})]",
                 tns.abbreviation, self.xml_name
             )?;
         } else {
-            writeln!(writer, "    #[yaserde(rename = \"{}\")]", self.xml_name)?;
+            writeln!(
+                writer,
+                "    #[yaserde(rename = \"{}\"{attribute_header})]",
+                self.xml_name
+            )?;
         }
 
         writeln!(writer, "    pub {}: {},", self.rust_name, possibly_optional_field)?;
@@ -110,8 +152,9 @@ where
     }
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Default)]
 pub enum RustFieldType {
+    #[default]
     String,
     I8,
     I16,
@@ -272,9 +315,27 @@ mod tests {
                 xml_name: "Id".to_string(),
                 rust_name: "id".to_string(),
                 rust_type: RustFieldType::String,
-                optional: true,
-                vec: false,
-                target_namespace: None,
+                is_optional: true,
+                ..Default::default()
+            }
+        );
+    }
+
+    #[test]
+    fn can_parse_attribute_from_node() {
+        const STRING_FIELD: &str = r#"<xs:attribute name="HeaderName" type="xs:string" use="required" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>"#;
+        let doc = roxmltree::Document::parse(STRING_FIELD).unwrap();
+        let node = doc.root_element();
+        let mut rust_doc = RustDocument::init(&doc);
+        let field = Field::try_from_node(node, &mut rust_doc).unwrap();
+        assert_eq!(
+            field,
+            Field {
+                xml_name: "HeaderName".to_string(),
+                rust_name: "header_name".to_string(),
+                rust_type: RustFieldType::String,
+                is_attribute: true,
+                ..Default::default()
             }
         );
     }
@@ -293,9 +354,8 @@ mod tests {
                 xml_name: "Id".to_string(),
                 rust_name: "id".to_string(),
                 rust_type: RustFieldType::String,
-                optional: true,
-                vec: false,
-                target_namespace: None
+                is_optional: true,
+                ..Default::default()
             }
         );
     }
@@ -313,13 +373,13 @@ mod tests {
                 xml_name: "Id".to_string(),
                 rust_name: "id".to_string(),
                 rust_type: RustFieldType::String,
-                optional: true,
-                vec: false,
+                is_optional: true,
                 target_namespace: Some(Rc::new(Namespace {
                     namespace: "http://schemas.microsoft.com/exchange/services/2006/types".to_string(),
                     abbreviation: "typ".to_string(),
                     rust_mod_name: "mod_typ".to_string(),
-                }))
+                })),
+                ..Default::default()
             }
         );
     }
@@ -330,9 +390,7 @@ mod tests {
             xml_name: "Id".to_string(),
             rust_name: "id".to_string(),
             rust_type: RustFieldType::String,
-            optional: false,
-            vec: false,
-            target_namespace: None,
+            ..Default::default()
         };
         let mut buffer = Vec::new();
         field.write_xml(&mut buffer).unwrap();
@@ -348,9 +406,8 @@ mod tests {
             xml_name: "Id".to_string(),
             rust_name: "id".to_string(),
             rust_type: RustFieldType::String,
-            optional: true,
-            vec: false,
-            target_namespace: None,
+            is_optional: true,
+            ..Default::default()
         };
         let mut buffer = Vec::new();
         field.write_xml(&mut buffer).unwrap();
@@ -366,15 +423,33 @@ mod tests {
             xml_name: "Id".to_string(),
             rust_name: "id".to_string(),
             rust_type: RustFieldType::String,
-            optional: true,
-            vec: true,
-            target_namespace: None,
+            is_optional: true,
+            is_vec: true,
+            ..Default::default()
         };
         let mut buffer = Vec::new();
         field.write_xml(&mut buffer).unwrap();
         assert_eq!(
             String::from_utf8(buffer).unwrap(),
             "    #[yaserde(rename = \"Id\")]\n    pub id: Vec<String>,\n"
+        );
+    }
+
+    #[test]
+    fn can_write_attribute_in_rust() {
+        let field = Field {
+            xml_name: "HeaderName".to_string(),
+            rust_name: "header_name".to_string(),
+            rust_type: RustFieldType::String,
+            is_attribute: true,
+            ..Default::default()
+        };
+
+        let mut buffer = Vec::new();
+        field.write_xml(&mut buffer).unwrap();
+        assert_eq!(
+            String::from_utf8(buffer).unwrap(),
+            "    #[yaserde(rename = \"HeaderName\", attribute = true)]\n    pub header_name: String,\n"
         );
     }
 }

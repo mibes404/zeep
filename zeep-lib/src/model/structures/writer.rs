@@ -189,17 +189,13 @@ pub struct Person {
                     xml_name: "name".to_string(),
                     rust_name: "name".to_string(),
                     rust_type: RustFieldType::String,
-                    optional: false,
-                    vec: false,
-                    target_namespace: None,
+                    ..Default::default()
                 },
                 Field {
                     xml_name: "age".to_string(),
                     rust_name: "age".to_string(),
                     rust_type: RustFieldType::I32,
-                    optional: false,
-                    vec: false,
-                    target_namespace: None,
+                    ..Default::default()
                 },
             ],
             target_namespace,
@@ -209,9 +205,7 @@ pub struct Person {
 
     #[test]
     fn can_write_a_simple_type_to_rust() {
-        const EXPECTED: &str = r"/// A person
-pub type Person = String;
-";
+        const EXPECTED: &str = "/// A person\n#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct Person {\n    #[yaserde(text = true)]\n    pub inner: String\n}\n";
         let mut writer = Vec::new();
         let props = prep_simple_props(None);
         let rust_type = RustType::Simple(props);

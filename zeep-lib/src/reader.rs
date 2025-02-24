@@ -260,8 +260,8 @@ mod tests {
         let id_field = fields.first().unwrap();
         assert_eq!(id_field.xml_name, "Id");
         assert_eq!(id_field.rust_type, RustFieldType::String);
-        assert!(id_field.optional);
-        assert!(!id_field.vec);
+        assert!(id_field.is_optional);
+        assert!(!id_field.is_vec);
 
         assert_eq!(
             target_namespace.as_ref().unwrap().namespace,

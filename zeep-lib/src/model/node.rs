@@ -116,12 +116,10 @@ mod tests {
                 xml_name: "Id".to_string(),
                 rust_name: "id".to_string(),
                 rust_type: RustFieldType::String,
-                optional: true,
-                vec: false,
-                target_namespace: None,
+                is_optional: true,
+                ..Default::default()
             }],
-            target_namespace: None,
-            comment: None,
+            ..Default::default()
         }
         .into();
 

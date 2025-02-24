@@ -101,13 +101,25 @@ fn build_simple_union_type<'n>(
     let simple_types = list
         .children()
         .filter(|n| n.is_element() && n.tag_name().name() == "simpleType");
+
     let member_types = simple_types
         .map(|n| {
-            n.attribute("base")
-                .map(|b| as_rust_type(b, doc))
-                .ok_or_else(|| WriterError::attribute_missing(&n, "base"))
+            let mut base_type = n.attribute("base").map(|b| as_rust_type(b, doc));
+
+            if base_type.is_none() {
+                // check if the child is a restriction with a base attribute and use that
+                let restriction = n
+                    .children()
+                    .find(|n| n.is_element() && n.tag_name().name() == "restriction")
+                    .ok_or_else(|| WriterError::UnsupportedXsdType("union".to_string()))?;
+
+                base_type = restriction.attribute("base").map(|b| as_rust_type(b, doc));
+            }
+
+            base_type.ok_or(WriterError::UnsupportedXsdType("union".to_string()))
         })
         .collect::<WriterResult<Vec<RustFieldType>>>()?;
+
     let restrictions = Some(Restrictions {
         acceptable_union_types: Some(member_types),
         ..Restrictions::default()
