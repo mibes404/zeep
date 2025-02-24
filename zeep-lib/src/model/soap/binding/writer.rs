@@ -106,7 +106,15 @@ where
             let field_name = as_field_name(part_name);
             let rust_type = header.rust_type.xml_name().expect("xml_name not found");
 
-            writeln!(writer, "    #[yaserde(rename = \"{part_name}\")]")?;
+            if let Some(namespace) = header.in_namespace.as_ref() {
+                let abbreviation = namespace.abbreviation.as_str();
+                writeln!(
+                    writer,
+                    "#[yaserde(prefix = \"{abbreviation}\", rename = \"{part_name}\")]"
+                )?;
+            } else {
+                writeln!(writer, "    #[yaserde(rename = \"{part_name}\")]")?;
+            }
 
             // todo: we should check if the "mustUnderstand" == 1 to make the field required
             if let Some(namespace) = header.in_namespace.as_ref() {

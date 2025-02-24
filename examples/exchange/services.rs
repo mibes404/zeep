@@ -15231,377 +15231,109 @@ pub mod mod_typ {
     }
 }
 
-/* Subscribe */
+/* GetHoldOnMailboxes */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SubscribeInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
+pub struct GetHoldOnMailboxesInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetHoldOnMailboxesInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetHoldOnMailboxes")]
+    pub get_hold_on_mailboxes: mod_mes::GetHoldOnMailboxes,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetHoldOnMailboxesInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetHoldOnMailboxesInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetHoldOnMailboxesInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetHoldOnMailboxesOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetHoldOnMailboxesOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetHoldOnMailboxesResponse")]
+    pub get_hold_on_mailboxes_response: mod_mes::GetHoldOnMailboxesResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetHoldOnMailboxesOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetHoldOnMailboxesOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetHoldOnMailboxesOutputEnvelopeBody,
+}
+pub async fn get_hold_on_mailboxes(
+    req: GetHoldOnMailboxesInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetHoldOnMailboxesOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetHoldOnMailboxes";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SetImListMigrationCompleted */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetImListMigrationCompletedInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
     pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SubscribeInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "Subscribe")]
-    pub subscribe: mod_mes::Subscribe,
+pub struct SetImListMigrationCompletedInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SetImListMigrationCompleted")]
+    pub set_im_list_migration_completed: mod_mes::SetImListMigrationCompleted,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SubscribeInputEnvelope {
+pub struct SetImListMigrationCompletedInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SubscribeInputEnvelopeHeader,
+    pub header: SetImListMigrationCompletedInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SubscribeInputEnvelopeBody,
+    pub body: SetImListMigrationCompletedInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SubscribeOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct SetImListMigrationCompletedOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SubscribeOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SubscribeResponse")]
-    pub subscribe_response: mod_mes::SubscribeResponse,
+pub struct SetImListMigrationCompletedOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SetImListMigrationCompletedResponse")]
+    pub set_im_list_migration_completed_response: mod_mes::SetImListMigrationCompletedResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SubscribeOutputEnvelope {
+pub struct SetImListMigrationCompletedOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SubscribeOutputEnvelopeHeader,
+    pub header: SetImListMigrationCompletedOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SubscribeOutputEnvelopeBody,
+    pub body: SetImListMigrationCompletedOutputEnvelopeBody,
 }
-pub async fn subscribe(
-    req: SubscribeInputEnvelope,
+pub async fn set_im_list_migration_completed(
+    req: SetImListMigrationCompletedInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<SubscribeOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/Subscribe";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddImContactToGroup */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddImContactToGroupInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddImContactToGroupInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "AddImContactToGroup")]
-    pub add_im_contact_to_group: mod_mes::AddImContactToGroup,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddImContactToGroupInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: AddImContactToGroupInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddImContactToGroupInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddImContactToGroupOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddImContactToGroupOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "AddImContactToGroupResponse")]
-    pub add_im_contact_to_group_response: mod_mes::AddImContactToGroupResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddImContactToGroupOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: AddImContactToGroupOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddImContactToGroupOutputEnvelopeBody,
-}
-pub async fn add_im_contact_to_group(
-    req: AddImContactToGroupInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddImContactToGroupOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/AddImContactToGroup";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetMailTips */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMailTipsInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMailTipsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetMailTips")]
-    pub get_mail_tips: mod_mes::GetMailTips,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMailTipsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetMailTipsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetMailTipsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMailTipsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMailTipsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetMailTipsResponse")]
-    pub get_mail_tips_response: mod_mes::GetMailTipsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMailTipsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetMailTipsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetMailTipsOutputEnvelopeBody,
-}
-pub async fn get_mail_tips(
-    req: GetMailTipsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetMailTipsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetMailTips";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* MarkAsJunk */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MarkAsJunkInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MarkAsJunkInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "MarkAsJunk")]
-    pub mark_as_junk: mod_mes::MarkAsJunk,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MarkAsJunkInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: MarkAsJunkInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: MarkAsJunkInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MarkAsJunkOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MarkAsJunkOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "MarkAsJunkResponse")]
-    pub mark_as_junk_response: mod_mes::MarkAsJunkResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MarkAsJunkOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: MarkAsJunkOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: MarkAsJunkOutputEnvelopeBody,
-}
-pub async fn mark_as_junk(
-    req: MarkAsJunkInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<MarkAsJunkOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/MarkAsJunk";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* EmptyFolder */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct EmptyFolderInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct EmptyFolderInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "EmptyFolder")]
-    pub empty_folder: mod_mes::EmptyFolder,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct EmptyFolderInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: EmptyFolderInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: EmptyFolderInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct EmptyFolderOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct EmptyFolderOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "EmptyFolderResponse")]
-    pub empty_folder_response: mod_mes::EmptyFolderResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct EmptyFolderOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: EmptyFolderOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: EmptyFolderOutputEnvelopeBody,
-}
-pub async fn empty_folder(
-    req: EmptyFolderInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<EmptyFolderOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/EmptyFolder";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RemoveImGroup */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveImGroupInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveImGroupInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "RemoveImGroup")]
-    pub remove_im_group: mod_mes::RemoveImGroup,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveImGroupInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: RemoveImGroupInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveImGroupInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveImGroupOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveImGroupOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "RemoveImGroupResponse")]
-    pub remove_im_group_response: mod_mes::RemoveImGroupResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveImGroupOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: RemoveImGroupOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveImGroupOutputEnvelopeBody,
-}
-pub async fn remove_im_group(
-    req: RemoveImGroupInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RemoveImGroupOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/RemoveImGroup";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* StartSearchSession */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct StartSearchSessionInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct StartSearchSessionInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "StartSearchSession")]
-    pub start_search_session: mod_mes::StartSearchSession,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct StartSearchSessionInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: StartSearchSessionInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: StartSearchSessionInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct StartSearchSessionOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct StartSearchSessionOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "StartSearchSessionResponse")]
-    pub start_search_session_response: mod_mes::StartSearchSessionResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct StartSearchSessionOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: StartSearchSessionOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: StartSearchSessionOutputEnvelopeBody,
-}
-pub async fn start_search_session(
-    req: StartSearchSessionInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<StartSearchSessionOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/StartSearchSession";
+) -> error::SoapResult<SetImListMigrationCompletedOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SetImListMigrationCompleted";
     helpers::send_soap_request(url, credentials, req).await
 }
 
@@ -15610,11 +15342,11 @@ pub async fn start_search_session(
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct AddDistributionGroupToImListInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
     pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -15634,7 +15366,7 @@ pub struct AddDistributionGroupToImListInputEnvelope {
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct AddDistributionGroupToImListOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -15659,109 +15391,1607 @@ pub async fn add_distribution_group_to_im_list(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* AddNewImContactToGroup */
+/* FindItem */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddNewImContactToGroupInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
+pub struct FindItemInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
     pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+    #[yaserde(prefix = "typ", rename = "DateTimePrecision")]
+    pub date_time_precision: Option<mod_typ::DateTimePrecision>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddNewImContactToGroupInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "AddNewImContactToGroup")]
-    pub add_new_im_contact_to_group: mod_mes::AddNewImContactToGroup,
+pub struct FindItemInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindItem")]
+    pub find_item: mod_mes::FindItem,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddNewImContactToGroupInputEnvelope {
+pub struct FindItemInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: AddNewImContactToGroupInputEnvelopeHeader,
+    pub header: FindItemInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddNewImContactToGroupInputEnvelopeBody,
+    pub body: FindItemInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddNewImContactToGroupOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct FindItemOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddNewImContactToGroupOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "AddNewImContactToGroupResponse")]
-    pub add_new_im_contact_to_group_response: mod_mes::AddNewImContactToGroupResponse,
+pub struct FindItemOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindItemResponse")]
+    pub find_item_response: mod_mes::FindItemResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddNewImContactToGroupOutputEnvelope {
+pub struct FindItemOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: AddNewImContactToGroupOutputEnvelopeHeader,
+    pub header: FindItemOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddNewImContactToGroupOutputEnvelopeBody,
+    pub body: FindItemOutputEnvelopeBody,
 }
-pub async fn add_new_im_contact_to_group(
-    req: AddNewImContactToGroupInputEnvelope,
+pub async fn find_item(
+    req: FindItemInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<AddNewImContactToGroupOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/AddNewImContactToGroup";
+) -> error::SoapResult<FindItemOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindItem";
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* GetSearchSuggestions */
+/* FindConversation */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSearchSuggestionsInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
+pub struct FindConversationInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSearchSuggestionsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetSearchSuggestions")]
-    pub get_search_suggestions: mod_mes::GetSearchSuggestions,
+pub struct FindConversationInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindConversation")]
+    pub find_conversation: mod_mes::FindConversation,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSearchSuggestionsInputEnvelope {
+pub struct FindConversationInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetSearchSuggestionsInputEnvelopeHeader,
+    pub header: FindConversationInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetSearchSuggestionsInputEnvelopeBody,
+    pub body: FindConversationInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSearchSuggestionsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct FindConversationOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSearchSuggestionsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetSearchSuggestionsResponse")]
-    pub get_search_suggestions_response: mod_mes::GetSearchSuggestionsResponse,
+pub struct FindConversationOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindConversationResponse")]
+    pub find_conversation_response: mod_mes::FindConversationResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSearchSuggestionsOutputEnvelope {
+pub struct FindConversationOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetSearchSuggestionsOutputEnvelopeHeader,
+    pub header: FindConversationOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetSearchSuggestionsOutputEnvelopeBody,
+    pub body: FindConversationOutputEnvelopeBody,
 }
-pub async fn get_search_suggestions(
-    req: GetSearchSuggestionsInputEnvelope,
+pub async fn find_conversation(
+    req: FindConversationInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<GetSearchSuggestionsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetSearchSuggestions";
+) -> error::SoapResult<FindConversationOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindConversation";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* ReportMessage */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ReportMessageInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ReportMessageInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "ReportMessage")]
+    pub report_message: mod_mes::ReportMessage,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ReportMessageInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: ReportMessageInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ReportMessageInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ReportMessageOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ReportMessageOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "ReportMessageResponse")]
+    pub report_message_response: mod_mes::ReportMessageResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ReportMessageOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: ReportMessageOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ReportMessageOutputEnvelopeBody,
+}
+pub async fn report_message(
+    req: ReportMessageInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<ReportMessageOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/ReportMessage";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* PlayOnPhone */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct PlayOnPhoneInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct PlayOnPhoneInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "PlayOnPhone")]
+    pub play_on_phone: mod_mes::PlayOnPhone,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct PlayOnPhoneInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: PlayOnPhoneInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: PlayOnPhoneInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct PlayOnPhoneOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct PlayOnPhoneOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "PlayOnPhoneResponse")]
+    pub play_on_phone_response: mod_mes::PlayOnPhoneResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct PlayOnPhoneOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: PlayOnPhoneOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: PlayOnPhoneOutputEnvelopeBody,
+}
+pub async fn play_on_phone(
+    req: PlayOnPhoneInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<PlayOnPhoneOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/PlayOnPhone";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RefreshSharingFolder */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RefreshSharingFolderInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RefreshSharingFolderInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "RefreshSharingFolder")]
+    pub refresh_sharing_folder: mod_mes::RefreshSharingFolder,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RefreshSharingFolderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: RefreshSharingFolderInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RefreshSharingFolderInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RefreshSharingFolderOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RefreshSharingFolderOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "RefreshSharingFolderResponse")]
+    pub refresh_sharing_folder_response: mod_mes::RefreshSharingFolderResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RefreshSharingFolderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: RefreshSharingFolderOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RefreshSharingFolderOutputEnvelopeBody,
+}
+pub async fn refresh_sharing_folder(
+    req: RefreshSharingFolderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RefreshSharingFolderOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/RefreshSharingFolder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CreateMeetingSpace */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateMeetingSpaceInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateMeetingSpaceInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateMeetingSpace")]
+    pub create_meeting_space: mod_mes::CreateMeetingSpace,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateMeetingSpaceInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateMeetingSpaceInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateMeetingSpaceInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateMeetingSpaceOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateMeetingSpaceOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateMeetingSpaceResponseMessage")]
+    pub create_meeting_space_response_message: mod_mes::CreateMeetingSpaceResponseMessage,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateMeetingSpaceOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateMeetingSpaceOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateMeetingSpaceOutputEnvelopeBody,
+}
+pub async fn create_meeting_space(
+    req: CreateMeetingSpaceInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CreateMeetingSpaceOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateMeetingSpace";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CreateMeetingInstance */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateMeetingInstanceInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateMeetingInstanceInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateMeetingInstanceRequest")]
+    pub create_meeting_instance_request: mod_mes::CreateMeetingInstanceRequest,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateMeetingInstanceInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateMeetingInstanceInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateMeetingInstanceInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateMeetingInstanceOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateMeetingInstanceOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateMeetingInstanceResponse")]
+    pub create_meeting_instance_response: mod_mes::CreateMeetingInstanceResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateMeetingInstanceOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateMeetingInstanceOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateMeetingInstanceOutputEnvelopeBody,
+}
+pub async fn create_meeting_instance(
+    req: CreateMeetingInstanceInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CreateMeetingInstanceOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateMeetingInstanceRequest";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetDiscoverySearchConfiguration */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetDiscoverySearchConfigurationInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetDiscoverySearchConfigurationInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetDiscoverySearchConfiguration")]
+    pub get_discovery_search_configuration: mod_mes::GetDiscoverySearchConfiguration,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetDiscoverySearchConfigurationInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetDiscoverySearchConfigurationInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetDiscoverySearchConfigurationInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetDiscoverySearchConfigurationOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetDiscoverySearchConfigurationOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetDiscoverySearchConfigurationResponse")]
+    pub get_discovery_search_configuration_response: mod_mes::GetDiscoverySearchConfigurationResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetDiscoverySearchConfigurationOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetDiscoverySearchConfigurationOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetDiscoverySearchConfigurationOutputEnvelopeBody,
+}
+pub async fn get_discovery_search_configuration(
+    req: GetDiscoverySearchConfigurationInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetDiscoverySearchConfigurationOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetDiscoverySearchConfiguration";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetMeetingSpace */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMeetingSpaceInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMeetingSpaceInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetMeetingSpace")]
+    pub get_meeting_space: mod_mes::GetMeetingSpace,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMeetingSpaceInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetMeetingSpaceInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetMeetingSpaceInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMeetingSpaceOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMeetingSpaceOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetMeetingSpaceResponseMessage")]
+    pub get_meeting_space_response_message: mod_mes::GetMeetingSpaceResponseMessage,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMeetingSpaceOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetMeetingSpaceOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetMeetingSpaceOutputEnvelopeBody,
+}
+pub async fn get_meeting_space(
+    req: GetMeetingSpaceInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetMeetingSpaceOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetMeetingSpace";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RemoveDistributionGroupFromImList */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RemoveDistributionGroupFromImListInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RemoveDistributionGroupFromImListInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "RemoveDistributionGroupFromImList")]
+    pub remove_distribution_group_from_im_list: mod_mes::RemoveDistributionGroupFromImList,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RemoveDistributionGroupFromImListInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: RemoveDistributionGroupFromImListInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveDistributionGroupFromImListInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RemoveDistributionGroupFromImListOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RemoveDistributionGroupFromImListOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "RemoveDistributionGroupFromImListResponse")]
+    pub remove_distribution_group_from_im_list_response: mod_mes::RemoveDistributionGroupFromImListResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RemoveDistributionGroupFromImListOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: RemoveDistributionGroupFromImListOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveDistributionGroupFromImListOutputEnvelopeBody,
+}
+pub async fn remove_distribution_group_from_im_list(
+    req: RemoveDistributionGroupFromImListInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RemoveDistributionGroupFromImListOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/RemoveDistributionGroupFromImList";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetSearchableMailboxes */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSearchableMailboxesInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSearchableMailboxesInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetSearchableMailboxes")]
+    pub get_searchable_mailboxes: mod_mes::GetSearchableMailboxes,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSearchableMailboxesInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetSearchableMailboxesInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetSearchableMailboxesInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSearchableMailboxesOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSearchableMailboxesOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetSearchableMailboxesResponse")]
+    pub get_searchable_mailboxes_response: mod_mes::GetSearchableMailboxesResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSearchableMailboxesOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetSearchableMailboxesOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetSearchableMailboxesOutputEnvelopeBody,
+}
+pub async fn get_searchable_mailboxes(
+    req: GetSearchableMailboxesInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetSearchableMailboxesOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetSearchableMailboxes";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* HideTag */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct HideTagInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct HideTagInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "HideTag")]
+    pub hide_tag: mod_mes::HideTag,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct HideTagInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: HideTagInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: HideTagInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct HideTagOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct HideTagOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "HideTagResponse")]
+    pub hide_tag_response: mod_mes::HideTagResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct HideTagOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: HideTagOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: HideTagOutputEnvelopeBody,
+}
+pub async fn hide_tag(
+    req: HideTagInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<HideTagOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/HideTag";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetFolder */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetFolderInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetFolderInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetFolder")]
+    pub get_folder: mod_mes::GetFolder,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetFolderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetFolderInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetFolderInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetFolderOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetFolderOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetFolderResponse")]
+    pub get_folder_response: mod_mes::GetFolderResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetFolderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetFolderOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetFolderOutputEnvelopeBody,
+}
+pub async fn get_folder(
+    req: GetFolderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetFolderOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetFolder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetSharingFolder */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSharingFolderInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSharingFolderInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetSharingFolder")]
+    pub get_sharing_folder: mod_mes::GetSharingFolder,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSharingFolderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetSharingFolderInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetSharingFolderInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSharingFolderOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSharingFolderOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetSharingFolderResponse")]
+    pub get_sharing_folder_response: mod_mes::GetSharingFolderResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSharingFolderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetSharingFolderOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetSharingFolderOutputEnvelopeBody,
+}
+pub async fn get_sharing_folder(
+    req: GetSharingFolderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetSharingFolderOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetSharingFolder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* Unsubscribe */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UnsubscribeInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UnsubscribeInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "Unsubscribe")]
+    pub unsubscribe: mod_mes::Unsubscribe,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UnsubscribeInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UnsubscribeInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UnsubscribeInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UnsubscribeOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UnsubscribeOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UnsubscribeResponse")]
+    pub unsubscribe_response: mod_mes::UnsubscribeResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UnsubscribeOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UnsubscribeOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UnsubscribeOutputEnvelopeBody,
+}
+pub async fn unsubscribe(
+    req: UnsubscribeInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UnsubscribeOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/Unsubscribe";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetItem */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetItemInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+    #[yaserde(prefix = "typ", rename = "DateTimePrecision")]
+    pub date_time_precision: Option<mod_typ::DateTimePrecision>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetItemInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetItem")]
+    pub get_item: mod_mes::GetItem,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetItemInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetItemInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetItemInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetItemOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetItemOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetItemResponse")]
+    pub get_item_response: mod_mes::GetItemResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetItemOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetItemOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetItemOutputEnvelopeBody,
+}
+pub async fn get_item(
+    req: GetItemInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetItemOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetItem";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CreateFolder */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateFolderInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateFolderInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateFolder")]
+    pub create_folder: mod_mes::CreateFolder,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateFolderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateFolderInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateFolderInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateFolderOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateFolderOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateFolderResponse")]
+    pub create_folder_response: mod_mes::CreateFolderResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateFolderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateFolderOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateFolderOutputEnvelopeBody,
+}
+pub async fn create_folder(
+    req: CreateFolderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CreateFolderOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateFolder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CreateUserConfiguration */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateUserConfigurationInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateUserConfigurationInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateUserConfiguration")]
+    pub create_user_configuration: mod_mes::CreateUserConfiguration,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateUserConfigurationInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateUserConfigurationInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateUserConfigurationInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateUserConfigurationOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateUserConfigurationOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateUserConfigurationResponse")]
+    pub create_user_configuration_response: mod_mes::CreateUserConfigurationResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateUserConfigurationOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateUserConfigurationOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateUserConfigurationOutputEnvelopeBody,
+}
+pub async fn create_user_configuration(
+    req: CreateUserConfigurationInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CreateUserConfigurationOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateUserConfiguration";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CreateItem */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateItemInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateItemInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateItem")]
+    pub create_item: mod_mes::CreateItem,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateItemInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateItemInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateItemInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateItemOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateItemOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateItemResponse")]
+    pub create_item_response: mod_mes::CreateItemResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateItemOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateItemOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateItemOutputEnvelopeBody,
+}
+pub async fn create_item(
+    req: CreateItemInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CreateItemOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateItem";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateUserConfiguration */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateUserConfigurationInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateUserConfigurationInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UpdateUserConfiguration")]
+    pub update_user_configuration: mod_mes::UpdateUserConfiguration,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateUserConfigurationInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UpdateUserConfigurationInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateUserConfigurationInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateUserConfigurationOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateUserConfigurationOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UpdateUserConfigurationResponse")]
+    pub update_user_configuration_response: mod_mes::UpdateUserConfigurationResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateUserConfigurationOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UpdateUserConfigurationOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateUserConfigurationOutputEnvelopeBody,
+}
+pub async fn update_user_configuration(
+    req: UpdateUserConfigurationInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateUserConfigurationOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UpdateUserConfiguration";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* StartSearchSession */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct StartSearchSessionInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct StartSearchSessionInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "StartSearchSession")]
+    pub start_search_session: mod_mes::StartSearchSession,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct StartSearchSessionInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: StartSearchSessionInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: StartSearchSessionInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct StartSearchSessionOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct StartSearchSessionOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "StartSearchSessionResponse")]
+    pub start_search_session_response: mod_mes::StartSearchSessionResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct StartSearchSessionOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: StartSearchSessionOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: StartSearchSessionOutputEnvelopeBody,
+}
+pub async fn start_search_session(
+    req: StartSearchSessionInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<StartSearchSessionOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/StartSearchSession";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SetUserOofSettings */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetUserOofSettingsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetUserOofSettingsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SetUserOofSettingsRequest")]
+    pub set_user_oof_settings_request: mod_mes::SetUserOofSettingsRequest,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetUserOofSettingsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SetUserOofSettingsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SetUserOofSettingsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetUserOofSettingsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetUserOofSettingsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SetUserOofSettingsResponse")]
+    pub set_user_oof_settings_response: mod_mes::SetUserOofSettingsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetUserOofSettingsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SetUserOofSettingsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SetUserOofSettingsOutputEnvelopeBody,
+}
+pub async fn set_user_oof_settings(
+    req: SetUserOofSettingsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SetUserOofSettingsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SetUserOofSettings";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* AddNewTelUriContactToGroup */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddNewTelUriContactToGroupInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddNewTelUriContactToGroupInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "AddNewTelUriContactToGroup")]
+    pub add_new_tel_uri_contact_to_group: mod_mes::AddNewTelUriContactToGroup,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddNewTelUriContactToGroupInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: AddNewTelUriContactToGroupInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddNewTelUriContactToGroupInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddNewTelUriContactToGroupOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddNewTelUriContactToGroupOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "AddNewTelUriContactToGroupResponse")]
+    pub add_new_tel_uri_contact_to_group_response: mod_mes::AddNewTelUriContactToGroupResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddNewTelUriContactToGroupOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: AddNewTelUriContactToGroupOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddNewTelUriContactToGroupOutputEnvelopeBody,
+}
+pub async fn add_new_tel_uri_contact_to_group(
+    req: AddNewTelUriContactToGroupInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddNewTelUriContactToGroupOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/AddNewTelUriContactToGroup";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SyncFolderHierarchy */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SyncFolderHierarchyInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SyncFolderHierarchyInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SyncFolderHierarchy")]
+    pub sync_folder_hierarchy: mod_mes::SyncFolderHierarchy,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SyncFolderHierarchyInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SyncFolderHierarchyInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SyncFolderHierarchyInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SyncFolderHierarchyOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SyncFolderHierarchyOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SyncFolderHierarchyResponse")]
+    pub sync_folder_hierarchy_response: mod_mes::SyncFolderHierarchyResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SyncFolderHierarchyOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SyncFolderHierarchyOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SyncFolderHierarchyOutputEnvelopeBody,
+}
+pub async fn sync_folder_hierarchy(
+    req: SyncFolderHierarchyInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SyncFolderHierarchyOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SyncFolderHierarchy";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* EmptyFolder */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct EmptyFolderInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct EmptyFolderInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "EmptyFolder")]
+    pub empty_folder: mod_mes::EmptyFolder,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct EmptyFolderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: EmptyFolderInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: EmptyFolderInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct EmptyFolderOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct EmptyFolderOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "EmptyFolderResponse")]
+    pub empty_folder_response: mod_mes::EmptyFolderResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct EmptyFolderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: EmptyFolderOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: EmptyFolderOutputEnvelopeBody,
+}
+pub async fn empty_folder(
+    req: EmptyFolderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<EmptyFolderOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/EmptyFolder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetMeetingInstance */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMeetingInstanceInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMeetingInstanceInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetMeetingInstanceRequest")]
+    pub get_meeting_instance_request: mod_mes::GetMeetingInstanceRequest,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMeetingInstanceInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetMeetingInstanceInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetMeetingInstanceInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMeetingInstanceOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMeetingInstanceOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetMeetingInstanceResponse")]
+    pub get_meeting_instance_response: mod_mes::GetMeetingInstanceResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMeetingInstanceOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetMeetingInstanceOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetMeetingInstanceOutputEnvelopeBody,
+}
+pub async fn get_meeting_instance(
+    req: GetMeetingInstanceInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetMeetingInstanceOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetMeetingInstanceRequest";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetSharingMetadata */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSharingMetadataInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSharingMetadataInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetSharingMetadata")]
+    pub get_sharing_metadata: mod_mes::GetSharingMetadata,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSharingMetadataInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetSharingMetadataInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetSharingMetadataInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSharingMetadataOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSharingMetadataOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetSharingMetadataResponse")]
+    pub get_sharing_metadata_response: mod_mes::GetSharingMetadataResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSharingMetadataOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetSharingMetadataOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetSharingMetadataOutputEnvelopeBody,
+}
+pub async fn get_sharing_metadata(
+    req: GetSharingMetadataInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetSharingMetadataOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetSharingMetadata";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetServerTimeZones */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetServerTimeZonesInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetServerTimeZonesInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetServerTimeZones")]
+    pub get_server_time_zones: mod_mes::GetServerTimeZones,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetServerTimeZonesInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetServerTimeZonesInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetServerTimeZonesInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetServerTimeZonesOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetServerTimeZonesOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetServerTimeZonesResponse")]
+    pub get_server_time_zones_response: mod_mes::GetServerTimeZonesResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetServerTimeZonesOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetServerTimeZonesOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetServerTimeZonesOutputEnvelopeBody,
+}
+pub async fn get_server_time_zones(
+    req: GetServerTimeZonesInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetServerTimeZonesOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetServerTimeZones";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* FindTags */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindTagsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindTagsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindTags")]
+    pub find_tags: mod_mes::FindTags,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindTagsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: FindTagsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: FindTagsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindTagsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindTagsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindTagsResponse")]
+    pub find_tags_response: mod_mes::FindTagsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindTagsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: FindTagsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: FindTagsOutputEnvelopeBody,
+}
+pub async fn find_tags(
+    req: FindTagsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<FindTagsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindTags";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateItem */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateItemInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateItemInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UpdateItem")]
+    pub update_item: mod_mes::UpdateItem,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateItemInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UpdateItemInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateItemInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateItemOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateItemOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UpdateItemResponse")]
+    pub update_item_response: mod_mes::UpdateItemResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateItemOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UpdateItemOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateItemOutputEnvelopeBody,
+}
+pub async fn update_item(
+    req: UpdateItemInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateItemOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UpdateItem";
     helpers::send_soap_request(url, credentials, req).await
 }
 
@@ -15770,9 +17000,9 @@ pub async fn get_search_suggestions(
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct AddTagInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "Impersonation")]
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -15792,7 +17022,7 @@ pub struct AddTagInputEnvelope {
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct AddTagOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -15822,9 +17052,9 @@ pub async fn add_tag(
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct UpdateMeetingSpaceInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
     pub management_role: Option<mod_typ::ManagementRole>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -15844,7 +17074,7 @@ pub struct UpdateMeetingSpaceInputEnvelope {
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct UpdateMeetingSpaceOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -15869,1242 +17099,16 @@ pub async fn update_meeting_space(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* SetTeamMailbox */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetTeamMailboxInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetTeamMailboxInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SetTeamMailbox")]
-    pub set_team_mailbox: mod_mes::SetTeamMailbox,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetTeamMailboxInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SetTeamMailboxInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetTeamMailboxInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetTeamMailboxOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetTeamMailboxOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SetTeamMailboxResponse")]
-    pub set_team_mailbox_response: mod_mes::SetTeamMailboxResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetTeamMailboxOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SetTeamMailboxOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetTeamMailboxOutputEnvelopeBody,
-}
-pub async fn set_team_mailbox(
-    req: SetTeamMailboxInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SetTeamMailboxOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SetTeamMailbox";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* ApplyConversationAction */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ApplyConversationActionInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ApplyConversationActionInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "ApplyConversationAction")]
-    pub apply_conversation_action: mod_mes::ApplyConversationAction,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ApplyConversationActionInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: ApplyConversationActionInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ApplyConversationActionInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ApplyConversationActionOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ApplyConversationActionOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "ApplyConversationActionResponse")]
-    pub apply_conversation_action_response: mod_mes::ApplyConversationActionResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ApplyConversationActionOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: ApplyConversationActionOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ApplyConversationActionOutputEnvelopeBody,
-}
-pub async fn apply_conversation_action(
-    req: ApplyConversationActionInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<ApplyConversationActionOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/ApplyConversationAction";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* DisconnectPhoneCall */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DisconnectPhoneCallInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DisconnectPhoneCallInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DisconnectPhoneCall")]
-    pub disconnect_phone_call: mod_mes::DisconnectPhoneCall,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DisconnectPhoneCallInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DisconnectPhoneCallInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DisconnectPhoneCallInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DisconnectPhoneCallOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DisconnectPhoneCallOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DisconnectPhoneCallResponse")]
-    pub disconnect_phone_call_response: mod_mes::DisconnectPhoneCallResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DisconnectPhoneCallOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DisconnectPhoneCallOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DisconnectPhoneCallOutputEnvelopeBody,
-}
-pub async fn disconnect_phone_call(
-    req: DisconnectPhoneCallInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<DisconnectPhoneCallOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DisconnectPhoneCall";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateInboxRules */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateInboxRulesInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateInboxRulesInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UpdateInboxRules")]
-    pub update_inbox_rules: mod_mes::UpdateInboxRules,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateInboxRulesInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UpdateInboxRulesInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateInboxRulesInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateInboxRulesOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateInboxRulesOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UpdateInboxRulesResponse")]
-    pub update_inbox_rules_response: mod_mes::UpdateInboxRulesResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateInboxRulesOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UpdateInboxRulesOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateInboxRulesOutputEnvelopeBody,
-}
-pub async fn update_inbox_rules(
-    req: UpdateInboxRulesInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateInboxRulesOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UpdateInboxRules";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* SetHoldOnMailboxes */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetHoldOnMailboxesInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetHoldOnMailboxesInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SetHoldOnMailboxes")]
-    pub set_hold_on_mailboxes: mod_mes::SetHoldOnMailboxes,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetHoldOnMailboxesInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SetHoldOnMailboxesInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetHoldOnMailboxesInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetHoldOnMailboxesOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetHoldOnMailboxesOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SetHoldOnMailboxesResponse")]
-    pub set_hold_on_mailboxes_response: mod_mes::SetHoldOnMailboxesResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetHoldOnMailboxesOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SetHoldOnMailboxesOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetHoldOnMailboxesOutputEnvelopeBody,
-}
-pub async fn set_hold_on_mailboxes(
-    req: SetHoldOnMailboxesInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SetHoldOnMailboxesOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SetHoldOnMailboxes";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RefreshSharingFolder */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RefreshSharingFolderInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RefreshSharingFolderInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "RefreshSharingFolder")]
-    pub refresh_sharing_folder: mod_mes::RefreshSharingFolder,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RefreshSharingFolderInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: RefreshSharingFolderInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RefreshSharingFolderInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RefreshSharingFolderOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RefreshSharingFolderOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "RefreshSharingFolderResponse")]
-    pub refresh_sharing_folder_response: mod_mes::RefreshSharingFolderResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RefreshSharingFolderOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: RefreshSharingFolderOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RefreshSharingFolderOutputEnvelopeBody,
-}
-pub async fn refresh_sharing_folder(
-    req: RefreshSharingFolderInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RefreshSharingFolderOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/RefreshSharingFolder";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetEvents */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetEventsInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetEventsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetEvents")]
-    pub get_events: mod_mes::GetEvents,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetEventsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetEventsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetEventsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetEventsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetEventsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetEventsResponse")]
-    pub get_events_response: mod_mes::GetEventsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetEventsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetEventsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetEventsOutputEnvelopeBody,
-}
-pub async fn get_events(
-    req: GetEventsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetEventsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetEvents";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetHoldOnMailboxes */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetHoldOnMailboxesInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetHoldOnMailboxesInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetHoldOnMailboxes")]
-    pub get_hold_on_mailboxes: mod_mes::GetHoldOnMailboxes,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetHoldOnMailboxesInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetHoldOnMailboxesInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetHoldOnMailboxesInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetHoldOnMailboxesOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetHoldOnMailboxesOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetHoldOnMailboxesResponse")]
-    pub get_hold_on_mailboxes_response: mod_mes::GetHoldOnMailboxesResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetHoldOnMailboxesOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetHoldOnMailboxesOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetHoldOnMailboxesOutputEnvelopeBody,
-}
-pub async fn get_hold_on_mailboxes(
-    req: GetHoldOnMailboxesInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetHoldOnMailboxesOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetHoldOnMailboxes";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* MoveFolder */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MoveFolderInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MoveFolderInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "MoveFolder")]
-    pub move_folder: mod_mes::MoveFolder,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MoveFolderInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: MoveFolderInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: MoveFolderInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MoveFolderOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MoveFolderOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "MoveFolderResponse")]
-    pub move_folder_response: mod_mes::MoveFolderResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MoveFolderOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: MoveFolderOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: MoveFolderOutputEnvelopeBody,
-}
-pub async fn move_folder(
-    req: MoveFolderInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<MoveFolderOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/MoveFolder";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetPasswordExpirationDate */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPasswordExpirationDateInputEnvelopeHeader {
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPasswordExpirationDateInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetPasswordExpirationDate")]
-    pub get_password_expiration_date: mod_mes::GetPasswordExpirationDate,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPasswordExpirationDateInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetPasswordExpirationDateInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetPasswordExpirationDateInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPasswordExpirationDateOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPasswordExpirationDateOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetPasswordExpirationDateResponse")]
-    pub get_password_expiration_date_response: mod_mes::GetPasswordExpirationDateResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPasswordExpirationDateOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetPasswordExpirationDateOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetPasswordExpirationDateOutputEnvelopeBody,
-}
-pub async fn get_password_expiration_date(
-    req: GetPasswordExpirationDateInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetPasswordExpirationDateOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetPasswordExpirationDate";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* MarkAllItemsAsRead */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MarkAllItemsAsReadInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MarkAllItemsAsReadInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "MarkAllItemsAsRead")]
-    pub mark_all_items_as_read: mod_mes::MarkAllItemsAsRead,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MarkAllItemsAsReadInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: MarkAllItemsAsReadInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: MarkAllItemsAsReadInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MarkAllItemsAsReadOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MarkAllItemsAsReadOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "MarkAllItemsAsReadResponse")]
-    pub mark_all_items_as_read_response: mod_mes::MarkAllItemsAsReadResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MarkAllItemsAsReadOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: MarkAllItemsAsReadOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: MarkAllItemsAsReadOutputEnvelopeBody,
-}
-pub async fn mark_all_items_as_read(
-    req: MarkAllItemsAsReadInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<MarkAllItemsAsReadOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/MarkAllItemsAsRead";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetNonIndexableItemStatistics */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetNonIndexableItemStatisticsInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetNonIndexableItemStatisticsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetNonIndexableItemStatistics")]
-    pub get_non_indexable_item_statistics: mod_mes::GetNonIndexableItemStatistics,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetNonIndexableItemStatisticsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetNonIndexableItemStatisticsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetNonIndexableItemStatisticsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetNonIndexableItemStatisticsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetNonIndexableItemStatisticsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetNonIndexableItemStatisticsResponse")]
-    pub get_non_indexable_item_statistics_response: mod_mes::GetNonIndexableItemStatisticsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetNonIndexableItemStatisticsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetNonIndexableItemStatisticsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetNonIndexableItemStatisticsOutputEnvelopeBody,
-}
-pub async fn get_non_indexable_item_statistics(
-    req: GetNonIndexableItemStatisticsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetNonIndexableItemStatisticsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetNonIndexableItemStatistics";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetImItems */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetImItemsInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetImItemsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetImItems")]
-    pub get_im_items: mod_mes::GetImItems,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetImItemsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetImItemsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetImItemsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetImItemsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetImItemsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetImItemsResponse")]
-    pub get_im_items_response: mod_mes::GetImItemsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetImItemsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetImItemsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetImItemsOutputEnvelopeBody,
-}
-pub async fn get_im_items(
-    req: GetImItemsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetImItemsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetImItems";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetStreamingEvents */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetStreamingEventsInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetStreamingEventsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetStreamingEvents")]
-    pub get_streaming_events: mod_mes::GetStreamingEvents,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetStreamingEventsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetStreamingEventsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetStreamingEventsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetStreamingEventsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetStreamingEventsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetStreamingEventsResponse")]
-    pub get_streaming_events_response: mod_mes::GetStreamingEventsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetStreamingEventsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetStreamingEventsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetStreamingEventsOutputEnvelopeBody,
-}
-pub async fn get_streaming_events(
-    req: GetStreamingEventsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetStreamingEventsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetEvents";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* MoveItem */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MoveItemInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MoveItemInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "MoveItem")]
-    pub move_item: mod_mes::MoveItem,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MoveItemInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: MoveItemInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: MoveItemInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MoveItemOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MoveItemOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "MoveItemResponse")]
-    pub move_item_response: mod_mes::MoveItemResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct MoveItemOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: MoveItemOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: MoveItemOutputEnvelopeBody,
-}
-pub async fn move_item(
-    req: MoveItemInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<MoveItemOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/MoveItem";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetSharingMetadata */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSharingMetadataInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSharingMetadataInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetSharingMetadata")]
-    pub get_sharing_metadata: mod_mes::GetSharingMetadata,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSharingMetadataInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetSharingMetadataInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetSharingMetadataInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSharingMetadataOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSharingMetadataOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetSharingMetadataResponse")]
-    pub get_sharing_metadata_response: mod_mes::GetSharingMetadataResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSharingMetadataOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetSharingMetadataOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetSharingMetadataOutputEnvelopeBody,
-}
-pub async fn get_sharing_metadata(
-    req: GetSharingMetadataInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetSharingMetadataOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetSharingMetadata";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateItemInRecoverableItems */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateItemInRecoverableItemsInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateItemInRecoverableItemsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UpdateItemInRecoverableItems")]
-    pub update_item_in_recoverable_items: mod_mes::UpdateItemInRecoverableItems,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateItemInRecoverableItemsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UpdateItemInRecoverableItemsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateItemInRecoverableItemsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateItemInRecoverableItemsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateItemInRecoverableItemsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UpdateItemInRecoverableItemsResponse")]
-    pub update_item_in_recoverable_items_response: mod_mes::UpdateItemInRecoverableItemsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateItemInRecoverableItemsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UpdateItemInRecoverableItemsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateItemInRecoverableItemsOutputEnvelopeBody,
-}
-pub async fn update_item_in_recoverable_items(
-    req: UpdateItemInRecoverableItemsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateItemInRecoverableItemsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UpdateItemInRecoverableItems";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* FindAvailableMeetingTimes */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindAvailableMeetingTimesInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindAvailableMeetingTimesInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindAvailableMeetingTimes")]
-    pub find_available_meeting_times: mod_mes::FindAvailableMeetingTimes,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindAvailableMeetingTimesInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindAvailableMeetingTimesInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindAvailableMeetingTimesInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindAvailableMeetingTimesOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindAvailableMeetingTimesOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindAvailableMeetingTimesResponse")]
-    pub find_available_meeting_times_response: mod_mes::FindAvailableMeetingTimesResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindAvailableMeetingTimesOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindAvailableMeetingTimesOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindAvailableMeetingTimesOutputEnvelopeBody,
-}
-pub async fn find_available_meeting_times(
-    req: FindAvailableMeetingTimesInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<FindAvailableMeetingTimesOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindAvailableMeetingTimes";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetServiceConfiguration */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetServiceConfigurationInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetServiceConfigurationInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetServiceConfiguration")]
-    pub get_service_configuration: mod_mes::GetServiceConfiguration,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetServiceConfigurationInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetServiceConfigurationInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetServiceConfigurationInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetServiceConfigurationOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetServiceConfigurationOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetServiceConfigurationResponse")]
-    pub get_service_configuration_response: mod_mes::GetServiceConfigurationResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetServiceConfigurationOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetServiceConfigurationOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetServiceConfigurationOutputEnvelopeBody,
-}
-pub async fn get_service_configuration(
-    req: GetServiceConfigurationInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetServiceConfigurationOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetServiceConfiguration";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* ArchiveItem */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ArchiveItemInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ArchiveItemInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "ArchiveItem")]
-    pub archive_item: mod_mes::ArchiveItem,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ArchiveItemInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: ArchiveItemInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ArchiveItemInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ArchiveItemOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ArchiveItemOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "ArchiveItemResponse")]
-    pub archive_item_response: mod_mes::ArchiveItemResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ArchiveItemOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: ArchiveItemOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ArchiveItemOutputEnvelopeBody,
-}
-pub async fn archive_item(
-    req: ArchiveItemInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<ArchiveItemOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/ArchiveItem";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* ExpandDL */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExpandDLInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExpandDLInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "ExpandDL")]
-    pub expand_dl: mod_mes::ExpandDL,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExpandDLInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: ExpandDLInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ExpandDLInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExpandDLOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExpandDLOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "ExpandDLResponse")]
-    pub expand_dl_response: mod_mes::ExpandDLResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExpandDLOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: ExpandDLOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ExpandDLOutputEnvelopeBody,
-}
-pub async fn expand_dl(
-    req: ExpandDLInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<ExpandDLOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/ExpandDL";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetDelegate */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetDelegateInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetDelegateInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetDelegate")]
-    pub get_delegate: mod_mes::GetDelegate,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetDelegateInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetDelegateInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetDelegateInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetDelegateOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetDelegateOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetDelegateResponse")]
-    pub get_delegate_response: mod_mes::GetDelegateResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetDelegateOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetDelegateOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetDelegateOutputEnvelopeBody,
-}
-pub async fn get_delegate(
-    req: GetDelegateInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetDelegateOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetDelegate";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CreateFolderPath */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateFolderPathInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateFolderPathInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateFolderPath")]
-    pub create_folder_path: mod_mes::CreateFolderPath,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateFolderPathInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateFolderPathInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateFolderPathInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateFolderPathOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateFolderPathOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateFolderPathResponse")]
-    pub create_folder_path_response: mod_mes::CreateFolderPathResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateFolderPathOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateFolderPathOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateFolderPathOutputEnvelopeBody,
-}
-pub async fn create_folder_path(
-    req: CreateFolderPathInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CreateFolderPathOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateFolderPath";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
 /* RemoveDelegate */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct RemoveDelegateInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
     pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -17124,7 +17128,7 @@ pub struct RemoveDelegateInputEnvelope {
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct RemoveDelegateOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -17149,117 +17153,321 @@ pub async fn remove_delegate(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* UploadItems */
+/* ConvertId */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UploadItemsInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
+pub struct ConvertIdInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UploadItemsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UploadItems")]
-    pub upload_items: mod_mes::UploadItems,
+pub struct ConvertIdInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "ConvertId")]
+    pub convert_id: mod_mes::ConvertId,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UploadItemsInputEnvelope {
+pub struct ConvertIdInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UploadItemsInputEnvelopeHeader,
+    pub header: ConvertIdInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UploadItemsInputEnvelopeBody,
+    pub body: ConvertIdInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UploadItemsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct ConvertIdOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UploadItemsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UploadItemsResponse")]
-    pub upload_items_response: mod_mes::UploadItemsResponse,
+pub struct ConvertIdOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "ConvertIdResponse")]
+    pub convert_id_response: mod_mes::ConvertIdResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UploadItemsOutputEnvelope {
+pub struct ConvertIdOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UploadItemsOutputEnvelopeHeader,
+    pub header: ConvertIdOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UploadItemsOutputEnvelopeBody,
+    pub body: ConvertIdOutputEnvelopeBody,
 }
-pub async fn upload_items(
-    req: UploadItemsInputEnvelope,
+pub async fn convert_id(
+    req: ConvertIdInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<UploadItemsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UploadItems";
+) -> error::SoapResult<ConvertIdOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/ConvertId";
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* GetItem */
+/* FindPeople */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetItemInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+pub struct FindPeopleInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-    #[yaserde(rename = "DateTimePrecision")]
-    pub date_time_precision: Option<mod_typ::DateTimePrecision>,
-    #[yaserde(rename = "ManagementRole")]
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindPeopleInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindPeople")]
+    pub find_people: mod_mes::FindPeople,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindPeopleInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: FindPeopleInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: FindPeopleInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindPeopleOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindPeopleOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindPeopleResponse")]
+    pub find_people_response: mod_mes::FindPeopleResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindPeopleOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: FindPeopleOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: FindPeopleOutputEnvelopeBody,
+}
+pub async fn find_people(
+    req: FindPeopleInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<FindPeopleOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindPeople";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* DeleteItem */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteItemInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteItemInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DeleteItem")]
+    pub delete_item: mod_mes::DeleteItem,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteItemInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: DeleteItemInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteItemInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteItemOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteItemOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DeleteItemResponse")]
+    pub delete_item_response: mod_mes::DeleteItemResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteItemOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: DeleteItemOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteItemOutputEnvelopeBody,
+}
+pub async fn delete_item(
+    req: DeleteItemInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<DeleteItemOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DeleteItem";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetEvents */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetEventsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetEventsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetEvents")]
+    pub get_events: mod_mes::GetEvents,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetEventsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetEventsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetEventsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetEventsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetEventsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetEventsResponse")]
+    pub get_events_response: mod_mes::GetEventsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetEventsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetEventsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetEventsOutputEnvelopeBody,
+}
+pub async fn get_events(
+    req: GetEventsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetEventsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetEvents";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* DeleteMeetingInstance */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteMeetingInstanceInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
     pub management_role: Option<mod_typ::ManagementRole>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetItemInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetItem")]
-    pub get_item: mod_mes::GetItem,
+pub struct DeleteMeetingInstanceInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DeleteMeetingInstanceRequest")]
+    pub delete_meeting_instance_request: mod_mes::DeleteMeetingInstanceRequest,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetItemInputEnvelope {
+pub struct DeleteMeetingInstanceInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetItemInputEnvelopeHeader,
+    pub header: DeleteMeetingInstanceInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetItemInputEnvelopeBody,
+    pub body: DeleteMeetingInstanceInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetItemOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct DeleteMeetingInstanceOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetItemOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetItemResponse")]
-    pub get_item_response: mod_mes::GetItemResponse,
+pub struct DeleteMeetingInstanceOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DeleteMeetingInstanceResponse")]
+    pub delete_meeting_instance_response: mod_mes::DeleteMeetingInstanceResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetItemOutputEnvelope {
+pub struct DeleteMeetingInstanceOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetItemOutputEnvelopeHeader,
+    pub header: DeleteMeetingInstanceOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetItemOutputEnvelopeBody,
+    pub body: DeleteMeetingInstanceOutputEnvelopeBody,
 }
-pub async fn get_item(
-    req: GetItemInputEnvelope,
+pub async fn delete_meeting_instance(
+    req: DeleteMeetingInstanceInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<GetItemOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetItem";
+) -> error::SoapResult<DeleteMeetingInstanceOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DeleteMeetingInstanceRequest";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetUserConfiguration */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserConfigurationInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserConfigurationInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetUserConfiguration")]
+    pub get_user_configuration: mod_mes::GetUserConfiguration,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserConfigurationInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetUserConfigurationInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetUserConfigurationInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserConfigurationOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserConfigurationOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetUserConfigurationResponse")]
+    pub get_user_configuration_response: mod_mes::GetUserConfigurationResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserConfigurationOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetUserConfigurationOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetUserConfigurationOutputEnvelopeBody,
+}
+pub async fn get_user_configuration(
+    req: GetUserConfigurationInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetUserConfigurationOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetUserConfiguration";
     helpers::send_soap_request(url, credentials, req).await
 }
 
@@ -17268,9 +17476,9 @@ pub async fn get_item(
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct GetConversationItemsInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "Impersonation")]
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -17290,7 +17498,7 @@ pub struct GetConversationItemsInputEnvelope {
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct GetConversationItemsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -17315,263 +17523,747 @@ pub async fn get_conversation_items(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* GetAppManifests */
+/* InstallApp */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAppManifestsInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
+pub struct InstallAppInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAppManifestsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetAppManifests")]
-    pub get_app_manifests: mod_mes::GetAppManifests,
+pub struct InstallAppInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "InstallApp")]
+    pub install_app: mod_mes::InstallApp,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAppManifestsInputEnvelope {
+pub struct InstallAppInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetAppManifestsInputEnvelopeHeader,
+    pub header: InstallAppInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetAppManifestsInputEnvelopeBody,
+    pub body: InstallAppInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAppManifestsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct InstallAppOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAppManifestsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetAppManifestsResponse")]
-    pub get_app_manifests_response: mod_mes::GetAppManifestsResponse,
+pub struct InstallAppOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "InstallAppResponse")]
+    pub install_app_response: mod_mes::InstallAppResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAppManifestsOutputEnvelope {
+pub struct InstallAppOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetAppManifestsOutputEnvelopeHeader,
+    pub header: InstallAppOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetAppManifestsOutputEnvelopeBody,
+    pub body: InstallAppOutputEnvelopeBody,
 }
-pub async fn get_app_manifests(
-    req: GetAppManifestsInputEnvelope,
+pub async fn install_app(
+    req: InstallAppInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<GetAppManifestsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetAppManifests";
+) -> error::SoapResult<InstallAppOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/InstallApp";
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* CreateMeetingInstance */
+/* FindMeetingTimeCandidates */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateMeetingInstanceInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
+pub struct FindMeetingTimeCandidatesInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateMeetingInstanceInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateMeetingInstanceRequest")]
-    pub create_meeting_instance_request: mod_mes::CreateMeetingInstanceRequest,
+pub struct FindMeetingTimeCandidatesInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindMeetingTimeCandidates")]
+    pub find_meeting_time_candidates: mod_mes::FindMeetingTimeCandidates,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateMeetingInstanceInputEnvelope {
+pub struct FindMeetingTimeCandidatesInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateMeetingInstanceInputEnvelopeHeader,
+    pub header: FindMeetingTimeCandidatesInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateMeetingInstanceInputEnvelopeBody,
+    pub body: FindMeetingTimeCandidatesInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateMeetingInstanceOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct FindMeetingTimeCandidatesOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateMeetingInstanceOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateMeetingInstanceResponse")]
-    pub create_meeting_instance_response: mod_mes::CreateMeetingInstanceResponse,
+pub struct FindMeetingTimeCandidatesOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindMeetingTimeCandidatesResponse")]
+    pub find_meeting_time_candidates_response: mod_mes::FindMeetingTimeCandidatesResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateMeetingInstanceOutputEnvelope {
+pub struct FindMeetingTimeCandidatesOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateMeetingInstanceOutputEnvelopeHeader,
+    pub header: FindMeetingTimeCandidatesOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateMeetingInstanceOutputEnvelopeBody,
+    pub body: FindMeetingTimeCandidatesOutputEnvelopeBody,
 }
-pub async fn create_meeting_instance(
-    req: CreateMeetingInstanceInputEnvelope,
+pub async fn find_meeting_time_candidates(
+    req: FindMeetingTimeCandidatesInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<CreateMeetingInstanceOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateMeetingInstanceRequest";
+) -> error::SoapResult<FindMeetingTimeCandidatesOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindMeetingTimeCandidates";
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* DeleteMeetingSpace */
+/* UploadItems */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteMeetingSpaceInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteMeetingSpaceInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DeleteMeetingSpace")]
-    pub delete_meeting_space: mod_mes::DeleteMeetingSpace,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteMeetingSpaceInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DeleteMeetingSpaceInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteMeetingSpaceInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteMeetingSpaceOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteMeetingSpaceOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DeleteMeetingSpaceResponseMessage")]
-    pub delete_meeting_space_response_message: mod_mes::DeleteMeetingSpaceResponseMessage,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteMeetingSpaceOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DeleteMeetingSpaceOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteMeetingSpaceOutputEnvelopeBody,
-}
-pub async fn delete_meeting_space(
-    req: DeleteMeetingSpaceInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<DeleteMeetingSpaceOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DeleteMeetingSpace";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CopyItem */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CopyItemInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
+pub struct UploadItemsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
     pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CopyItemInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CopyItem")]
-    pub copy_item: mod_mes::CopyItem,
+pub struct UploadItemsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UploadItems")]
+    pub upload_items: mod_mes::UploadItems,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CopyItemInputEnvelope {
+pub struct UploadItemsInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CopyItemInputEnvelopeHeader,
+    pub header: UploadItemsInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CopyItemInputEnvelopeBody,
+    pub body: UploadItemsInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CopyItemOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct UploadItemsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CopyItemOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CopyItemResponse")]
-    pub copy_item_response: mod_mes::CopyItemResponse,
+pub struct UploadItemsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UploadItemsResponse")]
+    pub upload_items_response: mod_mes::UploadItemsResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CopyItemOutputEnvelope {
+pub struct UploadItemsOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CopyItemOutputEnvelopeHeader,
+    pub header: UploadItemsOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CopyItemOutputEnvelopeBody,
+    pub body: UploadItemsOutputEnvelopeBody,
 }
-pub async fn copy_item(
-    req: CopyItemInputEnvelope,
+pub async fn upload_items(
+    req: UploadItemsInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<CopyItemOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CopyItem";
+) -> error::SoapResult<UploadItemsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UploadItems";
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* HideTag */
+/* UpdateItemInRecoverableItems */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct HideTagInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "Impersonation")]
+pub struct UpdateItemInRecoverableItemsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct HideTagInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "HideTag")]
-    pub hide_tag: mod_mes::HideTag,
+pub struct UpdateItemInRecoverableItemsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UpdateItemInRecoverableItems")]
+    pub update_item_in_recoverable_items: mod_mes::UpdateItemInRecoverableItems,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct HideTagInputEnvelope {
+pub struct UpdateItemInRecoverableItemsInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: HideTagInputEnvelopeHeader,
+    pub header: UpdateItemInRecoverableItemsInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: HideTagInputEnvelopeBody,
+    pub body: UpdateItemInRecoverableItemsInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct HideTagOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct UpdateItemInRecoverableItemsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct HideTagOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "HideTagResponse")]
-    pub hide_tag_response: mod_mes::HideTagResponse,
+pub struct UpdateItemInRecoverableItemsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UpdateItemInRecoverableItemsResponse")]
+    pub update_item_in_recoverable_items_response: mod_mes::UpdateItemInRecoverableItemsResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct HideTagOutputEnvelope {
+pub struct UpdateItemInRecoverableItemsOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: HideTagOutputEnvelopeHeader,
+    pub header: UpdateItemInRecoverableItemsOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: HideTagOutputEnvelopeBody,
+    pub body: UpdateItemInRecoverableItemsOutputEnvelopeBody,
 }
-pub async fn hide_tag(
-    req: HideTagInputEnvelope,
+pub async fn update_item_in_recoverable_items(
+    req: UpdateItemInRecoverableItemsInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<HideTagOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/HideTag";
+) -> error::SoapResult<UpdateItemInRecoverableItemsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UpdateItemInRecoverableItems";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetImItemList */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetImItemListInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetImItemListInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetImItemList")]
+    pub get_im_item_list: mod_mes::GetImItemList,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetImItemListInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetImItemListInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetImItemListInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetImItemListOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetImItemListOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetImItemListResponse")]
+    pub get_im_item_list_response: mod_mes::GetImItemListResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetImItemListOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetImItemListOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetImItemListOutputEnvelopeBody,
+}
+pub async fn get_im_item_list(
+    req: GetImItemListInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetImItemListOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetImItemList";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* MoveFolder */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MoveFolderInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MoveFolderInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "MoveFolder")]
+    pub move_folder: mod_mes::MoveFolder,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MoveFolderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: MoveFolderInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: MoveFolderInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MoveFolderOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MoveFolderOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "MoveFolderResponse")]
+    pub move_folder_response: mod_mes::MoveFolderResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MoveFolderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: MoveFolderOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: MoveFolderOutputEnvelopeBody,
+}
+pub async fn move_folder(
+    req: MoveFolderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<MoveFolderOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/MoveFolder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetSearchSuggestions */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSearchSuggestionsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSearchSuggestionsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetSearchSuggestions")]
+    pub get_search_suggestions: mod_mes::GetSearchSuggestions,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSearchSuggestionsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetSearchSuggestionsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetSearchSuggestionsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSearchSuggestionsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSearchSuggestionsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetSearchSuggestionsResponse")]
+    pub get_search_suggestions_response: mod_mes::GetSearchSuggestionsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSearchSuggestionsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetSearchSuggestionsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetSearchSuggestionsOutputEnvelopeBody,
+}
+pub async fn get_search_suggestions(
+    req: GetSearchSuggestionsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetSearchSuggestionsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetSearchSuggestions";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetImItems */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetImItemsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetImItemsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetImItems")]
+    pub get_im_items: mod_mes::GetImItems,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetImItemsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetImItemsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetImItemsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetImItemsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetImItemsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetImItemsResponse")]
+    pub get_im_items_response: mod_mes::GetImItemsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetImItemsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetImItemsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetImItemsOutputEnvelopeBody,
+}
+pub async fn get_im_items(
+    req: GetImItemsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetImItemsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetImItems";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetPhoneCallInformation */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPhoneCallInformationInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPhoneCallInformationInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetPhoneCallInformation")]
+    pub get_phone_call_information: mod_mes::GetPhoneCallInformation,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPhoneCallInformationInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetPhoneCallInformationInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetPhoneCallInformationInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPhoneCallInformationOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPhoneCallInformationOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetPhoneCallInformationResponse")]
+    pub get_phone_call_information_response: mod_mes::GetPhoneCallInformationResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPhoneCallInformationOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetPhoneCallInformationOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetPhoneCallInformationOutputEnvelopeBody,
+}
+pub async fn get_phone_call_information(
+    req: GetPhoneCallInformationInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetPhoneCallInformationOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetPhoneCallInformation";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* MarkAllItemsAsRead */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MarkAllItemsAsReadInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MarkAllItemsAsReadInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "MarkAllItemsAsRead")]
+    pub mark_all_items_as_read: mod_mes::MarkAllItemsAsRead,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MarkAllItemsAsReadInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: MarkAllItemsAsReadInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: MarkAllItemsAsReadInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MarkAllItemsAsReadOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MarkAllItemsAsReadOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "MarkAllItemsAsReadResponse")]
+    pub mark_all_items_as_read_response: mod_mes::MarkAllItemsAsReadResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MarkAllItemsAsReadOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: MarkAllItemsAsReadOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: MarkAllItemsAsReadOutputEnvelopeBody,
+}
+pub async fn mark_all_items_as_read(
+    req: MarkAllItemsAsReadInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<MarkAllItemsAsReadOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/MarkAllItemsAsRead";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CreateManagedFolder */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateManagedFolderInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateManagedFolderInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateManagedFolder")]
+    pub create_managed_folder: mod_mes::CreateManagedFolder,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateManagedFolderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateManagedFolderInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateManagedFolderInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateManagedFolderOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateManagedFolderOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateManagedFolderResponse")]
+    pub create_managed_folder_response: mod_mes::CreateManagedFolderResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateManagedFolderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateManagedFolderOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateManagedFolderOutputEnvelopeBody,
+}
+pub async fn create_managed_folder(
+    req: CreateManagedFolderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CreateManagedFolderOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateManagedFolder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetRooms */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetRoomsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetRoomsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetRooms")]
+    pub get_rooms: mod_mes::GetRooms,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetRoomsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetRoomsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetRoomsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetRoomsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetRoomsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetRoomsResponse")]
+    pub get_rooms_response: mod_mes::GetRoomsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetRoomsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetRoomsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetRoomsOutputEnvelopeBody,
+}
+pub async fn get_rooms(
+    req: GetRoomsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetRoomsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetRooms";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetUserPhoto */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserPhotoInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserPhotoInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetUserPhoto")]
+    pub get_user_photo: mod_mes::GetUserPhoto,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserPhotoInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetUserPhotoInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetUserPhotoInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserPhotoOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserPhotoOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetUserPhotoResponse")]
+    pub get_user_photo_response: mod_mes::GetUserPhotoResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserPhotoOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetUserPhotoOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetUserPhotoOutputEnvelopeBody,
+}
+pub async fn get_user_photo(
+    req: GetUserPhotoInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetUserPhotoOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetUserPhoto";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetPasswordExpirationDate */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPasswordExpirationDateInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPasswordExpirationDateInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetPasswordExpirationDate")]
+    pub get_password_expiration_date: mod_mes::GetPasswordExpirationDate,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPasswordExpirationDateInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetPasswordExpirationDateInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetPasswordExpirationDateInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPasswordExpirationDateOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPasswordExpirationDateOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetPasswordExpirationDateResponse")]
+    pub get_password_expiration_date_response: mod_mes::GetPasswordExpirationDateResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPasswordExpirationDateOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetPasswordExpirationDateOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetPasswordExpirationDateOutputEnvelopeBody,
+}
+pub async fn get_password_expiration_date(
+    req: GetPasswordExpirationDateInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetPasswordExpirationDateOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetPasswordExpirationDate";
     helpers::send_soap_request(url, credentials, req).await
 }
 
@@ -17580,11 +18272,11 @@ pub async fn hide_tag(
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct DeleteUserConfigurationInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
     pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -17604,7 +18296,7 @@ pub struct DeleteUserConfigurationInputEnvelope {
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct DeleteUserConfigurationOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -17634,11 +18326,11 @@ pub async fn delete_user_configuration(
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct ResolveNamesInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
     pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -17658,7 +18350,7 @@ pub struct ResolveNamesInputEnvelope {
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct ResolveNamesOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -17683,718 +18375,16 @@ pub async fn resolve_names(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* UpdateItem */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateItemInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateItemInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UpdateItem")]
-    pub update_item: mod_mes::UpdateItem,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateItemInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UpdateItemInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateItemInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateItemOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateItemOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UpdateItemResponse")]
-    pub update_item_response: mod_mes::UpdateItemResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateItemOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UpdateItemOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateItemOutputEnvelopeBody,
-}
-pub async fn update_item(
-    req: UpdateItemInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateItemOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UpdateItem";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetSpecificUserConfiguration */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSpecificUserConfigurationInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSpecificUserConfigurationInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetSpecificUserConfiguration")]
-    pub get_specific_user_configuration: mod_mes::GetSpecificUserConfiguration,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSpecificUserConfigurationInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetSpecificUserConfigurationInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetSpecificUserConfigurationInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSpecificUserConfigurationOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSpecificUserConfigurationOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetSpecificUserConfigurationResponse")]
-    pub get_specific_user_configuration_response: mod_mes::GetSpecificUserConfigurationResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSpecificUserConfigurationOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetSpecificUserConfigurationOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetSpecificUserConfigurationOutputEnvelopeBody,
-}
-pub async fn get_specific_user_configuration(
-    req: GetSpecificUserConfigurationInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetSpecificUserConfigurationOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetSpecificUserConfiguration";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* InstallApp */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct InstallAppInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct InstallAppInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "InstallApp")]
-    pub install_app: mod_mes::InstallApp,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct InstallAppInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: InstallAppInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: InstallAppInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct InstallAppOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct InstallAppOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "InstallAppResponse")]
-    pub install_app_response: mod_mes::InstallAppResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct InstallAppOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: InstallAppOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: InstallAppOutputEnvelopeBody,
-}
-pub async fn install_app(
-    req: InstallAppInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<InstallAppOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/InstallApp";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* DeleteAttachment */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteAttachmentInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteAttachmentInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DeleteAttachment")]
-    pub delete_attachment: mod_mes::DeleteAttachment,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteAttachmentInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DeleteAttachmentInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteAttachmentInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteAttachmentOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteAttachmentOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DeleteAttachmentResponse")]
-    pub delete_attachment_response: mod_mes::DeleteAttachmentResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteAttachmentOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DeleteAttachmentOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteAttachmentOutputEnvelopeBody,
-}
-pub async fn delete_attachment(
-    req: DeleteAttachmentInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<DeleteAttachmentOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DeleteAttachment";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetPhoneCallInformation */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPhoneCallInformationInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPhoneCallInformationInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetPhoneCallInformation")]
-    pub get_phone_call_information: mod_mes::GetPhoneCallInformation,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPhoneCallInformationInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetPhoneCallInformationInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetPhoneCallInformationInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPhoneCallInformationOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPhoneCallInformationOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetPhoneCallInformationResponse")]
-    pub get_phone_call_information_response: mod_mes::GetPhoneCallInformationResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPhoneCallInformationOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetPhoneCallInformationOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetPhoneCallInformationOutputEnvelopeBody,
-}
-pub async fn get_phone_call_information(
-    req: GetPhoneCallInformationInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetPhoneCallInformationOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetPhoneCallInformation";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetUserAvailability */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserAvailabilityInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserAvailabilityInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetUserAvailabilityRequest")]
-    pub get_user_availability_request: mod_mes::GetUserAvailabilityRequest,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserAvailabilityInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetUserAvailabilityInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetUserAvailabilityInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserAvailabilityOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserAvailabilityOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetUserAvailabilityResponse")]
-    pub get_user_availability_response: mod_mes::GetUserAvailabilityResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserAvailabilityOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetUserAvailabilityOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetUserAvailabilityOutputEnvelopeBody,
-}
-pub async fn get_user_availability(
-    req: GetUserAvailabilityInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetUserAvailabilityOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetUserAvailability";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateMeetingInstance */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateMeetingInstanceInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateMeetingInstanceInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UpdateMeetingInstanceRequest")]
-    pub update_meeting_instance_request: mod_mes::UpdateMeetingInstanceRequest,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateMeetingInstanceInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UpdateMeetingInstanceInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateMeetingInstanceInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateMeetingInstanceOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateMeetingInstanceOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UpdateMeetingInstanceResponse")]
-    pub update_meeting_instance_response: mod_mes::UpdateMeetingInstanceResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateMeetingInstanceOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UpdateMeetingInstanceOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateMeetingInstanceOutputEnvelopeBody,
-}
-pub async fn update_meeting_instance(
-    req: UpdateMeetingInstanceInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateMeetingInstanceOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UpdateMeetingInstanceRequest";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetUserConfiguration */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserConfigurationInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserConfigurationInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetUserConfiguration")]
-    pub get_user_configuration: mod_mes::GetUserConfiguration,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserConfigurationInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetUserConfigurationInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetUserConfigurationInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserConfigurationOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserConfigurationOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetUserConfigurationResponse")]
-    pub get_user_configuration_response: mod_mes::GetUserConfigurationResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserConfigurationOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetUserConfigurationOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetUserConfigurationOutputEnvelopeBody,
-}
-pub async fn get_user_configuration(
-    req: GetUserConfigurationInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetUserConfigurationOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetUserConfiguration";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* FindItem */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindItemInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-    #[yaserde(rename = "DateTimePrecision")]
-    pub date_time_precision: Option<mod_typ::DateTimePrecision>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindItemInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindItem")]
-    pub find_item: mod_mes::FindItem,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindItemInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindItemInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindItemInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindItemOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindItemOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindItemResponse")]
-    pub find_item_response: mod_mes::FindItemResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindItemOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindItemOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindItemOutputEnvelopeBody,
-}
-pub async fn find_item(
-    req: FindItemInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<FindItemOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindItem";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CreateItem */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateItemInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateItemInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateItem")]
-    pub create_item: mod_mes::CreateItem,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateItemInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateItemInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateItemInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateItemOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateItemOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateItemResponse")]
-    pub create_item_response: mod_mes::CreateItemResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateItemOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateItemOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateItemOutputEnvelopeBody,
-}
-pub async fn create_item(
-    req: CreateItemInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CreateItemOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateItem";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* ConvertId */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ConvertIdInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ConvertIdInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "ConvertId")]
-    pub convert_id: mod_mes::ConvertId,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ConvertIdInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: ConvertIdInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ConvertIdInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ConvertIdOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ConvertIdOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "ConvertIdResponse")]
-    pub convert_id_response: mod_mes::ConvertIdResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ConvertIdOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: ConvertIdOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ConvertIdOutputEnvelopeBody,
-}
-pub async fn convert_id(
-    req: ConvertIdInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<ConvertIdOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/ConvertId";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* DeleteMeetingInstance */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteMeetingInstanceInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteMeetingInstanceInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DeleteMeetingInstanceRequest")]
-    pub delete_meeting_instance_request: mod_mes::DeleteMeetingInstanceRequest,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteMeetingInstanceInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DeleteMeetingInstanceInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteMeetingInstanceInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteMeetingInstanceOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteMeetingInstanceOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DeleteMeetingInstanceResponse")]
-    pub delete_meeting_instance_response: mod_mes::DeleteMeetingInstanceResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteMeetingInstanceOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DeleteMeetingInstanceOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteMeetingInstanceOutputEnvelopeBody,
-}
-pub async fn delete_meeting_instance(
-    req: DeleteMeetingInstanceInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<DeleteMeetingInstanceOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DeleteMeetingInstanceRequest";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetRooms */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetRoomsInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetRoomsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetRooms")]
-    pub get_rooms: mod_mes::GetRooms,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetRoomsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetRoomsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetRoomsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetRoomsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetRoomsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetRoomsResponse")]
-    pub get_rooms_response: mod_mes::GetRoomsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetRoomsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetRoomsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetRoomsOutputEnvelopeBody,
-}
-pub async fn get_rooms(
-    req: GetRoomsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetRoomsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetRooms";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
 /* RemoveContactFromImList */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct RemoveContactFromImListInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
     pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -18414,7 +18404,7 @@ pub struct RemoveContactFromImListInputEnvelope {
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct RemoveContactFromImListOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -18439,2446 +18429,16 @@ pub async fn remove_contact_from_im_list(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* SetUserPhoto */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetUserPhotoInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetUserPhotoInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SetUserPhoto")]
-    pub set_user_photo: mod_mes::SetUserPhoto,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetUserPhotoInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SetUserPhotoInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetUserPhotoInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetUserPhotoOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetUserPhotoOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SetUserPhotoResponse")]
-    pub set_user_photo_response: mod_mes::SetUserPhotoResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetUserPhotoOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SetUserPhotoOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetUserPhotoOutputEnvelopeBody,
-}
-pub async fn set_user_photo(
-    req: SetUserPhotoInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SetUserPhotoOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SetUserPhoto";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateFolder */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateFolderInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateFolderInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UpdateFolder")]
-    pub update_folder: mod_mes::UpdateFolder,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateFolderInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UpdateFolderInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateFolderInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateFolderOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateFolderOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UpdateFolderResponse")]
-    pub update_folder_response: mod_mes::UpdateFolderResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateFolderOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UpdateFolderOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateFolderOutputEnvelopeBody,
-}
-pub async fn update_folder(
-    req: UpdateFolderInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateFolderOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UpdateFolder";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetServerTimeZones */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetServerTimeZonesInputEnvelopeHeader {
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetServerTimeZonesInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetServerTimeZones")]
-    pub get_server_time_zones: mod_mes::GetServerTimeZones,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetServerTimeZonesInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetServerTimeZonesInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetServerTimeZonesInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetServerTimeZonesOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetServerTimeZonesOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetServerTimeZonesResponse")]
-    pub get_server_time_zones_response: mod_mes::GetServerTimeZonesResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetServerTimeZonesOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetServerTimeZonesOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetServerTimeZonesOutputEnvelopeBody,
-}
-pub async fn get_server_time_zones(
-    req: GetServerTimeZonesInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetServerTimeZonesOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetServerTimeZones";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* SyncFolderHierarchy */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SyncFolderHierarchyInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SyncFolderHierarchyInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SyncFolderHierarchy")]
-    pub sync_folder_hierarchy: mod_mes::SyncFolderHierarchy,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SyncFolderHierarchyInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SyncFolderHierarchyInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SyncFolderHierarchyInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SyncFolderHierarchyOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SyncFolderHierarchyOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SyncFolderHierarchyResponse")]
-    pub sync_folder_hierarchy_response: mod_mes::SyncFolderHierarchyResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SyncFolderHierarchyOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SyncFolderHierarchyOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SyncFolderHierarchyOutputEnvelopeBody,
-}
-pub async fn sync_folder_hierarchy(
-    req: SyncFolderHierarchyInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SyncFolderHierarchyOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SyncFolderHierarchy";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* ExecuteSearch */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExecuteSearchInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExecuteSearchInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "ExecuteSearch")]
-    pub execute_search: mod_mes::ExecuteSearch,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExecuteSearchInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: ExecuteSearchInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ExecuteSearchInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExecuteSearchOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExecuteSearchOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "ExecuteSearchResponse")]
-    pub execute_search_response: mod_mes::ExecuteSearchResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExecuteSearchOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: ExecuteSearchOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ExecuteSearchOutputEnvelopeBody,
-}
-pub async fn execute_search(
-    req: ExecuteSearchInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<ExecuteSearchOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/ExecuteSearch";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddImGroup */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddImGroupInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddImGroupInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "AddImGroup")]
-    pub add_im_group: mod_mes::AddImGroup,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddImGroupInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: AddImGroupInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddImGroupInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddImGroupOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddImGroupOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "AddImGroupResponse")]
-    pub add_im_group_response: mod_mes::AddImGroupResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddImGroupOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: AddImGroupOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddImGroupOutputEnvelopeBody,
-}
-pub async fn add_im_group(
-    req: AddImGroupInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddImGroupOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/AddImGroup";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CreateFolder */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateFolderInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateFolderInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateFolder")]
-    pub create_folder: mod_mes::CreateFolder,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateFolderInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateFolderInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateFolderInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateFolderOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateFolderOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateFolderResponse")]
-    pub create_folder_response: mod_mes::CreateFolderResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateFolderOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateFolderOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateFolderOutputEnvelopeBody,
-}
-pub async fn create_folder(
-    req: CreateFolderInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CreateFolderOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateFolder";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* FindTags */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindTagsInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindTagsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindTags")]
-    pub find_tags: mod_mes::FindTags,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindTagsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindTagsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindTagsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindTagsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindTagsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindTagsResponse")]
-    pub find_tags_response: mod_mes::FindTagsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindTagsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindTagsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindTagsOutputEnvelopeBody,
-}
-pub async fn find_tags(
-    req: FindTagsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<FindTagsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindTags";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetUserOofSettings */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserOofSettingsInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserOofSettingsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetUserOofSettingsRequest")]
-    pub get_user_oof_settings_request: mod_mes::GetUserOofSettingsRequest,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserOofSettingsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetUserOofSettingsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetUserOofSettingsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserOofSettingsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserOofSettingsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetUserOofSettingsResponse")]
-    pub get_user_oof_settings_response: mod_mes::GetUserOofSettingsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserOofSettingsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetUserOofSettingsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetUserOofSettingsOutputEnvelopeBody,
-}
-pub async fn get_user_oof_settings(
-    req: GetUserOofSettingsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetUserOofSettingsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetUserOofSettings";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CopyFolder */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CopyFolderInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CopyFolderInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CopyFolder")]
-    pub copy_folder: mod_mes::CopyFolder,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CopyFolderInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CopyFolderInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CopyFolderInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CopyFolderOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CopyFolderOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CopyFolderResponse")]
-    pub copy_folder_response: mod_mes::CopyFolderResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CopyFolderOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CopyFolderOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CopyFolderOutputEnvelopeBody,
-}
-pub async fn copy_folder(
-    req: CopyFolderInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CopyFolderOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CopyFolder";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* FindMessageTrackingReport */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMessageTrackingReportInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMessageTrackingReportInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindMessageTrackingReport")]
-    pub find_message_tracking_report: mod_mes::FindMessageTrackingReport,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMessageTrackingReportInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindMessageTrackingReportInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindMessageTrackingReportInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMessageTrackingReportOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMessageTrackingReportOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindMessageTrackingReportResponse")]
-    pub find_message_tracking_report_response: mod_mes::FindMessageTrackingReportResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMessageTrackingReportOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindMessageTrackingReportOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindMessageTrackingReportOutputEnvelopeBody,
-}
-pub async fn find_message_tracking_report(
-    req: FindMessageTrackingReportInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<FindMessageTrackingReportOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindMessageTrackingReport";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* FindPeople */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindPeopleInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindPeopleInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindPeople")]
-    pub find_people: mod_mes::FindPeople,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindPeopleInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindPeopleInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindPeopleInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindPeopleOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindPeopleOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindPeopleResponse")]
-    pub find_people_response: mod_mes::FindPeopleResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindPeopleOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindPeopleOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindPeopleOutputEnvelopeBody,
-}
-pub async fn find_people(
-    req: FindPeopleInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<FindPeopleOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindPeople";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetFolder */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetFolderInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetFolderInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetFolder")]
-    pub get_folder: mod_mes::GetFolder,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetFolderInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetFolderInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetFolderInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetFolderOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetFolderOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetFolderResponse")]
-    pub get_folder_response: mod_mes::GetFolderResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetFolderOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetFolderOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetFolderOutputEnvelopeBody,
-}
-pub async fn get_folder(
-    req: GetFolderInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetFolderOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetFolder";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* DeleteFolder */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteFolderInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteFolderInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DeleteFolder")]
-    pub delete_folder: mod_mes::DeleteFolder,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteFolderInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DeleteFolderInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteFolderInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteFolderOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteFolderOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DeleteFolderResponse")]
-    pub delete_folder_response: mod_mes::DeleteFolderResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteFolderOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DeleteFolderOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteFolderOutputEnvelopeBody,
-}
-pub async fn delete_folder(
-    req: DeleteFolderInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<DeleteFolderOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DeleteFolder";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetAttachment */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAttachmentInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAttachmentInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetAttachment")]
-    pub get_attachment: mod_mes::GetAttachment,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAttachmentInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetAttachmentInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetAttachmentInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAttachmentOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAttachmentOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetAttachmentResponse")]
-    pub get_attachment_response: mod_mes::GetAttachmentResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAttachmentOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetAttachmentOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetAttachmentOutputEnvelopeBody,
-}
-pub async fn get_attachment(
-    req: GetAttachmentInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetAttachmentOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetAttachment";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetSearchableMailboxes */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSearchableMailboxesInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSearchableMailboxesInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetSearchableMailboxes")]
-    pub get_searchable_mailboxes: mod_mes::GetSearchableMailboxes,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSearchableMailboxesInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetSearchableMailboxesInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetSearchableMailboxesInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSearchableMailboxesOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSearchableMailboxesOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetSearchableMailboxesResponse")]
-    pub get_searchable_mailboxes_response: mod_mes::GetSearchableMailboxesResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSearchableMailboxesOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetSearchableMailboxesOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetSearchableMailboxesOutputEnvelopeBody,
-}
-pub async fn get_searchable_mailboxes(
-    req: GetSearchableMailboxesInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetSearchableMailboxesOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetSearchableMailboxes";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* DisableApp */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DisableAppInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DisableAppInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DisableApp")]
-    pub disable_app: mod_mes::DisableApp,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DisableAppInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DisableAppInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DisableAppInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DisableAppOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DisableAppOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DisableAppResponse")]
-    pub disable_app_response: mod_mes::DisableAppResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DisableAppOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DisableAppOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DisableAppOutputEnvelopeBody,
-}
-pub async fn disable_app(
-    req: DisableAppInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<DisableAppOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DisableApp";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* ReportMessage */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ReportMessageInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ReportMessageInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "ReportMessage")]
-    pub report_message: mod_mes::ReportMessage,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ReportMessageInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: ReportMessageInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ReportMessageInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ReportMessageOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ReportMessageOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "ReportMessageResponse")]
-    pub report_message_response: mod_mes::ReportMessageResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ReportMessageOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: ReportMessageOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ReportMessageOutputEnvelopeBody,
-}
-pub async fn report_message(
-    req: ReportMessageInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<ReportMessageOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/ReportMessage";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* FindMeetingTimeCandidates */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMeetingTimeCandidatesInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMeetingTimeCandidatesInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindMeetingTimeCandidates")]
-    pub find_meeting_time_candidates: mod_mes::FindMeetingTimeCandidates,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMeetingTimeCandidatesInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindMeetingTimeCandidatesInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindMeetingTimeCandidatesInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMeetingTimeCandidatesOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMeetingTimeCandidatesOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindMeetingTimeCandidatesResponse")]
-    pub find_meeting_time_candidates_response: mod_mes::FindMeetingTimeCandidatesResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMeetingTimeCandidatesOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindMeetingTimeCandidatesOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindMeetingTimeCandidatesOutputEnvelopeBody,
-}
-pub async fn find_meeting_time_candidates(
-    req: FindMeetingTimeCandidatesInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<FindMeetingTimeCandidatesOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindMeetingTimeCandidates";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CreateMeetingSpace */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateMeetingSpaceInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateMeetingSpaceInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateMeetingSpace")]
-    pub create_meeting_space: mod_mes::CreateMeetingSpace,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateMeetingSpaceInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateMeetingSpaceInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateMeetingSpaceInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateMeetingSpaceOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateMeetingSpaceOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateMeetingSpaceResponseMessage")]
-    pub create_meeting_space_response_message: mod_mes::CreateMeetingSpaceResponseMessage,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateMeetingSpaceOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateMeetingSpaceOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateMeetingSpaceOutputEnvelopeBody,
-}
-pub async fn create_meeting_space(
-    req: CreateMeetingSpaceInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CreateMeetingSpaceOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateMeetingSpace";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetMeetingSpace */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMeetingSpaceInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMeetingSpaceInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetMeetingSpace")]
-    pub get_meeting_space: mod_mes::GetMeetingSpace,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMeetingSpaceInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetMeetingSpaceInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetMeetingSpaceInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMeetingSpaceOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMeetingSpaceOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetMeetingSpaceResponseMessage")]
-    pub get_meeting_space_response_message: mod_mes::GetMeetingSpaceResponseMessage,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMeetingSpaceOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetMeetingSpaceOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetMeetingSpaceOutputEnvelopeBody,
-}
-pub async fn get_meeting_space(
-    req: GetMeetingSpaceInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetMeetingSpaceOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetMeetingSpace";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* EndSearchSession */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct EndSearchSessionInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct EndSearchSessionInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "EndSearchSession")]
-    pub end_search_session: mod_mes::EndSearchSession,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct EndSearchSessionInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: EndSearchSessionInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: EndSearchSessionInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct EndSearchSessionOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct EndSearchSessionOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "EndSearchSessionResponse")]
-    pub end_search_session_response: mod_mes::EndSearchSessionResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct EndSearchSessionOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: EndSearchSessionOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: EndSearchSessionOutputEnvelopeBody,
-}
-pub async fn end_search_session(
-    req: EndSearchSessionInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<EndSearchSessionOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/EndSearchSession";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CreateAttachment */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateAttachmentInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateAttachmentInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateAttachment")]
-    pub create_attachment: mod_mes::CreateAttachment,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateAttachmentInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateAttachmentInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateAttachmentInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateAttachmentOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateAttachmentOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateAttachmentResponse")]
-    pub create_attachment_response: mod_mes::CreateAttachmentResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateAttachmentOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateAttachmentOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateAttachmentOutputEnvelopeBody,
-}
-pub async fn create_attachment(
-    req: CreateAttachmentInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CreateAttachmentOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateAttachment";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UninstallApp */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UninstallAppInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UninstallAppInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UninstallApp")]
-    pub uninstall_app: mod_mes::UninstallApp,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UninstallAppInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UninstallAppInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UninstallAppInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UninstallAppOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UninstallAppOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UninstallAppResponse")]
-    pub uninstall_app_response: mod_mes::UninstallAppResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UninstallAppOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UninstallAppOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UninstallAppOutputEnvelopeBody,
-}
-pub async fn uninstall_app(
-    req: UninstallAppInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UninstallAppOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UninstallApp";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetNonIndexableItemDetails */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetNonIndexableItemDetailsInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetNonIndexableItemDetailsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetNonIndexableItemDetails")]
-    pub get_non_indexable_item_details: mod_mes::GetNonIndexableItemDetails,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetNonIndexableItemDetailsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetNonIndexableItemDetailsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetNonIndexableItemDetailsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetNonIndexableItemDetailsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetNonIndexableItemDetailsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetNonIndexableItemDetailsResponse")]
-    pub get_non_indexable_item_details_response: mod_mes::GetNonIndexableItemDetailsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetNonIndexableItemDetailsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetNonIndexableItemDetailsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetNonIndexableItemDetailsOutputEnvelopeBody,
-}
-pub async fn get_non_indexable_item_details(
-    req: GetNonIndexableItemDetailsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetNonIndexableItemDetailsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetNonIndexableItemDetails";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* DeleteItem */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteItemInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteItemInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DeleteItem")]
-    pub delete_item: mod_mes::DeleteItem,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteItemInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DeleteItemInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteItemInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteItemOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteItemOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DeleteItemResponse")]
-    pub delete_item_response: mod_mes::DeleteItemResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteItemOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DeleteItemOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteItemOutputEnvelopeBody,
-}
-pub async fn delete_item(
-    req: DeleteItemInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<DeleteItemOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DeleteItem";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetMeetingInstance */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMeetingInstanceInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMeetingInstanceInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetMeetingInstanceRequest")]
-    pub get_meeting_instance_request: mod_mes::GetMeetingInstanceRequest,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMeetingInstanceInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetMeetingInstanceInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetMeetingInstanceInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMeetingInstanceOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMeetingInstanceOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetMeetingInstanceResponse")]
-    pub get_meeting_instance_response: mod_mes::GetMeetingInstanceResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetMeetingInstanceOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetMeetingInstanceOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetMeetingInstanceOutputEnvelopeBody,
-}
-pub async fn get_meeting_instance(
-    req: GetMeetingInstanceInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetMeetingInstanceOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetMeetingInstanceRequest";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetAppMarketplaceUrl */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAppMarketplaceUrlInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAppMarketplaceUrlInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetAppMarketplaceUrl")]
-    pub get_app_marketplace_url: mod_mes::GetAppMarketplaceUrl,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAppMarketplaceUrlInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetAppMarketplaceUrlInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetAppMarketplaceUrlInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAppMarketplaceUrlOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAppMarketplaceUrlOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetAppMarketplaceUrlResponse")]
-    pub get_app_marketplace_url_response: mod_mes::GetAppMarketplaceUrlResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetAppMarketplaceUrlOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetAppMarketplaceUrlOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetAppMarketplaceUrlOutputEnvelopeBody,
-}
-pub async fn get_app_marketplace_url(
-    req: GetAppMarketplaceUrlInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetAppMarketplaceUrlOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetAppMarketplaceUrl";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetImItemList */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetImItemListInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetImItemListInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetImItemList")]
-    pub get_im_item_list: mod_mes::GetImItemList,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetImItemListInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetImItemListInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetImItemListInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetImItemListOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetImItemListOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetImItemListResponse")]
-    pub get_im_item_list_response: mod_mes::GetImItemListResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetImItemListOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetImItemListOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetImItemListOutputEnvelopeBody,
-}
-pub async fn get_im_item_list(
-    req: GetImItemListInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetImItemListOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetImItemList";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CreateUserConfiguration */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateUserConfigurationInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateUserConfigurationInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateUserConfiguration")]
-    pub create_user_configuration: mod_mes::CreateUserConfiguration,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateUserConfigurationInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateUserConfigurationInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateUserConfigurationInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateUserConfigurationOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateUserConfigurationOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateUserConfigurationResponse")]
-    pub create_user_configuration_response: mod_mes::CreateUserConfigurationResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateUserConfigurationOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateUserConfigurationOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateUserConfigurationOutputEnvelopeBody,
-}
-pub async fn create_user_configuration(
-    req: CreateUserConfigurationInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CreateUserConfigurationOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateUserConfiguration";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* FindMeetingSpaceByJoinUrl */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMeetingSpaceByJoinUrlInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMeetingSpaceByJoinUrlInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindMeetingSpaceByJoinUrl")]
-    pub find_meeting_space_by_join_url: mod_mes::FindMeetingSpaceByJoinUrl,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMeetingSpaceByJoinUrlInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindMeetingSpaceByJoinUrlInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindMeetingSpaceByJoinUrlInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMeetingSpaceByJoinUrlOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMeetingSpaceByJoinUrlOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindMeetingSpaceByJoinUrlResponseMessage")]
-    pub find_meeting_space_by_join_url_response_message: mod_mes::FindMeetingSpaceByJoinUrlResponseMessage,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindMeetingSpaceByJoinUrlOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindMeetingSpaceByJoinUrlOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindMeetingSpaceByJoinUrlOutputEnvelopeBody,
-}
-pub async fn find_meeting_space_by_join_url(
-    req: FindMeetingSpaceByJoinUrlInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<FindMeetingSpaceByJoinUrlOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindMeetingSpaceByJoinUrl";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* FindConversation */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindConversationInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindConversationInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindConversation")]
-    pub find_conversation: mod_mes::FindConversation,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindConversationInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindConversationInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindConversationInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindConversationOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindConversationOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindConversationResponse")]
-    pub find_conversation_response: mod_mes::FindConversationResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindConversationOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindConversationOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindConversationOutputEnvelopeBody,
-}
-pub async fn find_conversation(
-    req: FindConversationInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<FindConversationOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindConversation";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* DeleteSearchSuggestion */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteSearchSuggestionInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteSearchSuggestionInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DeleteSearchSuggestion")]
-    pub delete_search_suggestion: mod_mes::DeleteSearchSuggestion,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteSearchSuggestionInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DeleteSearchSuggestionInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteSearchSuggestionInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteSearchSuggestionOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteSearchSuggestionOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "DeleteSearchSuggestionResponse")]
-    pub delete_search_suggestion_response: mod_mes::DeleteSearchSuggestionResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct DeleteSearchSuggestionOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: DeleteSearchSuggestionOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteSearchSuggestionOutputEnvelopeBody,
-}
-pub async fn delete_search_suggestion(
-    req: DeleteSearchSuggestionInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<DeleteSearchSuggestionOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DeleteSearchSuggestion";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddNewTelUriContactToGroup */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddNewTelUriContactToGroupInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddNewTelUriContactToGroupInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "AddNewTelUriContactToGroup")]
-    pub add_new_tel_uri_contact_to_group: mod_mes::AddNewTelUriContactToGroup,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddNewTelUriContactToGroupInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: AddNewTelUriContactToGroupInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddNewTelUriContactToGroupInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddNewTelUriContactToGroupOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddNewTelUriContactToGroupOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "AddNewTelUriContactToGroupResponse")]
-    pub add_new_tel_uri_contact_to_group_response: mod_mes::AddNewTelUriContactToGroupResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddNewTelUriContactToGroupOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: AddNewTelUriContactToGroupOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddNewTelUriContactToGroupOutputEnvelopeBody,
-}
-pub async fn add_new_tel_uri_contact_to_group(
-    req: AddNewTelUriContactToGroupInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddNewTelUriContactToGroupOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/AddNewTelUriContactToGroup";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* SetImGroup */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetImGroupInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetImGroupInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SetImGroup")]
-    pub set_im_group: mod_mes::SetImGroup,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetImGroupInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SetImGroupInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetImGroupInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetImGroupOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetImGroupOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SetImGroupResponse")]
-    pub set_im_group_response: mod_mes::SetImGroupResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetImGroupOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SetImGroupOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetImGroupOutputEnvelopeBody,
-}
-pub async fn set_im_group(
-    req: SetImGroupInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SetImGroupOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SetImGroup";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetUserPhoto */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserPhotoInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserPhotoInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetUserPhoto")]
-    pub get_user_photo: mod_mes::GetUserPhoto,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserPhotoInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetUserPhotoInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetUserPhotoInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserPhotoOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserPhotoOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetUserPhotoResponse")]
-    pub get_user_photo_response: mod_mes::GetUserPhotoResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetUserPhotoOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetUserPhotoOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetUserPhotoOutputEnvelopeBody,
-}
-pub async fn get_user_photo(
-    req: GetUserPhotoInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetUserPhotoOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetUserPhoto";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddDelegate */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddDelegateInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddDelegateInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "AddDelegate")]
-    pub add_delegate: mod_mes::AddDelegate,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddDelegateInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: AddDelegateInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddDelegateInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddDelegateOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddDelegateOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "AddDelegateResponse")]
-    pub add_delegate_response: mod_mes::AddDelegateResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct AddDelegateOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: AddDelegateOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddDelegateOutputEnvelopeBody,
-}
-pub async fn add_delegate(
-    req: AddDelegateInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddDelegateOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/AddDelegate";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateUserConfiguration */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateUserConfigurationInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateUserConfigurationInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UpdateUserConfiguration")]
-    pub update_user_configuration: mod_mes::UpdateUserConfiguration,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateUserConfigurationInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UpdateUserConfigurationInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateUserConfigurationInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateUserConfigurationOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateUserConfigurationOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UpdateUserConfigurationResponse")]
-    pub update_user_configuration_response: mod_mes::UpdateUserConfigurationResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateUserConfigurationOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UpdateUserConfigurationOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateUserConfigurationOutputEnvelopeBody,
-}
-pub async fn update_user_configuration(
-    req: UpdateUserConfigurationInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateUserConfigurationOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UpdateUserConfiguration";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetInboxRules */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetInboxRulesInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetInboxRulesInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetInboxRules")]
-    pub get_inbox_rules: mod_mes::GetInboxRules,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetInboxRulesInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetInboxRulesInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetInboxRulesInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetInboxRulesOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetInboxRulesOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetInboxRulesResponse")]
-    pub get_inbox_rules_response: mod_mes::GetInboxRulesResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetInboxRulesOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetInboxRulesOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetInboxRulesOutputEnvelopeBody,
-}
-pub async fn get_inbox_rules(
-    req: GetInboxRulesInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetInboxRulesOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetInboxRules";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* SetImListMigrationCompleted */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetImListMigrationCompletedInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetImListMigrationCompletedInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SetImListMigrationCompleted")]
-    pub set_im_list_migration_completed: mod_mes::SetImListMigrationCompleted,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetImListMigrationCompletedInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SetImListMigrationCompletedInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetImListMigrationCompletedInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetImListMigrationCompletedOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetImListMigrationCompletedOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SetImListMigrationCompletedResponse")]
-    pub set_im_list_migration_completed_response: mod_mes::SetImListMigrationCompletedResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetImListMigrationCompletedOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SetImListMigrationCompletedOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetImListMigrationCompletedOutputEnvelopeBody,
-}
-pub async fn set_im_list_migration_completed(
-    req: SetImListMigrationCompletedInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SetImListMigrationCompletedOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SetImListMigrationCompleted";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* SearchMailboxes */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SearchMailboxesInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SearchMailboxesInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SearchMailboxes")]
-    pub search_mailboxes: mod_mes::SearchMailboxes,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SearchMailboxesInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SearchMailboxesInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SearchMailboxesInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SearchMailboxesOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SearchMailboxesOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SearchMailboxesResponse")]
-    pub search_mailboxes_response: mod_mes::SearchMailboxesResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SearchMailboxesOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SearchMailboxesOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SearchMailboxesOutputEnvelopeBody,
-}
-pub async fn search_mailboxes(
-    req: SearchMailboxesInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SearchMailboxesOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SearchMailboxes";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* SyncFolderItems */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SyncFolderItemsInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SyncFolderItemsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SyncFolderItems")]
-    pub sync_folder_items: mod_mes::SyncFolderItems,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SyncFolderItemsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SyncFolderItemsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SyncFolderItemsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SyncFolderItemsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SyncFolderItemsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SyncFolderItemsResponse")]
-    pub sync_folder_items_response: mod_mes::SyncFolderItemsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SyncFolderItemsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SyncFolderItemsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SyncFolderItemsOutputEnvelopeBody,
-}
-pub async fn sync_folder_items(
-    req: SyncFolderItemsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SyncFolderItemsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SyncFolderItems";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UnpinTeamMailbox */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UnpinTeamMailboxInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UnpinTeamMailboxInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UnpinTeamMailbox")]
-    pub unpin_team_mailbox: mod_mes::UnpinTeamMailbox,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UnpinTeamMailboxInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UnpinTeamMailboxInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UnpinTeamMailboxInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UnpinTeamMailboxOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UnpinTeamMailboxOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UnpinTeamMailboxResponse")]
-    pub unpin_team_mailbox_response: mod_mes::UnpinTeamMailboxResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UnpinTeamMailboxOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UnpinTeamMailboxOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UnpinTeamMailboxOutputEnvelopeBody,
-}
-pub async fn unpin_team_mailbox(
-    req: UnpinTeamMailboxInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UnpinTeamMailboxOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UnpinTeamMailbox";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetDiscoverySearchConfiguration */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetDiscoverySearchConfigurationInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetDiscoverySearchConfigurationInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetDiscoverySearchConfiguration")]
-    pub get_discovery_search_configuration: mod_mes::GetDiscoverySearchConfiguration,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetDiscoverySearchConfigurationInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetDiscoverySearchConfigurationInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetDiscoverySearchConfigurationInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetDiscoverySearchConfigurationOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetDiscoverySearchConfigurationOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetDiscoverySearchConfigurationResponse")]
-    pub get_discovery_search_configuration_response: mod_mes::GetDiscoverySearchConfigurationResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetDiscoverySearchConfigurationOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetDiscoverySearchConfigurationOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetDiscoverySearchConfigurationOutputEnvelopeBody,
-}
-pub async fn get_discovery_search_configuration(
-    req: GetDiscoverySearchConfigurationInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetDiscoverySearchConfigurationOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetDiscoverySearchConfiguration";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetPrivateCatalogAddIns */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPrivateCatalogAddInsInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPrivateCatalogAddInsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetPrivateCatalogAddIns")]
-    pub get_private_catalog_add_ins: mod_mes::GetPrivateCatalogAddIns,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPrivateCatalogAddInsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetPrivateCatalogAddInsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetPrivateCatalogAddInsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPrivateCatalogAddInsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPrivateCatalogAddInsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetPrivateCatalogAddInsResponse")]
-    pub get_private_catalog_add_ins_response: mod_mes::GetPrivateCatalogAddInsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetPrivateCatalogAddInsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetPrivateCatalogAddInsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetPrivateCatalogAddInsOutputEnvelopeBody,
-}
-pub async fn get_private_catalog_add_ins(
-    req: GetPrivateCatalogAddInsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetPrivateCatalogAddInsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetPrivateCatalogAddIns";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* ExportItems */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExportItemsInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "ManagementRole")]
-    pub management_role: Option<mod_typ::ManagementRole>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExportItemsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "ExportItems")]
-    pub export_items: mod_mes::ExportItems,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExportItemsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: ExportItemsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ExportItemsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExportItemsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExportItemsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "ExportItemsResponse")]
-    pub export_items_response: mod_mes::ExportItemsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct ExportItemsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: ExportItemsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ExportItemsOutputEnvelopeBody,
-}
-pub async fn export_items(
-    req: ExportItemsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<ExportItemsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/ExportItems";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
 /* SendItem */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct SendItemInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
     pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -20898,7 +18458,7 @@ pub struct SendItemInputEnvelope {
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct SendItemOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -20923,220 +18483,12 @@ pub async fn send_item(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* GetRoomLists */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetRoomListsInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetRoomListsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetRoomLists")]
-    pub get_room_lists: mod_mes::GetRoomLists,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetRoomListsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetRoomListsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetRoomListsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetRoomListsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetRoomListsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetRoomListsResponse")]
-    pub get_room_lists_response: mod_mes::GetRoomListsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetRoomListsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetRoomListsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetRoomListsOutputEnvelopeBody,
-}
-pub async fn get_room_lists(
-    req: GetRoomListsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetRoomListsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetRoomLists";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RemoveImContactFromGroup */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveImContactFromGroupInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveImContactFromGroupInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "RemoveImContactFromGroup")]
-    pub remove_im_contact_from_group: mod_mes::RemoveImContactFromGroup,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveImContactFromGroupInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: RemoveImContactFromGroupInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveImContactFromGroupInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveImContactFromGroupOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveImContactFromGroupOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "RemoveImContactFromGroupResponse")]
-    pub remove_im_contact_from_group_response: mod_mes::RemoveImContactFromGroupResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveImContactFromGroupOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: RemoveImContactFromGroupOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveImContactFromGroupOutputEnvelopeBody,
-}
-pub async fn remove_im_contact_from_group(
-    req: RemoveImContactFromGroupInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RemoveImContactFromGroupOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/RemoveImContactFromGroup";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetClientAccessToken */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetClientAccessTokenInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetClientAccessTokenInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetClientAccessToken")]
-    pub get_client_access_token: mod_mes::GetClientAccessToken,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetClientAccessTokenInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetClientAccessTokenInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetClientAccessTokenInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetClientAccessTokenOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetClientAccessTokenOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetClientAccessTokenResponse")]
-    pub get_client_access_token_response: mod_mes::GetClientAccessTokenResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetClientAccessTokenOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetClientAccessTokenOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetClientAccessTokenOutputEnvelopeBody,
-}
-pub async fn get_client_access_token(
-    req: GetClientAccessTokenInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetClientAccessTokenOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetClientAccessToken";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetLastPrivateCatalogUpdate */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetLastPrivateCatalogUpdateInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetLastPrivateCatalogUpdateInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetLastPrivateCatalogUpdate")]
-    pub get_last_private_catalog_update: mod_mes::GetLastPrivateCatalogUpdate,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetLastPrivateCatalogUpdateInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetLastPrivateCatalogUpdateInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetLastPrivateCatalogUpdateInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetLastPrivateCatalogUpdateOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetLastPrivateCatalogUpdateOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetLastPrivateCatalogUpdateResponse")]
-    pub get_last_private_catalog_update_response: mod_mes::GetLastPrivateCatalogUpdateResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetLastPrivateCatalogUpdateOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetLastPrivateCatalogUpdateOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetLastPrivateCatalogUpdateOutputEnvelopeBody,
-}
-pub async fn get_last_private_catalog_update(
-    req: GetLastPrivateCatalogUpdateInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetLastPrivateCatalogUpdateOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetLastPrivateCatalogUpdate";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
 /* GetUserRetentionPolicyTags */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct GetUserRetentionPolicyTagsInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -21156,7 +18508,7 @@ pub struct GetUserRetentionPolicyTagsInputEnvelope {
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct GetUserRetentionPolicyTagsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -21181,381 +18533,683 @@ pub async fn get_user_retention_policy_tags(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* FindFolder */
+/* GetDelegate */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindFolderInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
+pub struct GetDelegateInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
     pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "TimeZoneContext")]
-    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
-    #[yaserde(rename = "ManagementRole")]
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetDelegateInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetDelegate")]
+    pub get_delegate: mod_mes::GetDelegate,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetDelegateInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetDelegateInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetDelegateInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetDelegateOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetDelegateOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetDelegateResponse")]
+    pub get_delegate_response: mod_mes::GetDelegateResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetDelegateOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetDelegateOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetDelegateOutputEnvelopeBody,
+}
+pub async fn get_delegate(
+    req: GetDelegateInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetDelegateOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetDelegate";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetLastPrivateCatalogUpdate */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetLastPrivateCatalogUpdateInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetLastPrivateCatalogUpdateInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetLastPrivateCatalogUpdate")]
+    pub get_last_private_catalog_update: mod_mes::GetLastPrivateCatalogUpdate,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetLastPrivateCatalogUpdateInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetLastPrivateCatalogUpdateInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetLastPrivateCatalogUpdateInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetLastPrivateCatalogUpdateOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetLastPrivateCatalogUpdateOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetLastPrivateCatalogUpdateResponse")]
+    pub get_last_private_catalog_update_response: mod_mes::GetLastPrivateCatalogUpdateResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetLastPrivateCatalogUpdateOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetLastPrivateCatalogUpdateOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetLastPrivateCatalogUpdateOutputEnvelopeBody,
+}
+pub async fn get_last_private_catalog_update(
+    req: GetLastPrivateCatalogUpdateInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetLastPrivateCatalogUpdateOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetLastPrivateCatalogUpdate";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RemoveImGroup */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RemoveImGroupInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RemoveImGroupInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "RemoveImGroup")]
+    pub remove_im_group: mod_mes::RemoveImGroup,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RemoveImGroupInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: RemoveImGroupInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveImGroupInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RemoveImGroupOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RemoveImGroupOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "RemoveImGroupResponse")]
+    pub remove_im_group_response: mod_mes::RemoveImGroupResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct RemoveImGroupOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: RemoveImGroupOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveImGroupOutputEnvelopeBody,
+}
+pub async fn remove_im_group(
+    req: RemoveImGroupInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RemoveImGroupOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/RemoveImGroup";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetAppMarketplaceUrl */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAppMarketplaceUrlInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAppMarketplaceUrlInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetAppMarketplaceUrl")]
+    pub get_app_marketplace_url: mod_mes::GetAppMarketplaceUrl,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAppMarketplaceUrlInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetAppMarketplaceUrlInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetAppMarketplaceUrlInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAppMarketplaceUrlOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAppMarketplaceUrlOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetAppMarketplaceUrlResponse")]
+    pub get_app_marketplace_url_response: mod_mes::GetAppMarketplaceUrlResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAppMarketplaceUrlOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetAppMarketplaceUrlOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetAppMarketplaceUrlOutputEnvelopeBody,
+}
+pub async fn get_app_marketplace_url(
+    req: GetAppMarketplaceUrlInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetAppMarketplaceUrlOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetAppMarketplaceUrl";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* MoveItem */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MoveItemInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MoveItemInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "MoveItem")]
+    pub move_item: mod_mes::MoveItem,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MoveItemInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: MoveItemInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: MoveItemInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MoveItemOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MoveItemOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "MoveItemResponse")]
+    pub move_item_response: mod_mes::MoveItemResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MoveItemOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: MoveItemOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: MoveItemOutputEnvelopeBody,
+}
+pub async fn move_item(
+    req: MoveItemInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<MoveItemOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/MoveItem";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* DisconnectPhoneCall */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DisconnectPhoneCallInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DisconnectPhoneCallInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DisconnectPhoneCall")]
+    pub disconnect_phone_call: mod_mes::DisconnectPhoneCall,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DisconnectPhoneCallInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: DisconnectPhoneCallInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DisconnectPhoneCallInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DisconnectPhoneCallOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DisconnectPhoneCallOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DisconnectPhoneCallResponse")]
+    pub disconnect_phone_call_response: mod_mes::DisconnectPhoneCallResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DisconnectPhoneCallOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: DisconnectPhoneCallOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DisconnectPhoneCallOutputEnvelopeBody,
+}
+pub async fn disconnect_phone_call(
+    req: DisconnectPhoneCallInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<DisconnectPhoneCallOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DisconnectPhoneCall";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetNonIndexableItemStatistics */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetNonIndexableItemStatisticsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
     pub management_role: Option<mod_typ::ManagementRole>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindFolderInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindFolder")]
-    pub find_folder: mod_mes::FindFolder,
+pub struct GetNonIndexableItemStatisticsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetNonIndexableItemStatistics")]
+    pub get_non_indexable_item_statistics: mod_mes::GetNonIndexableItemStatistics,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindFolderInputEnvelope {
+pub struct GetNonIndexableItemStatisticsInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindFolderInputEnvelopeHeader,
+    pub header: GetNonIndexableItemStatisticsInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindFolderInputEnvelopeBody,
+    pub body: GetNonIndexableItemStatisticsInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindFolderOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct GetNonIndexableItemStatisticsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindFolderOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "FindFolderResponse")]
-    pub find_folder_response: mod_mes::FindFolderResponse,
+pub struct GetNonIndexableItemStatisticsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetNonIndexableItemStatisticsResponse")]
+    pub get_non_indexable_item_statistics_response: mod_mes::GetNonIndexableItemStatisticsResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct FindFolderOutputEnvelope {
+pub struct GetNonIndexableItemStatisticsOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: FindFolderOutputEnvelopeHeader,
+    pub header: GetNonIndexableItemStatisticsOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: FindFolderOutputEnvelopeBody,
+    pub body: GetNonIndexableItemStatisticsOutputEnvelopeBody,
 }
-pub async fn find_folder(
-    req: FindFolderInputEnvelope,
+pub async fn get_non_indexable_item_statistics(
+    req: GetNonIndexableItemStatisticsInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<FindFolderOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindFolder";
+) -> error::SoapResult<GetNonIndexableItemStatisticsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetNonIndexableItemStatistics";
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* CreateManagedFolder */
+/* UpdateFolder */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateManagedFolderInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
+pub struct UpdateFolderInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
     pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateFolderInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UpdateFolder")]
+    pub update_folder: mod_mes::UpdateFolder,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateFolderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UpdateFolderInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateFolderInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateFolderOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateFolderOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UpdateFolderResponse")]
+    pub update_folder_response: mod_mes::UpdateFolderResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateFolderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UpdateFolderOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateFolderOutputEnvelopeBody,
+}
+pub async fn update_folder(
+    req: UpdateFolderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateFolderOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UpdateFolder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetClientAccessToken */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetClientAccessTokenInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateManagedFolderInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateManagedFolder")]
-    pub create_managed_folder: mod_mes::CreateManagedFolder,
+pub struct GetClientAccessTokenInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetClientAccessToken")]
+    pub get_client_access_token: mod_mes::GetClientAccessToken,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateManagedFolderInputEnvelope {
+pub struct GetClientAccessTokenInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateManagedFolderInputEnvelopeHeader,
+    pub header: GetClientAccessTokenInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateManagedFolderInputEnvelopeBody,
+    pub body: GetClientAccessTokenInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateManagedFolderOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct GetClientAccessTokenOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateManagedFolderOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "CreateManagedFolderResponse")]
-    pub create_managed_folder_response: mod_mes::CreateManagedFolderResponse,
+pub struct GetClientAccessTokenOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetClientAccessTokenResponse")]
+    pub get_client_access_token_response: mod_mes::GetClientAccessTokenResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct CreateManagedFolderOutputEnvelope {
+pub struct GetClientAccessTokenOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: CreateManagedFolderOutputEnvelopeHeader,
+    pub header: GetClientAccessTokenOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateManagedFolderOutputEnvelopeBody,
+    pub body: GetClientAccessTokenOutputEnvelopeBody,
 }
-pub async fn create_managed_folder(
-    req: CreateManagedFolderInputEnvelope,
+pub async fn get_client_access_token(
+    req: GetClientAccessTokenInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<CreateManagedFolderOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateManagedFolder";
+) -> error::SoapResult<GetClientAccessTokenOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetClientAccessToken";
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* Unsubscribe */
+/* ExecuteSearch */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UnsubscribeInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
+pub struct ExecuteSearchInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
     pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExecuteSearchInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "ExecuteSearch")]
+    pub execute_search: mod_mes::ExecuteSearch,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExecuteSearchInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: ExecuteSearchInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ExecuteSearchInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExecuteSearchOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExecuteSearchOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "ExecuteSearchResponse")]
+    pub execute_search_response: mod_mes::ExecuteSearchResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExecuteSearchOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: ExecuteSearchOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ExecuteSearchOutputEnvelopeBody,
+}
+pub async fn execute_search(
+    req: ExecuteSearchInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<ExecuteSearchOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/ExecuteSearch";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SetUserPhoto */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetUserPhotoInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UnsubscribeInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "Unsubscribe")]
-    pub unsubscribe: mod_mes::Unsubscribe,
+pub struct SetUserPhotoInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SetUserPhoto")]
+    pub set_user_photo: mod_mes::SetUserPhoto,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UnsubscribeInputEnvelope {
+pub struct SetUserPhotoInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UnsubscribeInputEnvelopeHeader,
+    pub header: SetUserPhotoInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UnsubscribeInputEnvelopeBody,
+    pub body: SetUserPhotoInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UnsubscribeOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct SetUserPhotoOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UnsubscribeOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UnsubscribeResponse")]
-    pub unsubscribe_response: mod_mes::UnsubscribeResponse,
+pub struct SetUserPhotoOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SetUserPhotoResponse")]
+    pub set_user_photo_response: mod_mes::SetUserPhotoResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UnsubscribeOutputEnvelope {
+pub struct SetUserPhotoOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UnsubscribeOutputEnvelopeHeader,
+    pub header: SetUserPhotoOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UnsubscribeOutputEnvelopeBody,
+    pub body: SetUserPhotoOutputEnvelopeBody,
 }
-pub async fn unsubscribe(
-    req: UnsubscribeInputEnvelope,
+pub async fn set_user_photo(
+    req: SetUserPhotoInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<UnsubscribeOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/Unsubscribe";
+) -> error::SoapResult<SetUserPhotoOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SetUserPhoto";
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* SetUserOofSettings */
+/* RemoveImContactFromGroup */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetUserOofSettingsInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
+pub struct RemoveImContactFromGroupInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetUserOofSettingsInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SetUserOofSettingsRequest")]
-    pub set_user_oof_settings_request: mod_mes::SetUserOofSettingsRequest,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetUserOofSettingsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SetUserOofSettingsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetUserOofSettingsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetUserOofSettingsOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetUserOofSettingsOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "SetUserOofSettingsResponse")]
-    pub set_user_oof_settings_response: mod_mes::SetUserOofSettingsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct SetUserOofSettingsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SetUserOofSettingsOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetUserOofSettingsOutputEnvelopeBody,
-}
-pub async fn set_user_oof_settings(
-    req: SetUserOofSettingsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SetUserOofSettingsOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SetUserOofSettings";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RemoveDistributionGroupFromImList */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveDistributionGroupFromImListInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
     pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveDistributionGroupFromImListInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "RemoveDistributionGroupFromImList")]
-    pub remove_distribution_group_from_im_list: mod_mes::RemoveDistributionGroupFromImList,
+pub struct RemoveImContactFromGroupInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "RemoveImContactFromGroup")]
+    pub remove_im_contact_from_group: mod_mes::RemoveImContactFromGroup,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveDistributionGroupFromImListInputEnvelope {
+pub struct RemoveImContactFromGroupInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: RemoveDistributionGroupFromImListInputEnvelopeHeader,
+    pub header: RemoveImContactFromGroupInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveDistributionGroupFromImListInputEnvelopeBody,
+    pub body: RemoveImContactFromGroupInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveDistributionGroupFromImListOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct RemoveImContactFromGroupOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveDistributionGroupFromImListOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "RemoveDistributionGroupFromImListResponse")]
-    pub remove_distribution_group_from_im_list_response: mod_mes::RemoveDistributionGroupFromImListResponse,
+pub struct RemoveImContactFromGroupOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "RemoveImContactFromGroupResponse")]
+    pub remove_im_contact_from_group_response: mod_mes::RemoveImContactFromGroupResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct RemoveDistributionGroupFromImListOutputEnvelope {
+pub struct RemoveImContactFromGroupOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: RemoveDistributionGroupFromImListOutputEnvelopeHeader,
+    pub header: RemoveImContactFromGroupOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveDistributionGroupFromImListOutputEnvelopeBody,
+    pub body: RemoveImContactFromGroupOutputEnvelopeBody,
 }
-pub async fn remove_distribution_group_from_im_list(
-    req: RemoveDistributionGroupFromImListInputEnvelope,
+pub async fn remove_im_contact_from_group(
+    req: RemoveImContactFromGroupInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<RemoveDistributionGroupFromImListOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/RemoveDistributionGroupFromImList";
+) -> error::SoapResult<RemoveImContactFromGroupOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/RemoveImContactFromGroup";
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* UpdateDelegate */
+/* UnpinTeamMailbox */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateDelegateInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
+pub struct UnpinTeamMailboxInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateDelegateInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UpdateDelegate")]
-    pub update_delegate: mod_mes::UpdateDelegate,
+pub struct UnpinTeamMailboxInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UnpinTeamMailbox")]
+    pub unpin_team_mailbox: mod_mes::UnpinTeamMailbox,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateDelegateInputEnvelope {
+pub struct UnpinTeamMailboxInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UpdateDelegateInputEnvelopeHeader,
+    pub header: UnpinTeamMailboxInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateDelegateInputEnvelopeBody,
+    pub body: UnpinTeamMailboxInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateDelegateOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct UnpinTeamMailboxOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateDelegateOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "UpdateDelegateResponse")]
-    pub update_delegate_response: mod_mes::UpdateDelegateResponse,
+pub struct UnpinTeamMailboxOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UnpinTeamMailboxResponse")]
+    pub unpin_team_mailbox_response: mod_mes::UnpinTeamMailboxResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct UpdateDelegateOutputEnvelope {
+pub struct UnpinTeamMailboxOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: UpdateDelegateOutputEnvelopeHeader,
+    pub header: UnpinTeamMailboxOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateDelegateOutputEnvelopeBody,
+    pub body: UnpinTeamMailboxOutputEnvelopeBody,
 }
-pub async fn update_delegate(
-    req: UpdateDelegateInputEnvelope,
+pub async fn unpin_team_mailbox(
+    req: UnpinTeamMailboxInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateDelegateOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UpdateDelegate";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* PlayOnPhone */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct PlayOnPhoneInputEnvelopeHeader {
-    #[yaserde(rename = "Impersonation")]
-    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
-    #[yaserde(rename = "MailboxCulture")]
-    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
-    #[yaserde(rename = "RequestVersion")]
-    pub request_version: Option<mod_typ::RequestServerVersion>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct PlayOnPhoneInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "PlayOnPhone")]
-    pub play_on_phone: mod_mes::PlayOnPhone,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct PlayOnPhoneInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: PlayOnPhoneInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: PlayOnPhoneInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct PlayOnPhoneOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
-    pub server_version: Option<mod_typ::ServerVersionInfo>,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct PlayOnPhoneOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "PlayOnPhoneResponse")]
-    pub play_on_phone_response: mod_mes::PlayOnPhoneResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct PlayOnPhoneOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: PlayOnPhoneOutputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: PlayOnPhoneOutputEnvelopeBody,
-}
-pub async fn play_on_phone(
-    req: PlayOnPhoneInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<PlayOnPhoneOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/PlayOnPhone";
+) -> error::SoapResult<UnpinTeamMailboxOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UnpinTeamMailbox";
     helpers::send_soap_request(url, credentials, req).await
 }
 
@@ -21564,7 +19218,7 @@ pub async fn play_on_phone(
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct GetMessageTrackingReportInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -21584,7 +19238,7 @@ pub struct GetMessageTrackingReportInputEnvelope {
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct GetMessageTrackingReportOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -21609,14 +19263,2356 @@ pub async fn get_message_tracking_report(
     helpers::send_soap_request(url, credentials, req).await
 }
 
+/* AddImContactToGroup */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddImContactToGroupInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddImContactToGroupInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "AddImContactToGroup")]
+    pub add_im_contact_to_group: mod_mes::AddImContactToGroup,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddImContactToGroupInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: AddImContactToGroupInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddImContactToGroupInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddImContactToGroupOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddImContactToGroupOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "AddImContactToGroupResponse")]
+    pub add_im_contact_to_group_response: mod_mes::AddImContactToGroupResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddImContactToGroupOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: AddImContactToGroupOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddImContactToGroupOutputEnvelopeBody,
+}
+pub async fn add_im_contact_to_group(
+    req: AddImContactToGroupInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddImContactToGroupOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/AddImContactToGroup";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetStreamingEvents */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetStreamingEventsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetStreamingEventsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetStreamingEvents")]
+    pub get_streaming_events: mod_mes::GetStreamingEvents,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetStreamingEventsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetStreamingEventsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetStreamingEventsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetStreamingEventsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetStreamingEventsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetStreamingEventsResponse")]
+    pub get_streaming_events_response: mod_mes::GetStreamingEventsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetStreamingEventsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetStreamingEventsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetStreamingEventsOutputEnvelopeBody,
+}
+pub async fn get_streaming_events(
+    req: GetStreamingEventsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetStreamingEventsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetEvents";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CopyFolder */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CopyFolderInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CopyFolderInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CopyFolder")]
+    pub copy_folder: mod_mes::CopyFolder,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CopyFolderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CopyFolderInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CopyFolderInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CopyFolderOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CopyFolderOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CopyFolderResponse")]
+    pub copy_folder_response: mod_mes::CopyFolderResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CopyFolderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CopyFolderOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CopyFolderOutputEnvelopeBody,
+}
+pub async fn copy_folder(
+    req: CopyFolderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CopyFolderOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CopyFolder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateMeetingInstance */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateMeetingInstanceInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateMeetingInstanceInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UpdateMeetingInstanceRequest")]
+    pub update_meeting_instance_request: mod_mes::UpdateMeetingInstanceRequest,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateMeetingInstanceInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UpdateMeetingInstanceInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateMeetingInstanceInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateMeetingInstanceOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateMeetingInstanceOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UpdateMeetingInstanceResponse")]
+    pub update_meeting_instance_response: mod_mes::UpdateMeetingInstanceResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateMeetingInstanceOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UpdateMeetingInstanceOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateMeetingInstanceOutputEnvelopeBody,
+}
+pub async fn update_meeting_instance(
+    req: UpdateMeetingInstanceInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateMeetingInstanceOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UpdateMeetingInstanceRequest";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* FindAvailableMeetingTimes */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindAvailableMeetingTimesInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindAvailableMeetingTimesInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindAvailableMeetingTimes")]
+    pub find_available_meeting_times: mod_mes::FindAvailableMeetingTimes,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindAvailableMeetingTimesInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: FindAvailableMeetingTimesInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: FindAvailableMeetingTimesInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindAvailableMeetingTimesOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindAvailableMeetingTimesOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindAvailableMeetingTimesResponse")]
+    pub find_available_meeting_times_response: mod_mes::FindAvailableMeetingTimesResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindAvailableMeetingTimesOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: FindAvailableMeetingTimesOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: FindAvailableMeetingTimesOutputEnvelopeBody,
+}
+pub async fn find_available_meeting_times(
+    req: FindAvailableMeetingTimesInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<FindAvailableMeetingTimesOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindAvailableMeetingTimes";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SetImGroup */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetImGroupInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetImGroupInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SetImGroup")]
+    pub set_im_group: mod_mes::SetImGroup,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetImGroupInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SetImGroupInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SetImGroupInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetImGroupOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetImGroupOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SetImGroupResponse")]
+    pub set_im_group_response: mod_mes::SetImGroupResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetImGroupOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SetImGroupOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SetImGroupOutputEnvelopeBody,
+}
+pub async fn set_im_group(
+    req: SetImGroupInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SetImGroupOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SetImGroup";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* DeleteMeetingSpace */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteMeetingSpaceInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteMeetingSpaceInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DeleteMeetingSpace")]
+    pub delete_meeting_space: mod_mes::DeleteMeetingSpace,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteMeetingSpaceInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: DeleteMeetingSpaceInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteMeetingSpaceInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteMeetingSpaceOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteMeetingSpaceOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DeleteMeetingSpaceResponseMessage")]
+    pub delete_meeting_space_response_message: mod_mes::DeleteMeetingSpaceResponseMessage,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteMeetingSpaceOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: DeleteMeetingSpaceOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteMeetingSpaceOutputEnvelopeBody,
+}
+pub async fn delete_meeting_space(
+    req: DeleteMeetingSpaceInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<DeleteMeetingSpaceOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DeleteMeetingSpace";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* AddDelegate */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddDelegateInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddDelegateInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "AddDelegate")]
+    pub add_delegate: mod_mes::AddDelegate,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddDelegateInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: AddDelegateInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddDelegateInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddDelegateOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddDelegateOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "AddDelegateResponse")]
+    pub add_delegate_response: mod_mes::AddDelegateResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddDelegateOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: AddDelegateOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddDelegateOutputEnvelopeBody,
+}
+pub async fn add_delegate(
+    req: AddDelegateInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddDelegateOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/AddDelegate";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* MarkAsJunk */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MarkAsJunkInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MarkAsJunkInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "MarkAsJunk")]
+    pub mark_as_junk: mod_mes::MarkAsJunk,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MarkAsJunkInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: MarkAsJunkInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: MarkAsJunkInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MarkAsJunkOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MarkAsJunkOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "MarkAsJunkResponse")]
+    pub mark_as_junk_response: mod_mes::MarkAsJunkResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct MarkAsJunkOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: MarkAsJunkOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: MarkAsJunkOutputEnvelopeBody,
+}
+pub async fn mark_as_junk(
+    req: MarkAsJunkInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<MarkAsJunkOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/MarkAsJunk";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateInboxRules */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateInboxRulesInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateInboxRulesInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UpdateInboxRules")]
+    pub update_inbox_rules: mod_mes::UpdateInboxRules,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateInboxRulesInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UpdateInboxRulesInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateInboxRulesInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateInboxRulesOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateInboxRulesOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UpdateInboxRulesResponse")]
+    pub update_inbox_rules_response: mod_mes::UpdateInboxRulesResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateInboxRulesOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UpdateInboxRulesOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateInboxRulesOutputEnvelopeBody,
+}
+pub async fn update_inbox_rules(
+    req: UpdateInboxRulesInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateInboxRulesOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UpdateInboxRules";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CreateFolderPath */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateFolderPathInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateFolderPathInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateFolderPath")]
+    pub create_folder_path: mod_mes::CreateFolderPath,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateFolderPathInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateFolderPathInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateFolderPathInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateFolderPathOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateFolderPathOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateFolderPathResponse")]
+    pub create_folder_path_response: mod_mes::CreateFolderPathResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateFolderPathOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateFolderPathOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateFolderPathOutputEnvelopeBody,
+}
+pub async fn create_folder_path(
+    req: CreateFolderPathInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CreateFolderPathOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateFolderPath";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SetTeamMailbox */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetTeamMailboxInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetTeamMailboxInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SetTeamMailbox")]
+    pub set_team_mailbox: mod_mes::SetTeamMailbox,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetTeamMailboxInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SetTeamMailboxInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SetTeamMailboxInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetTeamMailboxOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetTeamMailboxOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SetTeamMailboxResponse")]
+    pub set_team_mailbox_response: mod_mes::SetTeamMailboxResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetTeamMailboxOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SetTeamMailboxOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SetTeamMailboxOutputEnvelopeBody,
+}
+pub async fn set_team_mailbox(
+    req: SetTeamMailboxInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SetTeamMailboxOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SetTeamMailbox";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SetHoldOnMailboxes */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetHoldOnMailboxesInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetHoldOnMailboxesInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SetHoldOnMailboxes")]
+    pub set_hold_on_mailboxes: mod_mes::SetHoldOnMailboxes,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetHoldOnMailboxesInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SetHoldOnMailboxesInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SetHoldOnMailboxesInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetHoldOnMailboxesOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetHoldOnMailboxesOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SetHoldOnMailboxesResponse")]
+    pub set_hold_on_mailboxes_response: mod_mes::SetHoldOnMailboxesResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SetHoldOnMailboxesOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SetHoldOnMailboxesOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SetHoldOnMailboxesOutputEnvelopeBody,
+}
+pub async fn set_hold_on_mailboxes(
+    req: SetHoldOnMailboxesInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SetHoldOnMailboxesOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SetHoldOnMailboxes";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetServiceConfiguration */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetServiceConfigurationInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetServiceConfigurationInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetServiceConfiguration")]
+    pub get_service_configuration: mod_mes::GetServiceConfiguration,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetServiceConfigurationInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetServiceConfigurationInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetServiceConfigurationInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetServiceConfigurationOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetServiceConfigurationOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetServiceConfigurationResponse")]
+    pub get_service_configuration_response: mod_mes::GetServiceConfigurationResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetServiceConfigurationOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetServiceConfigurationOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetServiceConfigurationOutputEnvelopeBody,
+}
+pub async fn get_service_configuration(
+    req: GetServiceConfigurationInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetServiceConfigurationOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetServiceConfiguration";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* DeleteFolder */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteFolderInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteFolderInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DeleteFolder")]
+    pub delete_folder: mod_mes::DeleteFolder,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteFolderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: DeleteFolderInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteFolderInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteFolderOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteFolderOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DeleteFolderResponse")]
+    pub delete_folder_response: mod_mes::DeleteFolderResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteFolderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: DeleteFolderOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteFolderOutputEnvelopeBody,
+}
+pub async fn delete_folder(
+    req: DeleteFolderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<DeleteFolderOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DeleteFolder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* Subscribe */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SubscribeInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SubscribeInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "Subscribe")]
+    pub subscribe: mod_mes::Subscribe,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SubscribeInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SubscribeInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SubscribeInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SubscribeOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SubscribeOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SubscribeResponse")]
+    pub subscribe_response: mod_mes::SubscribeResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SubscribeOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SubscribeOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SubscribeOutputEnvelopeBody,
+}
+pub async fn subscribe(
+    req: SubscribeInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SubscribeOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/Subscribe";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* DeleteAttachment */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteAttachmentInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteAttachmentInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DeleteAttachment")]
+    pub delete_attachment: mod_mes::DeleteAttachment,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteAttachmentInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: DeleteAttachmentInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteAttachmentInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteAttachmentOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteAttachmentOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DeleteAttachmentResponse")]
+    pub delete_attachment_response: mod_mes::DeleteAttachmentResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteAttachmentOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: DeleteAttachmentOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteAttachmentOutputEnvelopeBody,
+}
+pub async fn delete_attachment(
+    req: DeleteAttachmentInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<DeleteAttachmentOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DeleteAttachment";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* EndSearchSession */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct EndSearchSessionInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct EndSearchSessionInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "EndSearchSession")]
+    pub end_search_session: mod_mes::EndSearchSession,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct EndSearchSessionInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: EndSearchSessionInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: EndSearchSessionInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct EndSearchSessionOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct EndSearchSessionOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "EndSearchSessionResponse")]
+    pub end_search_session_response: mod_mes::EndSearchSessionResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct EndSearchSessionOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: EndSearchSessionOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: EndSearchSessionOutputEnvelopeBody,
+}
+pub async fn end_search_session(
+    req: EndSearchSessionInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<EndSearchSessionOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/EndSearchSession";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* DeleteSearchSuggestion */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteSearchSuggestionInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteSearchSuggestionInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DeleteSearchSuggestion")]
+    pub delete_search_suggestion: mod_mes::DeleteSearchSuggestion,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteSearchSuggestionInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: DeleteSearchSuggestionInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteSearchSuggestionInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteSearchSuggestionOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteSearchSuggestionOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DeleteSearchSuggestionResponse")]
+    pub delete_search_suggestion_response: mod_mes::DeleteSearchSuggestionResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DeleteSearchSuggestionOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: DeleteSearchSuggestionOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteSearchSuggestionOutputEnvelopeBody,
+}
+pub async fn delete_search_suggestion(
+    req: DeleteSearchSuggestionInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<DeleteSearchSuggestionOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DeleteSearchSuggestion";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* AddImGroup */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddImGroupInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddImGroupInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "AddImGroup")]
+    pub add_im_group: mod_mes::AddImGroup,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddImGroupInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: AddImGroupInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddImGroupInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddImGroupOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddImGroupOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "AddImGroupResponse")]
+    pub add_im_group_response: mod_mes::AddImGroupResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct AddImGroupOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: AddImGroupOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddImGroupOutputEnvelopeBody,
+}
+pub async fn add_im_group(
+    req: AddImGroupInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddImGroupOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/AddImGroup";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* ExpandDL */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExpandDLInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExpandDLInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "ExpandDL")]
+    pub expand_dl: mod_mes::ExpandDL,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExpandDLInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: ExpandDLInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ExpandDLInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExpandDLOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExpandDLOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "ExpandDLResponse")]
+    pub expand_dl_response: mod_mes::ExpandDLResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExpandDLOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: ExpandDLOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ExpandDLOutputEnvelopeBody,
+}
+pub async fn expand_dl(
+    req: ExpandDLInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<ExpandDLOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/ExpandDL";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* ArchiveItem */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ArchiveItemInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ArchiveItemInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "ArchiveItem")]
+    pub archive_item: mod_mes::ArchiveItem,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ArchiveItemInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: ArchiveItemInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ArchiveItemInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ArchiveItemOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ArchiveItemOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "ArchiveItemResponse")]
+    pub archive_item_response: mod_mes::ArchiveItemResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ArchiveItemOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: ArchiveItemOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ArchiveItemOutputEnvelopeBody,
+}
+pub async fn archive_item(
+    req: ArchiveItemInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<ArchiveItemOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/ArchiveItem";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetPrivateCatalogAddIns */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPrivateCatalogAddInsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPrivateCatalogAddInsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetPrivateCatalogAddIns")]
+    pub get_private_catalog_add_ins: mod_mes::GetPrivateCatalogAddIns,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPrivateCatalogAddInsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetPrivateCatalogAddInsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetPrivateCatalogAddInsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPrivateCatalogAddInsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPrivateCatalogAddInsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetPrivateCatalogAddInsResponse")]
+    pub get_private_catalog_add_ins_response: mod_mes::GetPrivateCatalogAddInsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetPrivateCatalogAddInsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetPrivateCatalogAddInsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetPrivateCatalogAddInsOutputEnvelopeBody,
+}
+pub async fn get_private_catalog_add_ins(
+    req: GetPrivateCatalogAddInsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetPrivateCatalogAddInsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetPrivateCatalogAddIns";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetMailTips */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMailTipsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMailTipsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetMailTips")]
+    pub get_mail_tips: mod_mes::GetMailTips,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMailTipsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetMailTipsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetMailTipsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMailTipsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMailTipsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetMailTipsResponse")]
+    pub get_mail_tips_response: mod_mes::GetMailTipsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetMailTipsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetMailTipsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetMailTipsOutputEnvelopeBody,
+}
+pub async fn get_mail_tips(
+    req: GetMailTipsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetMailTipsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetMailTips";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SyncFolderItems */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SyncFolderItemsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SyncFolderItemsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SyncFolderItems")]
+    pub sync_folder_items: mod_mes::SyncFolderItems,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SyncFolderItemsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SyncFolderItemsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SyncFolderItemsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SyncFolderItemsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SyncFolderItemsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SyncFolderItemsResponse")]
+    pub sync_folder_items_response: mod_mes::SyncFolderItemsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SyncFolderItemsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SyncFolderItemsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SyncFolderItemsOutputEnvelopeBody,
+}
+pub async fn sync_folder_items(
+    req: SyncFolderItemsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SyncFolderItemsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SyncFolderItems";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* DisableApp */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DisableAppInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DisableAppInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DisableApp")]
+    pub disable_app: mod_mes::DisableApp,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DisableAppInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: DisableAppInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DisableAppInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DisableAppOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DisableAppOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "DisableAppResponse")]
+    pub disable_app_response: mod_mes::DisableAppResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct DisableAppOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: DisableAppOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DisableAppOutputEnvelopeBody,
+}
+pub async fn disable_app(
+    req: DisableAppInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<DisableAppOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/DisableApp";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetNonIndexableItemDetails */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetNonIndexableItemDetailsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetNonIndexableItemDetailsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetNonIndexableItemDetails")]
+    pub get_non_indexable_item_details: mod_mes::GetNonIndexableItemDetails,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetNonIndexableItemDetailsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetNonIndexableItemDetailsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetNonIndexableItemDetailsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetNonIndexableItemDetailsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetNonIndexableItemDetailsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetNonIndexableItemDetailsResponse")]
+    pub get_non_indexable_item_details_response: mod_mes::GetNonIndexableItemDetailsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetNonIndexableItemDetailsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetNonIndexableItemDetailsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetNonIndexableItemDetailsOutputEnvelopeBody,
+}
+pub async fn get_non_indexable_item_details(
+    req: GetNonIndexableItemDetailsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetNonIndexableItemDetailsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetNonIndexableItemDetails";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* FindMeetingSpaceByJoinUrl */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindMeetingSpaceByJoinUrlInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindMeetingSpaceByJoinUrlInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindMeetingSpaceByJoinUrl")]
+    pub find_meeting_space_by_join_url: mod_mes::FindMeetingSpaceByJoinUrl,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindMeetingSpaceByJoinUrlInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: FindMeetingSpaceByJoinUrlInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: FindMeetingSpaceByJoinUrlInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindMeetingSpaceByJoinUrlOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindMeetingSpaceByJoinUrlOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindMeetingSpaceByJoinUrlResponseMessage")]
+    pub find_meeting_space_by_join_url_response_message: mod_mes::FindMeetingSpaceByJoinUrlResponseMessage,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindMeetingSpaceByJoinUrlOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: FindMeetingSpaceByJoinUrlOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: FindMeetingSpaceByJoinUrlOutputEnvelopeBody,
+}
+pub async fn find_meeting_space_by_join_url(
+    req: FindMeetingSpaceByJoinUrlInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<FindMeetingSpaceByJoinUrlOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindMeetingSpaceByJoinUrl";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetSpecificUserConfiguration */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSpecificUserConfigurationInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSpecificUserConfigurationInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetSpecificUserConfiguration")]
+    pub get_specific_user_configuration: mod_mes::GetSpecificUserConfiguration,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSpecificUserConfigurationInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetSpecificUserConfigurationInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetSpecificUserConfigurationInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSpecificUserConfigurationOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSpecificUserConfigurationOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetSpecificUserConfigurationResponse")]
+    pub get_specific_user_configuration_response: mod_mes::GetSpecificUserConfigurationResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetSpecificUserConfigurationOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetSpecificUserConfigurationOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetSpecificUserConfigurationOutputEnvelopeBody,
+}
+pub async fn get_specific_user_configuration(
+    req: GetSpecificUserConfigurationInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetSpecificUserConfigurationOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetSpecificUserConfiguration";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetInboxRules */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetInboxRulesInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetInboxRulesInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetInboxRules")]
+    pub get_inbox_rules: mod_mes::GetInboxRules,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetInboxRulesInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetInboxRulesInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetInboxRulesInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetInboxRulesOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetInboxRulesOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetInboxRulesResponse")]
+    pub get_inbox_rules_response: mod_mes::GetInboxRulesResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetInboxRulesOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetInboxRulesOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetInboxRulesOutputEnvelopeBody,
+}
+pub async fn get_inbox_rules(
+    req: GetInboxRulesInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetInboxRulesOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetInboxRules";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* ExportItems */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExportItemsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExportItemsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "ExportItems")]
+    pub export_items: mod_mes::ExportItems,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExportItemsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: ExportItemsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ExportItemsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExportItemsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExportItemsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "ExportItemsResponse")]
+    pub export_items_response: mod_mes::ExportItemsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ExportItemsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: ExportItemsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ExportItemsOutputEnvelopeBody,
+}
+pub async fn export_items(
+    req: ExportItemsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<ExportItemsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/ExportItems";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CopyItem */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CopyItemInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CopyItemInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CopyItem")]
+    pub copy_item: mod_mes::CopyItem,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CopyItemInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CopyItemInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CopyItemInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CopyItemOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CopyItemOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CopyItemResponse")]
+    pub copy_item_response: mod_mes::CopyItemResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CopyItemOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CopyItemOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CopyItemOutputEnvelopeBody,
+}
+pub async fn copy_item(
+    req: CopyItemInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CopyItemOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CopyItem";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetUserOofSettings */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserOofSettingsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserOofSettingsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetUserOofSettingsRequest")]
+    pub get_user_oof_settings_request: mod_mes::GetUserOofSettingsRequest,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserOofSettingsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetUserOofSettingsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetUserOofSettingsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserOofSettingsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserOofSettingsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetUserOofSettingsResponse")]
+    pub get_user_oof_settings_response: mod_mes::GetUserOofSettingsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserOofSettingsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetUserOofSettingsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetUserOofSettingsOutputEnvelopeBody,
+}
+pub async fn get_user_oof_settings(
+    req: GetUserOofSettingsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetUserOofSettingsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetUserOofSettings";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SearchMailboxes */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SearchMailboxesInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SearchMailboxesInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SearchMailboxes")]
+    pub search_mailboxes: mod_mes::SearchMailboxes,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SearchMailboxesInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SearchMailboxesInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SearchMailboxesInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SearchMailboxesOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SearchMailboxesOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "SearchMailboxesResponse")]
+    pub search_mailboxes_response: mod_mes::SearchMailboxesResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct SearchMailboxesOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SearchMailboxesOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SearchMailboxesOutputEnvelopeBody,
+}
+pub async fn search_mailboxes(
+    req: SearchMailboxesInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SearchMailboxesOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/SearchMailboxes";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UninstallApp */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UninstallAppInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UninstallAppInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UninstallApp")]
+    pub uninstall_app: mod_mes::UninstallApp,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UninstallAppInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UninstallAppInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UninstallAppInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UninstallAppOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UninstallAppOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UninstallAppResponse")]
+    pub uninstall_app_response: mod_mes::UninstallAppResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UninstallAppOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UninstallAppOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UninstallAppOutputEnvelopeBody,
+}
+pub async fn uninstall_app(
+    req: UninstallAppInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UninstallAppOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UninstallApp";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateDelegate */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateDelegateInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateDelegateInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UpdateDelegate")]
+    pub update_delegate: mod_mes::UpdateDelegate,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateDelegateInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UpdateDelegateInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateDelegateInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateDelegateOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateDelegateOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "UpdateDelegateResponse")]
+    pub update_delegate_response: mod_mes::UpdateDelegateResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct UpdateDelegateOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: UpdateDelegateOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateDelegateOutputEnvelopeBody,
+}
+pub async fn update_delegate(
+    req: UpdateDelegateInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateDelegateOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/UpdateDelegate";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* ApplyConversationAction */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ApplyConversationActionInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ApplyConversationActionInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "ApplyConversationAction")]
+    pub apply_conversation_action: mod_mes::ApplyConversationAction,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ApplyConversationActionInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: ApplyConversationActionInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ApplyConversationActionInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ApplyConversationActionOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ApplyConversationActionOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "ApplyConversationActionResponse")]
+    pub apply_conversation_action_response: mod_mes::ApplyConversationActionResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct ApplyConversationActionOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: ApplyConversationActionOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ApplyConversationActionOutputEnvelopeBody,
+}
+pub async fn apply_conversation_action(
+    req: ApplyConversationActionInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<ApplyConversationActionOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/ApplyConversationAction";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CreateAttachment */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateAttachmentInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateAttachmentInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateAttachment")]
+    pub create_attachment: mod_mes::CreateAttachment,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateAttachmentInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateAttachmentInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateAttachmentInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateAttachmentOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateAttachmentOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "CreateAttachmentResponse")]
+    pub create_attachment_response: mod_mes::CreateAttachmentResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct CreateAttachmentOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: CreateAttachmentOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateAttachmentOutputEnvelopeBody,
+}
+pub async fn create_attachment(
+    req: CreateAttachmentInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CreateAttachmentOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/CreateAttachment";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetAppManifests */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAppManifestsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAppManifestsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetAppManifests")]
+    pub get_app_manifests: mod_mes::GetAppManifests,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAppManifestsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetAppManifestsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetAppManifestsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAppManifestsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAppManifestsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetAppManifestsResponse")]
+    pub get_app_manifests_response: mod_mes::GetAppManifestsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAppManifestsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetAppManifestsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetAppManifestsOutputEnvelopeBody,
+}
+pub async fn get_app_manifests(
+    req: GetAppManifestsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetAppManifestsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetAppManifests";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetRoomLists */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetRoomListsInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetRoomListsInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetRoomLists")]
+    pub get_room_lists: mod_mes::GetRoomLists,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetRoomListsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetRoomListsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetRoomListsInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetRoomListsOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetRoomListsOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetRoomListsResponse")]
+    pub get_room_lists_response: mod_mes::GetRoomListsResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetRoomListsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetRoomListsOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetRoomListsOutputEnvelopeBody,
+}
+pub async fn get_room_lists(
+    req: GetRoomListsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetRoomListsOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetRoomLists";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetUserAvailability */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserAvailabilityInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserAvailabilityInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetUserAvailabilityRequest")]
+    pub get_user_availability_request: mod_mes::GetUserAvailabilityRequest,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserAvailabilityInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetUserAvailabilityInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetUserAvailabilityInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserAvailabilityOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserAvailabilityOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetUserAvailabilityResponse")]
+    pub get_user_availability_response: mod_mes::GetUserAvailabilityResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetUserAvailabilityOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetUserAvailabilityOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetUserAvailabilityOutputEnvelopeBody,
+}
+pub async fn get_user_availability(
+    req: GetUserAvailabilityInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetUserAvailabilityOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetUserAvailability";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* FindMessageTrackingReport */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindMessageTrackingReportInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindMessageTrackingReportInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindMessageTrackingReport")]
+    pub find_message_tracking_report: mod_mes::FindMessageTrackingReport,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindMessageTrackingReportInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: FindMessageTrackingReportInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: FindMessageTrackingReportInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindMessageTrackingReportOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindMessageTrackingReportOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindMessageTrackingReportResponse")]
+    pub find_message_tracking_report_response: mod_mes::FindMessageTrackingReportResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindMessageTrackingReportOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: FindMessageTrackingReportOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: FindMessageTrackingReportOutputEnvelopeBody,
+}
+pub async fn find_message_tracking_report(
+    req: FindMessageTrackingReportInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<FindMessageTrackingReportOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindMessageTrackingReport";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* FindFolder */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindFolderInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+    #[yaserde(prefix = "typ", rename = "ManagementRole")]
+    pub management_role: Option<mod_typ::ManagementRole>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindFolderInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindFolder")]
+    pub find_folder: mod_mes::FindFolder,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindFolderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: FindFolderInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: FindFolderInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindFolderOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindFolderOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "FindFolderResponse")]
+    pub find_folder_response: mod_mes::FindFolderResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct FindFolderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: FindFolderOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: FindFolderOutputEnvelopeBody,
+}
+pub async fn find_folder(
+    req: FindFolderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<FindFolderOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/FindFolder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetAttachment */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAttachmentInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
+    pub request_version: Option<mod_typ::RequestServerVersion>,
+    #[yaserde(prefix = "typ", rename = "TimeZoneContext")]
+    pub time_zone_context: Option<mod_typ::TimeZoneContext>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAttachmentInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetAttachment")]
+    pub get_attachment: mod_mes::GetAttachment,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAttachmentInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetAttachmentInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetAttachmentInputEnvelopeBody,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAttachmentOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
+    pub server_version: Option<mod_typ::ServerVersionInfo>,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAttachmentOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "GetAttachmentResponse")]
+    pub get_attachment_response: mod_mes::GetAttachmentResponse,
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
+pub struct GetAttachmentOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetAttachmentOutputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetAttachmentOutputEnvelopeBody,
+}
+pub async fn get_attachment(
+    req: GetAttachmentInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetAttachmentOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetAttachment";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
 /* GetPersona */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct GetPersonaInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
-    #[yaserde(rename = "Impersonation")]
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
     pub impersonation: Option<mod_typ::ExchangeImpersonation>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -21636,7 +21632,7 @@ pub struct GetPersonaInputEnvelope {
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
 pub struct GetPersonaOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -21661,53 +21657,57 @@ pub async fn get_persona(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* GetSharingFolder */
+/* AddNewImContactToGroup */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSharingFolderInputEnvelopeHeader {
-    #[yaserde(rename = "RequestVersion")]
+pub struct AddNewImContactToGroupInputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "Impersonation")]
+    pub impersonation: Option<mod_typ::ExchangeImpersonation>,
+    #[yaserde(prefix = "typ", rename = "MailboxCulture")]
+    pub mailbox_culture: Option<mod_typ::MailboxCulture>,
+    #[yaserde(prefix = "typ", rename = "RequestVersion")]
     pub request_version: Option<mod_typ::RequestServerVersion>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSharingFolderInputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetSharingFolder")]
-    pub get_sharing_folder: mod_mes::GetSharingFolder,
+pub struct AddNewImContactToGroupInputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "AddNewImContactToGroup")]
+    pub add_new_im_contact_to_group: mod_mes::AddNewImContactToGroup,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSharingFolderInputEnvelope {
+pub struct AddNewImContactToGroupInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetSharingFolderInputEnvelopeHeader,
+    pub header: AddNewImContactToGroupInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetSharingFolderInputEnvelopeBody,
+    pub body: AddNewImContactToGroupInputEnvelopeBody,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSharingFolderOutputEnvelopeHeader {
-    #[yaserde(rename = "ServerVersion")]
+pub struct AddNewImContactToGroupOutputEnvelopeHeader {
+    #[yaserde(prefix = "typ", rename = "ServerVersion")]
     pub server_version: Option<mod_typ::ServerVersionInfo>,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "mes", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSharingFolderOutputEnvelopeBody {
-    #[yaserde(prefix = "mes", rename = "GetSharingFolderResponse")]
-    pub get_sharing_folder_response: mod_mes::GetSharingFolderResponse,
+pub struct AddNewImContactToGroupOutputEnvelopeBody {
+    #[yaserde(prefix = "mes", rename = "AddNewImContactToGroupResponse")]
+    pub add_new_im_contact_to_group_response: mod_mes::AddNewImContactToGroupResponse,
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "mes" = "http://schemas.microsoft.com/exchange/services/2006/messages", "typ" = "http://schemas.microsoft.com/exchange/services/2006/types" })]
-pub struct GetSharingFolderOutputEnvelope {
+pub struct AddNewImContactToGroupOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetSharingFolderOutputEnvelopeHeader,
+    pub header: AddNewImContactToGroupOutputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetSharingFolderOutputEnvelopeBody,
+    pub body: AddNewImContactToGroupOutputEnvelopeBody,
 }
-pub async fn get_sharing_folder(
-    req: GetSharingFolderInputEnvelope,
+pub async fn add_new_im_contact_to_group(
+    req: AddNewImContactToGroupInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<GetSharingFolderOutputEnvelope> {
-    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/GetSharingFolder";
+) -> error::SoapResult<AddNewImContactToGroupOutputEnvelope> {
+    let url = "http://schemas.microsoft.com/exchange/services/2006/messages/AddNewImContactToGroup";
     helpers::send_soap_request(url, credentials, req).await
 }
 pub mod error {
