@@ -2,7 +2,7 @@
 
 Generate yaserde annotated structs for Rust based on XSD/WSDL. For WSDL input, client code is generated as well.
 
-The generated code depends on yaserde (0.11) and yaserde_derive for the XSD-generated types. The SOAP client needs tokio, log and reqwest in addition. 
+The generated code depends on yaserde (0.12) and yaserde_derive for the XSD-generated types. The SOAP client needs tokio, log and reqwest in addition. 
 The generated code does *not* have any dependencies on this library.
 
 Check the examples and the Cargo.toml for a complete list of dependencies.
@@ -18,50 +18,27 @@ $ zeep --version
 ## Usage
 
 ```shell script
-USAGE:
-    zeep [OPTIONS] --input <from_file> --path <path>
+Generate Yaserde annotated Rust structs from XSD or WSDL
 
-FLAGS:
-    -h, --help       Prints help information
-    -V, --version    Prints version information
+Usage: zeep [OPTIONS] --input <from_file>
 
-OPTIONS:
-    -d, --dns <dns>            Default namespace (URL)
-    -i, --input <from_file>    Input from XSD/WSDL file
-    -n, --ns <ns>              Namespace prefix
-    -p, --path <path>          Base path for the XSD file(s)
-    -o, --output <to_file>     Output to file
+Options:
+  -o, --output <to_file>   Output to file
+  -i, --input <from_file>  Input from XSD/WSDL file
+  -h, --help               Print help
+  -V, --version            Print version
 ```
 
 Example usage:
 
-### Output to stdout:
-```bash
-$ zeep -p resources/aic -i agent_wsdl.xml
-```
-
 ### Output to file:
 ```bash
-$ zeep -p resources/hello -i hello.wsdl -o examples/hello/hello.rs
+$ zeep --input ./resources/temp_converter/tempconverter.wsdl --output ./examples/temperature/tempconverter.rs
 ```
 
 ### Format the output
 ```bash
-$ rustfmt --color=always --edition=2018 examples/hello/hello.rs
-```
-
-### Define a default namespace:
-No prefixes will be generated for elements matching the default namespace.
-
-```bash
-$ zeep -p resources/hello -i hello.wsdl -o examples/hello/hello.rs -d "http://learnwebservices.com/services/hello"
-```
-
-### Define a different prefix:
-Use a different prefix than "tns" for the types in the default namespace.
-
-```bash
-$ zeep -p resources/hello -i hello.wsdl -o examples/hello/hello.rs -n ns1
+$ rustfmt --color=always --edition=2024 examples/temperature/tempconverter.rs
 ```
 
 ## Examples
@@ -75,12 +52,6 @@ or
 
 $ cargo run --example hello
 ```
-
-## TODO
-
-* [x] Remove the dependency on customized yaserde version, once the renaming of a vector of structs is fixed
-* [x] Allow network imports 
-* [x] Enable cargo install
 
 ## DISCLAIMER
 
