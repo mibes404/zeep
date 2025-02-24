@@ -9,6 +9,7 @@
     <xs:complexType name="BasePathToElementType" abstract="true"/>
 
     <xs:element name="Path" abstract="true" type="t:BasePathToElementType"/>
+    <xs:element name="Drive" type="xs:string"/>
 
     <xs:complexType name="ChangeDescriptionType" abstract="true">
         <!-- This path element needs some explanation.  For update operations, only ONE
@@ -23,7 +24,13 @@
 
     <xs:complexType name="ItemChangeDescriptionType">
         <xs:complexContent>
-            <xs:extension base="t:ChangeDescriptionType"/>
+            <xs:extension base="t:ChangeDescriptionType">
+                <xs:sequence>
+                    <xs:element name="Source" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Target" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" ref="t:Drive"/>
+                </xs:sequence>
+            </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 </xs:schema>

@@ -135,7 +135,7 @@ fn import_choice_fields(
 }
 
 fn import_extension_fields(node: &mut Node, doc: &mut RustDocument, base_fields: &mut Vec<Field>) -> WriterResult<()> {
-    if let Some(base) = node
+    if let Some(mut base) = node
         .children()
         .find(|n| n.is_element() && n.tag_name().name() == "extension")
     {
@@ -160,6 +160,12 @@ fn import_extension_fields(node: &mut Node, doc: &mut RustDocument, base_fields:
             }
             RustType::Simple(_simple_props) => {
                 // unsupported type
+            }
+        }
+
+        for n in base.children().filter(Node::is_element) {
+            if n.tag_name().name() == "sequence" {
+                import_sequence_node_fields(&mut base, doc, base_fields)?;
             }
         }
     }

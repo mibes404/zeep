@@ -70,15 +70,16 @@ impl<'n> TryFromNode<'n> for Field {
             let rust_name = rename_keywords(&to_snake_case(xml_name)).to_string();
 
             if ref_name.starts_with("xml") {
+                /* This is a reference to an XML type */
                 return Ok(Field {
                     xml_name: xml_name.to_string(),
                     rust_name: rust_name.to_string(),
                     rust_type: RustFieldType::String,
-                    is_optional: false,
-                    is_vec: false,
+                    is_optional,
+                    is_vec,
                     target_namespace: None,
-                    is_attribute: false,
-                    is_choice: false,
+                    is_attribute,
+                    is_choice,
                     is_any: false,
                 });
             }
@@ -105,10 +106,10 @@ impl<'n> TryFromNode<'n> for Field {
                 xml_name: xml_name.to_string(),
                 rust_name,
                 rust_type,
-                is_optional: false,
-                is_vec: false,
+                is_optional,
+                is_vec,
                 target_namespace: None,
-                is_attribute: false,
+                is_attribute,
                 is_choice,
                 is_any: false,
             });

@@ -339,9 +339,9 @@ mod tests {
         assert_eq!(rust_doc.namespaces.len(), 2, "Expected two namespaces");
 
         let nodes = &rust_doc.nodes;
-        assert_eq!(nodes.len(), 4);
+        assert_eq!(nodes.len(), 5);
 
-        let type_node = nodes.get(3).expect("Expected a fourth node");
+        let type_node = nodes.get(4).expect("Expected a fourth node");
         let RustType::Complex(props) = &type_node.rust_type else {
             panic!()
         };
@@ -366,7 +366,18 @@ mod tests {
         let ComplexProps { fields, .. } = &**props;
 
         // check the number of fields, it should include the fields from the base type
-        assert_eq!(fields.len(), 1);
+        assert_eq!(fields.len(), 4);
+
+        // check the field names
+        let field_names: Vec<&str> = fields.iter().map(|f| f.xml_name.as_str()).collect();
+        assert_eq!(field_names, ["Path", "Source", "Target", "Drive"]);
+
+        // the Target and Drive should be optional
+        let target_field = fields.iter().find(|f| f.xml_name == "Target").unwrap();
+        assert!(target_field.is_optional);
+
+        let drive_field = fields.iter().find(|f| f.xml_name == "Drive").unwrap();
+        assert!(drive_field.is_optional);
     }
 
     #[test]

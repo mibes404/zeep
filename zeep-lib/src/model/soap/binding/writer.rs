@@ -107,11 +107,13 @@ where
             let rust_type = header.rust_type.xml_name().expect("xml_name not found");
 
             writeln!(writer, "    #[yaserde(rename = \"{part_name}\")]")?;
+
+            // todo: we should check if the "mustUnderstand" == 1 to make the field required
             if let Some(namespace) = header.in_namespace.as_ref() {
                 let mod_name = namespace.rust_mod_name.as_str();
-                writeln!(writer, "    pub {field_name}: {mod_name}::{rust_type},",)?;
+                writeln!(writer, "    pub {field_name}: Option<{mod_name}::{rust_type}>,",)?;
             } else {
-                writeln!(writer, "    pub {field_name}: {rust_type}",)?;
+                writeln!(writer, "    pub {field_name}: Option<{rust_type}>",)?;
             }
         }
         writeln!(writer, "}}")?;
