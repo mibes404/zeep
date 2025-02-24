@@ -40,18 +40,14 @@ impl<'n> TryFromNode<'n> for Field {
         target_namespace.clone_from(&doc.current_target_namespace);
 
         let is_attribute = node.tag_name().name() == "attribute";
-
         let parent_is_optional = node.parent().and_then(|n| n.attribute("minOccurs")) == Some("0");
-
         let is_optional = if is_attribute {
             node.attribute("use") != Some("required")
         } else {
             node.attribute("minOccurs") == Some("0") || parent_is_optional
         };
-
         let parent_is_vec = node.parent().and_then(|n| n.attribute("maxOccurs")) == Some("unbounded");
         let is_vec = Node::attribute(&node, "maxOccurs") == Some("unbounded") || parent_is_vec;
-
         let is_choice = node.parent().is_some_and(|n| n.tag_name().name() == "choice");
 
         // check if this is an any type
