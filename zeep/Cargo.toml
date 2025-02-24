@@ -7,14 +7,6 @@ edition = "2024"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-roxmltree = "0.20"
-log = "0.4"
 env_logger = "0.11"
-Inflector = "0.11"
-yaserde = { version = "0.12", features = ["yaserde_derive"] }
 clap = "4"
-xml-rs = "0.8"
-reqwest = { version = "0.12", default-features = false, features =["blocking", "rustls-tls"]}
-tokio = { version = "1", features = ["full"] }
-async-trait = "0.1"
-zeep-lib = { path = "../zeep-lib"}
+zeep-lib = { path = "../zeep-lib" }
