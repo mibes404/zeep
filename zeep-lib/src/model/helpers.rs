@@ -13,3 +13,16 @@ where
         Ok(())
     }
 }
+
+pub fn write_boilerplate_check_restrictions<W, S>(writer: &mut W, rust_name: S) -> WriterResult<()>
+where
+    W: io::Write,
+    S: std::fmt::Display,
+{
+    writeln!(writer, "impl restrictions::CheckRestrictions for {rust_name} {{")?;
+    writeln!(writer, "  fn check_restrictions(&self) -> error::SoapResult<()> {{")?;
+    writeln!(writer, "     Ok(())")?;
+    writeln!(writer, "  }}")?;
+    writeln!(writer, "}}")?;
+    Ok(())
+}

@@ -2,7 +2,7 @@ use super::{
     ComplexProps, ElementProps, ElementType, Namespace, Rc, RustFieldType, RustType, SimpleProps, WriteXml,
     WriterError, WriterResult, io, xml_name_to_rust_name,
 };
-use crate::model::structures::restrictions::Restrictions;
+use crate::model::{helpers::write_boilerplate_check_restrictions, structures::restrictions::Restrictions};
 
 impl<W> WriteXml<W> for RustType
 where
@@ -118,10 +118,7 @@ where
     // TODO: implement restrictions
 
     writeln!(writer, "impl restrictions::CheckRestrictions for {rust_name} {{")?;
-    writeln!(
-        writer,
-        "  fn check_restrictions(&self, _restrictions: restrictions::Restrictions) -> error::SoapResult<()> {{"
-    )?;
+    writeln!(writer, "  fn check_restrictions(&self) -> error::SoapResult<()> {{")?;
     writeln!(writer, "     Ok(())")?;
     writeln!(writer, "  }}")?;
     writeln!(writer, "}}")?;
@@ -161,8 +158,10 @@ where
     for field in fields {
         field.write_xml(writer)?;
     }
-
     writeln!(writer, "}}")?;
+
+    write_boilerplate_check_restrictions(writer, rust_name)?;
+
     Ok(())
 }
 

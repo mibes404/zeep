@@ -52,7 +52,10 @@ pub mod error {
 mod helpers {
     #![allow(dead_code)]
 
-    use super::error::{SoapError, SoapResult};
+    use super::{
+        error::{SoapError, SoapResult},
+        restrictions::CheckRestrictions,
+    };
     use reqwest::Client;
     use std::fmt;
     use yaserde::{YaDeserialize, YaSerialize};
@@ -63,7 +66,7 @@ mod helpers {
         req: YI,
     ) -> SoapResult<YO>
     where
-        YI: YaSerialize,
+        YI: YaSerialize + CheckRestrictions,
         YO: YaDeserialize,
         U: fmt::Display,
         P: fmt::Display,
@@ -79,11 +82,12 @@ mod helpers {
         req: YI,
     ) -> SoapResult<YO>
     where
-        YI: YaSerialize,
+        YI: YaSerialize + CheckRestrictions,
         YO: YaDeserialize,
         U: fmt::Display,
         P: fmt::Display,
     {
+        req.check_restrictions()?;
         let body = yaserde::ser::to_string(&req).map_err(SoapError::YaserdeError)?;
         let mut req = client.post(url).body(body);
         if let Some((username, password)) = credentials {
@@ -112,11 +116,17 @@ pub mod restrictions {
     }
 
     pub trait CheckRestrictions {
-        fn check_restrictions(&self, restrictions: Restrictions) -> SoapResult<()>;
+        fn check_restrictions(&self) -> SoapResult<()> {
+            Ok(())
+        }
     }
 
-    impl CheckRestrictions for String {
-        fn check_restrictions(&self, restrictions: Restrictions) -> SoapResult<()> {
+    pub(super) trait VerifyRestrictions {
+        fn verify_restrictions(&self, restrictions: Restrictions) -> SoapResult<()>;
+    }
+
+    impl VerifyRestrictions for String {
+        fn verify_restrictions(&self, restrictions: Restrictions) -> SoapResult<()> {
             let s_len = if restrictions.min_length.is_some() || restrictions.max_length.is_some() {
                 self.chars().count()
             } else {

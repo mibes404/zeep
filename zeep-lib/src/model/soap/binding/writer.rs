@@ -1,7 +1,7 @@
 use super::SoapBinding;
 use crate::{
     error::WriterResult,
-    model::{Namespace, field::as_field_name},
+    model::{Namespace, field::as_field_name, helpers::write_boilerplate_check_restrictions},
     reader::WriteXml,
 };
 use inflector::cases::{pascalcase::to_pascal_case, snakecase::to_snake_case};
@@ -99,9 +99,10 @@ where
     let yaserde_ns_header = format!("namespaces = {{ {namespaces} }}");
 
     if !soap_operation.headers.is_empty() {
+        let rust_name = format!("{envelope_name}Header");
         writeln!(writer, "#[derive(Debug, Default, YaSerialize, YaDeserialize)]")?;
         writeln!(writer, "#[yaserde(prefix = \"soapenv\", {yaserde_ns_header})]")?;
-        writeln!(writer, "pub struct {envelope_name}Header {{")?;
+        writeln!(writer, "pub struct {rust_name} {{")?;
         for (part_name, header) in &soap_operation.headers {
             let field_name = as_field_name(part_name);
             let rust_type = header.rust_type.xml_name().expect("xml_name not found");
@@ -125,6 +126,8 @@ where
             }
         }
         writeln!(writer, "}}")?;
+
+        write_boilerplate_check_restrictions(writer, rust_name)?;
     }
 
     let body = soap_operation.body.rust_type.xml_name().expect("xml_name not found");
@@ -140,7 +143,8 @@ where
         writeln!(writer, "#[yaserde(rename = \"Envelope\", {yaserde_ns_header})]")?;
     }
 
-    writeln!(writer, "pub struct {envelope_name}Body {{")?;
+    let rust_name = format!("{envelope_name}Body");
+    writeln!(writer, "pub struct {rust_name} {{")?;
     if let Some(namespace) = soap_operation.body.in_namespace.as_ref() {
         let mod_name = namespace.rust_mod_name.as_str();
         let abbreviation = namespace.abbreviation.as_str();
@@ -155,6 +159,8 @@ where
     }
     writeln!(writer, "}}")?;
 
+    write_boilerplate_check_restrictions(writer, rust_name)?;
+
     writeln!(writer, "#[derive(Debug, Default, YaSerialize, YaDeserialize)]")?;
     writeln!(
         writer,
@@ -168,9 +174,9 @@ where
     }
 
     writeln!(writer, "    #[yaserde(prefix = \"soapenv\", rename = \"Body\")]")?;
-
     writeln!(writer, "    pub body: {envelope_name}Body,",)?;
-
     writeln!(writer, "}}")?;
+
+    write_boilerplate_check_restrictions(writer, envelope_name)?;
     Ok(())
 }
