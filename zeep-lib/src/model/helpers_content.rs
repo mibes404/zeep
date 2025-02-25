@@ -107,13 +107,13 @@ pub mod restrictions {
 
     #[derive(Debug, PartialEq, Default, Clone)]
     pub struct Restrictions {
-        pub min_inclusive: Option<Rc<str>>,
-        pub max_inclusive: Option<Rc<str>>,
-        pub min_exclusive: Option<Rc<str>>,
-        pub max_exclusive: Option<Rc<str>>,
-        pub length: Option<Rc<str>>,
-        pub min_length: Option<Rc<str>>,
-        pub max_length: Option<Rc<str>>,
+        pub min_inclusive: Option<usize>,
+        pub max_inclusive: Option<usize>,
+        pub min_exclusive: Option<usize>,
+        pub max_exclusive: Option<usize>,
+        pub length: Option<usize>,
+        pub min_length: Option<usize>,
+        pub max_length: Option<usize>,
     }
 
     pub trait CheckRestrictions {
@@ -135,15 +135,13 @@ pub mod restrictions {
             };
 
             if let Some(min_length) = &restrictions.min_length {
-                let min_length: usize = min_length.parse()?;
-                if s_len < min_length {
+                if s_len < *min_length {
                     return Err(SoapError::Restriction("minLength restriction not met".to_string()));
                 }
             }
 
             if let Some(max_length) = &restrictions.max_length {
-                let max_length: usize = max_length.parse()?;
-                if max_length < s_len {
+                if *max_length < s_len {
                     return Err(SoapError::Restriction("maxLength restriction not met".to_string()));
                 }
             }

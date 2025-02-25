@@ -1,4 +1,6 @@
-use super::{Node, RustFieldType};
+use super::{Node, RustFieldType, RustType};
+use crate::{error::WriterResult, model::helpers_content, reader::WriteXml};
+use std::io;
 
 #[derive(Debug, PartialEq, Default)]
 pub struct Restrictions {
@@ -18,53 +20,58 @@ pub struct Restrictions {
     pub acceptable_list_type: Option<RustFieldType>,
 }
 
+impl<W> WriteXml<W> for Restrictions
+where
+    W: io::Write,
+{
+    fn write_xml(&self, writer: &mut W) -> WriterResult<()> {
+        // Here we want to write the constructor for the helpers_content::restrictions::Restrictions
+        // and write that to the fn write_xml(&self, writer: &mut W) -> WriterResult<()> {
+
+        writeln!(writer, "restrictions::Restrictions {{")?;
+        if let Some(min_inclusive) = &self.min_inclusive {
+            writeln!(writer, "   min_inclusive: Some({min_inclusive}), ")?;
+        }
+        if let Some(max_inclusive) = &self.max_inclusive {
+            writeln!(writer, "   max_inclusive: Some({max_inclusive}), ")?;
+        }
+        if let Some(min_exclusive) = &self.min_exclusive {
+            writeln!(writer, "   min_exclusive: Some({min_exclusive}), ")?;
+        }
+        if let Some(max_exclusive) = &self.max_exclusive {
+            writeln!(writer, "   max_exclusive: Some({max_exclusive}), ")?;
+        }
+        if let Some(length) = &self.length {
+            writeln!(writer, "   length: Some({length}), ")?;
+        }
+        if let Some(min_length) = &self.min_length {
+            writeln!(writer, "   min_length: Some({min_length}), ")?;
+        }
+        if let Some(max_length) = &self.max_length {
+            writeln!(writer, "   max_length: Some({max_length}), ")?;
+        }
+        writeln!(writer, "   ..Default::default()")?;
+        writeln!(writer, "}}")?;
+
+        Ok(())
+    }
+}
+
 pub fn build_restrictions<'n>(restriction: Node<'n, 'n>) -> Restrictions {
     // get the restrictions
     let mut restrictions = Restrictions::default();
 
-    if let Some(min_inclusive) = restriction.attribute("minInclusive") {
-        restrictions.min_inclusive = Some(min_inclusive.to_string());
-    }
-
-    if let Some(max_inclusive) = restriction.attribute("maxInclusive") {
-        restrictions.max_inclusive = Some(max_inclusive.to_string());
-    }
-
-    if let Some(min_exclusive) = restriction.attribute("minExclusive") {
-        restrictions.min_exclusive = Some(min_exclusive.to_string());
-    }
-
-    if let Some(max_exclusive) = restriction.attribute("maxExclusive") {
-        restrictions.max_exclusive = Some(max_exclusive.to_string());
-    }
-
-    if let Some(total_digits) = restriction.attribute("totalDigits") {
-        restrictions.total_digits = Some(total_digits.to_string());
-    }
-
-    if let Some(fraction_digits) = restriction.attribute("fractionDigits") {
-        restrictions.fraction_digits = Some(fraction_digits.to_string());
-    }
-
-    if let Some(length) = restriction.attribute("length") {
-        restrictions.length = Some(length.to_string());
-    }
-
-    if let Some(min_length) = restriction.attribute("minLength") {
-        restrictions.min_length = Some(min_length.to_string());
-    }
-
-    if let Some(max_length) = restriction.attribute("maxLength") {
-        restrictions.max_length = Some(max_length.to_string());
-    }
-
-    if let Some(white_space) = restriction.attribute("whiteSpace") {
-        restrictions.white_space = Some(white_space.to_string());
-    }
-
-    if let Some(pattern) = restriction.attribute("pattern") {
-        restrictions.pattern = Some(pattern.to_string());
-    }
+    get_restriction_from_attribute_or_node(restriction, &mut restrictions.min_inclusive, "minInclusive");
+    get_restriction_from_attribute_or_node(restriction, &mut restrictions.max_inclusive, "maxInclusive");
+    get_restriction_from_attribute_or_node(restriction, &mut restrictions.min_exclusive, "minExclusive");
+    get_restriction_from_attribute_or_node(restriction, &mut restrictions.max_exclusive, "maxExclusive");
+    get_restriction_from_attribute_or_node(restriction, &mut restrictions.total_digits, "totalDigits");
+    get_restriction_from_attribute_or_node(restriction, &mut restrictions.fraction_digits, "fractionDigits");
+    get_restriction_from_attribute_or_node(restriction, &mut restrictions.length, "length");
+    get_restriction_from_attribute_or_node(restriction, &mut restrictions.min_length, "minLength");
+    get_restriction_from_attribute_or_node(restriction, &mut restrictions.max_length, "maxLength");
+    get_restriction_from_attribute_or_node(restriction, &mut restrictions.white_space, "whiteSpace");
+    get_restriction_from_attribute_or_node(restriction, &mut restrictions.pattern, "pattern");
 
     let enumeration = restriction
         .children()
@@ -77,4 +84,18 @@ pub fn build_restrictions<'n>(restriction: Node<'n, 'n>) -> Restrictions {
     }
 
     restrictions
+}
+
+fn get_restriction_from_attribute_or_node(
+    restriction: Node,
+    target_field: &mut Option<String>,
+    restriction_name: &str,
+) {
+    if let Some(value) = restriction.attribute(restriction_name) {
+        *target_field = Some(value.to_string());
+    } else if let Some(value_node) = restriction.children().find(|n| n.tag_name().name() == restriction_name) {
+        if let Some(value) = value_node.attribute("value") {
+            *target_field = Some(value.to_string());
+        }
+    }
 }

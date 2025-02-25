@@ -123,10 +123,17 @@ where
     )?;
 
     writeln!(writer, "     if restrictions.is_none() {{")?;
-    writeln!(
-        writer,
-        "        restrictions = Some(restrictions::Restrictions::default());"
-    )?;
+
+    if let Some(restrictions) = restrictions {
+        writeln!(writer, "        restrictions = Some(")?;
+        restrictions.write_xml(writer)?;
+        writeln!(writer, ");")?;
+    } else {
+        writeln!(
+            writer,
+            "        restrictions = Some(restrictions::Restrictions::default());"
+        )?;
+    }
     writeln!(writer, "     }}")?;
 
     // TODO: implement restrictions
