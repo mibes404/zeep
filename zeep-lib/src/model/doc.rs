@@ -218,6 +218,7 @@ where
             let module = namespace.rust_mod_name.as_str();
             writeln!(writer, "pub mod {module} {{")?;
             writeln!(writer, "    use super::*;")?;
+            writeln!(writer, "    use restrictions::VerifyRestrictions;")?;
             for node in self
                 .nodes
                 .iter()

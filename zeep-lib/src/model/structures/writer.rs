@@ -115,11 +115,18 @@ where
     }
     writeln!(writer, "}}")?;
 
-    // TODO: implement restrictions
-
+    // Write the restriction check
     writeln!(writer, "impl restrictions::CheckRestrictions for {rust_name} {{")?;
     writeln!(writer, "  fn check_restrictions(&self) -> error::SoapResult<()> {{")?;
-    writeln!(writer, "     Ok(())")?;
+
+    writeln!(writer, "     let restrictions = restrictions::Restrictions::default();")?;
+    // TODO: implement restrictions
+    if matches!(rust_type, RustFieldType::Other(_) | RustFieldType::String) {
+        writeln!(writer, "     self.inner.verify_restrictions(restrictions)")?;
+    } else {
+        writeln!(writer, "     Ok(())")?;
+    }
+
     writeln!(writer, "  }}")?;
     writeln!(writer, "}}")?;
 
