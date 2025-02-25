@@ -1,12 +1,13 @@
 pub mod error {
     #![allow(dead_code)]
 
-    use std::error::Error;
+    use std::{error::Error, num::ParseIntError};
 
     #[derive(Debug)]
     pub enum SoapError {
         YaserdeError(String),
         Http(reqwest::Error),
+        Restriction(String),
     }
 
     pub type SoapResult<T> = Result<T, SoapError>;
@@ -16,6 +17,7 @@ pub mod error {
             match self {
                 SoapError::YaserdeError(e) => write!(f, "Yaserde error: {e}"),
                 SoapError::Http(e) => write!(f, "HTTP error: {e}"),
+                SoapError::Restriction(e) => write!(f, "Restriction not met: {e}"),
             }
         }
     }
@@ -25,6 +27,7 @@ pub mod error {
             match self {
                 SoapError::YaserdeError(_) => None,
                 SoapError::Http(e) => Some(e),
+                SoapError::Restriction(_) => None,
             }
         }
 
@@ -36,6 +39,12 @@ pub mod error {
     impl From<reqwest::Error> for SoapError {
         fn from(e: reqwest::Error) -> Self {
             SoapError::Http(e)
+        }
+    }
+
+    impl From<ParseIntError> for SoapError {
+        fn from(err: ParseIntError) -> Self {
+            SoapError::Restriction(format!("invalid restriction in XSD: {err}"))
         }
     }
 }
@@ -85,6 +94,51 @@ mod helpers {
         let response_body = response.text().await?;
         let response = yaserde::de::from_str(&response_body).map_err(SoapError::YaserdeError)?;
         Ok(response)
+    }
+}
+
+pub mod restrictions {
+    use super::error::{SoapError, SoapResult};
+
+    #[derive(Debug, PartialEq, Default)]
+    pub struct Restrictions {
+        pub min_inclusive: Option<String>,
+        pub max_inclusive: Option<String>,
+        pub min_exclusive: Option<String>,
+        pub max_exclusive: Option<String>,
+        pub length: Option<String>,
+        pub min_length: Option<String>,
+        pub max_length: Option<String>,
+    }
+
+    pub trait CheckRestrictions {
+        fn check_restrictions(&self, restrictions: Restrictions) -> SoapResult<()>;
+    }
+
+    impl CheckRestrictions for String {
+        fn check_restrictions(&self, restrictions: Restrictions) -> SoapResult<()> {
+            let s_len = if restrictions.min_length.is_some() || restrictions.max_length.is_some() {
+                self.chars().count()
+            } else {
+                0
+            };
+
+            if let Some(min_length) = restrictions.min_length {
+                let min_length: usize = min_length.parse()?;
+                if s_len < min_length {
+                    return Err(SoapError::Restriction("minLength restriction not met".to_string()));
+                }
+            }
+
+            if let Some(max_length) = restrictions.max_length {
+                let max_length: usize = max_length.parse()?;
+                if max_length < s_len {
+                    return Err(SoapError::Restriction("maxLength restriction not met".to_string()));
+                }
+            }
+
+            Ok(())
+        }
     }
 }
 

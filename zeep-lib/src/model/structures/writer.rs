@@ -2,6 +2,7 @@ use super::{
     ComplexProps, ElementProps, ElementType, Namespace, Rc, RustFieldType, RustType, SimpleProps, WriteXml,
     WriterError, WriterResult, io, xml_name_to_rust_name,
 };
+use crate::model::structures::restrictions::Restrictions;
 
 impl<W> WriteXml<W> for RustType
 where
@@ -49,7 +50,7 @@ where
         xml_name,
         rust_type,
         target_namespace,
-        restrictions: _,
+        restrictions,
         comment,
     } = &props;
 
@@ -69,7 +70,14 @@ where
         });
     }
 
-    write_type_alias(writer, xml_name, &rust_name, rust_type, target_namespace.as_ref())?;
+    write_type_alias(
+        writer,
+        xml_name,
+        &rust_name,
+        rust_type,
+        target_namespace.as_ref(),
+        restrictions.as_ref(),
+    )?;
     Ok(())
 }
 
@@ -79,6 +87,7 @@ fn write_type_alias<W>(
     rust_name: &str,
     rust_type: &RustFieldType,
     target_namespace: Option<&Rc<Namespace>>,
+    restrictions: Option<&Restrictions>,
 ) -> Result<(), WriterError>
 where
     W: io::Write,
@@ -104,8 +113,19 @@ where
         writeln!(writer, "    #[yaserde(text = true)]")?;
         writeln!(writer, "    pub inner: String")?;
     }
-
     writeln!(writer, "}}")?;
+
+    // TODO: implement restrictions
+
+    writeln!(writer, "impl restrictions::CheckRestrictions for {rust_name} {{")?;
+    writeln!(
+        writer,
+        "  fn check_restrictions(&self, _restrictions: restrictions::Restrictions) -> error::SoapResult<()> {{"
+    )?;
+    writeln!(writer, "     Ok(())")?;
+    writeln!(writer, "  }}")?;
+    writeln!(writer, "}}")?;
+
     Ok(())
 }
 
