@@ -109,7 +109,7 @@ where
         writeln!(writer, "    #[yaserde(flatten = true)]")?;
         writeln!(writer, "    pub inner: {rust_type}")?;
     } else {
-        // todo: flatten is not supported for other types
+        // note: flatten is not supported for other types
         writeln!(writer, "    #[yaserde(text = true)]")?;
         writeln!(writer, "    pub inner: String")?;
     }
@@ -117,12 +117,21 @@ where
 
     // Write the restriction check
     writeln!(writer, "impl restrictions::CheckRestrictions for {rust_name} {{")?;
-    writeln!(writer, "  fn check_restrictions(&self) -> error::SoapResult<()> {{")?;
+    writeln!(
+        writer,
+        "  fn check_restrictions(&self, mut restrictions: Option<restrictions::Restrictions>) -> error::SoapResult<()>  {{"
+    )?;
 
-    writeln!(writer, "     let restrictions = restrictions::Restrictions::default();")?;
+    writeln!(writer, "     if restrictions.is_none() {{")?;
+    writeln!(
+        writer,
+        "        restrictions = Some(restrictions::Restrictions::default());"
+    )?;
+    writeln!(writer, "     }}")?;
+
     // TODO: implement restrictions
     if matches!(rust_type, RustFieldType::Other(_) | RustFieldType::String) {
-        writeln!(writer, "     self.inner.verify_restrictions(restrictions)")?;
+        writeln!(writer, "     self.inner.check_restrictions(restrictions)")?;
     } else {
         writeln!(writer, "     Ok(())")?;
     }

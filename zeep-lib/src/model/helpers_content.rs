@@ -87,7 +87,7 @@ mod helpers {
         U: fmt::Display,
         P: fmt::Display,
     {
-        req.check_restrictions()?;
+        req.check_restrictions(None)?;
         let body = yaserde::ser::to_string(&req).map_err(SoapError::YaserdeError)?;
         let mut req = client.post(url).body(body);
         if let Some((username, password)) = credentials {
@@ -103,44 +103,45 @@ mod helpers {
 
 pub mod restrictions {
     use super::error::{SoapError, SoapResult};
+    use std::rc::Rc;
 
-    #[derive(Debug, PartialEq, Default)]
+    #[derive(Debug, PartialEq, Default, Clone)]
     pub struct Restrictions {
-        pub min_inclusive: Option<String>,
-        pub max_inclusive: Option<String>,
-        pub min_exclusive: Option<String>,
-        pub max_exclusive: Option<String>,
-        pub length: Option<String>,
-        pub min_length: Option<String>,
-        pub max_length: Option<String>,
+        pub min_inclusive: Option<Rc<str>>,
+        pub max_inclusive: Option<Rc<str>>,
+        pub min_exclusive: Option<Rc<str>>,
+        pub max_exclusive: Option<Rc<str>>,
+        pub length: Option<Rc<str>>,
+        pub min_length: Option<Rc<str>>,
+        pub max_length: Option<Rc<str>>,
     }
 
     pub trait CheckRestrictions {
-        fn check_restrictions(&self) -> SoapResult<()> {
+        fn check_restrictions(&self, _restrictions: Option<Restrictions>) -> SoapResult<()> {
             Ok(())
         }
     }
 
-    pub(super) trait VerifyRestrictions {
-        fn verify_restrictions(&self, restrictions: Restrictions) -> SoapResult<()>;
-    }
+    impl CheckRestrictions for String {
+        fn check_restrictions(&self, restrictions: Option<Restrictions>) -> SoapResult<()> {
+            let Some(restrictions) = restrictions else {
+                return Ok(());
+            };
 
-    impl VerifyRestrictions for String {
-        fn verify_restrictions(&self, restrictions: Restrictions) -> SoapResult<()> {
             let s_len = if restrictions.min_length.is_some() || restrictions.max_length.is_some() {
                 self.chars().count()
             } else {
                 0
             };
 
-            if let Some(min_length) = restrictions.min_length {
+            if let Some(min_length) = &restrictions.min_length {
                 let min_length: usize = min_length.parse()?;
                 if s_len < min_length {
                     return Err(SoapError::Restriction("minLength restriction not met".to_string()));
                 }
             }
 
-            if let Some(max_length) = restrictions.max_length {
+            if let Some(max_length) = &restrictions.max_length {
                 let max_length: usize = max_length.parse()?;
                 if max_length < s_len {
                     return Err(SoapError::Restriction("maxLength restriction not met".to_string()));
