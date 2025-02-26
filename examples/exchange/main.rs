@@ -2,8 +2,7 @@ use crate::services::{
     GetUserAvailabilityInputEnvelope, GetUserAvailabilityInputEnvelopeBody, GetUserAvailabilityInputEnvelopeHeader,
     mod_mes::GetUserAvailabilityRequest,
     mod_typ::{
-        ArrayOfMailboxData, EmailAddress, ExchangeVersionType, MailboxData, MeetingAttendeeType,
-        ProtectionRuleSenderDepartmentsType, ProtectionRuleValueType, RequestServerVersion,
+        ArrayOfMailboxData, EmailAddress, ExchangeVersionType, MailboxData, MeetingAttendeeType, RequestServerVersion,
     },
     restrictions::CheckRestrictions,
 };

@@ -14,22 +14,6 @@ where
     }
 }
 
-// pub fn write_boilerplate_check_restrictions<W, S>(writer: &mut W, rust_name: S) -> WriterResult<()>
-// where
-//     W: io::Write,
-//     S: std::fmt::Display,
-// {
-//     writeln!(writer, "impl restrictions::CheckRestrictions for {rust_name} {{")?;
-//     writeln!(
-//         writer,
-//         "  fn check_restrictions(&self, _restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {{"
-//     )?;
-//     writeln!(writer, "     Ok(())")?;
-//     writeln!(writer, "  }}")?;
-//     writeln!(writer, "}}")?;
-//     Ok(())
-// }
-
 pub fn write_check_restrictions_header<W>(
     writer: &mut W,
     rust_name: &str,
@@ -42,10 +26,10 @@ where
     if let Some(restrictions) = restrictions {
         writeln!(
             writer,
-            "  fn check_restrictions(&self, mut restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()>  {{"
+            "  fn check_restrictions(&self, _restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()>  {{"
         )?;
 
-        writeln!(writer, "        restrictions = Some(")?;
+        writeln!(writer, "        let restrictions = Some(")?;
         restrictions.write_xml(writer)?;
         writeln!(writer, ");")?;
     } else {

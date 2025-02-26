@@ -169,6 +169,8 @@ where
             "     self.{field_name}.check_restrictions(restrictions.clone())?;"
         )?;
     }
+
+    writeln!(writer, "    drop(restrictions);")?;
     writeln!(writer, "    Ok(())")?;
     write_check_restrictions_footer(writer)?;
 
