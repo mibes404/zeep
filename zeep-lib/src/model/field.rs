@@ -94,7 +94,7 @@ impl<'n> TryFromNode<'n> for Field {
                 .ok_or_else(|| WriterError::NodeNotFound(ref_name.to_string()))?;
 
             let is_choice = node.parent().is_some_and(|n| n.tag_name().name() == "choice");
-            let module = namespace.map(|n| n.rust_mod_name.clone());
+            let module = namespace.as_ref().map(|n| n.rust_mod_name.clone());
 
             let xml_name = ref_node.xml_name().ok_or(WriterError::InvalidReference)?;
             let rust_type = RustFieldType::Other(OtherRustType {
@@ -108,7 +108,7 @@ impl<'n> TryFromNode<'n> for Field {
                 rust_type,
                 is_optional,
                 is_vec,
-                target_namespace: None,
+                target_namespace: namespace,
                 is_attribute,
                 is_choice,
                 is_any: false,

@@ -407,4 +407,60 @@ mod tests {
         let node = rust_doc.nodes.last().unwrap();
         assert_eq!(node.rust_type.xml_name(), Some("TimeChangeType"));
     }
+
+    #[test]
+    fn should_ensure_that_we_have_namespaces_on_all_types() {
+        const XSD_MESSAGES: &str = include_str!("../test-data/exchange/messages.xsd");
+        const XSD_TYPES: &str = include_str!("../test-data/exchange/types.xsd");
+        let mut files = Files::new("messages.xsd", XSD_MESSAGES);
+        files.add("types.xsd", XSD_TYPES);
+
+        let (file_name, file) = files.map.get_key_value("messages.xsd").unwrap();
+        let nodes = XmlReader::read_xml_internal(file, file_name, &files).unwrap().nodes;
+        assert_eq!(nodes.len(), 1457);
+
+        // get the GetUserAvailabilityRequestType
+        let node = nodes
+            .iter()
+            .find(|n| n.rust_type.xml_name() == Some("GetUserAvailabilityRequestType"))
+            .expect("Expected GetUserAvailabilityRequestType");
+
+        // the node should have 4 fields. TimeZone, FreeBusyViewOptions and SuggestionsViewOptions should have the "typ" prefix
+        // the MailboxDataArray should have the "mes" prefix
+
+        let RustType::Complex(props) = &node.rust_type else {
+            panic!()
+        };
+
+        assert_eq!(props.fields.len(), 4);
+
+        // get the TimeZone field
+        let time_zone = props.fields.first().expect("Expected a TimeZone field");
+        assert_eq!(time_zone.xml_name, "TimeZone");
+        assert_eq!(time_zone.target_namespace.as_ref().unwrap().abbreviation, "typ");
+
+        // get the MailboxDataArray field
+        let mailbox_data_array = props.fields.get(1).expect("Expected a MailboxDataArray field");
+        assert_eq!(mailbox_data_array.xml_name, "MailboxDataArray");
+        assert_eq!(
+            mailbox_data_array.target_namespace.as_ref().unwrap().abbreviation,
+            "mes"
+        );
+
+        // get the FreeBusyViewOptions field
+        let free_busy_view_options = props.fields.get(2).expect("Expected a FreeBusyViewOptions field");
+        assert_eq!(free_busy_view_options.xml_name, "FreeBusyViewOptions");
+        assert_eq!(
+            free_busy_view_options.target_namespace.as_ref().unwrap().abbreviation,
+            "typ"
+        );
+
+        // get the SuggestionsViewOptions field
+        let suggestions_view_options = props.fields.last().expect("Expected a SuggestionsViewOptions field");
+        assert_eq!(suggestions_view_options.xml_name, "SuggestionsViewOptions");
+        assert_eq!(
+            suggestions_view_options.target_namespace.as_ref().unwrap().abbreviation,
+            "typ"
+        );
+    }
 }
