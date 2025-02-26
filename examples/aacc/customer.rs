@@ -4956,6 +4956,222 @@ pub mod mod_wsd {
     }
 }
 
+/* GetCustomerBySipUri */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerBySipUriInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerBySipUri")]
+    pub get_customer_by_sip_uri: mod_wsd::GetCustomerBySipUri,
+}
+impl restrictions::CheckRestrictions for GetCustomerBySipUriInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_customer_by_sip_uri.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerBySipUriInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerBySipUriInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetCustomerBySipUriInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerBySipUriOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerBySipUriResponse")]
+    pub get_customer_by_sip_uri_response: mod_wsd::GetCustomerBySipUriResponse,
+}
+impl restrictions::CheckRestrictions for GetCustomerBySipUriOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_customer_by_sip_uri_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerBySipUriOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerBySipUriOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetCustomerBySipUriOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn get_customer_by_sip_uri(
+    req: GetCustomerBySipUriInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetCustomerBySipUriOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerBySipUri";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SetAgentID */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SetAgentIDInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "SetAgentID")]
+    pub set_agent_id: mod_wsd::SetAgentID,
+}
+impl restrictions::CheckRestrictions for SetAgentIDInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.set_agent_id.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SetAgentIDInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SetAgentIDInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for SetAgentIDInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SetAgentIDOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "SetAgentIDResponse")]
+    pub set_agent_id_response: mod_wsd::SetAgentIDResponse,
+}
+impl restrictions::CheckRestrictions for SetAgentIDOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.set_agent_id_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SetAgentIDOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SetAgentIDOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for SetAgentIDOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn set_agent_id(
+    req: SetAgentIDInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SetAgentIDOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.SetAgentID";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetCustomerByEmail */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByEmailInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByEmail")]
+    pub get_customer_by_email: mod_wsd::GetCustomerByEmail,
+}
+impl restrictions::CheckRestrictions for GetCustomerByEmailInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_customer_by_email.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByEmailInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerByEmailInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetCustomerByEmailInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByEmailOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByEmailResponse")]
+    pub get_customer_by_email_response: mod_wsd::GetCustomerByEmailResponse,
+}
+impl restrictions::CheckRestrictions for GetCustomerByEmailOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_customer_by_email_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByEmailOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerByEmailOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetCustomerByEmailOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn get_customer_by_email(
+    req: GetCustomerByEmailInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetCustomerByEmailOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByEmail";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* AddEmailAddress */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddEmailAddressInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddEmailAddress")]
+    pub add_email_address: mod_wsd::AddEmailAddress,
+}
+impl restrictions::CheckRestrictions for AddEmailAddressInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.add_email_address.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddEmailAddressInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddEmailAddressInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for AddEmailAddressInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddEmailAddressOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddEmailAddressResponse")]
+    pub add_email_address_response: mod_wsd::AddEmailAddressResponse,
+}
+impl restrictions::CheckRestrictions for AddEmailAddressOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.add_email_address_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddEmailAddressOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddEmailAddressOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for AddEmailAddressOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn add_email_address(
+    req: AddEmailAddressInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddEmailAddressOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddEmailAddress";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
 /* GetSearchableFields */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -5007,6 +5223,1412 @@ pub async fn get_searchable_fields(
     credentials: Option<(String, String)>,
 ) -> error::SoapResult<GetSearchableFieldsOutputEnvelope> {
     let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetSearchableFields";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetCustomerByName */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByNameInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByName")]
+    pub get_customer_by_name: mod_wsd::GetCustomerByName,
+}
+impl restrictions::CheckRestrictions for GetCustomerByNameInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_customer_by_name.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByNameInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerByNameInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetCustomerByNameInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByNameOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByNameResponse")]
+    pub get_customer_by_name_response: mod_wsd::GetCustomerByNameResponse,
+}
+impl restrictions::CheckRestrictions for GetCustomerByNameOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_customer_by_name_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByNameOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerByNameOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetCustomerByNameOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn get_customer_by_name(
+    req: GetCustomerByNameInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetCustomerByNameOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByName";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateUserName */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateUserNameInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateUserName")]
+    pub update_user_name: mod_wsd::UpdateUserName,
+}
+impl restrictions::CheckRestrictions for UpdateUserNameInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_user_name.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateUserNameInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateUserNameInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateUserNameInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateUserNameOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateUserNameResponse")]
+    pub update_user_name_response: mod_wsd::UpdateUserNameResponse,
+}
+impl restrictions::CheckRestrictions for UpdateUserNameOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_user_name_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateUserNameOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateUserNameOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateUserNameOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn update_user_name(
+    req: UpdateUserNameInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateUserNameOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateUserName";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CreateCustomerBySipUri */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CreateCustomerBySipUriInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CreateCustomerBySipUri")]
+    pub create_customer_by_sip_uri: mod_wsd::CreateCustomerBySipUri,
+}
+impl restrictions::CheckRestrictions for CreateCustomerBySipUriInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.create_customer_by_sip_uri.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CreateCustomerBySipUriInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateCustomerBySipUriInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for CreateCustomerBySipUriInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CreateCustomerBySipUriOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CreateCustomerBySipUriResponse")]
+    pub create_customer_by_sip_uri_response: mod_wsd::CreateCustomerBySipUriResponse,
+}
+impl restrictions::CheckRestrictions for CreateCustomerBySipUriOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.create_customer_by_sip_uri_response
+            .check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CreateCustomerBySipUriOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateCustomerBySipUriOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for CreateCustomerBySipUriOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn create_customer_by_sip_uri(
+    req: CreateCustomerBySipUriInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CreateCustomerBySipUriOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CreateCustomerBySipUri";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateFirstName */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateFirstNameInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateFirstName")]
+    pub update_first_name: mod_wsd::UpdateFirstName,
+}
+impl restrictions::CheckRestrictions for UpdateFirstNameInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_first_name.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateFirstNameInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateFirstNameInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateFirstNameInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateFirstNameOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateFirstNameResponse")]
+    pub update_first_name_response: mod_wsd::UpdateFirstNameResponse,
+}
+impl restrictions::CheckRestrictions for UpdateFirstNameOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_first_name_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateFirstNameOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateFirstNameOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateFirstNameOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn update_first_name(
+    req: UpdateFirstNameInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateFirstNameOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateFirstName";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SendPasswordReminder */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendPasswordReminderInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "SendPasswordReminder")]
+    pub send_password_reminder: mod_wsd::SendPasswordReminder,
+}
+impl restrictions::CheckRestrictions for SendPasswordReminderInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.send_password_reminder.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendPasswordReminderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SendPasswordReminderInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for SendPasswordReminderInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendPasswordReminderOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "SendPasswordReminderResponse")]
+    pub send_password_reminder_response: mod_wsd::SendPasswordReminderResponse,
+}
+impl restrictions::CheckRestrictions for SendPasswordReminderOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.send_password_reminder_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendPasswordReminderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SendPasswordReminderOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for SendPasswordReminderOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn send_password_reminder(
+    req: SendPasswordReminderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SendPasswordReminderOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.SendPasswordReminder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RemoveContact */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveContactInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveContact")]
+    pub remove_contact: mod_wsd::RemoveContact,
+}
+impl restrictions::CheckRestrictions for RemoveContactInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.remove_contact.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveContactInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveContactInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for RemoveContactInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveContactOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveContactResponse")]
+    pub remove_contact_response: mod_wsd::RemoveContactResponse,
+}
+impl restrictions::CheckRestrictions for RemoveContactOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.remove_contact_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveContactOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveContactOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for RemoveContactOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn remove_contact(
+    req: RemoveContactInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RemoveContactOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveContact";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RemovePhoneNumber */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemovePhoneNumberInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemovePhoneNumber")]
+    pub remove_phone_number: mod_wsd::RemovePhoneNumber,
+}
+impl restrictions::CheckRestrictions for RemovePhoneNumberInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.remove_phone_number.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemovePhoneNumberInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemovePhoneNumberInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for RemovePhoneNumberInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemovePhoneNumberOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemovePhoneNumberResponse")]
+    pub remove_phone_number_response: mod_wsd::RemovePhoneNumberResponse,
+}
+impl restrictions::CheckRestrictions for RemovePhoneNumberOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.remove_phone_number_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemovePhoneNumberOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemovePhoneNumberOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for RemovePhoneNumberOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn remove_phone_number(
+    req: RemovePhoneNumberInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RemovePhoneNumberOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemovePhoneNumber";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetCustomerByPhoneNumber */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByPhoneNumberInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByPhoneNumber")]
+    pub get_customer_by_phone_number: mod_wsd::GetCustomerByPhoneNumber,
+}
+impl restrictions::CheckRestrictions for GetCustomerByPhoneNumberInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_customer_by_phone_number.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByPhoneNumberInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerByPhoneNumberInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetCustomerByPhoneNumberInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByPhoneNumberOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByPhoneNumberResponse")]
+    pub get_customer_by_phone_number_response: mod_wsd::GetCustomerByPhoneNumberResponse,
+}
+impl restrictions::CheckRestrictions for GetCustomerByPhoneNumberOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_customer_by_phone_number_response
+            .check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomerByPhoneNumberOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomerByPhoneNumberOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetCustomerByPhoneNumberOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn get_customer_by_phone_number(
+    req: GetCustomerByPhoneNumberInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetCustomerByPhoneNumberOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByPhoneNumber";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* AddSipUri */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddSipUriInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddSipUri")]
+    pub add_sip_uri: mod_wsd::AddSipUri,
+}
+impl restrictions::CheckRestrictions for AddSipUriInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.add_sip_uri.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddSipUriInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddSipUriInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for AddSipUriInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddSipUriOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddSipUriResponse")]
+    pub add_sip_uri_response: mod_wsd::AddSipUriResponse,
+}
+impl restrictions::CheckRestrictions for AddSipUriOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.add_sip_uri_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddSipUriOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddSipUriOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for AddSipUriOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn add_sip_uri(
+    req: AddSipUriInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddSipUriOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddSipUri";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* ReadCustomerHistory */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ReadCustomerHistoryInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "ReadCustomerHistory")]
+    pub read_customer_history: mod_wsd::ReadCustomerHistory,
+}
+impl restrictions::CheckRestrictions for ReadCustomerHistoryInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.read_customer_history.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ReadCustomerHistoryInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ReadCustomerHistoryInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for ReadCustomerHistoryInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ReadCustomerHistoryOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "ReadCustomerHistoryResponse")]
+    pub read_customer_history_response: mod_wsd::ReadCustomerHistoryResponse,
+}
+impl restrictions::CheckRestrictions for ReadCustomerHistoryOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.read_customer_history_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ReadCustomerHistoryOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ReadCustomerHistoryOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for ReadCustomerHistoryOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn read_customer_history(
+    req: ReadCustomerHistoryInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<ReadCustomerHistoryOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.ReadCustomerHistory";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateObjection */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateObjectionInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateObjection")]
+    pub update_objection: mod_wsd::UpdateObjection,
+}
+impl restrictions::CheckRestrictions for UpdateObjectionInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_objection.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateObjectionInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateObjectionInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateObjectionInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateObjectionOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateObjectionResponse")]
+    pub update_objection_response: mod_wsd::UpdateObjectionResponse,
+}
+impl restrictions::CheckRestrictions for UpdateObjectionOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_objection_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateObjectionOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateObjectionOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateObjectionOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn update_objection(
+    req: UpdateObjectionInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateObjectionOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateObjection";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SendADPasswordReminder */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendADPasswordReminderInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "SendADPasswordReminder")]
+    pub send_ad_password_reminder: mod_wsd::SendADPasswordReminder,
+}
+impl restrictions::CheckRestrictions for SendADPasswordReminderInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.send_ad_password_reminder.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendADPasswordReminderInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SendADPasswordReminderInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for SendADPasswordReminderInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendADPasswordReminderOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "SendADPasswordReminderResponse")]
+    pub send_ad_password_reminder_response: mod_wsd::SendADPasswordReminderResponse,
+}
+impl restrictions::CheckRestrictions for SendADPasswordReminderOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.send_ad_password_reminder_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct SendADPasswordReminderOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SendADPasswordReminderOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for SendADPasswordReminderOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn send_ad_password_reminder(
+    req: SendADPasswordReminderInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SendADPasswordReminderOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.SendADPasswordReminder";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RemoveAddress */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveAddressInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveAddress")]
+    pub remove_address: mod_wsd::RemoveAddress,
+}
+impl restrictions::CheckRestrictions for RemoveAddressInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.remove_address.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveAddressInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveAddressInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for RemoveAddressInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveAddressOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveAddressResponse")]
+    pub remove_address_response: mod_wsd::RemoveAddressResponse,
+}
+impl restrictions::CheckRestrictions for RemoveAddressOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.remove_address_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveAddressOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveAddressOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for RemoveAddressOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn remove_address(
+    req: RemoveAddressInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RemoveAddressOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveAddress";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RemoveSipUri */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveSipUriInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveSipUri")]
+    pub remove_sip_uri: mod_wsd::RemoveSipUri,
+}
+impl restrictions::CheckRestrictions for RemoveSipUriInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.remove_sip_uri.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveSipUriInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveSipUriInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for RemoveSipUriInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveSipUriOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveSipUriResponse")]
+    pub remove_sip_uri_response: mod_wsd::RemoveSipUriResponse,
+}
+impl restrictions::CheckRestrictions for RemoveSipUriOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.remove_sip_uri_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveSipUriOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveSipUriOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for RemoveSipUriOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn remove_sip_uri(
+    req: RemoveSipUriInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RemoveSipUriOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveSipUri";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetCustSQLColumns */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustSQLColumnsInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustSQLColumns")]
+    pub get_cust_sql_columns: mod_wsd::GetCustSQLColumns,
+}
+impl restrictions::CheckRestrictions for GetCustSQLColumnsInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_cust_sql_columns.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustSQLColumnsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustSQLColumnsInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetCustSQLColumnsInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustSQLColumnsOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustSQLColumnsResponse")]
+    pub get_cust_sql_columns_response: mod_wsd::GetCustSQLColumnsResponse,
+}
+impl restrictions::CheckRestrictions for GetCustSQLColumnsOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_cust_sql_columns_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustSQLColumnsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustSQLColumnsOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetCustSQLColumnsOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn get_cust_sql_columns(
+    req: GetCustSQLColumnsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetCustSQLColumnsOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustSQLColumns";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateCustomer */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateCustomerInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateCustomer")]
+    pub update_customer: mod_wsd::UpdateCustomer,
+}
+impl restrictions::CheckRestrictions for UpdateCustomerInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_customer.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateCustomerInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateCustomerInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateCustomerInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateCustomerOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateCustomerResponse")]
+    pub update_customer_response: mod_wsd::UpdateCustomerResponse,
+}
+impl restrictions::CheckRestrictions for UpdateCustomerOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_customer_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateCustomerOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateCustomerOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateCustomerOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn update_customer(
+    req: UpdateCustomerInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateCustomerOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateCustomer";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateRegisterDate */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateRegisterDateInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateRegisterDate")]
+    pub update_register_date: mod_wsd::UpdateRegisterDate,
+}
+impl restrictions::CheckRestrictions for UpdateRegisterDateInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_register_date.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateRegisterDateInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateRegisterDateInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateRegisterDateInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateRegisterDateOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateRegisterDateResponse")]
+    pub update_register_date_response: mod_wsd::UpdateRegisterDateResponse,
+}
+impl restrictions::CheckRestrictions for UpdateRegisterDateOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_register_date_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateRegisterDateOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateRegisterDateOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateRegisterDateOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn update_register_date(
+    req: UpdateRegisterDateInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateRegisterDateOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateRegisterDate";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* AddAddress */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddAddressInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddAddress")]
+    pub add_address: mod_wsd::AddAddress,
+}
+impl restrictions::CheckRestrictions for AddAddressInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.add_address.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddAddressInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddAddressInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for AddAddressInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddAddressOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddAddressResponse")]
+    pub add_address_response: mod_wsd::AddAddressResponse,
+}
+impl restrictions::CheckRestrictions for AddAddressOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.add_address_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddAddressOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddAddressOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for AddAddressOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn add_address(
+    req: AddAddressInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddAddressOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddAddress";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* AddPhoneNumber */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddPhoneNumberInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddPhoneNumber")]
+    pub add_phone_number: mod_wsd::AddPhoneNumber,
+}
+impl restrictions::CheckRestrictions for AddPhoneNumberInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.add_phone_number.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddPhoneNumberInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddPhoneNumberInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for AddPhoneNumberInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddPhoneNumberOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddPhoneNumberResponse")]
+    pub add_phone_number_response: mod_wsd::AddPhoneNumberResponse,
+}
+impl restrictions::CheckRestrictions for AddPhoneNumberOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.add_phone_number_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddPhoneNumberOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddPhoneNumberOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for AddPhoneNumberOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn add_phone_number(
+    req: AddPhoneNumberInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddPhoneNumberOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddPhoneNumber";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateLoginPage */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateLoginPageInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateLoginPage")]
+    pub update_login_page: mod_wsd::UpdateLoginPage,
+}
+impl restrictions::CheckRestrictions for UpdateLoginPageInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_login_page.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateLoginPageInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateLoginPageInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateLoginPageInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateLoginPageOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateLoginPageResponse")]
+    pub update_login_page_response: mod_wsd::UpdateLoginPageResponse,
+}
+impl restrictions::CheckRestrictions for UpdateLoginPageOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_login_page_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateLoginPageOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateLoginPageOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateLoginPageOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn update_login_page(
+    req: UpdateLoginPageInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateLoginPageOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateLoginPage";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* AddCustomField */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddCustomFieldInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddCustomField")]
+    pub add_custom_field: mod_wsd::AddCustomField,
+}
+impl restrictions::CheckRestrictions for AddCustomFieldInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.add_custom_field.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddCustomFieldInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddCustomFieldInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for AddCustomFieldInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddCustomFieldOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddCustomFieldResponse")]
+    pub add_custom_field_response: mod_wsd::AddCustomFieldResponse,
+}
+impl restrictions::CheckRestrictions for AddCustomFieldOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.add_custom_field_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct AddCustomFieldOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: AddCustomFieldOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for AddCustomFieldOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn add_custom_field(
+    req: AddCustomFieldInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<AddCustomFieldOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddCustomField";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdateTitle */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateTitleInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateTitle")]
+    pub update_title: mod_wsd::UpdateTitle,
+}
+impl restrictions::CheckRestrictions for UpdateTitleInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_title.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateTitleInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateTitleInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateTitleInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateTitleOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdateTitleResponse")]
+    pub update_title_response: mod_wsd::UpdateTitleResponse,
+}
+impl restrictions::CheckRestrictions for UpdateTitleOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_title_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdateTitleOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateTitleOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateTitleOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn update_title(
+    req: UpdateTitleInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdateTitleOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateTitle";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* CustomerAssociation */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CustomerAssociationInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CustomerAssociation")]
+    pub customer_association: mod_wsd::CustomerAssociation,
+}
+impl restrictions::CheckRestrictions for CustomerAssociationInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.customer_association.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CustomerAssociationInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CustomerAssociationInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for CustomerAssociationInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CustomerAssociationOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CustomerAssociationResponse")]
+    pub customer_association_response: mod_wsd::CustomerAssociationResponse,
+}
+impl restrictions::CheckRestrictions for CustomerAssociationOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.customer_association_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct CustomerAssociationOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CustomerAssociationOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for CustomerAssociationOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn customer_association(
+    req: CustomerAssociationInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<CustomerAssociationOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CustomerAssociation";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* UpdatePassword */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdatePasswordInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdatePassword")]
+    pub update_password: mod_wsd::UpdatePassword,
+}
+impl restrictions::CheckRestrictions for UpdatePasswordInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_password.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdatePasswordInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdatePasswordInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdatePasswordInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdatePasswordOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "UpdatePasswordResponse")]
+    pub update_password_response: mod_wsd::UpdatePasswordResponse,
+}
+impl restrictions::CheckRestrictions for UpdatePasswordOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_password_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct UpdatePasswordOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdatePasswordOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdatePasswordOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn update_password(
+    req: UpdatePasswordInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<UpdatePasswordOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdatePassword";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RegisterCustomer */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterCustomerInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RegisterCustomer")]
+    pub register_customer: mod_wsd::RegisterCustomer,
+}
+impl restrictions::CheckRestrictions for RegisterCustomerInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.register_customer.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterCustomerInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RegisterCustomerInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for RegisterCustomerInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterCustomerOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RegisterCustomerResponse")]
+    pub register_customer_response: mod_wsd::RegisterCustomerResponse,
+}
+impl restrictions::CheckRestrictions for RegisterCustomerOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.register_customer_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterCustomerOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RegisterCustomerOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for RegisterCustomerOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn register_customer(
+    req: RegisterCustomerInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RegisterCustomerOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RegisterCustomer";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* ImpersonateCustomer */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ImpersonateCustomerInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "ImpersonateCustomer")]
+    pub impersonate_customer: mod_wsd::ImpersonateCustomer,
+}
+impl restrictions::CheckRestrictions for ImpersonateCustomerInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.impersonate_customer.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ImpersonateCustomerInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ImpersonateCustomerInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for ImpersonateCustomerInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ImpersonateCustomerOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "ImpersonateCustomerResponse")]
+    pub impersonate_customer_response: mod_wsd::ImpersonateCustomerResponse,
+}
+impl restrictions::CheckRestrictions for ImpersonateCustomerOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.impersonate_customer_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct ImpersonateCustomerOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: ImpersonateCustomerOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for ImpersonateCustomerOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn impersonate_customer(
+    req: ImpersonateCustomerInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<ImpersonateCustomerOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.ImpersonateCustomer";
     helpers::send_soap_request(url, credentials, req).await
 }
 
@@ -5118,273 +6740,57 @@ pub async fn update_preferred_agent(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* GetCustomerByUserName */
+/* CarbonCopy */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByUserNameInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByUserName")]
-    pub get_customer_by_user_name: mod_wsd::GetCustomerByUserName,
+pub struct CarbonCopyInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CarbonCopy")]
+    pub carbon_copy: mod_wsd::CarbonCopy,
 }
-impl restrictions::CheckRestrictions for GetCustomerByUserNameInputEnvelopeBody {
+impl restrictions::CheckRestrictions for CarbonCopyInputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_customer_by_user_name.check_restrictions(restrictions)
+        self.carbon_copy.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByUserNameInputEnvelope {
+pub struct CarbonCopyInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByUserNameInputEnvelopeBody,
+    pub body: CarbonCopyInputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for GetCustomerByUserNameInputEnvelope {
+impl restrictions::CheckRestrictions for CarbonCopyInputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.body.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByUserNameOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByUserNameResponse")]
-    pub get_customer_by_user_name_response: mod_wsd::GetCustomerByUserNameResponse,
+pub struct CarbonCopyOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "CarbonCopyResponse")]
+    pub carbon_copy_response: mod_wsd::CarbonCopyResponse,
 }
-impl restrictions::CheckRestrictions for GetCustomerByUserNameOutputEnvelopeBody {
+impl restrictions::CheckRestrictions for CarbonCopyOutputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_customer_by_user_name_response.check_restrictions(restrictions)
+        self.carbon_copy_response.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByUserNameOutputEnvelope {
+pub struct CarbonCopyOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByUserNameOutputEnvelopeBody,
+    pub body: CarbonCopyOutputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for GetCustomerByUserNameOutputEnvelope {
+impl restrictions::CheckRestrictions for CarbonCopyOutputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.body.check_restrictions(restrictions)
     }
 }
-pub async fn get_customer_by_user_name(
-    req: GetCustomerByUserNameInputEnvelope,
+pub async fn carbon_copy(
+    req: CarbonCopyInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<GetCustomerByUserNameOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByUserName";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* ReadCustomer */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "ReadCustomer")]
-    pub read_customer: mod_wsd::ReadCustomer,
-}
-impl restrictions::CheckRestrictions for ReadCustomerInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.read_customer.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ReadCustomerInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for ReadCustomerInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "ReadCustomerResponse")]
-    pub read_customer_response: mod_wsd::ReadCustomerResponse,
-}
-impl restrictions::CheckRestrictions for ReadCustomerOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.read_customer_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ReadCustomerOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for ReadCustomerOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn read_customer(
-    req: ReadCustomerInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<ReadCustomerOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.ReadCustomer";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetCustomerByEmail */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByEmailInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByEmail")]
-    pub get_customer_by_email: mod_wsd::GetCustomerByEmail,
-}
-impl restrictions::CheckRestrictions for GetCustomerByEmailInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_customer_by_email.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByEmailInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByEmailInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetCustomerByEmailInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByEmailOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByEmailResponse")]
-    pub get_customer_by_email_response: mod_wsd::GetCustomerByEmailResponse,
-}
-impl restrictions::CheckRestrictions for GetCustomerByEmailOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_customer_by_email_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByEmailOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByEmailOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetCustomerByEmailOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn get_customer_by_email(
-    req: GetCustomerByEmailInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetCustomerByEmailOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByEmail";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RemoveContact */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveContactInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveContact")]
-    pub remove_contact: mod_wsd::RemoveContact,
-}
-impl restrictions::CheckRestrictions for RemoveContactInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.remove_contact.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveContactInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveContactInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for RemoveContactInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveContactOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveContactResponse")]
-    pub remove_contact_response: mod_wsd::RemoveContactResponse,
-}
-impl restrictions::CheckRestrictions for RemoveContactOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.remove_contact_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveContactOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveContactOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for RemoveContactOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn remove_contact(
-    req: RemoveContactInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RemoveContactOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveContact";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddPhoneNumber */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddPhoneNumberInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddPhoneNumber")]
-    pub add_phone_number: mod_wsd::AddPhoneNumber,
-}
-impl restrictions::CheckRestrictions for AddPhoneNumberInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.add_phone_number.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddPhoneNumberInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddPhoneNumberInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for AddPhoneNumberInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddPhoneNumberOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddPhoneNumberResponse")]
-    pub add_phone_number_response: mod_wsd::AddPhoneNumberResponse,
-}
-impl restrictions::CheckRestrictions for AddPhoneNumberOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.add_phone_number_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddPhoneNumberOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddPhoneNumberOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for AddPhoneNumberOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn add_phone_number(
-    req: AddPhoneNumberInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddPhoneNumberOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddPhoneNumber";
+) -> error::SoapResult<CarbonCopyOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CarbonCopy";
     helpers::send_soap_request(url, credentials, req).await
 }
 
@@ -5442,1196 +6848,6 @@ pub async fn clean_customer(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* ReadCustomerHistory */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerHistoryInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "ReadCustomerHistory")]
-    pub read_customer_history: mod_wsd::ReadCustomerHistory,
-}
-impl restrictions::CheckRestrictions for ReadCustomerHistoryInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.read_customer_history.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerHistoryInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ReadCustomerHistoryInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for ReadCustomerHistoryInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerHistoryOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "ReadCustomerHistoryResponse")]
-    pub read_customer_history_response: mod_wsd::ReadCustomerHistoryResponse,
-}
-impl restrictions::CheckRestrictions for ReadCustomerHistoryOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.read_customer_history_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ReadCustomerHistoryOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ReadCustomerHistoryOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for ReadCustomerHistoryOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn read_customer_history(
-    req: ReadCustomerHistoryInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<ReadCustomerHistoryOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.ReadCustomerHistory";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RemoveEmailAddress */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveEmailAddressInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveEmailAddress")]
-    pub remove_email_address: mod_wsd::RemoveEmailAddress,
-}
-impl restrictions::CheckRestrictions for RemoveEmailAddressInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.remove_email_address.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveEmailAddressInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveEmailAddressInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for RemoveEmailAddressInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveEmailAddressOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveEmailAddressResponse")]
-    pub remove_email_address_response: mod_wsd::RemoveEmailAddressResponse,
-}
-impl restrictions::CheckRestrictions for RemoveEmailAddressOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.remove_email_address_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveEmailAddressOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveEmailAddressOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for RemoveEmailAddressOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn remove_email_address(
-    req: RemoveEmailAddressInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RemoveEmailAddressOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveEmailAddress";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateObjection */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateObjectionInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateObjection")]
-    pub update_objection: mod_wsd::UpdateObjection,
-}
-impl restrictions::CheckRestrictions for UpdateObjectionInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_objection.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateObjectionInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateObjectionInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdateObjectionInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateObjectionOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateObjectionResponse")]
-    pub update_objection_response: mod_wsd::UpdateObjectionResponse,
-}
-impl restrictions::CheckRestrictions for UpdateObjectionOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_objection_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateObjectionOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateObjectionOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdateObjectionOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn update_objection(
-    req: UpdateObjectionInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateObjectionOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateObjection";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* SetAgentID */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SetAgentIDInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "SetAgentID")]
-    pub set_agent_id: mod_wsd::SetAgentID,
-}
-impl restrictions::CheckRestrictions for SetAgentIDInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.set_agent_id.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SetAgentIDInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetAgentIDInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for SetAgentIDInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SetAgentIDOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "SetAgentIDResponse")]
-    pub set_agent_id_response: mod_wsd::SetAgentIDResponse,
-}
-impl restrictions::CheckRestrictions for SetAgentIDOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.set_agent_id_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SetAgentIDOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SetAgentIDOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for SetAgentIDOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn set_agent_id(
-    req: SetAgentIDInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SetAgentIDOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.SetAgentID";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddContact */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddContactInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddContact")]
-    pub add_contact: mod_wsd::AddContact,
-}
-impl restrictions::CheckRestrictions for AddContactInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.add_contact.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddContactInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddContactInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for AddContactInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddContactOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddContactResponse")]
-    pub add_contact_response: mod_wsd::AddContactResponse,
-}
-impl restrictions::CheckRestrictions for AddContactOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.add_contact_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddContactOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddContactOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for AddContactOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn add_contact(
-    req: AddContactInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddContactOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddContact";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CustomerAssociation */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CustomerAssociationInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CustomerAssociation")]
-    pub customer_association: mod_wsd::CustomerAssociation,
-}
-impl restrictions::CheckRestrictions for CustomerAssociationInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.customer_association.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CustomerAssociationInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CustomerAssociationInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for CustomerAssociationInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CustomerAssociationOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CustomerAssociationResponse")]
-    pub customer_association_response: mod_wsd::CustomerAssociationResponse,
-}
-impl restrictions::CheckRestrictions for CustomerAssociationOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.customer_association_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CustomerAssociationOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CustomerAssociationOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for CustomerAssociationOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn customer_association(
-    req: CustomerAssociationInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CustomerAssociationOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CustomerAssociation";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RegisterCustomer */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterCustomerInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RegisterCustomer")]
-    pub register_customer: mod_wsd::RegisterCustomer,
-}
-impl restrictions::CheckRestrictions for RegisterCustomerInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.register_customer.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterCustomerInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RegisterCustomerInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for RegisterCustomerInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterCustomerOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RegisterCustomerResponse")]
-    pub register_customer_response: mod_wsd::RegisterCustomerResponse,
-}
-impl restrictions::CheckRestrictions for RegisterCustomerOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.register_customer_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterCustomerOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RegisterCustomerOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for RegisterCustomerOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn register_customer(
-    req: RegisterCustomerInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RegisterCustomerOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RegisterCustomer";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RemoveAddress */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveAddressInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveAddress")]
-    pub remove_address: mod_wsd::RemoveAddress,
-}
-impl restrictions::CheckRestrictions for RemoveAddressInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.remove_address.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveAddressInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveAddressInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for RemoveAddressInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveAddressOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveAddressResponse")]
-    pub remove_address_response: mod_wsd::RemoveAddressResponse,
-}
-impl restrictions::CheckRestrictions for RemoveAddressOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.remove_address_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveAddressOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveAddressOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for RemoveAddressOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn remove_address(
-    req: RemoveAddressInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RemoveAddressOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveAddress";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateRegisterDate */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateRegisterDateInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateRegisterDate")]
-    pub update_register_date: mod_wsd::UpdateRegisterDate,
-}
-impl restrictions::CheckRestrictions for UpdateRegisterDateInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_register_date.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateRegisterDateInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateRegisterDateInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdateRegisterDateInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateRegisterDateOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateRegisterDateResponse")]
-    pub update_register_date_response: mod_wsd::UpdateRegisterDateResponse,
-}
-impl restrictions::CheckRestrictions for UpdateRegisterDateOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_register_date_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateRegisterDateOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateRegisterDateOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdateRegisterDateOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn update_register_date(
-    req: UpdateRegisterDateInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateRegisterDateOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateRegisterDate";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddCustomField */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddCustomFieldInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddCustomField")]
-    pub add_custom_field: mod_wsd::AddCustomField,
-}
-impl restrictions::CheckRestrictions for AddCustomFieldInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.add_custom_field.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddCustomFieldInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddCustomFieldInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for AddCustomFieldInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddCustomFieldOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddCustomFieldResponse")]
-    pub add_custom_field_response: mod_wsd::AddCustomFieldResponse,
-}
-impl restrictions::CheckRestrictions for AddCustomFieldOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.add_custom_field_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddCustomFieldOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddCustomFieldOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for AddCustomFieldOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn add_custom_field(
-    req: AddCustomFieldInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddCustomFieldOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddCustomField";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddSipUri */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddSipUriInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddSipUri")]
-    pub add_sip_uri: mod_wsd::AddSipUri,
-}
-impl restrictions::CheckRestrictions for AddSipUriInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.add_sip_uri.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddSipUriInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddSipUriInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for AddSipUriInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddSipUriOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddSipUriResponse")]
-    pub add_sip_uri_response: mod_wsd::AddSipUriResponse,
-}
-impl restrictions::CheckRestrictions for AddSipUriOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.add_sip_uri_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddSipUriOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddSipUriOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for AddSipUriOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn add_sip_uri(
-    req: AddSipUriInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddSipUriOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddSipUri";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetCustomerByName */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByNameInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByName")]
-    pub get_customer_by_name: mod_wsd::GetCustomerByName,
-}
-impl restrictions::CheckRestrictions for GetCustomerByNameInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_customer_by_name.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByNameInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByNameInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetCustomerByNameInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByNameOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByNameResponse")]
-    pub get_customer_by_name_response: mod_wsd::GetCustomerByNameResponse,
-}
-impl restrictions::CheckRestrictions for GetCustomerByNameOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_customer_by_name_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByNameOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByNameOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetCustomerByNameOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn get_customer_by_name(
-    req: GetCustomerByNameInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetCustomerByNameOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByName";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RegisterAnonymousCustomer */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterAnonymousCustomerInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RegisterAnonymousCustomer")]
-    pub register_anonymous_customer: mod_wsd::RegisterAnonymousCustomer,
-}
-impl restrictions::CheckRestrictions for RegisterAnonymousCustomerInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.register_anonymous_customer.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterAnonymousCustomerInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RegisterAnonymousCustomerInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for RegisterAnonymousCustomerInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterAnonymousCustomerOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RegisterAnonymousCustomerResponse")]
-    pub register_anonymous_customer_response: mod_wsd::RegisterAnonymousCustomerResponse,
-}
-impl restrictions::CheckRestrictions for RegisterAnonymousCustomerOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.register_anonymous_customer_response
-            .check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RegisterAnonymousCustomerOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RegisterAnonymousCustomerOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for RegisterAnonymousCustomerOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn register_anonymous_customer(
-    req: RegisterAnonymousCustomerInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RegisterAnonymousCustomerOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RegisterAnonymousCustomer";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CreateCustomerBySipUri */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CreateCustomerBySipUriInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CreateCustomerBySipUri")]
-    pub create_customer_by_sip_uri: mod_wsd::CreateCustomerBySipUri,
-}
-impl restrictions::CheckRestrictions for CreateCustomerBySipUriInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.create_customer_by_sip_uri.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CreateCustomerBySipUriInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateCustomerBySipUriInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for CreateCustomerBySipUriInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CreateCustomerBySipUriOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CreateCustomerBySipUriResponse")]
-    pub create_customer_by_sip_uri_response: mod_wsd::CreateCustomerBySipUriResponse,
-}
-impl restrictions::CheckRestrictions for CreateCustomerBySipUriOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.create_customer_by_sip_uri_response
-            .check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CreateCustomerBySipUriOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateCustomerBySipUriOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for CreateCustomerBySipUriOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn create_customer_by_sip_uri(
-    req: CreateCustomerBySipUriInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CreateCustomerBySipUriOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CreateCustomerBySipUri";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateCustomer */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateCustomerInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateCustomer")]
-    pub update_customer: mod_wsd::UpdateCustomer,
-}
-impl restrictions::CheckRestrictions for UpdateCustomerInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_customer.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateCustomerInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateCustomerInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdateCustomerInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateCustomerOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateCustomerResponse")]
-    pub update_customer_response: mod_wsd::UpdateCustomerResponse,
-}
-impl restrictions::CheckRestrictions for UpdateCustomerOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_customer_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateCustomerOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateCustomerOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdateCustomerOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn update_customer(
-    req: UpdateCustomerInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateCustomerOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateCustomer";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdatePassword */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdatePasswordInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdatePassword")]
-    pub update_password: mod_wsd::UpdatePassword,
-}
-impl restrictions::CheckRestrictions for UpdatePasswordInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_password.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdatePasswordInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdatePasswordInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdatePasswordInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdatePasswordOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdatePasswordResponse")]
-    pub update_password_response: mod_wsd::UpdatePasswordResponse,
-}
-impl restrictions::CheckRestrictions for UpdatePasswordOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_password_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdatePasswordOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdatePasswordOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdatePasswordOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn update_password(
-    req: UpdatePasswordInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdatePasswordOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdatePassword";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateTitle */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateTitleInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateTitle")]
-    pub update_title: mod_wsd::UpdateTitle,
-}
-impl restrictions::CheckRestrictions for UpdateTitleInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_title.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateTitleInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateTitleInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdateTitleInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateTitleOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateTitleResponse")]
-    pub update_title_response: mod_wsd::UpdateTitleResponse,
-}
-impl restrictions::CheckRestrictions for UpdateTitleOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_title_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateTitleOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateTitleOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdateTitleOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn update_title(
-    req: UpdateTitleInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateTitleOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateTitle";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateUserName */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateUserNameInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateUserName")]
-    pub update_user_name: mod_wsd::UpdateUserName,
-}
-impl restrictions::CheckRestrictions for UpdateUserNameInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_user_name.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateUserNameInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateUserNameInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdateUserNameInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateUserNameOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateUserNameResponse")]
-    pub update_user_name_response: mod_wsd::UpdateUserNameResponse,
-}
-impl restrictions::CheckRestrictions for UpdateUserNameOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_user_name_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateUserNameOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateUserNameOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdateUserNameOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn update_user_name(
-    req: UpdateUserNameInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateUserNameOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateUserName";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateLoginPage */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateLoginPageInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateLoginPage")]
-    pub update_login_page: mod_wsd::UpdateLoginPage,
-}
-impl restrictions::CheckRestrictions for UpdateLoginPageInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_login_page.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateLoginPageInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateLoginPageInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdateLoginPageInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateLoginPageOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateLoginPageResponse")]
-    pub update_login_page_response: mod_wsd::UpdateLoginPageResponse,
-}
-impl restrictions::CheckRestrictions for UpdateLoginPageOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_login_page_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateLoginPageOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateLoginPageOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdateLoginPageOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn update_login_page(
-    req: UpdateLoginPageInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateLoginPageOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateLoginPage";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* CarbonCopy */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CarbonCopyInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CarbonCopy")]
-    pub carbon_copy: mod_wsd::CarbonCopy,
-}
-impl restrictions::CheckRestrictions for CarbonCopyInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.carbon_copy.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CarbonCopyInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CarbonCopyInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for CarbonCopyInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CarbonCopyOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "CarbonCopyResponse")]
-    pub carbon_copy_response: mod_wsd::CarbonCopyResponse,
-}
-impl restrictions::CheckRestrictions for CarbonCopyOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.carbon_copy_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct CarbonCopyOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CarbonCopyOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for CarbonCopyOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn carbon_copy(
-    req: CarbonCopyInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<CarbonCopyOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CarbonCopy";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetAllCustomers */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetAllCustomersInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetAllCustomers")]
-    pub get_all_customers: mod_wsd::GetAllCustomers,
-}
-impl restrictions::CheckRestrictions for GetAllCustomersInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_all_customers.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetAllCustomersInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetAllCustomersInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetAllCustomersInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetAllCustomersOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetAllCustomersResponse")]
-    pub get_all_customers_response: mod_wsd::GetAllCustomersResponse,
-}
-impl restrictions::CheckRestrictions for GetAllCustomersOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_all_customers_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetAllCustomersOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetAllCustomersOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetAllCustomersOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn get_all_customers(
-    req: GetAllCustomersInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetAllCustomersOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetAllCustomers";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* SendADPasswordReminder */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendADPasswordReminderInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "SendADPasswordReminder")]
-    pub send_ad_password_reminder: mod_wsd::SendADPasswordReminder,
-}
-impl restrictions::CheckRestrictions for SendADPasswordReminderInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.send_ad_password_reminder.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendADPasswordReminderInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SendADPasswordReminderInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for SendADPasswordReminderInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendADPasswordReminderOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "SendADPasswordReminderResponse")]
-    pub send_ad_password_reminder_response: mod_wsd::SendADPasswordReminderResponse,
-}
-impl restrictions::CheckRestrictions for SendADPasswordReminderOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.send_ad_password_reminder_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendADPasswordReminderOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SendADPasswordReminderOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for SendADPasswordReminderOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn send_ad_password_reminder(
-    req: SendADPasswordReminderInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SendADPasswordReminderOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.SendADPasswordReminder";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
 /* CustomerSearch */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -6683,330 +6899,6 @@ pub async fn customer_search(
     credentials: Option<(String, String)>,
 ) -> error::SoapResult<CustomerSearchOutputEnvelope> {
     let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.CustomerSearch";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* UpdateFirstName */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateFirstNameInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateFirstName")]
-    pub update_first_name: mod_wsd::UpdateFirstName,
-}
-impl restrictions::CheckRestrictions for UpdateFirstNameInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_first_name.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateFirstNameInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateFirstNameInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdateFirstNameInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateFirstNameOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "UpdateFirstNameResponse")]
-    pub update_first_name_response: mod_wsd::UpdateFirstNameResponse,
-}
-impl restrictions::CheckRestrictions for UpdateFirstNameOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.update_first_name_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct UpdateFirstNameOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateFirstNameOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for UpdateFirstNameOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn update_first_name(
-    req: UpdateFirstNameInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<UpdateFirstNameOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.UpdateFirstName";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* AddAddress */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddAddressInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddAddress")]
-    pub add_address: mod_wsd::AddAddress,
-}
-impl restrictions::CheckRestrictions for AddAddressInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.add_address.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddAddressInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddAddressInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for AddAddressInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddAddressOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddAddressResponse")]
-    pub add_address_response: mod_wsd::AddAddressResponse,
-}
-impl restrictions::CheckRestrictions for AddAddressOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.add_address_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddAddressOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddAddressOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for AddAddressOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn add_address(
-    req: AddAddressInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<AddAddressOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddAddress";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetCustomerBySipUri */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerBySipUriInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerBySipUri")]
-    pub get_customer_by_sip_uri: mod_wsd::GetCustomerBySipUri,
-}
-impl restrictions::CheckRestrictions for GetCustomerBySipUriInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_customer_by_sip_uri.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerBySipUriInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerBySipUriInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetCustomerBySipUriInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerBySipUriOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerBySipUriResponse")]
-    pub get_customer_by_sip_uri_response: mod_wsd::GetCustomerBySipUriResponse,
-}
-impl restrictions::CheckRestrictions for GetCustomerBySipUriOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_customer_by_sip_uri_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerBySipUriOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerBySipUriOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetCustomerBySipUriOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn get_customer_by_sip_uri(
-    req: GetCustomerBySipUriInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetCustomerBySipUriOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerBySipUri";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetCustSQLColumns */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustSQLColumnsInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustSQLColumns")]
-    pub get_cust_sql_columns: mod_wsd::GetCustSQLColumns,
-}
-impl restrictions::CheckRestrictions for GetCustSQLColumnsInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_cust_sql_columns.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustSQLColumnsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustSQLColumnsInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetCustSQLColumnsInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustSQLColumnsOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustSQLColumnsResponse")]
-    pub get_cust_sql_columns_response: mod_wsd::GetCustSQLColumnsResponse,
-}
-impl restrictions::CheckRestrictions for GetCustSQLColumnsOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_cust_sql_columns_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustSQLColumnsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustSQLColumnsOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetCustSQLColumnsOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn get_cust_sql_columns(
-    req: GetCustSQLColumnsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetCustSQLColumnsOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustSQLColumns";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* ImpersonateCustomer */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ImpersonateCustomerInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "ImpersonateCustomer")]
-    pub impersonate_customer: mod_wsd::ImpersonateCustomer,
-}
-impl restrictions::CheckRestrictions for ImpersonateCustomerInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.impersonate_customer.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ImpersonateCustomerInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ImpersonateCustomerInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for ImpersonateCustomerInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ImpersonateCustomerOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "ImpersonateCustomerResponse")]
-    pub impersonate_customer_response: mod_wsd::ImpersonateCustomerResponse,
-}
-impl restrictions::CheckRestrictions for ImpersonateCustomerOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.impersonate_customer_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct ImpersonateCustomerOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: ImpersonateCustomerOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for ImpersonateCustomerOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn impersonate_customer(
-    req: ImpersonateCustomerInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<ImpersonateCustomerOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.ImpersonateCustomer";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* SendPasswordReminder */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendPasswordReminderInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "SendPasswordReminder")]
-    pub send_password_reminder: mod_wsd::SendPasswordReminder,
-}
-impl restrictions::CheckRestrictions for SendPasswordReminderInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.send_password_reminder.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendPasswordReminderInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SendPasswordReminderInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for SendPasswordReminderInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendPasswordReminderOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "SendPasswordReminderResponse")]
-    pub send_password_reminder_response: mod_wsd::SendPasswordReminderResponse,
-}
-impl restrictions::CheckRestrictions for SendPasswordReminderOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.send_password_reminder_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct SendPasswordReminderOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SendPasswordReminderOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for SendPasswordReminderOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn send_password_reminder(
-    req: SendPasswordReminderInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SendPasswordReminderOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.SendPasswordReminder";
     helpers::send_soap_request(url, credentials, req).await
 }
 
@@ -7064,58 +6956,111 @@ pub async fn create_customer(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* GetCustomFieldTemplates */
+/* GetAllCustomers */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomFieldTemplatesInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomFieldTemplates")]
-    pub get_custom_field_templates: mod_wsd::GetCustomFieldTemplates,
+pub struct GetAllCustomersInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetAllCustomers")]
+    pub get_all_customers: mod_wsd::GetAllCustomers,
 }
-impl restrictions::CheckRestrictions for GetCustomFieldTemplatesInputEnvelopeBody {
+impl restrictions::CheckRestrictions for GetAllCustomersInputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_custom_field_templates.check_restrictions(restrictions)
+        self.get_all_customers.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomFieldTemplatesInputEnvelope {
+pub struct GetAllCustomersInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomFieldTemplatesInputEnvelopeBody,
+    pub body: GetAllCustomersInputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for GetCustomFieldTemplatesInputEnvelope {
+impl restrictions::CheckRestrictions for GetAllCustomersInputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.body.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomFieldTemplatesOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomFieldTemplatesResponse")]
-    pub get_custom_field_templates_response: mod_wsd::GetCustomFieldTemplatesResponse,
+pub struct GetAllCustomersOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetAllCustomersResponse")]
+    pub get_all_customers_response: mod_wsd::GetAllCustomersResponse,
 }
-impl restrictions::CheckRestrictions for GetCustomFieldTemplatesOutputEnvelopeBody {
+impl restrictions::CheckRestrictions for GetAllCustomersOutputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_custom_field_templates_response
-            .check_restrictions(restrictions)
+        self.get_all_customers_response.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomFieldTemplatesOutputEnvelope {
+pub struct GetAllCustomersOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomFieldTemplatesOutputEnvelopeBody,
+    pub body: GetAllCustomersOutputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for GetCustomFieldTemplatesOutputEnvelope {
+impl restrictions::CheckRestrictions for GetAllCustomersOutputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.body.check_restrictions(restrictions)
     }
 }
-pub async fn get_custom_field_templates(
-    req: GetCustomFieldTemplatesInputEnvelope,
+pub async fn get_all_customers(
+    req: GetAllCustomersInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<GetCustomFieldTemplatesOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomFieldTemplates";
+) -> error::SoapResult<GetAllCustomersOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetAllCustomers";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* DeleteCustomer */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct DeleteCustomerInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "DeleteCustomer")]
+    pub delete_customer: mod_wsd::DeleteCustomer,
+}
+impl restrictions::CheckRestrictions for DeleteCustomerInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.delete_customer.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct DeleteCustomerInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteCustomerInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for DeleteCustomerInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct DeleteCustomerOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "DeleteCustomerResponse")]
+    pub delete_customer_response: mod_wsd::DeleteCustomerResponse,
+}
+impl restrictions::CheckRestrictions for DeleteCustomerOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.delete_customer_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct DeleteCustomerOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteCustomerOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for DeleteCustomerOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn delete_customer(
+    req: DeleteCustomerInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<DeleteCustomerOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.DeleteCustomer";
     helpers::send_soap_request(url, credentials, req).await
 }
 
@@ -7174,166 +7119,165 @@ pub async fn get_customer_by_contact_id(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* DeleteCustomer */
+/* ReadCustomer */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct DeleteCustomerInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "DeleteCustomer")]
-    pub delete_customer: mod_wsd::DeleteCustomer,
+pub struct ReadCustomerInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "ReadCustomer")]
+    pub read_customer: mod_wsd::ReadCustomer,
 }
-impl restrictions::CheckRestrictions for DeleteCustomerInputEnvelopeBody {
+impl restrictions::CheckRestrictions for ReadCustomerInputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.delete_customer.check_restrictions(restrictions)
+        self.read_customer.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct DeleteCustomerInputEnvelope {
+pub struct ReadCustomerInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteCustomerInputEnvelopeBody,
+    pub body: ReadCustomerInputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for DeleteCustomerInputEnvelope {
+impl restrictions::CheckRestrictions for ReadCustomerInputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.body.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct DeleteCustomerOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "DeleteCustomerResponse")]
-    pub delete_customer_response: mod_wsd::DeleteCustomerResponse,
+pub struct ReadCustomerOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "ReadCustomerResponse")]
+    pub read_customer_response: mod_wsd::ReadCustomerResponse,
 }
-impl restrictions::CheckRestrictions for DeleteCustomerOutputEnvelopeBody {
+impl restrictions::CheckRestrictions for ReadCustomerOutputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.delete_customer_response.check_restrictions(restrictions)
+        self.read_customer_response.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct DeleteCustomerOutputEnvelope {
+pub struct ReadCustomerOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteCustomerOutputEnvelopeBody,
+    pub body: ReadCustomerOutputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for DeleteCustomerOutputEnvelope {
+impl restrictions::CheckRestrictions for ReadCustomerOutputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.body.check_restrictions(restrictions)
     }
 }
-pub async fn delete_customer(
-    req: DeleteCustomerInputEnvelope,
+pub async fn read_customer(
+    req: ReadCustomerInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<DeleteCustomerOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.DeleteCustomer";
+) -> error::SoapResult<ReadCustomerOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.ReadCustomer";
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* GetCustomerByPhoneNumber */
+/* AddContact */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByPhoneNumberInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByPhoneNumber")]
-    pub get_customer_by_phone_number: mod_wsd::GetCustomerByPhoneNumber,
+pub struct AddContactInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddContact")]
+    pub add_contact: mod_wsd::AddContact,
 }
-impl restrictions::CheckRestrictions for GetCustomerByPhoneNumberInputEnvelopeBody {
+impl restrictions::CheckRestrictions for AddContactInputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_customer_by_phone_number.check_restrictions(restrictions)
+        self.add_contact.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByPhoneNumberInputEnvelope {
+pub struct AddContactInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByPhoneNumberInputEnvelopeBody,
+    pub body: AddContactInputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for GetCustomerByPhoneNumberInputEnvelope {
+impl restrictions::CheckRestrictions for AddContactInputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.body.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByPhoneNumberOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "GetCustomerByPhoneNumberResponse")]
-    pub get_customer_by_phone_number_response: mod_wsd::GetCustomerByPhoneNumberResponse,
+pub struct AddContactOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "AddContactResponse")]
+    pub add_contact_response: mod_wsd::AddContactResponse,
 }
-impl restrictions::CheckRestrictions for GetCustomerByPhoneNumberOutputEnvelopeBody {
+impl restrictions::CheckRestrictions for AddContactOutputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_customer_by_phone_number_response
-            .check_restrictions(restrictions)
+        self.add_contact_response.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct GetCustomerByPhoneNumberOutputEnvelope {
+pub struct AddContactOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetCustomerByPhoneNumberOutputEnvelopeBody,
+    pub body: AddContactOutputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for GetCustomerByPhoneNumberOutputEnvelope {
+impl restrictions::CheckRestrictions for AddContactOutputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.body.check_restrictions(restrictions)
     }
 }
-pub async fn get_customer_by_phone_number(
-    req: GetCustomerByPhoneNumberInputEnvelope,
+pub async fn add_contact(
+    req: AddContactInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<GetCustomerByPhoneNumberOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByPhoneNumber";
+) -> error::SoapResult<AddContactOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddContact";
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* AddEmailAddress */
+/* GetCustomerByUserName */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddEmailAddressInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddEmailAddress")]
-    pub add_email_address: mod_wsd::AddEmailAddress,
+pub struct GetCustomerByUserNameInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByUserName")]
+    pub get_customer_by_user_name: mod_wsd::GetCustomerByUserName,
 }
-impl restrictions::CheckRestrictions for AddEmailAddressInputEnvelopeBody {
+impl restrictions::CheckRestrictions for GetCustomerByUserNameInputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.add_email_address.check_restrictions(restrictions)
+        self.get_customer_by_user_name.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddEmailAddressInputEnvelope {
+pub struct GetCustomerByUserNameInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddEmailAddressInputEnvelopeBody,
+    pub body: GetCustomerByUserNameInputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for AddEmailAddressInputEnvelope {
+impl restrictions::CheckRestrictions for GetCustomerByUserNameInputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.body.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddEmailAddressOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "AddEmailAddressResponse")]
-    pub add_email_address_response: mod_wsd::AddEmailAddressResponse,
+pub struct GetCustomerByUserNameOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomerByUserNameResponse")]
+    pub get_customer_by_user_name_response: mod_wsd::GetCustomerByUserNameResponse,
 }
-impl restrictions::CheckRestrictions for AddEmailAddressOutputEnvelopeBody {
+impl restrictions::CheckRestrictions for GetCustomerByUserNameOutputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.add_email_address_response.check_restrictions(restrictions)
+        self.get_customer_by_user_name_response.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct AddEmailAddressOutputEnvelope {
+pub struct GetCustomerByUserNameOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: AddEmailAddressOutputEnvelopeBody,
+    pub body: GetCustomerByUserNameOutputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for AddEmailAddressOutputEnvelope {
+impl restrictions::CheckRestrictions for GetCustomerByUserNameOutputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.body.check_restrictions(restrictions)
     }
 }
-pub async fn add_email_address(
-    req: AddEmailAddressInputEnvelope,
+pub async fn get_customer_by_user_name(
+    req: GetCustomerByUserNameInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<AddEmailAddressOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.AddEmailAddress";
+) -> error::SoapResult<GetCustomerByUserNameOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomerByUserName";
     helpers::send_soap_request(url, credentials, req).await
 }
 
@@ -7391,6 +7335,170 @@ pub async fn remove_custom_field(
     helpers::send_soap_request(url, credentials, req).await
 }
 
+/* RegisterAnonymousCustomer */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterAnonymousCustomerInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RegisterAnonymousCustomer")]
+    pub register_anonymous_customer: mod_wsd::RegisterAnonymousCustomer,
+}
+impl restrictions::CheckRestrictions for RegisterAnonymousCustomerInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.register_anonymous_customer.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterAnonymousCustomerInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RegisterAnonymousCustomerInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for RegisterAnonymousCustomerInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterAnonymousCustomerOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RegisterAnonymousCustomerResponse")]
+    pub register_anonymous_customer_response: mod_wsd::RegisterAnonymousCustomerResponse,
+}
+impl restrictions::CheckRestrictions for RegisterAnonymousCustomerOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.register_anonymous_customer_response
+            .check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RegisterAnonymousCustomerOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RegisterAnonymousCustomerOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for RegisterAnonymousCustomerOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn register_anonymous_customer(
+    req: RegisterAnonymousCustomerInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RegisterAnonymousCustomerOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RegisterAnonymousCustomer";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetCustomFieldTemplates */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomFieldTemplatesInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomFieldTemplates")]
+    pub get_custom_field_templates: mod_wsd::GetCustomFieldTemplates,
+}
+impl restrictions::CheckRestrictions for GetCustomFieldTemplatesInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_custom_field_templates.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomFieldTemplatesInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomFieldTemplatesInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetCustomFieldTemplatesInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomFieldTemplatesOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "GetCustomFieldTemplatesResponse")]
+    pub get_custom_field_templates_response: mod_wsd::GetCustomFieldTemplatesResponse,
+}
+impl restrictions::CheckRestrictions for GetCustomFieldTemplatesOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_custom_field_templates_response
+            .check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct GetCustomFieldTemplatesOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetCustomFieldTemplatesOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetCustomFieldTemplatesOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn get_custom_field_templates(
+    req: GetCustomFieldTemplatesInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetCustomFieldTemplatesOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetCustomFieldTemplates";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* RemoveEmailAddress */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveEmailAddressInputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveEmailAddress")]
+    pub remove_email_address: mod_wsd::RemoveEmailAddress,
+}
+impl restrictions::CheckRestrictions for RemoveEmailAddressInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.remove_email_address.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveEmailAddressInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveEmailAddressInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for RemoveEmailAddressInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveEmailAddressOutputEnvelopeBody {
+    #[yaserde(prefix = "wsd", rename = "RemoveEmailAddressResponse")]
+    pub remove_email_address_response: mod_wsd::RemoveEmailAddressResponse,
+}
+impl restrictions::CheckRestrictions for RemoveEmailAddressOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.remove_email_address_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
+pub struct RemoveEmailAddressOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: RemoveEmailAddressOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for RemoveEmailAddressOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn remove_email_address(
+    req: RemoveEmailAddressInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<RemoveEmailAddressOutputEnvelope> {
+    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveEmailAddress";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
 /* GetNoCustContactsByTime */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
@@ -7445,114 +7553,6 @@ pub async fn get_no_cust_contacts_by_time(
     let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.GetNoCustContactsByTime";
     helpers::send_soap_request(url, credentials, req).await
 }
-
-/* RemoveSipUri */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveSipUriInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveSipUri")]
-    pub remove_sip_uri: mod_wsd::RemoveSipUri,
-}
-impl restrictions::CheckRestrictions for RemoveSipUriInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.remove_sip_uri.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveSipUriInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveSipUriInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for RemoveSipUriInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveSipUriOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemoveSipUriResponse")]
-    pub remove_sip_uri_response: mod_wsd::RemoveSipUriResponse,
-}
-impl restrictions::CheckRestrictions for RemoveSipUriOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.remove_sip_uri_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemoveSipUriOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemoveSipUriOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for RemoveSipUriOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn remove_sip_uri(
-    req: RemoveSipUriInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RemoveSipUriOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemoveSipUri";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* RemovePhoneNumber */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemovePhoneNumberInputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemovePhoneNumber")]
-    pub remove_phone_number: mod_wsd::RemovePhoneNumber,
-}
-impl restrictions::CheckRestrictions for RemovePhoneNumberInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.remove_phone_number.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemovePhoneNumberInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemovePhoneNumberInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for RemovePhoneNumberInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "wsd", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemovePhoneNumberOutputEnvelopeBody {
-    #[yaserde(prefix = "wsd", rename = "RemovePhoneNumberResponse")]
-    pub remove_phone_number_response: mod_wsd::RemovePhoneNumberResponse,
-}
-impl restrictions::CheckRestrictions for RemovePhoneNumberOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.remove_phone_number_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "wsd" = "http://ws.db.ccmm.applications.nortel.com" })]
-pub struct RemovePhoneNumberOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: RemovePhoneNumberOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for RemovePhoneNumberOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn remove_phone_number(
-    req: RemovePhoneNumberInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<RemovePhoneNumberOutputEnvelope> {
-    let url = "http://ws.db.ccmm.applications.nortel.com/ws.Customer.RemovePhoneNumber";
-    helpers::send_soap_request(url, credentials, req).await
-}
 pub struct CustMultimedia {
     pub client: reqwest::Client,
     pub location: String,
@@ -7567,10 +7567,238 @@ impl CustMultimedia {
         }
     }
 
+    pub async fn get_customer_by_sip_uri(
+        &self,
+        req: GetCustomerBySipUriInputEnvelope,
+    ) -> error::SoapResult<GetCustomerBySipUriOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn set_agent_id(&self, req: SetAgentIDInputEnvelope) -> error::SoapResult<SetAgentIDOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_customer_by_email(
+        &self,
+        req: GetCustomerByEmailInputEnvelope,
+    ) -> error::SoapResult<GetCustomerByEmailOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn add_email_address(
+        &self,
+        req: AddEmailAddressInputEnvelope,
+    ) -> error::SoapResult<AddEmailAddressOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
     pub async fn get_searchable_fields(
         &self,
         req: GetSearchableFieldsInputEnvelope,
     ) -> error::SoapResult<GetSearchableFieldsOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_customer_by_name(
+        &self,
+        req: GetCustomerByNameInputEnvelope,
+    ) -> error::SoapResult<GetCustomerByNameOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_user_name(
+        &self,
+        req: UpdateUserNameInputEnvelope,
+    ) -> error::SoapResult<UpdateUserNameOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn create_customer_by_sip_uri(
+        &self,
+        req: CreateCustomerBySipUriInputEnvelope,
+    ) -> error::SoapResult<CreateCustomerBySipUriOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_first_name(
+        &self,
+        req: UpdateFirstNameInputEnvelope,
+    ) -> error::SoapResult<UpdateFirstNameOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn send_password_reminder(
+        &self,
+        req: SendPasswordReminderInputEnvelope,
+    ) -> error::SoapResult<SendPasswordReminderOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn remove_contact(
+        &self,
+        req: RemoveContactInputEnvelope,
+    ) -> error::SoapResult<RemoveContactOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn remove_phone_number(
+        &self,
+        req: RemovePhoneNumberInputEnvelope,
+    ) -> error::SoapResult<RemovePhoneNumberOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_customer_by_phone_number(
+        &self,
+        req: GetCustomerByPhoneNumberInputEnvelope,
+    ) -> error::SoapResult<GetCustomerByPhoneNumberOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn add_sip_uri(&self, req: AddSipUriInputEnvelope) -> error::SoapResult<AddSipUriOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn read_customer_history(
+        &self,
+        req: ReadCustomerHistoryInputEnvelope,
+    ) -> error::SoapResult<ReadCustomerHistoryOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_objection(
+        &self,
+        req: UpdateObjectionInputEnvelope,
+    ) -> error::SoapResult<UpdateObjectionOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn send_ad_password_reminder(
+        &self,
+        req: SendADPasswordReminderInputEnvelope,
+    ) -> error::SoapResult<SendADPasswordReminderOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn remove_address(
+        &self,
+        req: RemoveAddressInputEnvelope,
+    ) -> error::SoapResult<RemoveAddressOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn remove_sip_uri(
+        &self,
+        req: RemoveSipUriInputEnvelope,
+    ) -> error::SoapResult<RemoveSipUriOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_cust_sql_columns(
+        &self,
+        req: GetCustSQLColumnsInputEnvelope,
+    ) -> error::SoapResult<GetCustSQLColumnsOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_customer(
+        &self,
+        req: UpdateCustomerInputEnvelope,
+    ) -> error::SoapResult<UpdateCustomerOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_register_date(
+        &self,
+        req: UpdateRegisterDateInputEnvelope,
+    ) -> error::SoapResult<UpdateRegisterDateOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn add_address(&self, req: AddAddressInputEnvelope) -> error::SoapResult<AddAddressOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn add_phone_number(
+        &self,
+        req: AddPhoneNumberInputEnvelope,
+    ) -> error::SoapResult<AddPhoneNumberOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_login_page(
+        &self,
+        req: UpdateLoginPageInputEnvelope,
+    ) -> error::SoapResult<UpdateLoginPageOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn add_custom_field(
+        &self,
+        req: AddCustomFieldInputEnvelope,
+    ) -> error::SoapResult<AddCustomFieldOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_title(&self, req: UpdateTitleInputEnvelope) -> error::SoapResult<UpdateTitleOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn customer_association(
+        &self,
+        req: CustomerAssociationInputEnvelope,
+    ) -> error::SoapResult<CustomerAssociationOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn update_password(
+        &self,
+        req: UpdatePasswordInputEnvelope,
+    ) -> error::SoapResult<UpdatePasswordOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn register_customer(
+        &self,
+        req: RegisterCustomerInputEnvelope,
+    ) -> error::SoapResult<RegisterCustomerOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn impersonate_customer(
+        &self,
+        req: ImpersonateCustomerInputEnvelope,
+    ) -> error::SoapResult<ImpersonateCustomerOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
@@ -7591,39 +7819,7 @@ impl CustMultimedia {
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 
-    pub async fn get_customer_by_user_name(
-        &self,
-        req: GetCustomerByUserNameInputEnvelope,
-    ) -> error::SoapResult<GetCustomerByUserNameOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn read_customer(&self, req: ReadCustomerInputEnvelope) -> error::SoapResult<ReadCustomerOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_customer_by_email(
-        &self,
-        req: GetCustomerByEmailInputEnvelope,
-    ) -> error::SoapResult<GetCustomerByEmailOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn remove_contact(
-        &self,
-        req: RemoveContactInputEnvelope,
-    ) -> error::SoapResult<RemoveContactOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn add_phone_number(
-        &self,
-        req: AddPhoneNumberInputEnvelope,
-    ) -> error::SoapResult<AddPhoneNumberOutputEnvelope> {
+    pub async fn carbon_copy(&self, req: CarbonCopyInputEnvelope) -> error::SoapResult<CarbonCopyOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
@@ -7636,216 +7832,10 @@ impl CustMultimedia {
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 
-    pub async fn read_customer_history(
-        &self,
-        req: ReadCustomerHistoryInputEnvelope,
-    ) -> error::SoapResult<ReadCustomerHistoryOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn remove_email_address(
-        &self,
-        req: RemoveEmailAddressInputEnvelope,
-    ) -> error::SoapResult<RemoveEmailAddressOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_objection(
-        &self,
-        req: UpdateObjectionInputEnvelope,
-    ) -> error::SoapResult<UpdateObjectionOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn set_agent_id(&self, req: SetAgentIDInputEnvelope) -> error::SoapResult<SetAgentIDOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn add_contact(&self, req: AddContactInputEnvelope) -> error::SoapResult<AddContactOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn customer_association(
-        &self,
-        req: CustomerAssociationInputEnvelope,
-    ) -> error::SoapResult<CustomerAssociationOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn register_customer(
-        &self,
-        req: RegisterCustomerInputEnvelope,
-    ) -> error::SoapResult<RegisterCustomerOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn remove_address(
-        &self,
-        req: RemoveAddressInputEnvelope,
-    ) -> error::SoapResult<RemoveAddressOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_register_date(
-        &self,
-        req: UpdateRegisterDateInputEnvelope,
-    ) -> error::SoapResult<UpdateRegisterDateOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn add_custom_field(
-        &self,
-        req: AddCustomFieldInputEnvelope,
-    ) -> error::SoapResult<AddCustomFieldOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn add_sip_uri(&self, req: AddSipUriInputEnvelope) -> error::SoapResult<AddSipUriOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_customer_by_name(
-        &self,
-        req: GetCustomerByNameInputEnvelope,
-    ) -> error::SoapResult<GetCustomerByNameOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn register_anonymous_customer(
-        &self,
-        req: RegisterAnonymousCustomerInputEnvelope,
-    ) -> error::SoapResult<RegisterAnonymousCustomerOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn create_customer_by_sip_uri(
-        &self,
-        req: CreateCustomerBySipUriInputEnvelope,
-    ) -> error::SoapResult<CreateCustomerBySipUriOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_customer(
-        &self,
-        req: UpdateCustomerInputEnvelope,
-    ) -> error::SoapResult<UpdateCustomerOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_password(
-        &self,
-        req: UpdatePasswordInputEnvelope,
-    ) -> error::SoapResult<UpdatePasswordOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_title(&self, req: UpdateTitleInputEnvelope) -> error::SoapResult<UpdateTitleOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_user_name(
-        &self,
-        req: UpdateUserNameInputEnvelope,
-    ) -> error::SoapResult<UpdateUserNameOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_login_page(
-        &self,
-        req: UpdateLoginPageInputEnvelope,
-    ) -> error::SoapResult<UpdateLoginPageOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn carbon_copy(&self, req: CarbonCopyInputEnvelope) -> error::SoapResult<CarbonCopyOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_all_customers(
-        &self,
-        req: GetAllCustomersInputEnvelope,
-    ) -> error::SoapResult<GetAllCustomersOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn send_ad_password_reminder(
-        &self,
-        req: SendADPasswordReminderInputEnvelope,
-    ) -> error::SoapResult<SendADPasswordReminderOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
     pub async fn customer_search(
         &self,
         req: CustomerSearchInputEnvelope,
     ) -> error::SoapResult<CustomerSearchOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn update_first_name(
-        &self,
-        req: UpdateFirstNameInputEnvelope,
-    ) -> error::SoapResult<UpdateFirstNameOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn add_address(&self, req: AddAddressInputEnvelope) -> error::SoapResult<AddAddressOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_customer_by_sip_uri(
-        &self,
-        req: GetCustomerBySipUriInputEnvelope,
-    ) -> error::SoapResult<GetCustomerBySipUriOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_cust_sql_columns(
-        &self,
-        req: GetCustSQLColumnsInputEnvelope,
-    ) -> error::SoapResult<GetCustSQLColumnsOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn impersonate_customer(
-        &self,
-        req: ImpersonateCustomerInputEnvelope,
-    ) -> error::SoapResult<ImpersonateCustomerOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn send_password_reminder(
-        &self,
-        req: SendPasswordReminderInputEnvelope,
-    ) -> error::SoapResult<SendPasswordReminderOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
@@ -7858,18 +7848,10 @@ impl CustMultimedia {
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 
-    pub async fn get_custom_field_templates(
+    pub async fn get_all_customers(
         &self,
-        req: GetCustomFieldTemplatesInputEnvelope,
-    ) -> error::SoapResult<GetCustomFieldTemplatesOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_customer_by_contact_id(
-        &self,
-        req: GetCustomerByContactIdInputEnvelope,
-    ) -> error::SoapResult<GetCustomerByContactIdOutputEnvelope> {
+        req: GetAllCustomersInputEnvelope,
+    ) -> error::SoapResult<GetAllCustomersOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
@@ -7882,18 +7864,28 @@ impl CustMultimedia {
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 
-    pub async fn get_customer_by_phone_number(
+    pub async fn get_customer_by_contact_id(
         &self,
-        req: GetCustomerByPhoneNumberInputEnvelope,
-    ) -> error::SoapResult<GetCustomerByPhoneNumberOutputEnvelope> {
+        req: GetCustomerByContactIdInputEnvelope,
+    ) -> error::SoapResult<GetCustomerByContactIdOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 
-    pub async fn add_email_address(
+    pub async fn read_customer(&self, req: ReadCustomerInputEnvelope) -> error::SoapResult<ReadCustomerOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn add_contact(&self, req: AddContactInputEnvelope) -> error::SoapResult<AddContactOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_customer_by_user_name(
         &self,
-        req: AddEmailAddressInputEnvelope,
-    ) -> error::SoapResult<AddEmailAddressOutputEnvelope> {
+        req: GetCustomerByUserNameInputEnvelope,
+    ) -> error::SoapResult<GetCustomerByUserNameOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
@@ -7906,26 +7898,34 @@ impl CustMultimedia {
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 
+    pub async fn register_anonymous_customer(
+        &self,
+        req: RegisterAnonymousCustomerInputEnvelope,
+    ) -> error::SoapResult<RegisterAnonymousCustomerOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get_custom_field_templates(
+        &self,
+        req: GetCustomFieldTemplatesInputEnvelope,
+    ) -> error::SoapResult<GetCustomFieldTemplatesOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn remove_email_address(
+        &self,
+        req: RemoveEmailAddressInputEnvelope,
+    ) -> error::SoapResult<RemoveEmailAddressOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
     pub async fn get_no_cust_contacts_by_time(
         &self,
         req: GetNoCustContactsByTimeInputEnvelope,
     ) -> error::SoapResult<GetNoCustContactsByTimeOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn remove_sip_uri(
-        &self,
-        req: RemoveSipUriInputEnvelope,
-    ) -> error::SoapResult<RemoveSipUriOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn remove_phone_number(
-        &self,
-        req: RemovePhoneNumberInputEnvelope,
-    ) -> error::SoapResult<RemovePhoneNumberOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
