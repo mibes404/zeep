@@ -291,7 +291,11 @@ pub mod restrictions {
 /// Inspired by [this](https://github.com/media-io/yaserde/issues/165#issuecomment-1810243674) comment on the yaserde repository.
 /// Needs `xml-rs`, `tokio` and `yaserde` as dependencies.
 pub mod multi_ref {
-    use std::{ops::Deref, sync::Arc};
+    use super::{
+        error::SoapResult,
+        restrictions::{CheckRestrictions, Restrictions},
+    };
+    use std::{ops::Deref, rc::Rc, sync::Arc};
     use yaserde::{YaDeserialize, YaSerialize};
 
     pub struct MultiRef<T> {
@@ -302,6 +306,15 @@ pub mod multi_ref {
         #[allow(dead_code)]
         pub fn new(inner: T) -> Self {
             Self { inner: Arc::new(inner) }
+        }
+    }
+
+    impl<C> CheckRestrictions for MultiRef<C>
+    where
+        C: CheckRestrictions,
+    {
+        fn check_restrictions(&self, restrictions: Option<Rc<Restrictions>>) -> SoapResult<()> {
+            self.inner.check_restrictions(restrictions)
         }
     }
 

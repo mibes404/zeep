@@ -9,23 +9,41 @@
 #![allow(non_local_definitions)]
 
 use log::{debug, trace, warn};
-use std::io::{Read, Write};
+use std::{
+    io::{Read, Write},
+    rc::Rc,
+};
 use yaserde_derive::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";
 pub mod mod_71 {
     use super::*;
+    use restrictions::CheckRestrictions;
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "Get")]
     pub struct Get {
         #[yaserde(prefix = "71", rename = "loginId")]
         pub login_id: String,
     }
+    impl restrictions::CheckRestrictions for Get {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.login_id.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "GetResponse")]
     pub struct GetResponse {
         #[yaserde(prefix = "71", rename = "GetReturn")]
         pub get_return: mod_71::Agent,
+    }
+    impl restrictions::CheckRestrictions for GetResponse {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.get_return.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "AgentAdvocateInfo")]
@@ -37,11 +55,27 @@ pub mod mod_71 {
         #[yaserde(prefix = "71", rename = "telephonyLinkGroup")]
         pub telephony_link_group: String,
     }
+    impl restrictions::CheckRestrictions for AgentAdvocateInfo {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.lrmid.check_restrictions(restrictions.clone())?;
+            self.enabled.check_restrictions(restrictions.clone())?;
+            self.telephony_link_group.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "ArrayOf_xsd_string")]
     pub struct ArrayOfXsdString {
         #[yaserde(prefix = "71", rename = "item")]
         pub item: Vec<String>,
+    }
+    impl restrictions::CheckRestrictions for ArrayOfXsdString {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.item.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "AgentBasicProfile")]
@@ -73,6 +107,25 @@ pub mod mod_71 {
         #[yaserde(prefix = "71", rename = "workgroups")]
         pub workgroups: mod_71::ArrayOfXsdString,
     }
+    impl restrictions::CheckRestrictions for AgentBasicProfile {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.domain.check_restrictions(restrictions.clone())?;
+            self.employee_id.check_restrictions(restrictions.clone())?;
+            self.external_agent.check_restrictions(restrictions.clone())?;
+            self.first_name.check_restrictions(restrictions.clone())?;
+            self.last_name.check_restrictions(restrictions.clone())?;
+            self.middle_name.check_restrictions(restrictions.clone())?;
+            self.out_of_office.check_restrictions(restrictions.clone())?;
+            self.preferred_name.check_restrictions(restrictions.clone())?;
+            self.site.check_restrictions(restrictions.clone())?;
+            self.software_agent.check_restrictions(restrictions.clone())?;
+            self.title.check_restrictions(restrictions.clone())?;
+            self.user_addressable.check_restrictions(restrictions.clone())?;
+            self.workgroups.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "AgentChatChannel")]
     pub struct AgentChatChannel {
@@ -82,6 +135,15 @@ pub mod mod_71 {
         pub task_ceiling: i16,
         #[yaserde(prefix = "71", rename = "taskLoad")]
         pub task_load: i16,
+    }
+    impl restrictions::CheckRestrictions for AgentChatChannel {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.enabled.check_restrictions(restrictions.clone())?;
+            self.task_ceiling.check_restrictions(restrictions.clone())?;
+            self.task_load.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "AgentEmailChannel")]
@@ -96,6 +158,17 @@ pub mod mod_71 {
         pub task_ceiling: i16,
         #[yaserde(prefix = "71", rename = "taskLoad")]
         pub task_load: i16,
+    }
+    impl restrictions::CheckRestrictions for AgentEmailChannel {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.enabled.check_restrictions(restrictions.clone())?;
+            self.from_address.check_restrictions(restrictions.clone())?;
+            self.show_full_header.check_restrictions(restrictions.clone())?;
+            self.task_ceiling.check_restrictions(restrictions.clone())?;
+            self.task_load.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "AgentAddressInfo")]
@@ -121,6 +194,22 @@ pub mod mod_71 {
         #[yaserde(prefix = "71", rename = "zipOrPostalCode")]
         pub zip_or_postal_code: String,
     }
+    impl restrictions::CheckRestrictions for AgentAddressInfo {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.po_box.check_restrictions(restrictions.clone())?;
+            self.address_1.check_restrictions(restrictions.clone())?;
+            self.address_2.check_restrictions(restrictions.clone())?;
+            self.building.check_restrictions(restrictions.clone())?;
+            self.city.check_restrictions(restrictions.clone())?;
+            self.company.check_restrictions(restrictions.clone())?;
+            self.country_or_region.check_restrictions(restrictions.clone())?;
+            self.mail_stop.check_restrictions(restrictions.clone())?;
+            self.state_or_province.check_restrictions(restrictions.clone())?;
+            self.zip_or_postal_code.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "AgentAddress")]
     pub struct AgentAddress {
@@ -130,6 +219,15 @@ pub mod mod_71 {
         pub office: mod_71::AgentAddressInfo,
         #[yaserde(prefix = "71", rename = "other")]
         pub other: mod_71::AgentAddressInfo,
+    }
+    impl restrictions::CheckRestrictions for AgentAddress {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.home.check_restrictions(restrictions.clone())?;
+            self.office.check_restrictions(restrictions.clone())?;
+            self.other.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "AgentEmail")]
@@ -143,6 +241,16 @@ pub mod mod_71 {
         #[yaserde(prefix = "71", rename = "primary")]
         pub primary: String,
     }
+    impl restrictions::CheckRestrictions for AgentEmail {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.internal.check_restrictions(restrictions.clone())?;
+            self.mobile_device.check_restrictions(restrictions.clone())?;
+            self.personal.check_restrictions(restrictions.clone())?;
+            self.primary.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "AgentPhoneInfo")]
     pub struct AgentPhoneInfo {
@@ -150,6 +258,14 @@ pub mod mod_71 {
         pub extension: String,
         #[yaserde(prefix = "71", rename = "phoneNumber")]
         pub phone_number: String,
+    }
+    impl restrictions::CheckRestrictions for AgentPhoneInfo {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.extension.check_restrictions(restrictions.clone())?;
+            self.phone_number.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "AgentPhone")]
@@ -167,6 +283,18 @@ pub mod mod_71 {
         #[yaserde(prefix = "71", rename = "secondary")]
         pub secondary: mod_71::AgentPhoneInfo,
     }
+    impl restrictions::CheckRestrictions for AgentPhone {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.fax.check_restrictions(restrictions.clone())?;
+            self.home.check_restrictions(restrictions.clone())?;
+            self.mobile.check_restrictions(restrictions.clone())?;
+            self.pager.check_restrictions(restrictions.clone())?;
+            self.primary.check_restrictions(restrictions.clone())?;
+            self.secondary.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "AgentExtendedProfile")]
     pub struct AgentExtendedProfile {
@@ -176,6 +304,15 @@ pub mod mod_71 {
         pub email: mod_71::AgentEmail,
         #[yaserde(prefix = "71", rename = "phone")]
         pub phone: mod_71::AgentPhone,
+    }
+    impl restrictions::CheckRestrictions for AgentExtendedProfile {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.address.check_restrictions(restrictions.clone())?;
+            self.email.check_restrictions(restrictions.clone())?;
+            self.phone.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "AgentSecurity")]
@@ -203,6 +340,23 @@ pub mod mod_71 {
         #[yaserde(prefix = "71", rename = "roleSupport")]
         pub role_support: bool,
     }
+    impl restrictions::CheckRestrictions for AgentSecurity {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.disable_login.check_restrictions(restrictions.clone())?;
+            self.force_pwd_change.check_restrictions(restrictions.clone())?;
+            self.password.check_restrictions(restrictions.clone())?;
+            self.role_admin.check_restrictions(restrictions.clone())?;
+            self.role_agent.check_restrictions(restrictions.clone())?;
+            self.role_clerk.check_restrictions(restrictions.clone())?;
+            self.role_editor.check_restrictions(restrictions.clone())?;
+            self.role_operator.check_restrictions(restrictions.clone())?;
+            self.role_postmaster.check_restrictions(restrictions.clone())?;
+            self.role_supervisor.check_restrictions(restrictions.clone())?;
+            self.role_support.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "AgentTaskLoad")]
     pub struct AgentTaskLoad {
@@ -210,6 +364,14 @@ pub mod mod_71 {
         pub task_ceiling: i16,
         #[yaserde(prefix = "71", rename = "taskLoad")]
         pub task_load: i16,
+    }
+    impl restrictions::CheckRestrictions for AgentTaskLoad {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.task_ceiling.check_restrictions(restrictions.clone())?;
+            self.task_load.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "AgentVoiceChannel")]
@@ -230,6 +392,20 @@ pub mod mod_71 {
         pub task_ceiling: i16,
         #[yaserde(prefix = "71", rename = "taskLoad")]
         pub task_load: i16,
+    }
+    impl restrictions::CheckRestrictions for AgentVoiceChannel {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.enabled.check_restrictions(restrictions.clone())?;
+            self.equipment.check_restrictions(restrictions.clone())?;
+            self.password.check_restrictions(restrictions.clone())?;
+            self.phone_id.check_restrictions(restrictions.clone())?;
+            self.phone_type.check_restrictions(restrictions.clone())?;
+            self.queue.check_restrictions(restrictions.clone())?;
+            self.task_ceiling.check_restrictions(restrictions.clone())?;
+            self.task_load.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "Agent")]
@@ -253,9 +429,30 @@ pub mod mod_71 {
         #[yaserde(prefix = "71", rename = "voiceChannel")]
         pub voice_channel: mod_71::AgentVoiceChannel,
     }
+    impl restrictions::CheckRestrictions for Agent {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.advocate_info.check_restrictions(restrictions.clone())?;
+            self.basic_profile.check_restrictions(restrictions.clone())?;
+            self.chat_channel.check_restrictions(restrictions.clone())?;
+            self.email_channel.check_restrictions(restrictions.clone())?;
+            self.extended_profile.check_restrictions(restrictions.clone())?;
+            self.login_id.check_restrictions(restrictions.clone())?;
+            self.security.check_restrictions(restrictions.clone())?;
+            self.task_load.check_restrictions(restrictions.clone())?;
+            self.voice_channel.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "AicServiceFault")]
     pub struct AicServiceFault {}
+    impl restrictions::CheckRestrictions for AicServiceFault {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            drop(restrictions);
+            Ok(())
+        }
+    }
     pub type Fault = mod_71::AicServiceFault;
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "Update")]
@@ -263,11 +460,25 @@ pub mod mod_71 {
         #[yaserde(prefix = "71", rename = "agent")]
         pub agent: mod_71::Agent,
     }
+    impl restrictions::CheckRestrictions for Update {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.agent.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "UpdateResponse")]
     pub struct UpdateResponse {
         #[yaserde(prefix = "71", rename = "UpdateReturn")]
         pub update_return: bool,
+    }
+    impl restrictions::CheckRestrictions for UpdateResponse {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.update_return.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "Delete")]
@@ -275,74 +486,181 @@ pub mod mod_71 {
         #[yaserde(prefix = "71", rename = "loginId")]
         pub login_id: String,
     }
+    impl restrictions::CheckRestrictions for Delete {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.login_id.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "DeleteResponse")]
     pub struct DeleteResponse {
         #[yaserde(prefix = "71", rename = "DeleteReturn")]
         pub delete_return: bool,
     }
+    impl restrictions::CheckRestrictions for DeleteResponse {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.delete_return.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "LookupAgentIds")]
     pub struct LookupAgentIds {}
+    impl restrictions::CheckRestrictions for LookupAgentIds {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "LookupAgentIdsResponse")]
     pub struct LookupAgentIdsResponse {
         #[yaserde(prefix = "71", rename = "LookupAgentIdsReturn")]
         pub lookup_agent_ids_return: Vec<String>,
     }
+    impl restrictions::CheckRestrictions for LookupAgentIdsResponse {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.lookup_agent_ids_return.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "LookupLRMIds")]
     pub struct LookupLRMIds {}
+    impl restrictions::CheckRestrictions for LookupLRMIds {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "LookupLRMIdsResponse")]
     pub struct LookupLRMIdsResponse {
         #[yaserde(prefix = "71", rename = "LookupLRMIdsReturn")]
         pub lookup_lrm_ids_return: Vec<String>,
     }
+    impl restrictions::CheckRestrictions for LookupLRMIdsResponse {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.lookup_lrm_ids_return.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "LookupWorkgroups")]
     pub struct LookupWorkgroups {}
+    impl restrictions::CheckRestrictions for LookupWorkgroups {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "LookupWorkgroupsResponse")]
     pub struct LookupWorkgroupsResponse {
         #[yaserde(prefix = "71", rename = "LookupWorkgroupsReturn")]
         pub lookup_workgroups_return: Vec<String>,
     }
+    impl restrictions::CheckRestrictions for LookupWorkgroupsResponse {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.lookup_workgroups_return.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "LookupDomains")]
     pub struct LookupDomains {}
+    impl restrictions::CheckRestrictions for LookupDomains {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "LookupDomainsResponse")]
     pub struct LookupDomainsResponse {
         #[yaserde(prefix = "71", rename = "LookupDomainsReturn")]
         pub lookup_domains_return: Vec<String>,
     }
+    impl restrictions::CheckRestrictions for LookupDomainsResponse {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.lookup_domains_return.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "LookupLinkGroups")]
     pub struct LookupLinkGroups {}
+    impl restrictions::CheckRestrictions for LookupLinkGroups {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "LookupLinkGroupsResponse")]
     pub struct LookupLinkGroupsResponse {
         #[yaserde(prefix = "71", rename = "LookupLinkGroupsReturn")]
         pub lookup_link_groups_return: Vec<String>,
     }
+    impl restrictions::CheckRestrictions for LookupLinkGroupsResponse {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.lookup_link_groups_return
+                .check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "LookupPhoneTypes")]
     pub struct LookupPhoneTypes {}
+    impl restrictions::CheckRestrictions for LookupPhoneTypes {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "LookupPhoneTypesResponse")]
     pub struct LookupPhoneTypesResponse {
         #[yaserde(prefix = "71", rename = "LookupPhoneTypesReturn")]
         pub lookup_phone_types_return: Vec<String>,
     }
+    impl restrictions::CheckRestrictions for LookupPhoneTypesResponse {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.lookup_phone_types_return
+                .check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "LookupSites")]
     pub struct LookupSites {}
+    impl restrictions::CheckRestrictions for LookupSites {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "LookupSitesResponse")]
     pub struct LookupSitesResponse {
         #[yaserde(prefix = "71", rename = "LookupSitesReturn")]
         pub lookup_sites_return: Vec<String>,
+    }
+    impl restrictions::CheckRestrictions for LookupSitesResponse {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.lookup_sites_return.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "Create")]
@@ -350,11 +668,448 @@ pub mod mod_71 {
         #[yaserde(prefix = "71", rename = "agent")]
         pub agent: mod_71::Agent,
     }
+    impl restrictions::CheckRestrictions for Create {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.agent.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
     #[yaserde(prefix = "71", namespaces = {"71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71"}, rename = "CreateResponse")]
     pub struct CreateResponse {
         #[yaserde(prefix = "71", rename = "CreateReturn")]
         pub create_return: bool,
+    }
+    impl restrictions::CheckRestrictions for CreateResponse {
+        fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+            self.create_return.check_restrictions(restrictions.clone())?;
+            drop(restrictions);
+            Ok(())
+        }
+    }
+}
+
+/* Delete */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct DeleteInputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "Delete")]
+    pub delete: mod_71::Delete,
+}
+impl restrictions::CheckRestrictions for DeleteInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.delete.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct DeleteInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for DeleteInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct DeleteOutputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "DeleteResponse")]
+    pub delete_response: mod_71::DeleteResponse,
+}
+impl restrictions::CheckRestrictions for DeleteOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.delete_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct DeleteOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: DeleteOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for DeleteOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+
+/* LookupDomains */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupDomainsInputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "LookupDomains")]
+    pub lookup_domains: mod_71::LookupDomains,
+}
+impl restrictions::CheckRestrictions for LookupDomainsInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.lookup_domains.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupDomainsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: LookupDomainsInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for LookupDomainsInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupDomainsOutputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "LookupDomainsResponse")]
+    pub lookup_domains_response: mod_71::LookupDomainsResponse,
+}
+impl restrictions::CheckRestrictions for LookupDomainsOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.lookup_domains_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupDomainsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: LookupDomainsOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for LookupDomainsOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+
+/* LookupWorkgroups */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupWorkgroupsInputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "LookupWorkgroups")]
+    pub lookup_workgroups: mod_71::LookupWorkgroups,
+}
+impl restrictions::CheckRestrictions for LookupWorkgroupsInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.lookup_workgroups.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupWorkgroupsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: LookupWorkgroupsInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for LookupWorkgroupsInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupWorkgroupsOutputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "LookupWorkgroupsResponse")]
+    pub lookup_workgroups_response: mod_71::LookupWorkgroupsResponse,
+}
+impl restrictions::CheckRestrictions for LookupWorkgroupsOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.lookup_workgroups_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupWorkgroupsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: LookupWorkgroupsOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for LookupWorkgroupsOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+
+/* LookupLRMIds */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupLRMIdsInputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "LookupLRMIds")]
+    pub lookup_lrm_ids: mod_71::LookupLRMIds,
+}
+impl restrictions::CheckRestrictions for LookupLRMIdsInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.lookup_lrm_ids.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupLRMIdsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: LookupLRMIdsInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for LookupLRMIdsInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupLRMIdsOutputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "LookupLRMIdsResponse")]
+    pub lookup_lrm_ids_response: mod_71::LookupLRMIdsResponse,
+}
+impl restrictions::CheckRestrictions for LookupLRMIdsOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.lookup_lrm_ids_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupLRMIdsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: LookupLRMIdsOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for LookupLRMIdsOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+
+/* LookupLinkGroups */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupLinkGroupsInputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "LookupLinkGroups")]
+    pub lookup_link_groups: mod_71::LookupLinkGroups,
+}
+impl restrictions::CheckRestrictions for LookupLinkGroupsInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.lookup_link_groups.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupLinkGroupsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: LookupLinkGroupsInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for LookupLinkGroupsInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupLinkGroupsOutputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "LookupLinkGroupsResponse")]
+    pub lookup_link_groups_response: mod_71::LookupLinkGroupsResponse,
+}
+impl restrictions::CheckRestrictions for LookupLinkGroupsOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.lookup_link_groups_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupLinkGroupsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: LookupLinkGroupsOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for LookupLinkGroupsOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+
+/* Update */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct UpdateInputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "Update")]
+    pub update: mod_71::Update,
+}
+impl restrictions::CheckRestrictions for UpdateInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct UpdateInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct UpdateOutputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "UpdateResponse")]
+    pub update_response: mod_71::UpdateResponse,
+}
+impl restrictions::CheckRestrictions for UpdateOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.update_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct UpdateOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: UpdateOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for UpdateOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+
+/* LookupSites */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupSitesInputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "LookupSites")]
+    pub lookup_sites: mod_71::LookupSites,
+}
+impl restrictions::CheckRestrictions for LookupSitesInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.lookup_sites.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupSitesInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: LookupSitesInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for LookupSitesInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupSitesOutputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "LookupSitesResponse")]
+    pub lookup_sites_response: mod_71::LookupSitesResponse,
+}
+impl restrictions::CheckRestrictions for LookupSitesOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.lookup_sites_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct LookupSitesOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: LookupSitesOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for LookupSitesOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+
+/* Create */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct CreateInputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "Create")]
+    pub create: mod_71::Create,
+}
+impl restrictions::CheckRestrictions for CreateInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.create.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct CreateInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for CreateInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct CreateOutputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "CreateResponse")]
+    pub create_response: mod_71::CreateResponse,
+}
+impl restrictions::CheckRestrictions for CreateOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.create_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct CreateOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: CreateOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for CreateOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+
+/* Get */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct GetInputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "Get")]
+    pub get: mod_71::Get,
+}
+impl restrictions::CheckRestrictions for GetInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct GetInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct GetOutputEnvelopeBody {
+    #[yaserde(prefix = "71", rename = "GetResponse")]
+    pub get_response: mod_71::GetResponse,
+}
+impl restrictions::CheckRestrictions for GetOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
+pub struct GetOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
     }
 }
 
@@ -366,11 +1121,21 @@ pub struct LookupAgentIdsInputEnvelopeBody {
     #[yaserde(prefix = "71", rename = "LookupAgentIds")]
     pub lookup_agent_ids: mod_71::LookupAgentIds,
 }
+impl restrictions::CheckRestrictions for LookupAgentIdsInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.lookup_agent_ids.check_restrictions(restrictions)
+    }
+}
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
 pub struct LookupAgentIdsInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
     pub body: LookupAgentIdsInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for LookupAgentIdsInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
@@ -378,227 +1143,21 @@ pub struct LookupAgentIdsOutputEnvelopeBody {
     #[yaserde(prefix = "71", rename = "LookupAgentIdsResponse")]
     pub lookup_agent_ids_response: mod_71::LookupAgentIdsResponse,
 }
+impl restrictions::CheckRestrictions for LookupAgentIdsOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.lookup_agent_ids_response.check_restrictions(restrictions)
+    }
+}
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
 pub struct LookupAgentIdsOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
     pub body: LookupAgentIdsOutputEnvelopeBody,
 }
-
-/* LookupLRMIds */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupLRMIdsInputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "LookupLRMIds")]
-    pub lookup_lrm_ids: mod_71::LookupLRMIds,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupLRMIdsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: LookupLRMIdsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupLRMIdsOutputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "LookupLRMIdsResponse")]
-    pub lookup_lrm_ids_response: mod_71::LookupLRMIdsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupLRMIdsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: LookupLRMIdsOutputEnvelopeBody,
-}
-
-/* Get */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct GetInputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "Get")]
-    pub get: mod_71::Get,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct GetInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct GetOutputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "GetResponse")]
-    pub get_response: mod_71::GetResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct GetOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetOutputEnvelopeBody,
-}
-
-/* Delete */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct DeleteInputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "Delete")]
-    pub delete: mod_71::Delete,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct DeleteInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct DeleteOutputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "DeleteResponse")]
-    pub delete_response: mod_71::DeleteResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct DeleteOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: DeleteOutputEnvelopeBody,
-}
-
-/* LookupWorkgroups */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupWorkgroupsInputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "LookupWorkgroups")]
-    pub lookup_workgroups: mod_71::LookupWorkgroups,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupWorkgroupsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: LookupWorkgroupsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupWorkgroupsOutputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "LookupWorkgroupsResponse")]
-    pub lookup_workgroups_response: mod_71::LookupWorkgroupsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupWorkgroupsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: LookupWorkgroupsOutputEnvelopeBody,
-}
-
-/* LookupLinkGroups */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupLinkGroupsInputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "LookupLinkGroups")]
-    pub lookup_link_groups: mod_71::LookupLinkGroups,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupLinkGroupsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: LookupLinkGroupsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupLinkGroupsOutputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "LookupLinkGroupsResponse")]
-    pub lookup_link_groups_response: mod_71::LookupLinkGroupsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupLinkGroupsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: LookupLinkGroupsOutputEnvelopeBody,
-}
-
-/* Create */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct CreateInputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "Create")]
-    pub create: mod_71::Create,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct CreateInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct CreateOutputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "CreateResponse")]
-    pub create_response: mod_71::CreateResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct CreateOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: CreateOutputEnvelopeBody,
-}
-
-/* LookupSites */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupSitesInputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "LookupSites")]
-    pub lookup_sites: mod_71::LookupSites,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupSitesInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: LookupSitesInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupSitesOutputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "LookupSitesResponse")]
-    pub lookup_sites_response: mod_71::LookupSitesResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupSitesOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: LookupSitesOutputEnvelopeBody,
-}
-
-/* LookupDomains */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupDomainsInputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "LookupDomains")]
-    pub lookup_domains: mod_71::LookupDomains,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupDomainsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: LookupDomainsInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupDomainsOutputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "LookupDomainsResponse")]
-    pub lookup_domains_response: mod_71::LookupDomainsResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct LookupDomainsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: LookupDomainsOutputEnvelopeBody,
+impl restrictions::CheckRestrictions for LookupAgentIdsOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
 }
 
 /* LookupPhoneTypes */
@@ -609,11 +1168,21 @@ pub struct LookupPhoneTypesInputEnvelopeBody {
     #[yaserde(prefix = "71", rename = "LookupPhoneTypes")]
     pub lookup_phone_types: mod_71::LookupPhoneTypes,
 }
+impl restrictions::CheckRestrictions for LookupPhoneTypesInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.lookup_phone_types.check_restrictions(restrictions)
+    }
+}
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
 pub struct LookupPhoneTypesInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
     pub body: LookupPhoneTypesInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for LookupPhoneTypesInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
@@ -621,38 +1190,21 @@ pub struct LookupPhoneTypesOutputEnvelopeBody {
     #[yaserde(prefix = "71", rename = "LookupPhoneTypesResponse")]
     pub lookup_phone_types_response: mod_71::LookupPhoneTypesResponse,
 }
+impl restrictions::CheckRestrictions for LookupPhoneTypesOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.lookup_phone_types_response.check_restrictions(restrictions)
+    }
+}
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
 #[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
 pub struct LookupPhoneTypesOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
     pub body: LookupPhoneTypesOutputEnvelopeBody,
 }
-
-/* Update */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct UpdateInputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "Update")]
-    pub update: mod_71::Update,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct UpdateInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateInputEnvelopeBody,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "71", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct UpdateOutputEnvelopeBody {
-    #[yaserde(prefix = "71", rename = "UpdateResponse")]
-    pub update_response: mod_71::UpdateResponse,
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "71" = "http://xml.avaya.com/ws/AgentAdmin/InteractionCenter/71" })]
-pub struct UpdateOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: UpdateOutputEnvelopeBody,
+impl restrictions::CheckRestrictions for LookupPhoneTypesOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
 }
 pub struct AicAgentAdminService {
     pub client: reqwest::Client,
@@ -668,54 +1220,7 @@ impl AicAgentAdminService {
         }
     }
 
-    pub async fn lookup_agent_ids(
-        &self,
-        req: LookupAgentIdsInputEnvelope,
-    ) -> error::SoapResult<LookupAgentIdsOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn lookup_lrm_ids(
-        &self,
-        req: LookupLRMIdsInputEnvelope,
-    ) -> error::SoapResult<LookupLRMIdsOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get(&self, req: GetInputEnvelope) -> error::SoapResult<GetOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
     pub async fn delete(&self, req: DeleteInputEnvelope) -> error::SoapResult<DeleteOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn lookup_workgroups(
-        &self,
-        req: LookupWorkgroupsInputEnvelope,
-    ) -> error::SoapResult<LookupWorkgroupsOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn lookup_link_groups(
-        &self,
-        req: LookupLinkGroupsInputEnvelope,
-    ) -> error::SoapResult<LookupLinkGroupsOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn create(&self, req: CreateInputEnvelope) -> error::SoapResult<CreateOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn lookup_sites(&self, req: LookupSitesInputEnvelope) -> error::SoapResult<LookupSitesOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
@@ -728,10 +1233,26 @@ impl AicAgentAdminService {
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 
-    pub async fn lookup_phone_types(
+    pub async fn lookup_workgroups(
         &self,
-        req: LookupPhoneTypesInputEnvelope,
-    ) -> error::SoapResult<LookupPhoneTypesOutputEnvelope> {
+        req: LookupWorkgroupsInputEnvelope,
+    ) -> error::SoapResult<LookupWorkgroupsOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn lookup_lrm_ids(
+        &self,
+        req: LookupLRMIdsInputEnvelope,
+    ) -> error::SoapResult<LookupLRMIdsOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn lookup_link_groups(
+        &self,
+        req: LookupLinkGroupsInputEnvelope,
+    ) -> error::SoapResult<LookupLinkGroupsOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
@@ -740,16 +1261,48 @@ impl AicAgentAdminService {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
+
+    pub async fn lookup_sites(&self, req: LookupSitesInputEnvelope) -> error::SoapResult<LookupSitesOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn create(&self, req: CreateInputEnvelope) -> error::SoapResult<CreateOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn get(&self, req: GetInputEnvelope) -> error::SoapResult<GetOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn lookup_agent_ids(
+        &self,
+        req: LookupAgentIdsInputEnvelope,
+    ) -> error::SoapResult<LookupAgentIdsOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn lookup_phone_types(
+        &self,
+        req: LookupPhoneTypesInputEnvelope,
+    ) -> error::SoapResult<LookupPhoneTypesOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
 }
 pub mod error {
     #![allow(dead_code)]
 
-    use std::error::Error;
+    use std::{error::Error, num::ParseIntError};
 
     #[derive(Debug)]
     pub enum SoapError {
         YaserdeError(String),
         Http(reqwest::Error),
+        Restriction(String),
     }
 
     pub type SoapResult<T> = Result<T, SoapError>;
@@ -759,6 +1312,7 @@ pub mod error {
             match self {
                 SoapError::YaserdeError(e) => write!(f, "Yaserde error: {e}"),
                 SoapError::Http(e) => write!(f, "HTTP error: {e}"),
+                SoapError::Restriction(e) => write!(f, "Restriction not met: {e}"),
             }
         }
     }
@@ -766,7 +1320,7 @@ pub mod error {
     impl Error for SoapError {
         fn source(&self) -> Option<&(dyn Error + 'static)> {
             match self {
-                SoapError::YaserdeError(_) => None,
+                SoapError::YaserdeError(_) | SoapError::Restriction(_) => None,
                 SoapError::Http(e) => Some(e),
             }
         }
@@ -781,12 +1335,21 @@ pub mod error {
             SoapError::Http(e)
         }
     }
+
+    impl From<ParseIntError> for SoapError {
+        fn from(err: ParseIntError) -> Self {
+            SoapError::Restriction(format!("invalid restriction in XSD: {err}"))
+        }
+    }
 }
 
 mod helpers {
     #![allow(dead_code)]
 
-    use super::error::{SoapError, SoapResult};
+    use super::{
+        error::{SoapError, SoapResult},
+        restrictions::CheckRestrictions,
+    };
     use reqwest::Client;
     use std::fmt;
     use yaserde::{YaDeserialize, YaSerialize};
@@ -797,7 +1360,7 @@ mod helpers {
         req: YI,
     ) -> SoapResult<YO>
     where
-        YI: YaSerialize,
+        YI: YaSerialize + CheckRestrictions,
         YO: YaDeserialize,
         U: fmt::Display,
         P: fmt::Display,
@@ -813,11 +1376,12 @@ mod helpers {
         req: YI,
     ) -> SoapResult<YO>
     where
-        YI: YaSerialize,
+        YI: YaSerialize + CheckRestrictions,
         YO: YaDeserialize,
         U: fmt::Display,
         P: fmt::Display,
     {
+        req.check_restrictions(None)?;
         let body = yaserde::ser::to_string(&req).map_err(SoapError::YaserdeError)?;
         let mut req = client.post(url).body(body);
         if let Some((username, password)) = credentials {
@@ -831,11 +1395,202 @@ mod helpers {
     }
 }
 
+pub mod restrictions {
+    use super::error::{SoapError, SoapResult};
+    use std::rc::Rc;
+
+    #[derive(Debug, PartialEq, Default)]
+    pub struct Restrictions {
+        pub min_inclusive: Option<i32>,
+        pub max_inclusive: Option<i32>,
+        pub min_exclusive: Option<i32>,
+        pub max_exclusive: Option<i32>,
+        pub length: Option<usize>,
+        pub min_length: Option<usize>,
+        pub max_length: Option<usize>,
+        pub enumeration: Option<Vec<String>>,
+    }
+
+    pub trait CheckRestrictions {
+        fn check_restrictions(&self, _restrictions: Option<Rc<Restrictions>>) -> SoapResult<()> {
+            Ok(())
+        }
+    }
+
+    impl<C> CheckRestrictions for Vec<C>
+    where
+        C: CheckRestrictions,
+    {
+        fn check_restrictions(&self, restrictions: Option<Rc<Restrictions>>) -> SoapResult<()> {
+            for c in self {
+                c.check_restrictions(restrictions.clone())?;
+            }
+            Ok(())
+        }
+    }
+
+    impl<C> CheckRestrictions for Option<C>
+    where
+        C: CheckRestrictions,
+    {
+        fn check_restrictions(&self, restrictions: Option<Rc<Restrictions>>) -> SoapResult<()> {
+            if let Some(c) = self {
+                c.check_restrictions(restrictions)?;
+            }
+            Ok(())
+        }
+    }
+
+    impl CheckRestrictions for i32 {
+        fn check_restrictions(&self, restrictions: Option<Rc<Restrictions>>) -> SoapResult<()> {
+            if let Some(restrictions) = restrictions {
+                if let Some(min_inclusive) = restrictions.min_inclusive {
+                    if *self <= min_inclusive {
+                        return Err(SoapError::Restriction("minInclusive restriction not met".to_string()));
+                    }
+                }
+
+                if let Some(max_inclusive) = restrictions.max_inclusive {
+                    if max_inclusive <= *self {
+                        return Err(SoapError::Restriction("maxInclusive restriction not met".to_string()));
+                    }
+                }
+
+                if let Some(min_exclusive) = restrictions.min_exclusive {
+                    if *self < min_exclusive {
+                        return Err(SoapError::Restriction("minExclusive restriction not met".to_string()));
+                    }
+                }
+
+                if let Some(max_exclusive) = restrictions.max_exclusive {
+                    if max_exclusive < *self {
+                        return Err(SoapError::Restriction("maxExclusive restriction not met".to_string()));
+                    }
+                }
+            }
+
+            Ok(())
+        }
+    }
+
+    macro_rules! impl_check_restrictions_for_int {
+    ($($t:ty),*) => {
+        $(
+            impl CheckRestrictions for $t {
+                fn check_restrictions(&self, restrictions: Option<Rc<Restrictions>>) -> SoapResult<()> {
+                    let value = i32::try_from(*self).map_err(|e| SoapError::Restriction(e.to_string()))?;
+                    value.check_restrictions(restrictions)
+                }
+            }
+        )*
+    }
+}
+
+    impl_check_restrictions_for_int!(i8, u8, i16, u16, u32, i64, u64);
+
+    impl CheckRestrictions for bool {
+        fn check_restrictions(&self, _restrictions: Option<Rc<Restrictions>>) -> SoapResult<()> {
+            // TODO: check restrictions
+            Ok(())
+        }
+    }
+
+    impl CheckRestrictions for f32 {
+        fn check_restrictions(&self, _restrictions: Option<Rc<Restrictions>>) -> SoapResult<()> {
+            // TODO: check restrictions
+            Ok(())
+        }
+    }
+
+    impl CheckRestrictions for f64 {
+        fn check_restrictions(&self, _restrictions: Option<Rc<Restrictions>>) -> SoapResult<()> {
+            // TODO: check restrictions
+            Ok(())
+        }
+    }
+
+    impl CheckRestrictions for String {
+        fn check_restrictions(&self, restrictions: Option<Rc<Restrictions>>) -> SoapResult<()> {
+            let Some(restrictions) = restrictions else {
+                return Ok(());
+            };
+
+            let s_len = self.chars().count();
+
+            if let Some(min_length) = restrictions.min_length {
+                if s_len < min_length {
+                    return Err(SoapError::Restriction("minLength restriction not met".to_string()));
+                }
+            }
+
+            if let Some(max_length) = restrictions.max_length {
+                if max_length < s_len {
+                    return Err(SoapError::Restriction("maxLength restriction not met".to_string()));
+                }
+            }
+
+            if let Some(length) = restrictions.length {
+                if length != s_len {
+                    return Err(SoapError::Restriction("length restriction not met".to_string()));
+                }
+            }
+
+            // Enumerations
+            if let Some(enumeration) = restrictions.enumeration.as_ref() {
+                if !enumeration.contains(self) {
+                    return Err(SoapError::Restriction("enumeration restriction not met".to_string()));
+                }
+            }
+
+            // Number-type checks; see if any of these are set
+            if restrictions.min_inclusive.is_none()
+                && restrictions.max_inclusive.is_none()
+                && restrictions.min_exclusive.is_none()
+                && restrictions.max_exclusive.is_none()
+            {
+                return Ok(());
+            }
+
+            let value = self.parse::<i32>()?;
+
+            if let Some(min_inclusive) = restrictions.min_inclusive {
+                if value <= min_inclusive {
+                    return Err(SoapError::Restriction("minInclusive restriction not met".to_string()));
+                }
+            }
+
+            if let Some(max_inclusive) = restrictions.max_inclusive {
+                if max_inclusive <= value {
+                    return Err(SoapError::Restriction("maxInclusive restriction not met".to_string()));
+                }
+            }
+
+            if let Some(min_exclusive) = restrictions.min_exclusive {
+                if value < min_exclusive {
+                    return Err(SoapError::Restriction("minExclusive restriction not met".to_string()));
+                }
+            }
+
+            if let Some(max_exclusive) = restrictions.max_exclusive {
+                if max_exclusive < value {
+                    return Err(SoapError::Restriction("maxExclusive restriction not met".to_string()));
+                }
+            }
+
+            Ok(())
+        }
+    }
+}
+
 /// This module contains the `MultiRef` type which is a wrapper around `Arc<RwLock<T>>` that implements `YaDeserialize` and `YaSerialize` for `T` and allows for multiple references to the same object.
 /// Inspired by [this](https://github.com/media-io/yaserde/issues/165#issuecomment-1810243674) comment on the yaserde repository.
 /// Needs `xml-rs`, `tokio` and `yaserde` as dependencies.
 pub mod multi_ref {
-    use std::{ops::Deref, sync::Arc};
+    use super::{
+        error::SoapResult,
+        restrictions::{CheckRestrictions, Restrictions},
+    };
+    use std::{ops::Deref, rc::Rc, sync::Arc};
     use yaserde::{YaDeserialize, YaSerialize};
 
     pub struct MultiRef<T> {
@@ -846,6 +1601,15 @@ pub mod multi_ref {
         #[allow(dead_code)]
         pub fn new(inner: T) -> Self {
             Self { inner: Arc::new(inner) }
+        }
+    }
+
+    impl<C> CheckRestrictions for MultiRef<C>
+    where
+        C: CheckRestrictions,
+    {
+        fn check_restrictions(&self, restrictions: Option<Rc<Restrictions>>) -> SoapResult<()> {
+            self.inner.check_restrictions(restrictions)
         }
     }
 
