@@ -1,7 +1,11 @@
 use super::SoapBinding;
 use crate::{
     error::WriterResult,
-    model::{Namespace, field::as_field_name, helpers::write_boilerplate_check_restrictions},
+    model::{
+        Namespace,
+        field::as_field_name,
+        helpers::{write_check_restrictions_footer, write_check_restrictions_header},
+    },
     reader::WriteXml,
 };
 use inflector::cases::{pascalcase::to_pascal_case, snakecase::to_snake_case};
@@ -127,7 +131,17 @@ where
         }
         writeln!(writer, "}}")?;
 
-        write_boilerplate_check_restrictions(writer, rust_name)?;
+        // Write the restriction check
+        write_check_restrictions_header(writer, &rust_name, None)?;
+        for (part_name, _header) in &soap_operation.headers {
+            let field_name = as_field_name(part_name);
+            writeln!(
+                writer,
+                "     self.{field_name}.check_restrictions(restrictions.clone())?;"
+            )?;
+        }
+        writeln!(writer, "    Ok(())")?;
+        write_check_restrictions_footer(writer)?;
     }
 
     let body = soap_operation.body.rust_type.xml_name().expect("xml_name not found");
@@ -159,7 +173,9 @@ where
     }
     writeln!(writer, "}}")?;
 
-    write_boilerplate_check_restrictions(writer, rust_name)?;
+    write_check_restrictions_header(writer, &rust_name, None)?;
+    writeln!(writer, "     self.{body_field_name}.check_restrictions(restrictions)")?;
+    write_check_restrictions_footer(writer)?;
 
     writeln!(writer, "#[derive(Debug, Default, YaSerialize, YaDeserialize)]")?;
     writeln!(
@@ -177,6 +193,12 @@ where
     writeln!(writer, "    pub body: {envelope_name}Body,",)?;
     writeln!(writer, "}}")?;
 
-    write_boilerplate_check_restrictions(writer, envelope_name)?;
+    write_check_restrictions_header(writer, envelope_name, None)?;
+    if !soap_operation.headers.is_empty() {
+        writeln!(writer, "     self.header.check_restrictions(restrictions.clone())?;")?;
+    }
+    writeln!(writer, "     self.body.check_restrictions(restrictions)")?;
+    write_check_restrictions_footer(writer)?;
+
     Ok(())
 }

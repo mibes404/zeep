@@ -2,8 +2,8 @@ use crate::services::{
     GetUserAvailabilityInputEnvelope, GetUserAvailabilityInputEnvelopeBody, GetUserAvailabilityInputEnvelopeHeader,
     mod_mes::GetUserAvailabilityRequest,
     mod_typ::{
-        ArrayOfMailboxData, EmailAddress, ExchangeVersionType, MailboxData, ProtectionRuleSenderDepartmentsType,
-        ProtectionRuleValueType, RequestServerVersion,
+        ArrayOfMailboxData, EmailAddress, ExchangeVersionType, MailboxData, MeetingAttendeeType,
+        ProtectionRuleSenderDepartmentsType, ProtectionRuleValueType, RequestServerVersion,
     },
     restrictions::CheckRestrictions,
 };
@@ -15,7 +15,7 @@ mod services;
 async fn main() {
     env_logger::init();
 
-    let sample_user_availability_request = GetUserAvailabilityInputEnvelope {
+    let mut sample_user_availability_request = GetUserAvailabilityInputEnvelope {
         header: GetUserAvailabilityInputEnvelopeHeader {
             request_version: Some(RequestServerVersion {
                 version: ExchangeVersionType {
@@ -32,6 +32,9 @@ async fn main() {
                             address: "user2@domain.com".to_string(),
                             ..Default::default()
                         },
+                        attendee_type: MeetingAttendeeType {
+                            value: "Optional".to_string(),
+                        },
                         ..Default::default()
                     }],
                 },
@@ -39,6 +42,10 @@ async fn main() {
             },
         },
     };
+
+    sample_user_availability_request
+        .check_restrictions(None)
+        .expect("check_restrictions failed");
 
     // print the XML:
     println!(
@@ -56,27 +63,12 @@ async fn main() {
 
     println!("==============================");
 
-    let protection_rule_sender_departments_type = ProtectionRuleSenderDepartmentsType {
-        value: vec![ProtectionRuleValueType { value: "".to_string() }],
-    };
+    // if you try to use a non-defined version-type the check will fail
+    sample_user_availability_request.header.request_version = Some(RequestServerVersion {
+        version: ExchangeVersionType {
+            value: "Exchange2011".to_string(),
+        },
+    });
 
-    // print the XML
-    println!(
-        "{}",
-        yaserde::ser::to_string_with_config(
-            &protection_rule_sender_departments_type,
-            &Config {
-                perform_indent: true,
-                write_document_declaration: true,
-                indent_string: None
-            }
-        )
-        .unwrap()
-    );
-
-    assert!(
-        protection_rule_sender_departments_type
-            .check_restrictions(None)
-            .is_err()
-    );
+    assert!(sample_user_availability_request.check_restrictions(None).is_err());
 }

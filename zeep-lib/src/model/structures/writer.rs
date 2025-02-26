@@ -2,7 +2,10 @@ use super::{
     ComplexProps, ElementProps, ElementType, Namespace, Rc, RustFieldType, RustType, SimpleProps, WriteXml,
     WriterError, WriterResult, io, xml_name_to_rust_name,
 };
-use crate::model::structures::restrictions::Restrictions;
+use crate::model::{
+    helpers::{write_check_restrictions_footer, write_check_restrictions_header},
+    structures::restrictions::Restrictions,
+};
 
 impl<W> WriteXml<W> for RustType
 where
@@ -120,45 +123,6 @@ where
     writeln!(writer, "     self.value.check_restrictions(restrictions)")?;
     write_check_restrictions_footer(writer)?;
 
-    Ok(())
-}
-
-fn write_check_restrictions_header<W>(
-    writer: &mut W,
-    rust_name: &str,
-    restrictions: Option<&Restrictions>,
-) -> Result<(), WriterError>
-where
-    W: io::Write,
-{
-    writeln!(writer, "impl restrictions::CheckRestrictions for {rust_name} {{")?;
-    writeln!(
-        writer,
-        "  fn check_restrictions(&self, mut restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()>  {{"
-    )?;
-
-    writeln!(writer, "     if restrictions.is_none() {{")?;
-
-    if let Some(restrictions) = restrictions {
-        writeln!(writer, "        restrictions = Some(")?;
-        restrictions.write_xml(writer)?;
-        writeln!(writer, ");")?;
-    } else {
-        writeln!(
-            writer,
-            "        restrictions = Some(Rc::new(restrictions::Restrictions::default()));"
-        )?;
-    }
-    writeln!(writer, "     }}")?;
-    Ok(())
-}
-
-fn write_check_restrictions_footer<W>(writer: &mut W) -> Result<(), WriterError>
-where
-    W: io::Write,
-{
-    writeln!(writer, "  }}")?;
-    writeln!(writer, "}}")?;
     Ok(())
 }
 
