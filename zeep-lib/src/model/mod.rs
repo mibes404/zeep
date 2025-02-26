@@ -1,11 +1,15 @@
 pub mod doc;
 pub mod field;
-mod file_header;
-mod helpers;
-mod helpers_content;
 pub mod node;
 pub mod soap;
 pub mod structures;
+
+mod file_header;
+mod helpers;
+mod helpers_content;
+
+#[cfg(test)]
+mod helpers_test;
 
 use crate::model::doc::RustDocument;
 use roxmltree::Node;

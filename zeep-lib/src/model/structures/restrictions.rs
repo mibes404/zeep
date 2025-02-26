@@ -1,5 +1,5 @@
-use super::{Node, RustFieldType, RustType};
-use crate::{error::WriterResult, model::helpers_content, reader::WriteXml};
+use super::{Node, RustFieldType};
+use crate::{error::WriterResult, reader::WriteXml};
 use std::io;
 
 #[derive(Debug, PartialEq, Default)]
@@ -28,7 +28,7 @@ where
         // Here we want to write the constructor for the helpers_content::restrictions::Restrictions
         // and write that to the fn write_xml(&self, writer: &mut W) -> WriterResult<()> {
 
-        writeln!(writer, "restrictions::Restrictions {{")?;
+        writeln!(writer, "Rc::new(restrictions::Restrictions {{")?;
         if let Some(min_inclusive) = &self.min_inclusive {
             writeln!(writer, "   min_inclusive: Some({min_inclusive}), ")?;
         }
@@ -50,8 +50,18 @@ where
         if let Some(max_length) = &self.max_length {
             writeln!(writer, "   max_length: Some({max_length}), ")?;
         }
+
+        // add the enumeration
+        if let Some(enumeration) = &self.enumeration {
+            writeln!(writer, "   enumeration: Some(vec![")?;
+            for value in enumeration {
+                writeln!(writer, "      \"{value}\".to_string(),")?;
+            }
+            writeln!(writer, "   ]),")?;
+        }
+
         writeln!(writer, "   ..Default::default()")?;
-        writeln!(writer, "}}")?;
+        writeln!(writer, "}})")?;
 
         Ok(())
     }

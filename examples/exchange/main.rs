@@ -1,7 +1,11 @@
 use crate::services::{
     GetUserAvailabilityInputEnvelope, GetUserAvailabilityInputEnvelopeBody, GetUserAvailabilityInputEnvelopeHeader,
     mod_mes::GetUserAvailabilityRequest,
-    mod_typ::{ArrayOfMailboxData, EmailAddress, ExchangeVersionType, MailboxData, RequestServerVersion},
+    mod_typ::{
+        ArrayOfMailboxData, EmailAddress, ExchangeVersionType, MailboxData, ProtectionRuleSenderDepartmentsType,
+        ProtectionRuleValueType, RequestServerVersion,
+    },
+    restrictions::CheckRestrictions,
 };
 use yaserde::ser::Config;
 
@@ -15,7 +19,7 @@ async fn main() {
         header: GetUserAvailabilityInputEnvelopeHeader {
             request_version: Some(RequestServerVersion {
                 version: ExchangeVersionType {
-                    inner: "Exchange2010".to_string(),
+                    value: "Exchange2010".to_string(),
                 },
             }),
             ..Default::default()
@@ -48,5 +52,31 @@ async fn main() {
             }
         )
         .unwrap()
+    );
+
+    println!("==============================");
+
+    let protection_rule_sender_departments_type = ProtectionRuleSenderDepartmentsType {
+        value: vec![ProtectionRuleValueType { value: "".to_string() }],
+    };
+
+    // print the XML
+    println!(
+        "{}",
+        yaserde::ser::to_string_with_config(
+            &protection_rule_sender_departments_type,
+            &Config {
+                perform_indent: true,
+                write_document_declaration: true,
+                indent_string: None
+            }
+        )
+        .unwrap()
+    );
+
+    assert!(
+        protection_rule_sender_departments_type
+            .check_restrictions(None)
+            .is_err()
     );
 }

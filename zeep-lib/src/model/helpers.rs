@@ -22,7 +22,7 @@ where
     writeln!(writer, "impl restrictions::CheckRestrictions for {rust_name} {{")?;
     writeln!(
         writer,
-        "  fn check_restrictions(&self, _restrictions: Option<restrictions::Restrictions>) -> error::SoapResult<()> {{"
+        "  fn check_restrictions(&self, _restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {{"
     )?;
     writeln!(writer, "     Ok(())")?;
     writeln!(writer, "  }}")?;

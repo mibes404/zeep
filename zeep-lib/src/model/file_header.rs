@@ -27,6 +27,7 @@ where
 
 use log::{debug, trace, warn};
 use std::io::{Read, Write};
+use std::rc::Rc;
 use yaserde_derive::{YaDeserialize, YaSerialize};
 
 pub const SOAP_ENCODING: &str = "http://www.w3.org/2003/05/soap-encoding";

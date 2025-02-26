@@ -2,7 +2,7 @@ use super::{
     ComplexProps, ElementProps, ElementType, Namespace, Rc, RustFieldType, RustType, SimpleProps, WriteXml,
     WriterError, WriterResult, io, xml_name_to_rust_name,
 };
-use crate::model::{helpers::write_boilerplate_check_restrictions, structures::restrictions::Restrictions};
+use crate::model::structures::restrictions::Restrictions;
 
 impl<W> WriteXml<W> for RustType
 where
@@ -104,22 +104,37 @@ where
     writeln!(writer, "pub struct {rust_name} {{")?;
     if rust_type.is_string() {
         writeln!(writer, "    #[yaserde(text = true)]")?;
-        writeln!(writer, "    pub inner: {rust_type}")?;
+        writeln!(writer, "    pub value: {rust_type}")?;
     } else if rust_type.is_other() {
         writeln!(writer, "    #[yaserde(flatten = true)]")?;
-        writeln!(writer, "    pub inner: {rust_type}")?;
+        writeln!(writer, "    pub value: {rust_type}")?;
     } else {
         // note: flatten is not supported for other types
         writeln!(writer, "    #[yaserde(text = true)]")?;
-        writeln!(writer, "    pub inner: String")?;
+        writeln!(writer, "    pub value: String")?;
     }
     writeln!(writer, "}}")?;
 
     // Write the restriction check
+    write_check_restrictions_header(writer, rust_name, restrictions)?;
+    writeln!(writer, "     self.value.check_restrictions(restrictions)")?;
+    write_check_restrictions_footer(writer)?;
+
+    Ok(())
+}
+
+fn write_check_restrictions_header<W>(
+    writer: &mut W,
+    rust_name: &str,
+    restrictions: Option<&Restrictions>,
+) -> Result<(), WriterError>
+where
+    W: io::Write,
+{
     writeln!(writer, "impl restrictions::CheckRestrictions for {rust_name} {{")?;
     writeln!(
         writer,
-        "  fn check_restrictions(&self, mut restrictions: Option<restrictions::Restrictions>) -> error::SoapResult<()>  {{"
+        "  fn check_restrictions(&self, mut restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()>  {{"
     )?;
 
     writeln!(writer, "     if restrictions.is_none() {{")?;
@@ -131,21 +146,19 @@ where
     } else {
         writeln!(
             writer,
-            "        restrictions = Some(restrictions::Restrictions::default());"
+            "        restrictions = Some(Rc::new(restrictions::Restrictions::default()));"
         )?;
     }
     writeln!(writer, "     }}")?;
+    Ok(())
+}
 
-    // TODO: implement restrictions
-    if matches!(rust_type, RustFieldType::Other(_) | RustFieldType::String) {
-        writeln!(writer, "     self.inner.check_restrictions(restrictions)")?;
-    } else {
-        writeln!(writer, "     Ok(())")?;
-    }
-
+fn write_check_restrictions_footer<W>(writer: &mut W) -> Result<(), WriterError>
+where
+    W: io::Write,
+{
     writeln!(writer, "  }}")?;
     writeln!(writer, "}}")?;
-
     Ok(())
 }
 
@@ -183,7 +196,17 @@ where
     }
     writeln!(writer, "}}")?;
 
-    write_boilerplate_check_restrictions(writer, rust_name)?;
+    // Write the restriction check
+    write_check_restrictions_header(writer, &rust_name, None)?;
+    for field in fields {
+        let field_name = &field.rust_name;
+        writeln!(
+            writer,
+            "     self.{field_name}.check_restrictions(restrictions.clone())?;"
+        )?;
+    }
+    writeln!(writer, "    Ok(())")?;
+    write_check_restrictions_footer(writer)?;
 
     Ok(())
 }
@@ -260,7 +283,7 @@ pub struct Person {
 
     #[test]
     fn can_write_a_simple_type_to_rust() {
-        const EXPECTED: &str = "/// A person\n#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct Person {\n    #[yaserde(text = true)]\n    pub inner: String\n}\n";
+        const EXPECTED: &str = "/// A person\n#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct Person {\n    #[yaserde(text = true)]\n    pub value: String\n}\n";
         let mut writer = Vec::new();
         let props = prep_simple_props(None);
         let rust_type = RustType::Simple(props);
