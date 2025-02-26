@@ -189,30 +189,13 @@ mod tests {
         let rust_type = RustType::Complex(props.into());
         rust_type.write_xml(&mut writer).unwrap();
 
-        let expected = r#"/// A person
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-pub struct Person {
-    #[yaserde(rename = "name")]
-    pub name: String,
-    #[yaserde(rename = "age")]
-    pub age: i32,
-}
-"#;
+        let expected = "/// A person\n#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct Person {\n    #[yaserde(rename = \"name\")]\n    pub name: String,\n    #[yaserde(rename = \"age\")]\n    pub age: i32,\n}\nimpl restrictions::CheckRestrictions for Person {\n  fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()>  {\n     self.name.check_restrictions(restrictions.clone())?;\n     self.age.check_restrictions(restrictions.clone())?;\n    drop(restrictions);\n    Ok(())\n  }\n}\n";
         assert_eq!(String::from_utf8(writer).unwrap(), expected);
     }
 
     #[test]
     fn can_write_a_struct_type_with_namespace_to_rust() {
-        const EXPECTED: &str = r#"/// A person
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "ex", namespaces = {"ex" = "http://example.com"}, rename = "Person")]
-pub struct Person {
-    #[yaserde(rename = "name")]
-    pub name: String,
-    #[yaserde(rename = "age")]
-    pub age: i32,
-}
-"#;
+        const EXPECTED: &str = "/// A person\n#[derive(Debug, Default, YaSerialize, YaDeserialize)]\n#[yaserde(prefix = \"ex\", namespaces = {\"ex\" = \"http://example.com\"}, rename = \"Person\")]\npub struct Person {\n    #[yaserde(rename = \"name\")]\n    pub name: String,\n    #[yaserde(rename = \"age\")]\n    pub age: i32,\n}\nimpl restrictions::CheckRestrictions for Person {\n  fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()>  {\n     self.name.check_restrictions(restrictions.clone())?;\n     self.age.check_restrictions(restrictions.clone())?;\n    drop(restrictions);\n    Ok(())\n  }\n}\n";
 
         let mut writer = Vec::new();
         let props = prep_struct_props(Some(Rc::new(Namespace {
@@ -249,7 +232,7 @@ pub struct Person {
 
     #[test]
     fn can_write_a_simple_type_to_rust() {
-        const EXPECTED: &str = "/// A person\n#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct Person {\n    #[yaserde(text = true)]\n    pub value: String\n}\n";
+        const EXPECTED: &str = "/// A person\n#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct Person {\n    #[yaserde(text = true)]\n    pub value: String\n}\nimpl restrictions::CheckRestrictions for Person {\n  fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()>  {\n     self.value.check_restrictions(restrictions)\n  }\n}\n";
         let mut writer = Vec::new();
         let props = prep_simple_props(None);
         let rust_type = RustType::Simple(props);
