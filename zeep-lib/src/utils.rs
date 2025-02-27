@@ -7,7 +7,7 @@ use std::path::Path;
 /// Prepare the input file and the XSD files to be read.
 ///
 /// # Errors
-/// When the needed files can not be found or read.
+/// When the necessary files cannot be found or read.
 pub fn read_input_file_and_xsd_files_at_path(current_file: &Path) -> WriterResult<FilesToRead> {
     if !current_file.is_file() {
         return Err(WriterError::PathNotFound);

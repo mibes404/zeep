@@ -1,3 +1,15 @@
+//! This module contains the `XmlReader` struct which is responsible for reading the XML and
+//! converting it to a `RustDocument` The entry point is the `read_xml` method which takes a
+//! `FilesToRead` struct and returns a `RustDocument` The `Files` struct is used to hold the
+//! XML content and the `FilesToRead` struct is used to hold the `Files` and the starting file
+//! to read from.
+//!
+//! The `RustDocument` (and the included elements) implement the `WriteXml` trait which is used
+//! to write the Rust code to a writer.
+//!
+//! The `read_input_file_and_xsd_files_at_path` helper function can be used to easily construct
+//! the `FilesToRead` struct from a file path.
+
 use crate::{
     error::{WriterError, WriterResult},
     model::{
@@ -17,6 +29,7 @@ pub const WELL_KNOWN_NAMESPACES: &[&str] = &[
     "http://www.w3.org/2007/XMLSchema-versioning",
 ];
 
+/// The `WriteXml` trait is used to write the Rust code to a writer, like a file or a buffer.
 pub trait WriteXml<W>
 where
     W: io::Write,
@@ -28,16 +41,19 @@ where
     fn write_xml(&self, writer: &mut W) -> WriterResult<()>;
 }
 
+/// The `XmlReader` struct is responsible for reading the XML and converting it to a `RustDocument`
 pub struct XmlReader;
 
-pub struct FileContent {
+/// The `FileContent` struct is used to hold the XML content and a flag to indicate if the file
+/// has been processed or not.
+struct FileContent {
     xml: String,
     processed: AtomicBool,
 }
 
 impl FileContent {
     #[must_use]
-    pub fn new(xml: String) -> Self {
+    fn new(xml: String) -> Self {
         FileContent {
             xml,
             processed: AtomicBool::new(false),
@@ -45,8 +61,9 @@ impl FileContent {
     }
 }
 
-pub type Schemalocation = String;
+type Schemalocation = String;
 
+/// The `Files` struct is used to hold the XML content
 pub struct Files {
     map: HashMap<Schemalocation, FileContent>,
 }
@@ -72,6 +89,7 @@ impl Files {
     }
 }
 
+/// The `FilesToRead` struct is used to hold the `Files` and the starting file to read from.
 pub struct FilesToRead {
     start_with_file: String,
     files: Files,
