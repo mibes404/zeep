@@ -206,12 +206,18 @@ impl XmlReader {
         doc: &mut RustDocument,
         child: Node<'n, 'n>,
     ) -> Result<(), WriterError> {
-        let schema = child
-            .children()
-            .find(|n| n.tag_name().name() == "schema")
-            .ok_or(WriterError::SchemaNotFound)?;
-        Self::read_xsd(schema, files, doc)?;
-        Ok(())
+        let mut any = false;
+        for node in child.children() {
+            if node.tag_name().name() == "schema" {
+                Self::read_xsd(node, files, doc)?;
+                any = true;
+            }
+        }
+        if any {
+            Ok(())
+        } else {
+            Err(WriterError::SchemaNotFound)
+        }
     }
 
     fn read_xsd<'n>(node: Node<'n, 'n>, files: &Files, doc: &mut RustDocument) -> WriterResult<()> {
