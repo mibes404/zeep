@@ -481,4 +481,23 @@ mod tests {
             "typ"
         );
     }
+
+    #[test]
+    fn can_handle_inline_namespace_definitions() {
+        const XSD_TYPES: &str = include_str!("../test-data/inline-namespace-definition.xsd");
+        let files = Files::new("types.xsd", XSD_TYPES);
+
+        let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
+        let rust_doc = XmlReader::read_xml_internal(file, file_name, &files).unwrap();
+        assert_eq!(rust_doc.nodes.len(), 2);
+
+        let greeting_request = rust_doc.nodes.get(1).unwrap();
+        let RustType::Complex(props) = &greeting_request.rust_type else {
+            panic!()
+        };
+
+        assert_eq!(props.fields.len(), 1);
+        let greeting_field = props.fields.first().unwrap();
+        assert_eq!(greeting_field.xml_name, "Body");
+    }
 }
