@@ -11,7 +11,7 @@ use crate::{
     reader::{WELL_KNOWN_NAMESPACES, WriteXml},
 };
 use roxmltree::{Document, Node};
-use std::{collections::HashMap, rc::Rc};
+use std::{collections::{HashMap, HashSet}, rc::Rc};
 
 pub struct RustDocument {
     pub(crate) namespace_lookup: HashMap<String, Rc<Namespace>>,
@@ -235,8 +235,11 @@ where
         }
 
         // write the soap bindings
+        let used_bindings = self.soap_services.iter().map(|s| &s.binding.name).collect::<HashSet<_>>();
         for binding in &self.soap_bindings {
-            binding.write_xml(writer)?;
+            if used_bindings.contains(&&binding.name) {
+                binding.write_xml(writer)?;
+            }
         }
 
         // write the soap services
