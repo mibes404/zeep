@@ -11,7 +11,10 @@ use crate::{
     reader::{WELL_KNOWN_NAMESPACES, WriteXml},
 };
 use roxmltree::{Document, Node};
-use std::{collections::HashMap, rc::Rc};
+use std::{
+    collections::{HashMap, HashSet},
+    rc::Rc,
+};
 
 pub struct RustDocument {
     pub(crate) namespace_lookup: HashMap<String, Rc<Namespace>>,
@@ -235,8 +238,15 @@ where
         }
 
         // write the soap bindings
+        let used_bindings = self
+            .soap_services
+            .iter()
+            .map(|s| &s.binding.name)
+            .collect::<HashSet<_>>();
         for binding in &self.soap_bindings {
-            binding.write_xml(writer)?;
+            if used_bindings.contains(&&binding.name) {
+                binding.write_xml(writer)?;
+            }
         }
 
         // write the soap services
@@ -257,7 +267,7 @@ fn make_abbreviated_namespace(namespace: &str, existing_namespaces: &[Rc<Namespa
 
     let mut append: Option<u8> = None;
 
-    let abbreviation = if let Some(last_segment) = namespace.split('/').next_back() {
+    let abbreviation = if let Some(last_segment) = namespace.split('/').filter(|it| !it.is_empty()).next_back() {
         if let Some(slashed) = last_segment.split('-').next_back() {
             take_three_chars_max(slashed)
         } else {
@@ -312,6 +322,9 @@ mod tests {
 
         let abbr = make_abbreviated_namespace("http://www.w3.org/2001/XMLSchema-instance", &existing_namespaces);
         assert_eq!(abbr, "ins1");
+
+        let abbr = make_abbreviated_namespace("https://example.com/", &[]);
+        assert_eq!(abbr, "exa");
     }
 
     #[test]

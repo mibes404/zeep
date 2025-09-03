@@ -25,7 +25,6 @@ where
 #![allow(unused_imports)]
 #![allow(non_local_definitions)]
 
-use log::{debug, trace, warn};
 use std::io::{Read, Write};
 use std::rc::Rc;
 use yaserde_derive::{YaDeserialize, YaSerialize};
