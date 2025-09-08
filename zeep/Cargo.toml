@@ -2,7 +2,8 @@
 name = "zeep"
 version = "0.2.1"
 authors = ["mibes <mibes@avaya.com>"]
-edition = "2024"
+edition = { workspace = true }
+rust-version = { workspace = true }
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
