@@ -149,28 +149,28 @@ pub mod restrictions {
     impl CheckRestrictions for i32 {
         fn check_restrictions(&self, restrictions: Option<Rc<Restrictions>>) -> SoapResult<()> {
             if let Some(restrictions) = restrictions {
-                if let Some(min_inclusive) = restrictions.min_inclusive {
-                    if *self <= min_inclusive {
-                        return Err(SoapError::Restriction("minInclusive restriction not met".to_string()));
-                    }
+                if let Some(min_inclusive) = restrictions.min_inclusive
+                    && *self <= min_inclusive
+                {
+                    return Err(SoapError::Restriction("minInclusive restriction not met".to_string()));
                 }
 
-                if let Some(max_inclusive) = restrictions.max_inclusive {
-                    if max_inclusive <= *self {
-                        return Err(SoapError::Restriction("maxInclusive restriction not met".to_string()));
-                    }
+                if let Some(max_inclusive) = restrictions.max_inclusive
+                    && max_inclusive <= *self
+                {
+                    return Err(SoapError::Restriction("maxInclusive restriction not met".to_string()));
                 }
 
-                if let Some(min_exclusive) = restrictions.min_exclusive {
-                    if *self < min_exclusive {
-                        return Err(SoapError::Restriction("minExclusive restriction not met".to_string()));
-                    }
+                if let Some(min_exclusive) = restrictions.min_exclusive
+                    && *self < min_exclusive
+                {
+                    return Err(SoapError::Restriction("minExclusive restriction not met".to_string()));
                 }
 
-                if let Some(max_exclusive) = restrictions.max_exclusive {
-                    if max_exclusive < *self {
-                        return Err(SoapError::Restriction("maxExclusive restriction not met".to_string()));
-                    }
+                if let Some(max_exclusive) = restrictions.max_exclusive
+                    && max_exclusive < *self
+                {
+                    return Err(SoapError::Restriction("maxExclusive restriction not met".to_string()));
                 }
             }
 
@@ -222,29 +222,29 @@ pub mod restrictions {
 
             let s_len = self.chars().count();
 
-            if let Some(min_length) = restrictions.min_length {
-                if s_len < min_length {
-                    return Err(SoapError::Restriction("minLength restriction not met".to_string()));
-                }
+            if let Some(min_length) = restrictions.min_length
+                && s_len < min_length
+            {
+                return Err(SoapError::Restriction("minLength restriction not met".to_string()));
             }
 
-            if let Some(max_length) = restrictions.max_length {
-                if max_length < s_len {
-                    return Err(SoapError::Restriction("maxLength restriction not met".to_string()));
-                }
+            if let Some(max_length) = restrictions.max_length
+                && max_length < s_len
+            {
+                return Err(SoapError::Restriction("maxLength restriction not met".to_string()));
             }
 
-            if let Some(length) = restrictions.length {
-                if length != s_len {
-                    return Err(SoapError::Restriction("length restriction not met".to_string()));
-                }
+            if let Some(length) = restrictions.length
+                && length != s_len
+            {
+                return Err(SoapError::Restriction("length restriction not met".to_string()));
             }
 
             // Enumerations
-            if let Some(enumeration) = restrictions.enumeration.as_ref() {
-                if !enumeration.contains(self) {
-                    return Err(SoapError::Restriction("enumeration restriction not met".to_string()));
-                }
+            if let Some(enumeration) = restrictions.enumeration.as_ref()
+                && !enumeration.contains(self)
+            {
+                return Err(SoapError::Restriction("enumeration restriction not met".to_string()));
             }
 
             // Number-type checks; see if any of these are set
@@ -258,28 +258,28 @@ pub mod restrictions {
 
             let value = self.parse::<i32>()?;
 
-            if let Some(min_inclusive) = restrictions.min_inclusive {
-                if value <= min_inclusive {
-                    return Err(SoapError::Restriction("minInclusive restriction not met".to_string()));
-                }
+            if let Some(min_inclusive) = restrictions.min_inclusive
+                && value <= min_inclusive
+            {
+                return Err(SoapError::Restriction("minInclusive restriction not met".to_string()));
             }
 
-            if let Some(max_inclusive) = restrictions.max_inclusive {
-                if max_inclusive <= value {
-                    return Err(SoapError::Restriction("maxInclusive restriction not met".to_string()));
-                }
+            if let Some(max_inclusive) = restrictions.max_inclusive
+                && max_inclusive <= value
+            {
+                return Err(SoapError::Restriction("maxInclusive restriction not met".to_string()));
             }
 
-            if let Some(min_exclusive) = restrictions.min_exclusive {
-                if value < min_exclusive {
-                    return Err(SoapError::Restriction("minExclusive restriction not met".to_string()));
-                }
+            if let Some(min_exclusive) = restrictions.min_exclusive
+                && value < min_exclusive
+            {
+                return Err(SoapError::Restriction("minExclusive restriction not met".to_string()));
             }
 
-            if let Some(max_exclusive) = restrictions.max_exclusive {
-                if max_exclusive < value {
-                    return Err(SoapError::Restriction("maxExclusive restriction not met".to_string()));
-                }
+            if let Some(max_exclusive) = restrictions.max_exclusive
+                && max_exclusive < value
+            {
+                return Err(SoapError::Restriction("maxExclusive restriction not met".to_string()));
             }
 
             Ok(())

@@ -103,9 +103,9 @@ fn get_restriction_from_attribute_or_node(
 ) {
     if let Some(value) = restriction.attribute(restriction_name) {
         *target_field = Some(value.to_string());
-    } else if let Some(value_node) = restriction.children().find(|n| n.tag_name().name() == restriction_name) {
-        if let Some(value) = value_node.attribute("value") {
-            *target_field = Some(value.to_string());
-        }
+    } else if let Some(value_node) = restriction.children().find(|n| n.tag_name().name() == restriction_name)
+        && let Some(value) = value_node.attribute("value")
+    {
+        *target_field = Some(value.to_string());
     }
 }

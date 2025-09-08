@@ -176,10 +176,10 @@ fn build_simple_list_type<'n>(
         .children()
         .filter(|n| n.is_element() && n.tag_name().name() == "enumeration");
     for enum_i in enumeration {
-        if let Some(value) = enum_i.attribute("value") {
-            if let Some(enumeration) = &mut restrictions.enumeration {
-                enumeration.push(value.to_string());
-            }
+        if let Some(value) = enum_i.attribute("value")
+            && let Some(enumeration) = &mut restrictions.enumeration
+        {
+            enumeration.push(value.to_string());
         }
     }
 

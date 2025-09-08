@@ -4,10 +4,7 @@ use super::{
 };
 use crate::{
     error::{WriterError, WriterResult},
-    model::{
-        TryFromNode,
-        doc::RustDocument,
-    },
+    model::{TryFromNode, doc::RustDocument},
     reader::WriteXml,
 };
 use roxmltree::Node;
@@ -96,8 +93,8 @@ pub mod test_utils {
     {
         let node = doc.root_element();
         let mut rust_doc = RustDocument::init(doc);
-        let rust_node = N::try_from_node(node, &mut rust_doc).expect("Failed to parse node");
-        rust_node
+
+        N::try_from_node(node, &mut rust_doc).expect("Failed to parse node")
     }
 }
 

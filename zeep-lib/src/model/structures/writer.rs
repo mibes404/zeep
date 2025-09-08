@@ -22,11 +22,11 @@ where
 
                 match element_type {
                     ElementType::RustType(rust_type) => {
-                        if let Some(segment) = rust_type.to_string().split(':').next_back() {
-                            if segment == rust_name {
-                                // NOOP
-                                return Ok(());
-                            }
+                        if let Some(segment) = rust_type.to_string().split(':').next_back()
+                            && segment == rust_name
+                        {
+                            // NOOP
+                            return Ok(());
                         }
 
                         writeln!(writer, "pub type {rust_name} = {rust_type};")?;
@@ -58,11 +58,11 @@ where
     } = &props;
 
     let rust_name = xml_name_to_rust_name(xml_name);
-    if let Some(segment) = rust_type.to_string().split(':').next_back() {
-        if segment == rust_name {
-            // NOOP
-            return Ok(());
-        }
+    if let Some(segment) = rust_type.to_string().split(':').next_back()
+        && segment == rust_name
+    {
+        // NOOP
+        return Ok(());
     }
 
     // for now, write this as a type alias; we may want to change this to a newtype
