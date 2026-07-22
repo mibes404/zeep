@@ -60,9 +60,3 @@ Please note: all content in this repository is released for use "AS IS" without 
 Any use of these scripts and tools is at your own risk. There is no guarantee that they have been through thorough testing in a comparable environment and we are not responsible for any damage or data loss incurred with their use.
 
 You are responsible for reviewing and testing any generated code you run thoroughly before use in any non-testing environment.
-
-## About Avaya
-
-Avaya elevates communications to the next generation of engagement, connecting organizations to their customers, workforce, and communities with secure, intelligent experiences that matter.
-
-Check us out on: https://www.avaya.com
