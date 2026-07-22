@@ -1,7 +1,7 @@
 //! THIS IS A GENERATED FILE!
 //! Take care when hand editing. Changes will be lost during subsequent runs of the code generator.
 //!
-//! version: 0.2.2
+//! version: 0.2.5
 //!
 
 #![allow(dead_code)]
@@ -19,7 +19,7 @@ pub mod mod_cla {
     use super::*;
     use restrictions::CheckRestrictions;
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "GetClaim")]
+    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "GetClaim")]
     pub struct GetClaim {
         #[yaserde(prefix = "cla2", rename = "getClaimRequest")]
         pub get_claim_request: Option<mod_cla2::GetClaimRequest>,
@@ -32,7 +32,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "GetClaimResponse")]
+    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "GetClaimResponse")]
     pub struct GetClaimResponse {
         #[yaserde(prefix = "cla2", rename = "GetClaimResult")]
         pub get_claim_result: Option<mod_cla2::GetClaimResult>,
@@ -52,7 +52,7 @@ pub mod mod_cla {
         #[yaserde(prefix = "cla", rename = "AdminAlias")]
         pub admin_alias: Option<String>,
         #[yaserde(prefix = "cla", rename = "NewClaimsLinkSystemResourceId")]
-        pub new_claims_link_system_resource_id: i16,
+        pub new_claims_link_system_resource_id: Option<i16>,
     }
     impl restrictions::CheckRestrictions for ServiceSecurityHeader {
         fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
@@ -65,7 +65,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "SubmitClaimBasket")]
+    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "SubmitClaimBasket")]
     pub struct SubmitClaimBasket {
         #[yaserde(prefix = "cla2", rename = "submitClaimBasketRequest")]
         pub submit_claim_basket_request: Option<mod_cla2::SubmitClaimBasketRequest>,
@@ -79,7 +79,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "SubmitClaimBasketResponse")]
+    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "SubmitClaimBasketResponse")]
     pub struct SubmitClaimBasketResponse {
         #[yaserde(prefix = "cla2", rename = "SubmitClaimBasketResult")]
         pub submit_claim_basket_result: Option<mod_cla2::SubmitClaimBasketResult>,
@@ -93,7 +93,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "SubmitExpenseBasket")]
+    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "SubmitExpenseBasket")]
     pub struct SubmitExpenseBasket {
         #[yaserde(prefix = "cla2", rename = "submitClaimBasketRequest")]
         pub submit_claim_basket_request: Option<mod_cla2::SubmitClaimBasketRequest>,
@@ -107,7 +107,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "SubmitExpenseBasketResponse")]
+    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "SubmitExpenseBasketResponse")]
     pub struct SubmitExpenseBasketResponse {
         #[yaserde(prefix = "cla2", rename = "SubmitExpenseBasketResult")]
         pub submit_expense_basket_result: Option<mod_cla2::SubmitExpenseBasketResult>,
@@ -121,7 +121,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "SubmitExpenses")]
+    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "SubmitExpenses")]
     pub struct SubmitExpenses {
         #[yaserde(prefix = "cla2", rename = "submitClaimBasketRequest")]
         pub submit_claim_basket_request: Option<mod_cla2::SubmitClaimBasketRequest>,
@@ -135,7 +135,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "SubmitExpensesResponse")]
+    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "SubmitExpensesResponse")]
     pub struct SubmitExpensesResponse {
         #[yaserde(prefix = "cla2", rename = "SubmitExpensesResult")]
         pub submit_expenses_result: Option<mod_cla2::SubmitExpensesResult>,
@@ -148,7 +148,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "SubmitExpenseNoAdvice")]
+    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "SubmitExpenseNoAdvice")]
     pub struct SubmitExpenseNoAdvice {
         #[yaserde(prefix = "cla2", rename = "submitClaimBasketRequest")]
         pub submit_claim_basket_request: Option<mod_cla2::SubmitClaimBasketRequest>,
@@ -162,7 +162,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "SubmitExpenseNoAdviceResponse")]
+    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd"}, rename = "SubmitExpenseNoAdviceResponse")]
     pub struct SubmitExpenseNoAdviceResponse {
         #[yaserde(prefix = "cla1", rename = "SubmitExpenseNoAdviceResult")]
         pub submit_expense_no_advice_result: Option<mod_cla1::SubmitExpenseNoAdviceResult>,
@@ -176,7 +176,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ApproveExpenses")]
+    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ApproveExpenses")]
     pub struct ApproveExpenses {
         #[yaserde(prefix = "cla2", rename = "submitClaimWorksheetRequest")]
         pub submit_claim_worksheet_request: Option<mod_cla2::SubmitClaimWorksheetRequest>,
@@ -190,7 +190,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ApproveExpensesResponse")]
+    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ApproveExpensesResponse")]
     pub struct ApproveExpensesResponse {
         #[yaserde(prefix = "cla2", rename = "ApproveExpensesResult")]
         pub approve_expenses_result: Option<mod_cla2::ApproveExpensesResult>,
@@ -708,10 +708,14 @@ pub mod mod_cla {
             Ok(())
         }
     }
+}
+pub mod mod_cla2 {
+    use super::*;
+    use restrictions::CheckRestrictions;
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "GetClaimRequest")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "GetClaimRequest")]
     pub struct GetClaimRequest {
-        #[yaserde(prefix = "cla", rename = "ClaimNumber")]
+        #[yaserde(prefix = "cla2", rename = "ClaimNumber")]
         pub claim_number: Vec<String>,
     }
     impl restrictions::CheckRestrictions for GetClaimRequest {
@@ -723,9 +727,9 @@ pub mod mod_cla {
     }
     pub type GetClaimResult = mod_cla2::GetClaimResponse;
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "GetClaimResponse")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "GetClaimResponse")]
     pub struct GetClaimResponse {
-        #[yaserde(prefix = "cla", rename = "Claim")]
+        #[yaserde(prefix = "cla2", rename = "Claim")]
         pub claim: Vec<mod_cla2::Claim>,
     }
     impl restrictions::CheckRestrictions for GetClaimResponse {
@@ -736,69 +740,69 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "Claim")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "Claim")]
     pub struct Claim {
-        #[yaserde(prefix = "cla", rename = "ClaimAccount")]
+        #[yaserde(prefix = "cla2", rename = "ClaimAccount")]
         pub claim_account: Option<mod_cla2::ClaimAccount>,
-        #[yaserde(prefix = "cla", rename = "ClaimAmount")]
+        #[yaserde(prefix = "cla2", rename = "ClaimAmount")]
         pub claim_amount: f64,
-        #[yaserde(prefix = "cla", rename = "ClaimNotes")]
+        #[yaserde(prefix = "cla2", rename = "ClaimNotes")]
         pub claim_notes: Option<mod_cla2::ArrayOfString>,
-        #[yaserde(prefix = "cla", rename = "ClaimStatus")]
+        #[yaserde(prefix = "cla2", rename = "ClaimStatus")]
         pub claim_status: mod_cla2::ClaimStatus,
-        #[yaserde(prefix = "cla", rename = "DenialCode")]
+        #[yaserde(prefix = "cla2", rename = "DenialCode")]
         pub denial_code: Option<i32>,
-        #[yaserde(prefix = "cla", rename = "MultipleDenialCodes")]
-        pub multiple_denial_codes: mod_cla2::ArrayOfInt,
-        #[yaserde(prefix = "cla", rename = "HasValidReceipt")]
+        #[yaserde(prefix = "cla2", rename = "MultipleDenialCodes")]
+        pub multiple_denial_codes: Option<mod_cla2::ArrayOfInt>,
+        #[yaserde(prefix = "cla2", rename = "HasValidReceipt")]
         pub has_valid_receipt: bool,
-        #[yaserde(prefix = "cla", rename = "IsDuplicate")]
+        #[yaserde(prefix = "cla2", rename = "IsDuplicate")]
         pub is_duplicate: Option<bool>,
-        #[yaserde(prefix = "cla", rename = "MileageAmount")]
+        #[yaserde(prefix = "cla2", rename = "MileageAmount")]
         pub mileage_amount: i32,
-        #[yaserde(prefix = "cla", rename = "MileageRate")]
+        #[yaserde(prefix = "cla2", rename = "MileageRate")]
         pub mileage_rate: f64,
-        #[yaserde(prefix = "cla", rename = "OfferingID")]
+        #[yaserde(prefix = "cla2", rename = "OfferingID")]
         pub offering_id: i32,
-        #[yaserde(prefix = "cla", rename = "Provider")]
+        #[yaserde(prefix = "cla2", rename = "Provider")]
         pub provider: Option<mod_cla2::Provider>,
-        #[yaserde(prefix = "cla", rename = "ReceiptStatus")]
+        #[yaserde(prefix = "cla2", rename = "ReceiptStatus")]
         pub receipt_status: Option<mod_cla2::ReceiptStatus>,
-        #[yaserde(prefix = "cla", rename = "Recipients")]
+        #[yaserde(prefix = "cla2", rename = "Recipients")]
         pub recipients: Option<mod_cla2::ArrayOfServiceRecipient>,
-        #[yaserde(prefix = "cla", rename = "SendDenial")]
+        #[yaserde(prefix = "cla2", rename = "SendDenial")]
         pub send_denial: Option<bool>,
-        #[yaserde(prefix = "cla", rename = "CustomDenialText")]
+        #[yaserde(prefix = "cla2", rename = "CustomDenialText")]
         pub custom_denial_text: Option<String>,
-        #[yaserde(prefix = "cla", rename = "EligibleExpenseId")]
+        #[yaserde(prefix = "cla2", rename = "EligibleExpenseId")]
         pub eligible_expense_id: i32,
-        #[yaserde(prefix = "cla", rename = "ServiceCategory")]
+        #[yaserde(prefix = "cla2", rename = "ServiceCategory")]
         pub service_category: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ServiceDescription")]
+        #[yaserde(prefix = "cla2", rename = "ServiceDescription")]
         pub service_description: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ServiceEndDate")]
+        #[yaserde(prefix = "cla2", rename = "ServiceEndDate")]
         pub service_end_date: String,
-        #[yaserde(prefix = "cla", rename = "ServiceRecipient")]
+        #[yaserde(prefix = "cla2", rename = "ServiceRecipient")]
         pub service_recipient: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ServiceStartDate")]
+        #[yaserde(prefix = "cla2", rename = "ServiceStartDate")]
         pub service_start_date: String,
-        #[yaserde(prefix = "cla", rename = "ServiceType")]
+        #[yaserde(prefix = "cla2", rename = "ServiceType")]
         pub service_type: Option<String>,
-        #[yaserde(prefix = "cla", rename = "SubmissionDate")]
+        #[yaserde(prefix = "cla2", rename = "SubmissionDate")]
         pub submission_date: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ImageId")]
+        #[yaserde(prefix = "cla2", rename = "ImageId")]
         pub image_id: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ReceivedDate")]
+        #[yaserde(prefix = "cla2", rename = "ReceivedDate")]
         pub received_date: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ReceivedDateSpecified")]
+        #[yaserde(prefix = "cla2", rename = "ReceivedDateSpecified")]
         pub received_date_specified: bool,
-        #[yaserde(prefix = "cla", rename = "MileageRealAmount")]
+        #[yaserde(prefix = "cla2", rename = "MileageRealAmount")]
         pub mileage_real_amount: f64,
-        #[yaserde(prefix = "cla", rename = "AmountOwed")]
-        pub amount_owed: f64,
-        #[yaserde(prefix = "cla", rename = "ClaimIdentifier", attribute = true)]
+        #[yaserde(prefix = "cla2", rename = "AmountOwed")]
+        pub amount_owed: Option<f64>,
+        #[yaserde(prefix = "cla2", rename = "ClaimIdentifier", attribute = true)]
         pub claim_identifier: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ClaimNumber", attribute = true)]
+        #[yaserde(prefix = "cla2", rename = "ClaimNumber", attribute = true)]
         pub claim_number: Option<String>,
     }
     impl restrictions::CheckRestrictions for Claim {
@@ -839,25 +843,25 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ClaimAccount")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ClaimAccount")]
     pub struct ClaimAccount {
-        #[yaserde(prefix = "cla", rename = "ApprovedAmount")]
+        #[yaserde(prefix = "cla2", rename = "ApprovedAmount")]
         pub approved_amount: f64,
-        #[yaserde(prefix = "cla", rename = "DeniedAmount")]
+        #[yaserde(prefix = "cla2", rename = "DeniedAmount")]
         pub denied_amount: f64,
-        #[yaserde(prefix = "cla", rename = "PaidAmount")]
+        #[yaserde(prefix = "cla2", rename = "PaidAmount")]
         pub paid_amount: f64,
-        #[yaserde(prefix = "cla", rename = "PendingAmount")]
+        #[yaserde(prefix = "cla2", rename = "PendingAmount")]
         pub pending_amount: f64,
-        #[yaserde(prefix = "cla", rename = "CopayAmount")]
+        #[yaserde(prefix = "cla2", rename = "CopayAmount")]
         pub copay_amount: f64,
-        #[yaserde(prefix = "cla", rename = "CoinsuranceAmount")]
+        #[yaserde(prefix = "cla2", rename = "CoinsuranceAmount")]
         pub coinsurance_amount: f64,
-        #[yaserde(prefix = "cla", rename = "DeductibleAmount")]
+        #[yaserde(prefix = "cla2", rename = "DeductibleAmount")]
         pub deductible_amount: f64,
-        #[yaserde(prefix = "cla", rename = "PostedAmount")]
+        #[yaserde(prefix = "cla2", rename = "PostedAmount")]
         pub posted_amount: f64,
-        #[yaserde(prefix = "cla", rename = "SubmittedAmount")]
+        #[yaserde(prefix = "cla2", rename = "SubmittedAmount")]
         pub submitted_amount: f64,
     }
     impl restrictions::CheckRestrictions for ClaimAccount {
@@ -876,9 +880,9 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ArrayOfString")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ArrayOfString")]
     pub struct ArrayOfString {
-        #[yaserde(prefix = "cla", rename = "Note")]
+        #[yaserde(prefix = "cla2", rename = "Note")]
         pub note: Vec<String>,
     }
     impl restrictions::CheckRestrictions for ArrayOfString {
@@ -889,7 +893,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ClaimStatus")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ClaimStatus")]
     pub struct ClaimStatus {
         #[yaserde(text = true)]
         pub value: String,
@@ -915,9 +919,9 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ArrayOfInt")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ArrayOfInt")]
     pub struct ArrayOfInt {
-        #[yaserde(prefix = "cla", rename = "int")]
+        #[yaserde(prefix = "cla2", rename = "int")]
         pub int: Vec<i32>,
     }
     impl restrictions::CheckRestrictions for ArrayOfInt {
@@ -928,37 +932,37 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "Provider")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "Provider")]
     pub struct Provider {
-        #[yaserde(prefix = "cla", rename = "PTP")]
+        #[yaserde(prefix = "cla2", rename = "PTP")]
         pub ptp: bool,
-        #[yaserde(prefix = "cla", rename = "Id")]
-        pub id: i32,
-        #[yaserde(prefix = "cla", rename = "Type")]
+        #[yaserde(prefix = "cla2", rename = "Id")]
+        pub id: Option<i32>,
+        #[yaserde(prefix = "cla2", rename = "Type")]
         pub r#type: u8,
-        #[yaserde(prefix = "cla", rename = "Name")]
+        #[yaserde(prefix = "cla2", rename = "Name")]
         pub name: Option<String>,
-        #[yaserde(prefix = "cla", rename = "Number")]
+        #[yaserde(prefix = "cla2", rename = "Number")]
         pub number: Option<String>,
-        #[yaserde(prefix = "cla", rename = "Tin")]
+        #[yaserde(prefix = "cla2", rename = "Tin")]
         pub tin: Option<String>,
-        #[yaserde(prefix = "cla", rename = "AccountNumber")]
+        #[yaserde(prefix = "cla2", rename = "AccountNumber")]
         pub account_number: Option<String>,
-        #[yaserde(prefix = "cla", rename = "AddressLine1")]
+        #[yaserde(prefix = "cla2", rename = "AddressLine1")]
         pub address_line_1: Option<String>,
-        #[yaserde(prefix = "cla", rename = "AddressLine2")]
+        #[yaserde(prefix = "cla2", rename = "AddressLine2")]
         pub address_line_2: Option<String>,
-        #[yaserde(prefix = "cla", rename = "AddressLine3")]
+        #[yaserde(prefix = "cla2", rename = "AddressLine3")]
         pub address_line_3: Option<String>,
-        #[yaserde(prefix = "cla", rename = "AddressLine4")]
+        #[yaserde(prefix = "cla2", rename = "AddressLine4")]
         pub address_line_4: Option<String>,
-        #[yaserde(prefix = "cla", rename = "City")]
+        #[yaserde(prefix = "cla2", rename = "City")]
         pub city: Option<String>,
-        #[yaserde(prefix = "cla", rename = "StateCode")]
+        #[yaserde(prefix = "cla2", rename = "StateCode")]
         pub state_code: Option<String>,
-        #[yaserde(prefix = "cla", rename = "CountryCode")]
+        #[yaserde(prefix = "cla2", rename = "CountryCode")]
         pub country_code: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ZipCode")]
+        #[yaserde(prefix = "cla2", rename = "ZipCode")]
         pub zip_code: Option<String>,
     }
     impl restrictions::CheckRestrictions for Provider {
@@ -983,7 +987,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ReceiptStatus")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ReceiptStatus")]
     pub struct ReceiptStatus {
         #[yaserde(text = true)]
         pub value: String,
@@ -1004,9 +1008,9 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ArrayOfServiceRecipient")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ArrayOfServiceRecipient")]
     pub struct ArrayOfServiceRecipient {
-        #[yaserde(prefix = "cla", rename = "ServiceRecipient")]
+        #[yaserde(prefix = "cla2", rename = "ServiceRecipient")]
         pub service_recipient: Vec<mod_cla2::ServiceRecipient>,
     }
     impl restrictions::CheckRestrictions for ArrayOfServiceRecipient {
@@ -1017,13 +1021,13 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ServiceRecipient")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ServiceRecipient")]
     pub struct ServiceRecipient {
-        #[yaserde(prefix = "cla", rename = "Name")]
+        #[yaserde(prefix = "cla2", rename = "Name")]
         pub name: Option<String>,
-        #[yaserde(prefix = "cla", rename = "RecipientID")]
+        #[yaserde(prefix = "cla2", rename = "RecipientID")]
         pub recipient_id: i32,
-        #[yaserde(prefix = "cla", rename = "RecipientType")]
+        #[yaserde(prefix = "cla2", rename = "RecipientType")]
         pub recipient_type: Option<String>,
     }
     impl restrictions::CheckRestrictions for ServiceRecipient {
@@ -1036,19 +1040,19 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "SubmitClaimBasketRequest")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "SubmitClaimBasketRequest")]
     pub struct SubmitClaimBasketRequest {
-        #[yaserde(prefix = "cla", rename = "Administrator")]
+        #[yaserde(prefix = "cla2", rename = "Administrator")]
         pub administrator: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ClaimBasket")]
+        #[yaserde(prefix = "cla2", rename = "ClaimBasket")]
         pub claim_basket: Option<mod_cla2::ClaimBasket>,
-        #[yaserde(prefix = "cla", rename = "Employer")]
+        #[yaserde(prefix = "cla2", rename = "Employer")]
         pub employer: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ParticipantID")]
+        #[yaserde(prefix = "cla2", rename = "ParticipantID")]
         pub participant_id: i32,
-        #[yaserde(prefix = "cla", rename = "SendConfirmation")]
+        #[yaserde(prefix = "cla2", rename = "SendConfirmation")]
         pub send_confirmation: bool,
-        #[yaserde(prefix = "cla", rename = "AllowPayToProvider")]
+        #[yaserde(prefix = "cla2", rename = "AllowPayToProvider")]
         pub allow_pay_to_provider: bool,
     }
     impl restrictions::CheckRestrictions for SubmitClaimBasketRequest {
@@ -1064,11 +1068,11 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ClaimBasket")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ClaimBasket")]
     pub struct ClaimBasket {
-        #[yaserde(prefix = "cla", rename = "Claim")]
+        #[yaserde(prefix = "cla2", rename = "Claim")]
         pub claim: Vec<mod_cla2::Claim>,
-        #[yaserde(prefix = "cla", rename = "BasketIdentifier", attribute = true)]
+        #[yaserde(prefix = "cla2", rename = "BasketIdentifier", attribute = true)]
         pub basket_identifier: Option<String>,
     }
     impl restrictions::CheckRestrictions for ClaimBasket {
@@ -1081,11 +1085,11 @@ pub mod mod_cla {
     }
     pub type SubmitClaimBasketResult = mod_cla2::SubmitClaimBasketResponse;
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "SubmitClaimBasketResponse")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "SubmitClaimBasketResponse")]
     pub struct SubmitClaimBasketResponse {
-        #[yaserde(prefix = "cla", rename = "BasketIdentifier")]
+        #[yaserde(prefix = "cla2", rename = "BasketIdentifier")]
         pub basket_identifier: Option<String>,
-        #[yaserde(prefix = "cla", rename = "FiledClaims")]
+        #[yaserde(prefix = "cla2", rename = "FiledClaims")]
         pub filed_claims: Option<mod_cla2::ArrayOfFiledClaim>,
     }
     impl restrictions::CheckRestrictions for SubmitClaimBasketResponse {
@@ -1097,9 +1101,9 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ArrayOfFiledClaim")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ArrayOfFiledClaim")]
     pub struct ArrayOfFiledClaim {
-        #[yaserde(prefix = "cla", rename = "FiledClaim")]
+        #[yaserde(prefix = "cla2", rename = "FiledClaim")]
         pub filed_claim: Vec<mod_cla2::FiledClaim>,
     }
     impl restrictions::CheckRestrictions for ArrayOfFiledClaim {
@@ -1110,41 +1114,41 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "FiledClaim")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "FiledClaim")]
     pub struct FiledClaim {
-        #[yaserde(prefix = "cla", rename = "ApprovedAmount")]
+        #[yaserde(prefix = "cla2", rename = "ApprovedAmount")]
         pub approved_amount: f64,
-        #[yaserde(prefix = "cla", rename = "DeniedAmount")]
+        #[yaserde(prefix = "cla2", rename = "DeniedAmount")]
         pub denied_amount: f64,
-        #[yaserde(prefix = "cla", rename = "PaidAmount")]
+        #[yaserde(prefix = "cla2", rename = "PaidAmount")]
         pub paid_amount: f64,
-        #[yaserde(prefix = "cla", rename = "PendingAmount")]
+        #[yaserde(prefix = "cla2", rename = "PendingAmount")]
         pub pending_amount: f64,
-        #[yaserde(prefix = "cla", rename = "CopayAmount")]
+        #[yaserde(prefix = "cla2", rename = "CopayAmount")]
         pub copay_amount: f64,
-        #[yaserde(prefix = "cla", rename = "CoinsuranceAmount")]
+        #[yaserde(prefix = "cla2", rename = "CoinsuranceAmount")]
         pub coinsurance_amount: f64,
-        #[yaserde(prefix = "cla", rename = "DeductibleAmount")]
+        #[yaserde(prefix = "cla2", rename = "DeductibleAmount")]
         pub deductible_amount: f64,
-        #[yaserde(prefix = "cla", rename = "PostedAmount")]
+        #[yaserde(prefix = "cla2", rename = "PostedAmount")]
         pub posted_amount: f64,
-        #[yaserde(prefix = "cla", rename = "SubmittedAmount")]
+        #[yaserde(prefix = "cla2", rename = "SubmittedAmount")]
         pub submitted_amount: f64,
-        #[yaserde(prefix = "cla", rename = "PlanName_PlanYear")]
+        #[yaserde(prefix = "cla2", rename = "PlanName_PlanYear")]
         pub plan_name_plan_year: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ClaimIdentifier")]
+        #[yaserde(prefix = "cla2", rename = "ClaimIdentifier")]
         pub claim_identifier: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ClaimNumber")]
+        #[yaserde(prefix = "cla2", rename = "ClaimNumber")]
         pub claim_number: Option<String>,
-        #[yaserde(prefix = "cla", rename = "FilingStatus")]
+        #[yaserde(prefix = "cla2", rename = "FilingStatus")]
         pub filing_status: mod_cla2::FilingStatus,
-        #[yaserde(prefix = "cla", rename = "IsDuplicate")]
+        #[yaserde(prefix = "cla2", rename = "IsDuplicate")]
         pub is_duplicate: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ClaimStatus")]
+        #[yaserde(prefix = "cla2", rename = "ClaimStatus")]
         pub claim_status: Option<String>,
-        #[yaserde(prefix = "cla", rename = "PayToProviderFlag")]
+        #[yaserde(prefix = "cla2", rename = "PayToProviderFlag")]
         pub pay_to_provider_flag: Option<String>,
-        #[yaserde(prefix = "cla", rename = "MultipleDenialCodes")]
+        #[yaserde(prefix = "cla2", rename = "MultipleDenialCodes")]
         pub multiple_denial_codes: Option<mod_cla2::ArrayOfInt>,
     }
     impl restrictions::CheckRestrictions for FiledClaim {
@@ -1171,7 +1175,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "FilingStatus")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "FilingStatus")]
     pub struct FilingStatus {
         #[yaserde(text = true)]
         pub value: String,
@@ -1188,17 +1192,17 @@ pub mod mod_cla {
     pub type SubmitExpenseBasketResult = mod_cla2::SubmitClaimBasketResponse;
     pub type SubmitExpensesResult = mod_cla2::SubmitClaimWorksheetResponse;
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "SubmitClaimWorksheetResponse")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "SubmitClaimWorksheetResponse")]
     pub struct SubmitClaimWorksheetResponse {
-        #[yaserde(prefix = "cla", rename = "BasketIdentifier")]
+        #[yaserde(prefix = "cla2", rename = "BasketIdentifier")]
         pub basket_identifier: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ProposedClaims")]
+        #[yaserde(prefix = "cla2", rename = "ProposedClaims")]
         pub proposed_claims: Option<mod_cla2::ArrayOfProposedClaim>,
-        #[yaserde(prefix = "cla", rename = "RecommendationHtml")]
+        #[yaserde(prefix = "cla2", rename = "RecommendationHtml")]
         pub recommendation_html: Option<String>,
-        #[yaserde(prefix = "cla", rename = "HasAutoDenial")]
+        #[yaserde(prefix = "cla2", rename = "HasAutoDenial")]
         pub has_auto_denial: bool,
-        #[yaserde(prefix = "cla", rename = "SpecialDenialCode")]
+        #[yaserde(prefix = "cla2", rename = "SpecialDenialCode")]
         pub special_denial_code: mod_cla2::SpecialDenialCode,
     }
     impl restrictions::CheckRestrictions for SubmitClaimWorksheetResponse {
@@ -1213,9 +1217,9 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ArrayOfProposedClaim")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ArrayOfProposedClaim")]
     pub struct ArrayOfProposedClaim {
-        #[yaserde(prefix = "cla", rename = "ProposedClaim")]
+        #[yaserde(prefix = "cla2", rename = "ProposedClaim")]
         pub proposed_claim: Vec<mod_cla2::ProposedClaim>,
     }
     impl restrictions::CheckRestrictions for ArrayOfProposedClaim {
@@ -1226,37 +1230,37 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ProposedClaim")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ProposedClaim")]
     pub struct ProposedClaim {
-        #[yaserde(prefix = "cla", rename = "ClaimIdentifier")]
+        #[yaserde(prefix = "cla2", rename = "ClaimIdentifier")]
         pub claim_identifier: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ExpenseDate")]
+        #[yaserde(prefix = "cla2", rename = "ExpenseDate")]
         pub expense_date: String,
-        #[yaserde(prefix = "cla", rename = "PlanName")]
+        #[yaserde(prefix = "cla2", rename = "PlanName")]
         pub plan_name: Option<String>,
-        #[yaserde(prefix = "cla", rename = "PlanYear")]
+        #[yaserde(prefix = "cla2", rename = "PlanYear")]
         pub plan_year: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ApprovedAmount")]
+        #[yaserde(prefix = "cla2", rename = "ApprovedAmount")]
         pub approved_amount: f64,
-        #[yaserde(prefix = "cla", rename = "DeniedAmount")]
+        #[yaserde(prefix = "cla2", rename = "DeniedAmount")]
         pub denied_amount: f64,
-        #[yaserde(prefix = "cla", rename = "PaidAmount")]
+        #[yaserde(prefix = "cla2", rename = "PaidAmount")]
         pub paid_amount: f64,
-        #[yaserde(prefix = "cla", rename = "PendingAmount")]
+        #[yaserde(prefix = "cla2", rename = "PendingAmount")]
         pub pending_amount: f64,
-        #[yaserde(prefix = "cla", rename = "DeductibleAmount")]
+        #[yaserde(prefix = "cla2", rename = "DeductibleAmount")]
         pub deductible_amount: f64,
-        #[yaserde(prefix = "cla", rename = "CoinsuranceAmount")]
+        #[yaserde(prefix = "cla2", rename = "CoinsuranceAmount")]
         pub coinsurance_amount: f64,
-        #[yaserde(prefix = "cla", rename = "CopayAmount")]
+        #[yaserde(prefix = "cla2", rename = "CopayAmount")]
         pub copay_amount: f64,
-        #[yaserde(prefix = "cla", rename = "PostedAmount")]
+        #[yaserde(prefix = "cla2", rename = "PostedAmount")]
         pub posted_amount: f64,
-        #[yaserde(prefix = "cla", rename = "SubmittedAmount")]
+        #[yaserde(prefix = "cla2", rename = "SubmittedAmount")]
         pub submitted_amount: f64,
-        #[yaserde(prefix = "cla", rename = "ClaimNumber")]
+        #[yaserde(prefix = "cla2", rename = "ClaimNumber")]
         pub claim_number: Option<String>,
-        #[yaserde(prefix = "cla", rename = "PayToProviderFlag")]
+        #[yaserde(prefix = "cla2", rename = "PayToProviderFlag")]
         pub pay_to_provider_flag: Option<String>,
     }
     impl restrictions::CheckRestrictions for ProposedClaim {
@@ -1281,7 +1285,7 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "SpecialDenialCode")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "SpecialDenialCode")]
     pub struct SpecialDenialCode {
         #[yaserde(text = true)]
         pub value: String,
@@ -1306,19 +1310,19 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "SubmitExpenseNoAdviceResponse")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "SubmitExpenseNoAdviceResponse")]
     pub struct SubmitExpenseNoAdviceResponse {
-        #[yaserde(prefix = "cla", rename = "BasketIdentifier")]
+        #[yaserde(prefix = "cla2", rename = "BasketIdentifier")]
         pub basket_identifier: Option<String>,
-        #[yaserde(prefix = "cla", rename = "FiledClaims")]
+        #[yaserde(prefix = "cla2", rename = "FiledClaims")]
         pub filed_claims: Option<mod_cla2::ArrayOfFiledClaim>,
-        #[yaserde(prefix = "cla", rename = "ProposedClaims")]
+        #[yaserde(prefix = "cla2", rename = "ProposedClaims")]
         pub proposed_claims: Option<mod_cla2::ArrayOfProposedClaim>,
-        #[yaserde(prefix = "cla", rename = "RecommendationHtml")]
+        #[yaserde(prefix = "cla2", rename = "RecommendationHtml")]
         pub recommendation_html: Option<String>,
-        #[yaserde(prefix = "cla", rename = "HasAutoDenial")]
+        #[yaserde(prefix = "cla2", rename = "HasAutoDenial")]
         pub has_auto_denial: bool,
-        #[yaserde(prefix = "cla", rename = "HasClaimFiled")]
+        #[yaserde(prefix = "cla2", rename = "HasClaimFiled")]
         pub has_claim_filed: bool,
     }
     impl restrictions::CheckRestrictions for SubmitExpenseNoAdviceResponse {
@@ -1334,19 +1338,19 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "SubmitClaimWorksheetRequest")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "SubmitClaimWorksheetRequest")]
     pub struct SubmitClaimWorksheetRequest {
-        #[yaserde(prefix = "cla", rename = "Administrator")]
+        #[yaserde(prefix = "cla2", rename = "Administrator")]
         pub administrator: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ClaimWorksheet")]
+        #[yaserde(prefix = "cla2", rename = "ClaimWorksheet")]
         pub claim_worksheet: Option<mod_cla2::ClaimWorksheet>,
-        #[yaserde(prefix = "cla", rename = "Employer")]
+        #[yaserde(prefix = "cla2", rename = "Employer")]
         pub employer: Option<String>,
-        #[yaserde(prefix = "cla", rename = "ParticipantID")]
+        #[yaserde(prefix = "cla2", rename = "ParticipantID")]
         pub participant_id: i32,
-        #[yaserde(prefix = "cla", rename = "SendConfirmation")]
+        #[yaserde(prefix = "cla2", rename = "SendConfirmation")]
         pub send_confirmation: bool,
-        #[yaserde(prefix = "cla", rename = "SendAutoDenial")]
+        #[yaserde(prefix = "cla2", rename = "SendAutoDenial")]
         pub send_auto_denial: bool,
     }
     impl restrictions::CheckRestrictions for SubmitClaimWorksheetRequest {
@@ -1362,11 +1366,11 @@ pub mod mod_cla {
         }
     }
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ClaimWorksheet")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ClaimWorksheet")]
     pub struct ClaimWorksheet {
-        #[yaserde(prefix = "cla", rename = "Claim")]
+        #[yaserde(prefix = "cla2", rename = "Claim")]
         pub claim: Vec<mod_cla2::Claim>,
-        #[yaserde(prefix = "cla", rename = "WorksheetIdentifier", attribute = true)]
+        #[yaserde(prefix = "cla2", rename = "WorksheetIdentifier", attribute = true)]
         pub worksheet_identifier: Option<String>,
     }
     impl restrictions::CheckRestrictions for ClaimWorksheet {
@@ -1379,13 +1383,13 @@ pub mod mod_cla {
     }
     pub type ApproveExpensesResult = mod_cla2::SubmitClaimBasketResponse;
     #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-    #[yaserde(prefix = "cla", namespaces = {"cla" = "http://services.lighthouse1.com/services/claim/"}, rename = "ExpenseAccountBase")]
+    #[yaserde(prefix = "cla2", namespaces = {"cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd"}, rename = "ExpenseAccountBase")]
     pub struct ExpenseAccountBase {
-        #[yaserde(prefix = "cla", rename = "ExpenseAccountId")]
+        #[yaserde(prefix = "cla2", rename = "ExpenseAccountId")]
         pub expense_account_id: i32,
-        #[yaserde(prefix = "cla", rename = "Description")]
+        #[yaserde(prefix = "cla2", rename = "Description")]
         pub description: Option<String>,
-        #[yaserde(prefix = "cla", rename = "DisplayName")]
+        #[yaserde(prefix = "cla2", rename = "DisplayName")]
         pub display_name: Option<String>,
     }
     impl restrictions::CheckRestrictions for ExpenseAccountBase {
@@ -1397,290 +1401,17 @@ pub mod mod_cla {
             Ok(())
         }
     }
+}
+pub mod mod_cla1 {
+    use super::*;
+    use restrictions::CheckRestrictions;
     pub type SubmitExpenseNoAdviceResult = mod_cla2::SubmitExpenseNoAdviceResponse;
-}
-
-/* SubmitExpenseBasket */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpenseBasketInputEnvelopeHeader {
-    #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
-    pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
-}
-impl restrictions::CheckRestrictions for SubmitExpenseBasketInputEnvelopeHeader {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.service_security_header.check_restrictions(restrictions.clone())?;
-        Ok(())
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpenseBasketInputEnvelopeBody {
-    #[yaserde(prefix = "cla", rename = "SubmitExpenseBasket")]
-    pub submit_expense_basket: mod_cla::SubmitExpenseBasket,
-}
-impl restrictions::CheckRestrictions for SubmitExpenseBasketInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.submit_expense_basket.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpenseBasketInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SubmitExpenseBasketInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SubmitExpenseBasketInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for SubmitExpenseBasketInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.header.check_restrictions(restrictions.clone())?;
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpenseBasketOutputEnvelopeBody {
-    #[yaserde(prefix = "cla", rename = "SubmitExpenseBasketResponse")]
-    pub submit_expense_basket_response: mod_cla::SubmitExpenseBasketResponse,
-}
-impl restrictions::CheckRestrictions for SubmitExpenseBasketOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.submit_expense_basket_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpenseBasketOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SubmitExpenseBasketOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for SubmitExpenseBasketOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn submit_expense_basket(
-    req: SubmitExpenseBasketInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<SubmitExpenseBasketOutputEnvelope> {
-    let url = "http://services.lighthouse1.com/services/claim/SubmitExpenseBasket";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetMileageRates */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetMileageRatesInputEnvelopeHeader {
-    #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
-    pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
-}
-impl restrictions::CheckRestrictions for GetMileageRatesInputEnvelopeHeader {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.service_security_header.check_restrictions(restrictions.clone())?;
-        Ok(())
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetMileageRatesInputEnvelopeBody {
-    #[yaserde(prefix = "cla", rename = "GetMileageRates")]
-    pub get_mileage_rates: mod_cla::GetMileageRates,
-}
-impl restrictions::CheckRestrictions for GetMileageRatesInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_mileage_rates.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetMileageRatesInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetMileageRatesInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetMileageRatesInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetMileageRatesInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.header.check_restrictions(restrictions.clone())?;
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetMileageRatesOutputEnvelopeBody {
-    #[yaserde(prefix = "cla", rename = "GetMileageRatesResponse")]
-    pub get_mileage_rates_response: mod_cla::GetMileageRatesResponse,
-}
-impl restrictions::CheckRestrictions for GetMileageRatesOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_mileage_rates_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetMileageRatesOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetMileageRatesOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetMileageRatesOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn get_mileage_rates(
-    req: GetMileageRatesInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetMileageRatesOutputEnvelope> {
-    let url = "http://services.lighthouse1.com/services/claim/GetMileageRates";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetBaseExpenseAccounts */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetBaseExpenseAccountsInputEnvelopeHeader {
-    #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
-    pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
-}
-impl restrictions::CheckRestrictions for GetBaseExpenseAccountsInputEnvelopeHeader {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.service_security_header.check_restrictions(restrictions.clone())?;
-        Ok(())
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetBaseExpenseAccountsInputEnvelopeBody {
-    #[yaserde(prefix = "cla", rename = "GetBaseExpenseAccounts")]
-    pub get_base_expense_accounts: mod_cla::GetBaseExpenseAccounts,
-}
-impl restrictions::CheckRestrictions for GetBaseExpenseAccountsInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_base_expense_accounts.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetBaseExpenseAccountsInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetBaseExpenseAccountsInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetBaseExpenseAccountsInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetBaseExpenseAccountsInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.header.check_restrictions(restrictions.clone())?;
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetBaseExpenseAccountsOutputEnvelopeBody {
-    #[yaserde(prefix = "cla", rename = "GetBaseExpenseAccountsResponse")]
-    pub get_base_expense_accounts_response: mod_cla::GetBaseExpenseAccountsResponse,
-}
-impl restrictions::CheckRestrictions for GetBaseExpenseAccountsOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_base_expense_accounts_response.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetBaseExpenseAccountsOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetBaseExpenseAccountsOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetBaseExpenseAccountsOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn get_base_expense_accounts(
-    req: GetBaseExpenseAccountsInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetBaseExpenseAccountsOutputEnvelope> {
-    let url = "http://services.lighthouse1.com/services/claim/GetBaseExpenseAccounts";
-    helpers::send_soap_request(url, credentials, req).await
-}
-
-/* GetExpenseApprovedAmount */
-
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetExpenseApprovedAmountInputEnvelopeHeader {
-    #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
-    pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
-}
-impl restrictions::CheckRestrictions for GetExpenseApprovedAmountInputEnvelopeHeader {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.service_security_header.check_restrictions(restrictions.clone())?;
-        Ok(())
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetExpenseApprovedAmountInputEnvelopeBody {
-    #[yaserde(prefix = "cla", rename = "GetExpenseApprovedAmount")]
-    pub get_expense_approved_amount: mod_cla::GetExpenseApprovedAmount,
-}
-impl restrictions::CheckRestrictions for GetExpenseApprovedAmountInputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_expense_approved_amount.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetExpenseApprovedAmountInputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetExpenseApprovedAmountInputEnvelopeHeader,
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetExpenseApprovedAmountInputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetExpenseApprovedAmountInputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.header.check_restrictions(restrictions.clone())?;
-        self.body.check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetExpenseApprovedAmountOutputEnvelopeBody {
-    #[yaserde(prefix = "cla", rename = "GetExpenseApprovedAmountResponse")]
-    pub get_expense_approved_amount_response: mod_cla::GetExpenseApprovedAmountResponse,
-}
-impl restrictions::CheckRestrictions for GetExpenseApprovedAmountOutputEnvelopeBody {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_expense_approved_amount_response
-            .check_restrictions(restrictions)
-    }
-}
-#[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetExpenseApprovedAmountOutputEnvelope {
-    #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetExpenseApprovedAmountOutputEnvelopeBody,
-}
-impl restrictions::CheckRestrictions for GetExpenseApprovedAmountOutputEnvelope {
-    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.body.check_restrictions(restrictions)
-    }
-}
-pub async fn get_expense_approved_amount(
-    req: GetExpenseApprovedAmountInputEnvelope,
-    credentials: Option<(String, String)>,
-) -> error::SoapResult<GetExpenseApprovedAmountOutputEnvelope> {
-    let url = "http://services.lighthouse1.com/services/claim/GetExpenseApprovedAmount";
-    helpers::send_soap_request(url, credentials, req).await
 }
 
 /* GetPlanMaxAmounts */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct GetPlanMaxAmountsInputEnvelopeHeader {
     #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
     pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
@@ -1692,7 +1423,7 @@ impl restrictions::CheckRestrictions for GetPlanMaxAmountsInputEnvelopeHeader {
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct GetPlanMaxAmountsInputEnvelopeBody {
     #[yaserde(prefix = "cla", rename = "GetPlanMaxAmounts")]
     pub get_plan_max_amounts: mod_cla::GetPlanMaxAmounts,
@@ -1703,7 +1434,7 @@ impl restrictions::CheckRestrictions for GetPlanMaxAmountsInputEnvelopeBody {
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct GetPlanMaxAmountsInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
     pub header: GetPlanMaxAmountsInputEnvelopeHeader,
@@ -1717,7 +1448,7 @@ impl restrictions::CheckRestrictions for GetPlanMaxAmountsInputEnvelope {
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct GetPlanMaxAmountsOutputEnvelopeBody {
     #[yaserde(prefix = "cla", rename = "GetPlanMaxAmountsResponse")]
     pub get_plan_max_amounts_response: mod_cla::GetPlanMaxAmountsResponse,
@@ -1728,7 +1459,7 @@ impl restrictions::CheckRestrictions for GetPlanMaxAmountsOutputEnvelopeBody {
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct GetPlanMaxAmountsOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
     pub body: GetPlanMaxAmountsOutputEnvelopeBody,
@@ -1746,79 +1477,79 @@ pub async fn get_plan_max_amounts(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* SubmitExpenses */
+/* GetMileageRates */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpensesInputEnvelopeHeader {
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetMileageRatesInputEnvelopeHeader {
     #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
     pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
 }
-impl restrictions::CheckRestrictions for SubmitExpensesInputEnvelopeHeader {
+impl restrictions::CheckRestrictions for GetMileageRatesInputEnvelopeHeader {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.service_security_header.check_restrictions(restrictions.clone())?;
         Ok(())
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpensesInputEnvelopeBody {
-    #[yaserde(prefix = "cla", rename = "SubmitExpenses")]
-    pub submit_expenses: mod_cla::SubmitExpenses,
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetMileageRatesInputEnvelopeBody {
+    #[yaserde(prefix = "cla", rename = "GetMileageRates")]
+    pub get_mileage_rates: mod_cla::GetMileageRates,
 }
-impl restrictions::CheckRestrictions for SubmitExpensesInputEnvelopeBody {
+impl restrictions::CheckRestrictions for GetMileageRatesInputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.submit_expenses.check_restrictions(restrictions)
+        self.get_mileage_rates.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpensesInputEnvelope {
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetMileageRatesInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SubmitExpensesInputEnvelopeHeader,
+    pub header: GetMileageRatesInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SubmitExpensesInputEnvelopeBody,
+    pub body: GetMileageRatesInputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for SubmitExpensesInputEnvelope {
+impl restrictions::CheckRestrictions for GetMileageRatesInputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.header.check_restrictions(restrictions.clone())?;
         self.body.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpensesOutputEnvelopeBody {
-    #[yaserde(prefix = "cla", rename = "SubmitExpensesResponse")]
-    pub submit_expenses_response: mod_cla::SubmitExpensesResponse,
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetMileageRatesOutputEnvelopeBody {
+    #[yaserde(prefix = "cla", rename = "GetMileageRatesResponse")]
+    pub get_mileage_rates_response: mod_cla::GetMileageRatesResponse,
 }
-impl restrictions::CheckRestrictions for SubmitExpensesOutputEnvelopeBody {
+impl restrictions::CheckRestrictions for GetMileageRatesOutputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.submit_expenses_response.check_restrictions(restrictions)
+        self.get_mileage_rates_response.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpensesOutputEnvelope {
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetMileageRatesOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SubmitExpensesOutputEnvelopeBody,
+    pub body: GetMileageRatesOutputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for SubmitExpensesOutputEnvelope {
+impl restrictions::CheckRestrictions for GetMileageRatesOutputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.body.check_restrictions(restrictions)
     }
 }
-pub async fn submit_expenses(
-    req: SubmitExpensesInputEnvelope,
+pub async fn get_mileage_rates(
+    req: GetMileageRatesInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<SubmitExpensesOutputEnvelope> {
-    let url = "http://services.lighthouse1.com/services/claim/SubmitExpenses";
+) -> error::SoapResult<GetMileageRatesOutputEnvelope> {
+    let url = "http://services.lighthouse1.com/services/claim/GetMileageRates";
     helpers::send_soap_request(url, credentials, req).await
 }
 
 /* ApproveExpenses */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct ApproveExpensesInputEnvelopeHeader {
     #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
     pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
@@ -1830,7 +1561,7 @@ impl restrictions::CheckRestrictions for ApproveExpensesInputEnvelopeHeader {
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct ApproveExpensesInputEnvelopeBody {
     #[yaserde(prefix = "cla", rename = "ApproveExpenses")]
     pub approve_expenses: mod_cla::ApproveExpenses,
@@ -1841,7 +1572,7 @@ impl restrictions::CheckRestrictions for ApproveExpensesInputEnvelopeBody {
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct ApproveExpensesInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
     pub header: ApproveExpensesInputEnvelopeHeader,
@@ -1855,7 +1586,7 @@ impl restrictions::CheckRestrictions for ApproveExpensesInputEnvelope {
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct ApproveExpensesOutputEnvelopeBody {
     #[yaserde(prefix = "cla", rename = "ApproveExpensesResponse")]
     pub approve_expenses_response: mod_cla::ApproveExpensesResponse,
@@ -1866,7 +1597,7 @@ impl restrictions::CheckRestrictions for ApproveExpensesOutputEnvelopeBody {
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct ApproveExpensesOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
     pub body: ApproveExpensesOutputEnvelopeBody,
@@ -1884,79 +1615,218 @@ pub async fn approve_expenses(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* GetClaim */
+/* GetExpenseApprovedAmount */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetClaimInputEnvelopeHeader {
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetExpenseApprovedAmountInputEnvelopeHeader {
     #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
     pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
 }
-impl restrictions::CheckRestrictions for GetClaimInputEnvelopeHeader {
+impl restrictions::CheckRestrictions for GetExpenseApprovedAmountInputEnvelopeHeader {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.service_security_header.check_restrictions(restrictions.clone())?;
         Ok(())
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetClaimInputEnvelopeBody {
-    #[yaserde(prefix = "cla", rename = "GetClaim")]
-    pub get_claim: mod_cla::GetClaim,
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetExpenseApprovedAmountInputEnvelopeBody {
+    #[yaserde(prefix = "cla", rename = "GetExpenseApprovedAmount")]
+    pub get_expense_approved_amount: mod_cla::GetExpenseApprovedAmount,
 }
-impl restrictions::CheckRestrictions for GetClaimInputEnvelopeBody {
+impl restrictions::CheckRestrictions for GetExpenseApprovedAmountInputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_claim.check_restrictions(restrictions)
+        self.get_expense_approved_amount.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetClaimInputEnvelope {
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetExpenseApprovedAmountInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: GetClaimInputEnvelopeHeader,
+    pub header: GetExpenseApprovedAmountInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetClaimInputEnvelopeBody,
+    pub body: GetExpenseApprovedAmountInputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for GetClaimInputEnvelope {
+impl restrictions::CheckRestrictions for GetExpenseApprovedAmountInputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.header.check_restrictions(restrictions.clone())?;
         self.body.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetClaimOutputEnvelopeBody {
-    #[yaserde(prefix = "cla", rename = "GetClaimResponse")]
-    pub get_claim_response: mod_cla::GetClaimResponse,
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetExpenseApprovedAmountOutputEnvelopeBody {
+    #[yaserde(prefix = "cla", rename = "GetExpenseApprovedAmountResponse")]
+    pub get_expense_approved_amount_response: mod_cla::GetExpenseApprovedAmountResponse,
 }
-impl restrictions::CheckRestrictions for GetClaimOutputEnvelopeBody {
+impl restrictions::CheckRestrictions for GetExpenseApprovedAmountOutputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.get_claim_response.check_restrictions(restrictions)
+        self.get_expense_approved_amount_response
+            .check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct GetClaimOutputEnvelope {
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetExpenseApprovedAmountOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: GetClaimOutputEnvelopeBody,
+    pub body: GetExpenseApprovedAmountOutputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for GetClaimOutputEnvelope {
+impl restrictions::CheckRestrictions for GetExpenseApprovedAmountOutputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.body.check_restrictions(restrictions)
     }
 }
-pub async fn get_claim(
-    req: GetClaimInputEnvelope,
+pub async fn get_expense_approved_amount(
+    req: GetExpenseApprovedAmountInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<GetClaimOutputEnvelope> {
-    let url = "http://services.lighthouse1.com/services/claim/GetClaim";
+) -> error::SoapResult<GetExpenseApprovedAmountOutputEnvelope> {
+    let url = "http://services.lighthouse1.com/services/claim/GetExpenseApprovedAmount";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetBaseExpenseAccounts */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetBaseExpenseAccountsInputEnvelopeHeader {
+    #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
+    pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
+}
+impl restrictions::CheckRestrictions for GetBaseExpenseAccountsInputEnvelopeHeader {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.service_security_header.check_restrictions(restrictions.clone())?;
+        Ok(())
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetBaseExpenseAccountsInputEnvelopeBody {
+    #[yaserde(prefix = "cla", rename = "GetBaseExpenseAccounts")]
+    pub get_base_expense_accounts: mod_cla::GetBaseExpenseAccounts,
+}
+impl restrictions::CheckRestrictions for GetBaseExpenseAccountsInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_base_expense_accounts.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetBaseExpenseAccountsInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetBaseExpenseAccountsInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetBaseExpenseAccountsInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetBaseExpenseAccountsInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.header.check_restrictions(restrictions.clone())?;
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetBaseExpenseAccountsOutputEnvelopeBody {
+    #[yaserde(prefix = "cla", rename = "GetBaseExpenseAccountsResponse")]
+    pub get_base_expense_accounts_response: mod_cla::GetBaseExpenseAccountsResponse,
+}
+impl restrictions::CheckRestrictions for GetBaseExpenseAccountsOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_base_expense_accounts_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetBaseExpenseAccountsOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetBaseExpenseAccountsOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetBaseExpenseAccountsOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn get_base_expense_accounts(
+    req: GetBaseExpenseAccountsInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetBaseExpenseAccountsOutputEnvelope> {
+    let url = "http://services.lighthouse1.com/services/claim/GetBaseExpenseAccounts";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* SubmitExpenses */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpensesInputEnvelopeHeader {
+    #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
+    pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
+}
+impl restrictions::CheckRestrictions for SubmitExpensesInputEnvelopeHeader {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.service_security_header.check_restrictions(restrictions.clone())?;
+        Ok(())
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpensesInputEnvelopeBody {
+    #[yaserde(prefix = "cla", rename = "SubmitExpenses")]
+    pub submit_expenses: mod_cla::SubmitExpenses,
+}
+impl restrictions::CheckRestrictions for SubmitExpensesInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.submit_expenses.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpensesInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SubmitExpensesInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SubmitExpensesInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for SubmitExpensesInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.header.check_restrictions(restrictions.clone())?;
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpensesOutputEnvelopeBody {
+    #[yaserde(prefix = "cla", rename = "SubmitExpensesResponse")]
+    pub submit_expenses_response: mod_cla::SubmitExpensesResponse,
+}
+impl restrictions::CheckRestrictions for SubmitExpensesOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.submit_expenses_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpensesOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SubmitExpensesOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for SubmitExpensesOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn submit_expenses(
+    req: SubmitExpensesInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SubmitExpensesOutputEnvelope> {
+    let url = "http://services.lighthouse1.com/services/claim/SubmitExpenses";
     helpers::send_soap_request(url, credentials, req).await
 }
 
 /* GetLifetimeMaximumInformation */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct GetLifetimeMaximumInformationInputEnvelopeHeader {
     #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
     pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
@@ -1968,7 +1838,7 @@ impl restrictions::CheckRestrictions for GetLifetimeMaximumInformationInputEnvel
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct GetLifetimeMaximumInformationInputEnvelopeBody {
     #[yaserde(prefix = "cla", rename = "GetLifetimeMaximumInformation")]
     pub get_lifetime_maximum_information: mod_cla::GetLifetimeMaximumInformation,
@@ -1979,7 +1849,7 @@ impl restrictions::CheckRestrictions for GetLifetimeMaximumInformationInputEnvel
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct GetLifetimeMaximumInformationInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
     pub header: GetLifetimeMaximumInformationInputEnvelopeHeader,
@@ -1993,7 +1863,7 @@ impl restrictions::CheckRestrictions for GetLifetimeMaximumInformationInputEnvel
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct GetLifetimeMaximumInformationOutputEnvelopeBody {
     #[yaserde(prefix = "cla", rename = "GetLifetimeMaximumInformationResponse")]
     pub get_lifetime_maximum_information_response: mod_cla::GetLifetimeMaximumInformationResponse,
@@ -2005,7 +1875,7 @@ impl restrictions::CheckRestrictions for GetLifetimeMaximumInformationOutputEnve
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct GetLifetimeMaximumInformationOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
     pub body: GetLifetimeMaximumInformationOutputEnvelopeBody,
@@ -2023,10 +1893,148 @@ pub async fn get_lifetime_maximum_information(
     helpers::send_soap_request(url, credentials, req).await
 }
 
+/* SubmitExpenseNoAdvice */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpenseNoAdviceInputEnvelopeHeader {
+    #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
+    pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
+}
+impl restrictions::CheckRestrictions for SubmitExpenseNoAdviceInputEnvelopeHeader {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.service_security_header.check_restrictions(restrictions.clone())?;
+        Ok(())
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpenseNoAdviceInputEnvelopeBody {
+    #[yaserde(prefix = "cla", rename = "SubmitExpenseNoAdvice")]
+    pub submit_expense_no_advice: mod_cla::SubmitExpenseNoAdvice,
+}
+impl restrictions::CheckRestrictions for SubmitExpenseNoAdviceInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.submit_expense_no_advice.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpenseNoAdviceInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: SubmitExpenseNoAdviceInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SubmitExpenseNoAdviceInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for SubmitExpenseNoAdviceInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.header.check_restrictions(restrictions.clone())?;
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpenseNoAdviceOutputEnvelopeBody {
+    #[yaserde(prefix = "cla", rename = "SubmitExpenseNoAdviceResponse")]
+    pub submit_expense_no_advice_response: mod_cla::SubmitExpenseNoAdviceResponse,
+}
+impl restrictions::CheckRestrictions for SubmitExpenseNoAdviceOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.submit_expense_no_advice_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpenseNoAdviceOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: SubmitExpenseNoAdviceOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for SubmitExpenseNoAdviceOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn submit_expense_no_advice(
+    req: SubmitExpenseNoAdviceInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<SubmitExpenseNoAdviceOutputEnvelope> {
+    let url = "http://services.lighthouse1.com/services/claim/SubmitExpenseNoAdvice";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
+/* GetClaim */
+
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetClaimInputEnvelopeHeader {
+    #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
+    pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
+}
+impl restrictions::CheckRestrictions for GetClaimInputEnvelopeHeader {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.service_security_header.check_restrictions(restrictions.clone())?;
+        Ok(())
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetClaimInputEnvelopeBody {
+    #[yaserde(prefix = "cla", rename = "GetClaim")]
+    pub get_claim: mod_cla::GetClaim,
+}
+impl restrictions::CheckRestrictions for GetClaimInputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_claim.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetClaimInputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Header")]
+    pub header: GetClaimInputEnvelopeHeader,
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetClaimInputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetClaimInputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.header.check_restrictions(restrictions.clone())?;
+        self.body.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetClaimOutputEnvelopeBody {
+    #[yaserde(prefix = "cla", rename = "GetClaimResponse")]
+    pub get_claim_response: mod_cla::GetClaimResponse,
+}
+impl restrictions::CheckRestrictions for GetClaimOutputEnvelopeBody {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.get_claim_response.check_restrictions(restrictions)
+    }
+}
+#[derive(Debug, Default, YaSerialize, YaDeserialize)]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct GetClaimOutputEnvelope {
+    #[yaserde(prefix = "soapenv", rename = "Body")]
+    pub body: GetClaimOutputEnvelopeBody,
+}
+impl restrictions::CheckRestrictions for GetClaimOutputEnvelope {
+    fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
+        self.body.check_restrictions(restrictions)
+    }
+}
+pub async fn get_claim(
+    req: GetClaimInputEnvelope,
+    credentials: Option<(String, String)>,
+) -> error::SoapResult<GetClaimOutputEnvelope> {
+    let url = "http://services.lighthouse1.com/services/claim/GetClaim";
+    helpers::send_soap_request(url, credentials, req).await
+}
+
 /* SubmitClaimBasket */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct SubmitClaimBasketInputEnvelopeHeader {
     #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
     pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
@@ -2038,7 +2046,7 @@ impl restrictions::CheckRestrictions for SubmitClaimBasketInputEnvelopeHeader {
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct SubmitClaimBasketInputEnvelopeBody {
     #[yaserde(prefix = "cla", rename = "SubmitClaimBasket")]
     pub submit_claim_basket: mod_cla::SubmitClaimBasket,
@@ -2049,7 +2057,7 @@ impl restrictions::CheckRestrictions for SubmitClaimBasketInputEnvelopeBody {
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct SubmitClaimBasketInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
     pub header: SubmitClaimBasketInputEnvelopeHeader,
@@ -2063,7 +2071,7 @@ impl restrictions::CheckRestrictions for SubmitClaimBasketInputEnvelope {
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct SubmitClaimBasketOutputEnvelopeBody {
     #[yaserde(prefix = "cla", rename = "SubmitClaimBasketResponse")]
     pub submit_claim_basket_response: mod_cla::SubmitClaimBasketResponse,
@@ -2074,7 +2082,7 @@ impl restrictions::CheckRestrictions for SubmitClaimBasketOutputEnvelopeBody {
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
 pub struct SubmitClaimBasketOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
     pub body: SubmitClaimBasketOutputEnvelopeBody,
@@ -2092,72 +2100,72 @@ pub async fn submit_claim_basket(
     helpers::send_soap_request(url, credentials, req).await
 }
 
-/* SubmitExpenseNoAdvice */
+/* SubmitExpenseBasket */
 
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpenseNoAdviceInputEnvelopeHeader {
+#[yaserde(prefix = "soapenv", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpenseBasketInputEnvelopeHeader {
     #[yaserde(prefix = "cla", rename = "ServiceSecurityHeader")]
     pub service_security_header: Option<mod_cla::ServiceSecurityHeader>,
 }
-impl restrictions::CheckRestrictions for SubmitExpenseNoAdviceInputEnvelopeHeader {
+impl restrictions::CheckRestrictions for SubmitExpenseBasketInputEnvelopeHeader {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.service_security_header.check_restrictions(restrictions.clone())?;
         Ok(())
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpenseNoAdviceInputEnvelopeBody {
-    #[yaserde(prefix = "cla", rename = "SubmitExpenseNoAdvice")]
-    pub submit_expense_no_advice: mod_cla::SubmitExpenseNoAdvice,
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpenseBasketInputEnvelopeBody {
+    #[yaserde(prefix = "cla", rename = "SubmitExpenseBasket")]
+    pub submit_expense_basket: mod_cla::SubmitExpenseBasket,
 }
-impl restrictions::CheckRestrictions for SubmitExpenseNoAdviceInputEnvelopeBody {
+impl restrictions::CheckRestrictions for SubmitExpenseBasketInputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.submit_expense_no_advice.check_restrictions(restrictions)
+        self.submit_expense_basket.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpenseNoAdviceInputEnvelope {
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpenseBasketInputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Header")]
-    pub header: SubmitExpenseNoAdviceInputEnvelopeHeader,
+    pub header: SubmitExpenseBasketInputEnvelopeHeader,
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SubmitExpenseNoAdviceInputEnvelopeBody,
+    pub body: SubmitExpenseBasketInputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for SubmitExpenseNoAdviceInputEnvelope {
+impl restrictions::CheckRestrictions for SubmitExpenseBasketInputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.header.check_restrictions(restrictions.clone())?;
         self.body.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpenseNoAdviceOutputEnvelopeBody {
-    #[yaserde(prefix = "cla", rename = "SubmitExpenseNoAdviceResponse")]
-    pub submit_expense_no_advice_response: mod_cla::SubmitExpenseNoAdviceResponse,
+#[yaserde(prefix = "cla", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpenseBasketOutputEnvelopeBody {
+    #[yaserde(prefix = "cla", rename = "SubmitExpenseBasketResponse")]
+    pub submit_expense_basket_response: mod_cla::SubmitExpenseBasketResponse,
 }
-impl restrictions::CheckRestrictions for SubmitExpenseNoAdviceOutputEnvelopeBody {
+impl restrictions::CheckRestrictions for SubmitExpenseBasketOutputEnvelopeBody {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
-        self.submit_expense_no_advice_response.check_restrictions(restrictions)
+        self.submit_expense_basket_response.check_restrictions(restrictions)
     }
 }
 #[derive(Debug, Default, YaSerialize, YaDeserialize)]
-#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/" })]
-pub struct SubmitExpenseNoAdviceOutputEnvelope {
+#[yaserde(prefix = "soapenv", rename = "Envelope", namespaces = { "soapenv" = "http://schemas.xmlsoap.org/soap/envelope/", "cla" = "http://services.lighthouse1.com/services/claim/", "cla2" = "http://services.lighthouse1.com/ClaimService/ClaimMessages.xsd", "cla1" = "http://services.lighthouse1.com/ClaimService/ClaimMseeages.xsd" })]
+pub struct SubmitExpenseBasketOutputEnvelope {
     #[yaserde(prefix = "soapenv", rename = "Body")]
-    pub body: SubmitExpenseNoAdviceOutputEnvelopeBody,
+    pub body: SubmitExpenseBasketOutputEnvelopeBody,
 }
-impl restrictions::CheckRestrictions for SubmitExpenseNoAdviceOutputEnvelope {
+impl restrictions::CheckRestrictions for SubmitExpenseBasketOutputEnvelope {
     fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()> {
         self.body.check_restrictions(restrictions)
     }
 }
-pub async fn submit_expense_no_advice(
-    req: SubmitExpenseNoAdviceInputEnvelope,
+pub async fn submit_expense_basket(
+    req: SubmitExpenseBasketInputEnvelope,
     credentials: Option<(String, String)>,
-) -> error::SoapResult<SubmitExpenseNoAdviceOutputEnvelope> {
-    let url = "http://services.lighthouse1.com/services/claim/SubmitExpenseNoAdvice";
+) -> error::SoapResult<SubmitExpenseBasketOutputEnvelope> {
+    let url = "http://services.lighthouse1.com/services/claim/SubmitExpenseBasket";
     helpers::send_soap_request(url, credentials, req).await
 }
 pub struct ClaimService {
@@ -2197,10 +2205,10 @@ impl ClaimService {
         self
     }
 
-    pub async fn submit_expense_basket(
+    pub async fn get_plan_max_amounts(
         &self,
-        req: SubmitExpenseBasketInputEnvelope,
-    ) -> error::SoapResult<SubmitExpenseBasketOutputEnvelope> {
+        req: GetPlanMaxAmountsInputEnvelope,
+    ) -> error::SoapResult<GetPlanMaxAmountsOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
@@ -2213,10 +2221,10 @@ impl ClaimService {
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 
-    pub async fn get_base_expense_accounts(
+    pub async fn approve_expenses(
         &self,
-        req: GetBaseExpenseAccountsInputEnvelope,
-    ) -> error::SoapResult<GetBaseExpenseAccountsOutputEnvelope> {
+        req: ApproveExpensesInputEnvelope,
+    ) -> error::SoapResult<ApproveExpensesOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
@@ -2229,10 +2237,10 @@ impl ClaimService {
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 
-    pub async fn get_plan_max_amounts(
+    pub async fn get_base_expense_accounts(
         &self,
-        req: GetPlanMaxAmountsInputEnvelope,
-    ) -> error::SoapResult<GetPlanMaxAmountsOutputEnvelope> {
+        req: GetBaseExpenseAccountsInputEnvelope,
+    ) -> error::SoapResult<GetBaseExpenseAccountsOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
@@ -2245,23 +2253,23 @@ impl ClaimService {
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 
-    pub async fn approve_expenses(
+    pub async fn get_lifetime_maximum_information(
         &self,
-        req: ApproveExpensesInputEnvelope,
-    ) -> error::SoapResult<ApproveExpensesOutputEnvelope> {
+        req: GetLifetimeMaximumInformationInputEnvelope,
+    ) -> error::SoapResult<GetLifetimeMaximumInformationOutputEnvelope> {
+        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
+        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
+    }
+
+    pub async fn submit_expense_no_advice(
+        &self,
+        req: SubmitExpenseNoAdviceInputEnvelope,
+    ) -> error::SoapResult<SubmitExpenseNoAdviceOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 
     pub async fn get_claim(&self, req: GetClaimInputEnvelope) -> error::SoapResult<GetClaimOutputEnvelope> {
-        let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
-        helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
-    }
-
-    pub async fn get_lifetime_maximum_information(
-        &self,
-        req: GetLifetimeMaximumInformationInputEnvelope,
-    ) -> error::SoapResult<GetLifetimeMaximumInformationOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
@@ -2274,10 +2282,10 @@ impl ClaimService {
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }
 
-    pub async fn submit_expense_no_advice(
+    pub async fn submit_expense_basket(
         &self,
-        req: SubmitExpenseNoAdviceInputEnvelope,
-    ) -> error::SoapResult<SubmitExpenseNoAdviceOutputEnvelope> {
+        req: SubmitExpenseBasketInputEnvelope,
+    ) -> error::SoapResult<SubmitExpenseBasketOutputEnvelope> {
         let credentials = self.credentials.as_ref().map(|(u, p)| (u.as_str(), p.as_str()));
         helpers::send_soap_request_using_client(&self.client, &self.location, credentials, req).await
     }

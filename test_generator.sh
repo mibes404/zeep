@@ -2,11 +2,9 @@
 cargo build
 
 # Output to file:
-./target/debug/zeep --input ./resources/aic/agent_wsdl.xml --output ./examples/aic/aic.rs
 ./target/debug/zeep --input ./resources/temp_converter/tempconverter.wsdl --output ./examples/temperature/tempconverter.rs
 ./target/debug/zeep --input ./resources/hello/hello.wsdl --output ./examples/hello/hello.rs
 ./target/debug/zeep --input ./resources/exchange/services.wsdl --output ./examples/exchange/services.rs
-./target/debug/zeep --input ./resources/aacc/CustomerWS.wsdl --output ./examples/aacc/customer.rs
 ./target/debug/zeep --input ./resources/claim_service/claim_service.wsdl --output ./examples/claim_service/claim_service.rs
 
 # Use cargo +nightly fmt when available, otherwise use stable
@@ -17,11 +15,9 @@ else
 fi
 
 # Format all generated files
-for file in examples/aic/aic.rs \
-            examples/hello/hello.rs \
+for file in examples/hello/hello.rs \
             examples/temperature/tempconverter.rs \
             examples/exchange/services.rs \
-            examples/aacc/customer.rs \
             examples/claim_service/claim_service.rs; do
     $FMT_CMD "$file"
 done
