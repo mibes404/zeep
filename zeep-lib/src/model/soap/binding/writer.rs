@@ -109,7 +109,7 @@ where
         writeln!(writer, "pub struct {rust_name} {{")?;
         for (part_name, header) in &soap_operation.headers {
             let field_name = as_field_name(part_name);
-            let rust_type = header.rust_type.xml_name().expect("xml_name not found");
+            let rust_type = header.rust_type.rust_type_name().expect("rust type name not found");
 
             if let Some(namespace) = header.in_namespace.as_ref() {
                 let abbreviation = namespace.abbreviation.as_str();
@@ -144,8 +144,12 @@ where
         write_check_restrictions_footer(writer)?;
     }
 
-    let body = soap_operation.body.rust_type.xml_name().expect("xml_name not found");
-    let body_field_name = as_field_name(&to_snake_case(body));
+    let body = soap_operation
+        .body
+        .rust_type
+        .rust_type_name()
+        .expect("rust type name not found");
+    let body_field_name = as_field_name(&to_snake_case(&body));
     let xml_name = soap_operation.body.rust_type.xml_name().expect("xml_name not found");
 
     writeln!(writer, "#[derive(Debug, Default, YaSerialize, YaDeserialize)]")?;

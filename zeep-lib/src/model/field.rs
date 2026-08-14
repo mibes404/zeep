@@ -201,6 +201,17 @@ impl RustFieldType {
     pub fn is_other(&self) -> bool {
         matches!(self, RustFieldType::Other(_))
     }
+
+    /// Returns the bare Rust identifier for this type, without any module path
+    /// prefix. Useful when the caller is going to prepend its own module path
+    /// (e.g. when referencing a type that lives in a different generated
+    /// `mod_*` module than the one it was originally resolved against).
+    pub fn plain_name(&self) -> String {
+        match self {
+            RustFieldType::Other(OtherRustType { name, .. }) => name.clone(),
+            other => other.to_string(),
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Clone)]
