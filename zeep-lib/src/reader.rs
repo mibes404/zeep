@@ -20,7 +20,12 @@ use crate::{
     },
 };
 use roxmltree::Node;
-use std::{collections::HashMap, fmt::Display, io, sync::atomic::AtomicBool};
+use std::{
+    collections::HashMap,
+    fmt::Display,
+    io,
+    path::{Component, Path, PathBuf},
+};
 
 pub const WELL_KNOWN_NAMESPACES: &[&str] = &[
     "http://www.w3.org/XML/1998/namespace",
@@ -48,16 +53,13 @@ pub struct XmlReader;
 /// has been processed or not.
 struct FileContent {
     xml: String,
-    processed: AtomicBool,
+    processed: bool,
 }
 
 impl FileContent {
     #[must_use]
     fn new(xml: String) -> Self {
-        FileContent {
-            xml,
-            processed: AtomicBool::new(false),
-        }
+        FileContent { xml, processed: false }
     }
 }
 
@@ -87,6 +89,45 @@ impl Files {
         let Files { map, .. } = self;
         map.insert(file_name.to_string(), FileContent::new(xml.to_string()));
     }
+
+    /// Resolve `schema_location`, relative to the file that imports it (`from_file`), against the
+    /// files already loaded in memory. If it is not found there, try to load it from disk. This is
+    /// what makes `../../some/other/dir/file.xsd`-style `schemaLocation` paths in imports work,
+    /// without having to pre-scan the whole project tree up front.
+    fn resolve(&mut self, from_file: &str, schema_location: &str) -> WriterResult<String> {
+        let resolved = normalize_path(from_file, schema_location);
+
+        if !self.map.contains_key(&resolved) {
+            let xml = std::fs::read_to_string(&resolved)
+                .map_err(|_| WriterError::ImportNotFound(schema_location.to_string()))?;
+            self.map.insert(resolved.clone(), FileContent::new(xml));
+        }
+
+        Ok(resolved)
+    }
+}
+
+/// Join `relative` onto the directory of `base`, then lexically collapse any `.` and `..`
+/// components. This deliberately does not touch the filesystem (no `canonicalize`), so it also
+/// works for the in-memory files used in tests.
+fn normalize_path(base: &str, relative: &str) -> String {
+    let base_dir = Path::new(base).parent().unwrap_or_else(|| Path::new(""));
+    let joined = base_dir.join(relative);
+
+    let mut normalized = PathBuf::new();
+    for component in joined.components() {
+        match component {
+            Component::ParentDir => {
+                if !normalized.pop() {
+                    normalized.push("..");
+                }
+            }
+            Component::CurDir => {}
+            other => normalized.push(other),
+        }
+    }
+
+    normalized.to_string_lossy().into_owned()
 }
 
 /// The `FilesToRead` struct is used to hold the `Files` and the starting file to read from.
@@ -103,11 +144,6 @@ impl FilesToRead {
         }
     }
 
-    fn inner(&self) -> (&FileContent, &str, &Files) {
-        let FilesToRead { start_with_file, files } = self;
-        let content = files.map.get(start_with_file).unwrap();
-        (content, start_with_file, files)
-    }
 }
 
 impl XmlReader {
@@ -115,39 +151,47 @@ impl XmlReader {
     ///
     /// # Errors
     /// Returns an error if the XSD/WSDL is invalid
-    pub fn read_xml(files_to_read: &FilesToRead) -> WriterResult<RustDocument> {
-        let (content, start_with_file, files) = files_to_read.inner();
-        Self::read_xml_internal(content, start_with_file, files)
+    pub fn read_xml(files_to_read: &mut FilesToRead) -> WriterResult<RustDocument> {
+        let FilesToRead { start_with_file, files } = files_to_read;
+        Self::read_xml_internal(start_with_file, files)
     }
 
     #[cfg(test)]
     pub(crate) fn read_xml_from_file(file_name: &str, xml: &str) -> WriterResult<RustDocument> {
         let files = Files::new(file_name, xml);
-        let files_to_read = FilesToRead::new(file_name, files);
-        Self::read_xml(&files_to_read)
+        let mut files_to_read = FilesToRead::new(file_name, files);
+        Self::read_xml(&mut files_to_read)
     }
 
-    fn read_xml_internal(file: &FileContent, file_name: &str, files: &Files) -> WriterResult<RustDocument> {
-        if file.processed.load(std::sync::atomic::Ordering::SeqCst) {
-            let rust_doc = RustDocument::empty();
-            return Ok(rust_doc);
+    fn read_xml_internal(file_name: &str, files: &mut Files) -> WriterResult<RustDocument> {
+        let already_processed = files.map.get(file_name).is_some_and(|f| f.processed);
+        if already_processed {
+            return Ok(RustDocument::empty());
         }
 
-        let xml = &file.xml;
-        let doc = roxmltree::Document::parse(xml)
+        let xml = files
+            .map
+            .get(file_name)
+            .ok_or_else(|| WriterError::ImportNotFound(file_name.to_string()))?
+            .xml
+            .clone();
+
+        let doc = roxmltree::Document::parse(&xml)
             .map_err(|e| WriterError::new(format!("Unable to parse file {file_name}: {e}")))?;
         let mut rust_doc = RustDocument::init(&doc);
 
         for child in doc.root().children() {
-            Self::read(child, files, &mut rust_doc)?;
+            Self::read(child, file_name, files, &mut rust_doc)?;
         }
 
-        file.processed.store(true, std::sync::atomic::Ordering::SeqCst);
+        if let Some(file) = files.map.get_mut(file_name) {
+            file.processed = true;
+        }
 
         Ok(rust_doc)
     }
 
-    fn read<'n>(node: Node<'n, 'n>, files: &Files, doc: &mut RustDocument) -> WriterResult<()> {
+    fn read<'n>(node: Node<'n, 'n>, file_name: &str, files: &mut Files, doc: &mut RustDocument) -> WriterResult<()> {
         if !node.is_element() {
             return Ok(());
         }
@@ -157,20 +201,25 @@ impl XmlReader {
         }
 
         match node.tag_name().name() {
-            "definitions" => Self::read_wsdl(node, files, doc)?,
-            "schema" => Self::read_xsd(node, files, doc)?,
+            "definitions" => Self::read_wsdl(node, file_name, files, doc)?,
+            "schema" => Self::read_xsd(node, file_name, files, doc)?,
             _ => return Ok(()),
         }
 
         Ok(())
     }
 
-    fn read_wsdl<'n>(node: Node<'n, 'n>, files: &Files, doc: &mut RustDocument) -> WriterResult<()> {
+    fn read_wsdl<'n>(
+        node: Node<'n, 'n>,
+        file_name: &str,
+        files: &mut Files,
+        doc: &mut RustDocument,
+    ) -> WriterResult<()> {
         for child in node.children() {
             let node_name = child.tag_name().name();
             // first read the types as if it were an XSD
             if node_name == "types" {
-                Self::read_soap_types_schema(files, doc, child)?;
+                Self::read_soap_types_schema(file_name, files, doc, child)?;
             }
 
             // read soap messages
@@ -202,21 +251,27 @@ impl XmlReader {
     }
 
     fn read_soap_types_schema<'n>(
-        files: &Files,
+        file_name: &str,
+        files: &mut Files,
         doc: &mut RustDocument,
         child: Node<'n, 'n>,
     ) -> Result<(), WriterError> {
         let mut any = false;
         for node in child.children() {
             if node.tag_name().name() == "schema" {
-                Self::read_xsd(node, files, doc)?;
+                Self::read_xsd(node, file_name, files, doc)?;
                 any = true;
             }
         }
         if any { Ok(()) } else { Err(WriterError::SchemaNotFound) }
     }
 
-    fn read_xsd<'n>(node: Node<'n, 'n>, files: &Files, doc: &mut RustDocument) -> WriterResult<()> {
+    fn read_xsd<'n>(
+        node: Node<'n, 'n>,
+        file_name: &str,
+        files: &mut Files,
+        doc: &mut RustDocument,
+    ) -> WriterResult<()> {
         // Switch to the schema's target namespace if it has one
         if let Some(target_namespace) = node.attribute("targetNamespace") {
             doc.switch_to_target_namespace(target_namespace);
@@ -224,7 +279,7 @@ impl XmlReader {
 
         for child in node.children() {
             if child.tag_name().name() == "import" {
-                doc.extend(Self::process_import(child, files)?);
+                doc.extend(Self::process_import(child, file_name, files)?);
                 continue;
             }
 
@@ -236,7 +291,7 @@ impl XmlReader {
         Ok(())
     }
 
-    fn process_import(node: Node, files: &Files) -> WriterResult<RustDocument> {
+    fn process_import(node: Node, file_name: &str, files: &mut Files) -> WriterResult<RustDocument> {
         let namespace = node.attribute("namespace").ok_or(WriterError::NamespaceMissing)?;
 
         if WELL_KNOWN_NAMESPACES.contains(&namespace) {
@@ -247,17 +302,12 @@ impl XmlReader {
             return Ok(RustDocument::empty());
         };
 
-        let file = files
-            .map
-            .get(schema_location)
-            .ok_or_else(|| WriterError::ImportNotFound(schema_location.to_string()))?;
+        // Resolve schemaLocation relative to the file that imports it (this is what makes
+        // `../../some/other/dir/file.xsd`-style imports work), loading it from disk on demand
+        // if it isn't already known.
+        let resolved = files.resolve(file_name, schema_location)?;
 
-        if file.processed.load(std::sync::atomic::Ordering::Relaxed) {
-            return Ok(RustDocument::empty());
-        }
-
-        let rust_doc = Self::read_xml_internal(file, schema_location, files)?;
-        Ok(rust_doc)
+        Self::read_xml_internal(&resolved, files)
     }
 }
 
@@ -272,9 +322,8 @@ mod tests {
     #[test]
     fn can_read_a_simple_xsd() {
         const XSD: &str = include_str!("../test-data/single-complex.xsd");
-        let files = Files::new("types.xsd", XSD);
-        let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
-        let nodes = XmlReader::read_xml_internal(file, file_name, &files).unwrap().nodes;
+        let mut files = Files::new("types.xsd", XSD);
+        let nodes = XmlReader::read_xml_internal("types.xsd", &mut files).unwrap().nodes;
         assert_eq!(nodes.len(), 1);
         let node = nodes.first().unwrap();
         let RustType::Complex(props) = &node.rust_type else {
@@ -310,8 +359,7 @@ mod tests {
         let mut files = Files::new("messages.xsd", XSD_MESSAGES);
         files.add("types.xsd", XSD_TYPES);
 
-        let (file_name, file) = files.map.get_key_value("messages.xsd").unwrap();
-        let nodes = XmlReader::read_xml_internal(file, file_name, &files).unwrap().nodes;
+        let nodes = XmlReader::read_xml_internal("messages.xsd", &mut files).unwrap().nodes;
         assert_eq!(nodes.len(), 2);
 
         let type_node = nodes.first().unwrap();
@@ -353,12 +401,49 @@ mod tests {
     }
 
     #[test]
+    fn normalize_path_resolves_relative_imports() {
+        assert_eq!(normalize_path("services/foo.wsdl", "bar.xsd"), "services/bar.xsd");
+        assert_eq!(
+            normalize_path("a/b/c/foo.wsdl", "../../x/y/bar.xsd"),
+            "a/x/y/bar.xsd"
+        );
+        assert_eq!(normalize_path("a/b/foo.wsdl", "./bar.xsd"), "a/b/bar.xsd");
+    }
+
+    #[test]
+    fn can_read_import_that_climbs_out_of_its_directory() {
+        // Regression test: schemaLocation paths like `../../Dictionnaires/v5.0/foo.xsd` (as used
+        // by real-world WSDLs, e.g. Enedis SGE) must resolve relative to the importing file's own
+        // directory, not the entry file's directory.
+        const XSD_TYPES: &str = include_str!("../test-data/single-complex.xsd");
+        const XSD_MESSAGES_TEMPLATE: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://schemas.microsoft.com/exchange/services/2006/messages"
+    xmlns:typ="http://schemas.microsoft.com/exchange/services/2006/types">
+    <xs:import namespace="http://schemas.microsoft.com/exchange/services/2006/types"
+        schemaLocation="../../dictionaries/v5.0/types.xsd"/>
+    <xs:element name="ResponseCode" type="xs:string"/>
+</xs:schema>"#;
+
+        let mut files = Files::new("services/exchange/messages.xsd", XSD_MESSAGES_TEMPLATE);
+        files.add("dictionaries/v5.0/types.xsd", XSD_TYPES);
+
+        let nodes = XmlReader::read_xml_internal("services/exchange/messages.xsd", &mut files)
+            .unwrap()
+            .nodes;
+
+        // One node from the imported types.xsd, one from messages.xsd itself.
+        assert_eq!(nodes.len(), 2);
+        assert!(nodes.iter().any(|n| n.rust_type.xml_name() == Some("InstalledAppType")));
+        assert!(nodes.iter().any(|n| n.rust_type.xml_name() == Some("ResponseCode")));
+    }
+
+    #[test]
     fn can_read_elements_with_extensions() {
         const XSD_TYPES: &str = include_str!("../test-data/extensions.xsd");
-        let files = Files::new("types.xsd", XSD_TYPES);
+        let mut files = Files::new("types.xsd", XSD_TYPES);
 
-        let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
-        let rust_doc = XmlReader::read_xml_internal(file, file_name, &files).unwrap();
+        let rust_doc = XmlReader::read_xml_internal("types.xsd", &mut files).unwrap();
 
         // check that we found the two namespaces
         assert_eq!(rust_doc.namespaces.len(), 2, "Expected two namespaces");
@@ -408,10 +493,9 @@ mod tests {
     #[test]
     fn can_parse_forward_pointing_base_type() {
         const XSD_TYPES: &str = include_str!("../test-data/forward-pointing-type.xsd");
-        let files = Files::new("types.xsd", XSD_TYPES);
+        let mut files = Files::new("types.xsd", XSD_TYPES);
 
-        let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
-        let rust_doc = XmlReader::read_xml_internal(file, file_name, &files).unwrap();
+        let rust_doc = XmlReader::read_xml_internal("types.xsd", &mut files).unwrap();
         assert_eq!(rust_doc.nodes.len(), 2);
 
         // check node name
@@ -422,10 +506,9 @@ mod tests {
     #[test]
     fn can_parse_groups() {
         const XSD_TYPES: &str = include_str!("../test-data/use-of-groups.xsd");
-        let files = Files::new("types.xsd", XSD_TYPES);
+        let mut files = Files::new("types.xsd", XSD_TYPES);
 
-        let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
-        let rust_doc = XmlReader::read_xml_internal(file, file_name, &files).unwrap();
+        let rust_doc = XmlReader::read_xml_internal("types.xsd", &mut files).unwrap();
         assert_eq!(rust_doc.nodes.len(), 3);
 
         // check node name
@@ -440,8 +523,7 @@ mod tests {
         let mut files = Files::new("messages.xsd", XSD_MESSAGES);
         files.add("types.xsd", XSD_TYPES);
 
-        let (file_name, file) = files.map.get_key_value("messages.xsd").unwrap();
-        let nodes = XmlReader::read_xml_internal(file, file_name, &files).unwrap().nodes;
+        let nodes = XmlReader::read_xml_internal("messages.xsd", &mut files).unwrap().nodes;
         assert_eq!(nodes.len(), 1457);
 
         // get the GetUserAvailabilityRequestType
@@ -492,10 +574,9 @@ mod tests {
     #[test]
     fn can_handle_inline_namespace_definitions() {
         const XSD_TYPES: &str = include_str!("../test-data/inline-namespace-definition.xsd");
-        let files = Files::new("types.xsd", XSD_TYPES);
+        let mut files = Files::new("types.xsd", XSD_TYPES);
 
-        let (file_name, file) = files.map.get_key_value("types.xsd").unwrap();
-        let rust_doc = XmlReader::read_xml_internal(file, file_name, &files).unwrap();
+        let rust_doc = XmlReader::read_xml_internal("types.xsd", &mut files).unwrap();
         assert_eq!(rust_doc.nodes.len(), 2);
 
         let greeting_request = rust_doc.nodes.get(1).unwrap();
@@ -511,9 +592,8 @@ mod tests {
     #[test]
     fn can_read_wsdl_file_with_service_security_header() {
         const WSDL: &str = include_str!("../test-data/claim_service.wsdl");
-        let files = Files::new("claim_service.wsdl", WSDL);
-        let (file_name, file) = files.map.get_key_value("claim_service.wsdl").unwrap();
-        let rust_doc = XmlReader::read_xml_internal(file, file_name, &files).unwrap();
+        let mut files = Files::new("claim_service.wsdl", WSDL);
+        let rust_doc = XmlReader::read_xml_internal("claim_service.wsdl", &mut files).unwrap();
 
         // The WSDL has many elements and complex types
         assert_eq!(rust_doc.nodes.len(), 78);
@@ -597,9 +677,8 @@ mod tests {
     #[test]
     fn can_handle_multi_namespace_wsdl() {
         const WSDL: &str = include_str!("../test-data/multi_namespace.wsdl");
-        let files = Files::new("multi_namespace.wsdl", WSDL);
-        let (file_name, file) = files.map.get_key_value("multi_namespace.wsdl").unwrap();
-        let rust_doc = XmlReader::read_xml_internal(file, file_name, &files).unwrap();
+        let mut files = Files::new("multi_namespace.wsdl", WSDL);
+        let rust_doc = XmlReader::read_xml_internal("multi_namespace.wsdl", &mut files).unwrap();
 
         // Verify all nodes were read (2 elements from first schema, 3 types from second schema)
         assert_eq!(rust_doc.nodes.len(), 5);

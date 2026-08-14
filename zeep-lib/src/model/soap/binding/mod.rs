@@ -271,8 +271,8 @@ mod tests {
     #[test]
     fn can_read_soap_binding_with_multiple_parts() {
         let wsdl_path = Path::new("./test-data/exchange/services.wsdl");
-        let files = read_input_file_and_xsd_files_at_path(wsdl_path).expect("can not read input file");
-        let document = XmlReader::read_xml(&files).expect("can not read xml");
+        let mut files = read_input_file_and_xsd_files_at_path(wsdl_path).expect("can not read input file");
+        let document = XmlReader::read_xml(&mut files).expect("can not read xml");
         assert_eq!(document.soap_bindings.len(), 1);
         let binding = &document.soap_bindings[0];
         assert_eq!(binding.name, "ExchangeServiceBinding");
