@@ -106,14 +106,16 @@ where
     }
     writeln!(writer, "pub struct {rust_name} {{")?;
     if rust_type.is_string() {
-        writeln!(writer, "    #[yaserde(text = true)]")?;
+        // `default` covers the case where the element is present but empty
+        // (e.g. `<foo/>`)
+        writeln!(writer, "    #[yaserde(text = true, default = \"__yaserde_default_string\")]")?;
         writeln!(writer, "    pub value: {rust_type}")?;
     } else if rust_type.is_other() {
         writeln!(writer, "    #[yaserde(flatten = true)]")?;
         writeln!(writer, "    pub value: {rust_type}")?;
     } else {
         // note: flatten is not supported for other types
-        writeln!(writer, "    #[yaserde(text = true)]")?;
+        writeln!(writer, "    #[yaserde(text = true, default = \"__yaserde_default_string\")]")?;
         writeln!(writer, "    pub value: String")?;
     }
     writeln!(writer, "}}")?;
@@ -251,7 +253,7 @@ mod tests {
 
     #[test]
     fn can_write_a_simple_type_to_rust() {
-        const EXPECTED: &str = "/// A person\n#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct Person {\n    #[yaserde(text = true)]\n    pub value: String\n}\nimpl restrictions::CheckRestrictions for Person {\n  fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()>  {\n     self.value.check_restrictions(restrictions)\n  }\n}\n";
+        const EXPECTED: &str = "/// A person\n#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub struct Person {\n    #[yaserde(text = true, default = \"__yaserde_default_string\")]\n    pub value: String\n}\nimpl restrictions::CheckRestrictions for Person {\n  fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()>  {\n     self.value.check_restrictions(restrictions)\n  }\n}\n";
         let mut writer = Vec::new();
         let props = prep_simple_props(None);
         let rust_type = RustType::Simple(props);

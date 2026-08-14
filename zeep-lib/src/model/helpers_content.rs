@@ -1,3 +1,13 @@
+/// Default for XSD simple-type text wrappers (e.g. `<value>` from a
+/// `#[yaserde(text = true)]` field) when the element is present but empty
+/// (self-closing, e.g. `<foo/>`). Without an explicit default, yaserde treats
+/// the field as missing and deserialization fails with "required field" even
+/// though the element was there (it just had no text content).
+#[allow(dead_code)]
+fn __yaserde_default_string() -> String {
+    String::new()
+}
+
 pub mod error {
     #![allow(dead_code)]
 
