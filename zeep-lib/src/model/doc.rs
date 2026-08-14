@@ -21,6 +21,8 @@ pub struct RustDocument {
     pub(crate) namespaces: Vec<Rc<Namespace>>,
     pub(crate) target_namespaces: Vec<Rc<Namespace>>,
     pub(crate) current_target_namespace: Option<Rc<Namespace>>,
+    pub(crate) element_form_qualified: HashMap<String, bool>,
+    pub(crate) attribute_form_qualified: HashMap<String, bool>,
     pub(crate) nodes: Vec<Rc<RustNode>>,
     pub(crate) soap_messages: Vec<Rc<SoapMessage>>,
     pub(crate) soap_ports: Vec<Rc<SoapPort>>,
@@ -42,6 +44,9 @@ impl RustDocument {
         extend_no_duplicates(&mut self.namespaces, other.namespaces);
         extend_no_duplicates(&mut self.target_namespaces, other.target_namespaces);
 
+        self.element_form_qualified.extend(other.element_form_qualified);
+        self.attribute_form_qualified.extend(other.attribute_form_qualified);
+
         self.nodes.extend(other.nodes);
         self.soap_messages.extend(other.soap_messages);
         self.soap_ports.extend(other.soap_ports);
@@ -55,6 +60,8 @@ impl RustDocument {
             namespaces: Vec::new(),
             target_namespaces: Vec::new(),
             current_target_namespace: None,
+            element_form_qualified: HashMap::new(),
+            attribute_form_qualified: HashMap::new(),
             nodes: Vec::new(),
             soap_messages: Vec::new(),
             soap_ports: Vec::new(),
@@ -136,6 +143,29 @@ impl RustDocument {
             self.namespaces.push(tns.clone());
             self.current_target_namespace = Some(tns);
         }
+    }
+
+    /// Records whether locally-declared elements/attributes in the given
+    /// schema (identified by its target namespace) are namespace-qualified
+    /// by default. Per the XSD spec, `elementFormDefault`/`attributeFormDefault`
+    /// both default to "unqualified" when absent from the `<xs:schema>` element,
+    /// meaning only globally-declared (top-level) elements/attributes are
+    /// namespace-qualified. Locally-declared ones (e.g. fields nested inside
+    /// a complexType's sequence) must NOT carry a namespace prefix unless the
+    /// schema opts in.
+    pub fn set_form_defaults(&mut self, namespace: &str, elements_qualified: bool, attributes_qualified: bool) {
+        self.element_form_qualified
+            .insert(namespace.to_string(), elements_qualified);
+        self.attribute_form_qualified
+            .insert(namespace.to_string(), attributes_qualified);
+    }
+
+    pub fn elements_qualified_by_default(&self, namespace: &str) -> bool {
+        self.element_form_qualified.get(namespace).copied().unwrap_or(false)
+    }
+
+    pub fn attributes_qualified_by_default(&self, namespace: &str) -> bool {
+        self.attribute_form_qualified.get(namespace).copied().unwrap_or(false)
     }
 
     pub fn find_node_by_xml_name<'n>(

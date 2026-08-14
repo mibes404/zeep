@@ -275,6 +275,11 @@ impl XmlReader {
         // Switch to the schema's target namespace if it has one
         if let Some(target_namespace) = node.attribute("targetNamespace") {
             doc.switch_to_target_namespace(target_namespace);
+            doc.set_form_defaults(
+                target_namespace,
+                node.attribute("elementFormDefault") == Some("qualified"),
+                node.attribute("attributeFormDefault") == Some("qualified"),
+            );
         }
 
         for child in node.children() {
@@ -397,6 +402,59 @@ mod tests {
         assert_eq!(
             target_namespace.as_ref().unwrap().namespace,
             "http://schemas.microsoft.com/exchange/services/2006/messages"
+        );
+    }
+
+    #[test]
+    fn locally_declared_fields_are_unqualified_unless_opted_in() {
+        // Regression test: per the XSD spec, elementFormDefault/attributeFormDefault
+        // default to "unqualified" when absent from <xs:schema>, so locally-declared
+        // fields (nested inside a complexType) must not carry a namespace prefix
+        // unless the schema opts in via elementFormDefault/attributeFormDefault, or
+        // the field itself has an explicit `form="qualified"` override.
+        const XSD: &str = include_str!("../test-data/unqualified-form-default.xsd");
+        let mut files = Files::new("types.xsd", XSD);
+        let nodes = XmlReader::read_xml_internal("types.xsd", &mut files).unwrap().nodes;
+        assert_eq!(nodes.len(), 1);
+        let node = nodes.first().unwrap();
+        let RustType::Complex(props) = &node.rust_type else {
+            panic!()
+        };
+
+        let ComplexProps { fields, .. } = &**props;
+        assert_eq!(fields.len(), 3);
+
+        let id_field = fields.iter().find(|f| f.xml_name == "Id").unwrap();
+        assert!(id_field.target_namespace.is_none());
+
+        let attr_field = fields.iter().find(|f| f.xml_name == "Attr").unwrap();
+        assert!(attr_field.target_namespace.is_none());
+
+        // Explicit `form="qualified"` overrides the schema-level default.
+        let qualified_field = fields.iter().find(|f| f.xml_name == "Qualified").unwrap();
+        assert_eq!(
+            qualified_field.target_namespace.as_ref().unwrap().namespace,
+            "http://schemas.microsoft.com/exchange/services/2006/types"
+        );
+    }
+
+    #[test]
+    fn locally_declared_fields_are_qualified_when_form_default_is_qualified() {
+        // single-complex.xsd sets elementFormDefault="qualified", so locally-declared
+        // elements should inherit the schema's target namespace.
+        const XSD: &str = include_str!("../test-data/single-complex.xsd");
+        let mut files = Files::new("types.xsd", XSD);
+        let nodes = XmlReader::read_xml_internal("types.xsd", &mut files).unwrap().nodes;
+        let node = nodes.first().unwrap();
+        let RustType::Complex(props) = &node.rust_type else {
+            panic!()
+        };
+
+        let ComplexProps { fields, .. } = &**props;
+        let id_field = fields.iter().find(|f| f.xml_name == "Id").unwrap();
+        assert_eq!(
+            id_field.target_namespace.as_ref().unwrap().namespace,
+            "http://schemas.microsoft.com/exchange/services/2006/types"
         );
     }
 
