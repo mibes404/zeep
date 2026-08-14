@@ -40,6 +40,36 @@ impl<'n> TryFromNode<'n> for Field {
         target_namespace.clone_from(&doc.current_target_namespace);
 
         let is_attribute = node.tag_name().name() == "attribute";
+
+        // A locally-declared element/attribute (i.e. one nested inside a
+        // complexType, as opposed to a global declaration directly under
+        // `<xs:schema>`) is only namespace-qualified when the enclosing
+        // schema opts in via `elementFormDefault`/`attributeFormDefault`, or
+        // when this particular element/attribute has an explicit `form`
+        // override.
+        // Per the XSD spec both defaults are "unqualified".
+        let is_qualified = match node.attribute("form") {
+            Some("qualified") => true,
+            Some("unqualified") => false,
+            // A field node carrying its own explicit `targetNamespace` (rather
+            // than inheriting one from an enclosing `<xs:schema>`) is always
+            // qualified.
+            // This pattern is used for synthesized/global
+            // references (e.g. SOAP header parts), not schema-local fields
+            // subject to `elementFormDefault`.
+            _ if node.attribute("targetNamespace").is_some() => true,
+            _ => target_namespace.as_ref().is_some_and(|ns| {
+                if is_attribute {
+                    doc.attributes_qualified_by_default(&ns.namespace)
+                } else {
+                    doc.elements_qualified_by_default(&ns.namespace)
+                }
+            }),
+        };
+        if !is_qualified {
+            target_namespace = None;
+        }
+
         let parent_is_optional = node.parent().and_then(|n| n.attribute("minOccurs")) == Some("0");
         let is_nillable = node.attribute("nillable") == Some("true");
         let is_optional = if is_attribute {

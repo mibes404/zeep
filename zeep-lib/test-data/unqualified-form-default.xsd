@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="types"
+           xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types"
+           targetNamespace="http://schemas.microsoft.com/exchange/services/2006/types"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:complexType name="InstalledAppType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="Id" type="xs:string" minOccurs="0"/>
+            <xs:element name="Qualified" type="xs:string" minOccurs="0" form="qualified"/>
+        </xs:sequence>
+        <xs:attribute name="Attr" type="xs:string"/>
+    </xs:complexType>
+</xs:schema>
