@@ -61,15 +61,20 @@ where
     W: io::Write,
 {
     fn write_xml(&self, writer: &mut W) -> WriterResult<()> {
+        // the WSDL service name is used verbatim as a Rust type identifier, but WSDL
+        // names are free-form XML tokens and may contain characters (e.g. `.`) that
+        // are not valid in Rust identifiers, so sanitize it first
+        let struct_name = sanitize_rust_ident(&self.name);
+
         // create a wrapping Rust struct for the service
-        writeln!(writer, "pub struct {} {{", self.name)?;
+        writeln!(writer, "pub struct {struct_name} {{")?;
         writeln!(writer, "    pub client: reqwest::Client,")?;
         writeln!(writer, "    pub location: String,")?;
         writeln!(writer, "    pub credentials: Option<(String, String)>,")?;
         writeln!(writer, "}}")?;
 
         // create an implementation for the service
-        writeln!(writer, "impl {} {{", self.name)?;
+        writeln!(writer, "impl {struct_name} {{")?;
         writeln!(
             writer,
             "    pub fn new(credentials: Option<(String, String)>) -> Self {{"
@@ -130,6 +135,25 @@ where
     }
 }
 
+/// Sanitizes an arbitrary WSDL name (e.g. a `wsdl:service` name) into a valid Rust
+/// identifier by replacing any character that isn't alphanumeric or `_` with `_`,
+/// and prefixing with `_` if the result would otherwise start with a digit.
+///
+/// WSDL service/port names commonly embed a version number using a literal dot
+/// (e.g. `RecherchePointV2.0`), which is not a valid Rust identifier character.
+fn sanitize_rust_ident(name: &str) -> String {
+    let mut sanitized: String = name
+        .chars()
+        .map(|c| if c.is_ascii_alphanumeric() || c == '_' { c } else { '_' })
+        .collect();
+
+    if sanitized.chars().next().is_some_and(|c| c.is_ascii_digit()) {
+        sanitized.insert(0, '_');
+    }
+
+    sanitized
+}
+
 fn write_async_soap_call<W>(writer: &mut W, operation_name: &str, operation: &SoapOperation) -> WriterResult<()>
 where
     W: io::Write,
@@ -165,4 +189,29 @@ where
 
     writeln!(writer, "}}")?;
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::sanitize_rust_ident;
+
+    #[test]
+    fn sanitizes_dots_in_service_name_to_underscores() {
+        assert_eq!(sanitize_rust_ident("RecherchePointV2.0"), "RecherchePointV2_0");
+    }
+
+    #[test]
+    fn sanitizes_other_invalid_ident_characters() {
+        assert_eq!(sanitize_rust_ident("My-Service Name!"), "My_Service_Name_");
+    }
+
+    #[test]
+    fn leaves_already_valid_identifiers_untouched() {
+        assert_eq!(sanitize_rust_ident("WeatherService"), "WeatherService");
+    }
+
+    #[test]
+    fn prefixes_leading_digit_with_underscore() {
+        assert_eq!(sanitize_rust_ident("2FastService"), "_2FastService");
+    }
 }
