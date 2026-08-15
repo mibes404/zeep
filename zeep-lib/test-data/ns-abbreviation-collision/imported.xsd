@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Lives in its own file so that it is parsed into a throw-away RustDocument
+  during reader::process_import and then merged back into the parent WSDL's
+  document. Its target namespace deliberately abbreviates to the same 3 chars
+  ("v11") as the WSDL's own target namespace, forcing a different auto-generated
+  abbreviation in each document, which is what used to break node lookup.
+
+  Note: this schema refers to its own namespace with the prefix "sc", whereas
+  the WSDL refers to the same namespace with the prefix "ope". Using a different
+  prefix here is what keeps the merge from silently papering over the bug: the
+  parent's namespace_lookup entry for "ope" is never overwritten by the imported
+  document's "sc" entry, so the two documents genuinely disagree on the auto-
+  generated abbreviation for this URI.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:sc="http://example.com/operation/v1.1"
+           targetNamespace="http://example.com/operation/v1.1">
+    <xs:element name="doThing" type="sc:DoThingType"/>
+    <xs:complexType name="DoThingType">
+        <xs:sequence>
+            <xs:element name="value" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

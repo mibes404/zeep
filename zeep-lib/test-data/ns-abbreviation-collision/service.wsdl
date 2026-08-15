@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Minimal reproduction of the "rust type name not found" panic.
+
+  The WSDL's own target namespace (tns) is .../service/v1.1 and the imported
+  schema's namespace (ope) is .../operation/v1.1. Both abbreviate to "v11",
+  so whichever is registered first keeps "v11" and the other gets a suffixed
+  abbreviation such as "v111". Because the imported XSD is parsed in its own
+  document, its element node records the namespace with one abbreviation while
+  the WSDL resolves the same URI to a namespace with a different abbreviation.
+  When Namespace equality compared the abbreviation, the two were treated as
+  different namespaces, node lookup for ope:doThing fell through to a buggy
+  same-file scan, and the SOAP body ended up as RustType::Ignore (which then
+  panicked in the binding writer).
+-->
+<wsdl:definitions name="CollisionService"
+                  targetNamespace="http://example.com/service/v1.1"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                  xmlns:tns="http://example.com/service/v1.1"
+                  xmlns:ope="http://example.com/operation/v1.1">
+    <wsdl:types>
+        <xs:schema>
+            <xs:import schemaLocation="imported.xsd" namespace="http://example.com/operation/v1.1"/>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="doThing">
+        <wsdl:part name="doThing" element="ope:doThing"/>
+    </wsdl:message>
+    <wsdl:portType name="CollisionPortType">
+        <wsdl:operation name="doThing">
+            <wsdl:input message="tns:doThing" name="doThing"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="CollisionBinding" type="tns:CollisionPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="doThing">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="doThing">
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="CollisionService">
+        <wsdl:port name="CollisionPort" binding="tns:CollisionBinding">
+            <soap:address location="https://example.com/collision/v1.1"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
