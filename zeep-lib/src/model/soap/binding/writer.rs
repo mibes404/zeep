@@ -124,9 +124,9 @@ where
             // todo: we should check if the "mustUnderstand" == 1 to make the field required
             if let Some(namespace) = header.in_namespace.as_ref() {
                 let mod_name = namespace.rust_mod_name.as_str();
-                writeln!(writer, "    pub {field_name}: Option<{mod_name}::{rust_type}>,",)?;
+                writeln!(writer, "    pub {field_name}: Option<{mod_name}::{rust_type}>,")?;
             } else {
-                writeln!(writer, "    pub {field_name}: Option<{rust_type}>",)?;
+                writeln!(writer, "    pub {field_name}: Option<{rust_type}>")?;
             }
         }
         writeln!(writer, "}}")?;
@@ -170,7 +170,7 @@ where
             writer,
             "    #[yaserde(prefix = \"{abbreviation}\", rename = \"{xml_name}\")]"
         )?;
-        writeln!(writer, "    pub {body_field_name}: {mod_name}::{body},",)?;
+        writeln!(writer, "    pub {body_field_name}: {mod_name}::{body},")?;
     } else {
         writeln!(writer, "    #[yaserde(rename = \"{xml_name}\")]")?;
         writeln!(writer, "    pub {body_field_name}: {body},")?;
@@ -194,7 +194,7 @@ where
     }
 
     writeln!(writer, "    #[yaserde(prefix = \"soapenv\", rename = \"Body\")]")?;
-    writeln!(writer, "    pub body: {envelope_name}Body,",)?;
+    writeln!(writer, "    pub body: {envelope_name}Body,")?;
     writeln!(writer, "}}")?;
 
     write_check_restrictions_header(writer, envelope_name, None)?;
