@@ -1,6 +1,6 @@
 [package]
 name = "zeep-lib"
-version = "0.2.5"
+version = "0.2.6"
 edition = { workspace = true }
 rust-version = { workspace = true }
 
@@ -23,21 +23,21 @@ name = "exchange"
 path = "../examples/exchange/main.rs"
 
 [dependencies]
-Inflector = "0.11.4"
-const_format = { version = "0.2.35", features = ["fmt"] }
-env_logger = "0.11.8"
-log = "0.4.29"
+Inflector = "0.11"
+const_format = { version = "0.2", features = ["fmt"] }
+env_logger = "0.11"
+log = "0.4"
 reqwest = {
-  version = "0.12.28",
+  version = "0.13",
   default-features = false,
   features = [
     "blocking",
-    "rustls-tls",
+    "rustls",
   ]
 }
-roxmltree = "0.21.1"
-thiserror = "2.0.18"
-tokio = { version = "1.49.0", features = ["full"] }
-xml-rs = "0.8.28"
-yaserde = "0.12.0"
-yaserde_derive = "0.12.0"
+roxmltree = "0.21"
+thiserror = "2.0"
+tokio = { version = "1.49", features = ["full"] }
+xml-rs = "0.8"
+yaserde = "0.12"
+yaserde_derive = "0.12"
