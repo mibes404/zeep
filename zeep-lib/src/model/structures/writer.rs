@@ -410,7 +410,7 @@ mod tests {
 
     #[test]
     fn a_string_enumeration_simple_type_is_written_as_an_enum() {
-        const EXPECTED: &str = "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub enum AlimentationEtatCodeType {\n    #[default]\n    #[yaserde(rename = \"ALIM\")]\n    Alim,\n    #[yaserde(rename = \"COUP\")]\n    Coup,\n}\nimpl restrictions::CheckRestrictions for AlimentationEtatCodeType {\n  fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()>  {\n    drop(restrictions);\n    Ok(())\n  }\n}\n";
+        const EXPECTED: &str = "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\npub enum AlimentationEtatCodeType {\n    /// ALIM\n    #[default]\n    #[yaserde(rename = \"ALIM\")]\n    Alim,\n    /// COUP\n    #[yaserde(rename = \"COUP\")]\n    Coup,\n}\nimpl restrictions::CheckRestrictions for AlimentationEtatCodeType {\n  fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()>  {\n    drop(restrictions);\n    Ok(())\n  }\n}\n";
         let mut writer = Vec::new();
         let rust_type = RustType::Simple(prep_enum_props(None, &["ALIM", "COUP"]));
         rust_type.write_xml(&mut writer).unwrap();
@@ -419,7 +419,7 @@ mod tests {
 
     #[test]
     fn a_string_enumeration_simple_type_with_namespace_is_written_as_an_enum() {
-        const EXPECTED: &str = "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\n#[yaserde(prefix = \"ex\", namespaces = {\"ex\" = \"http://example.com\"}, rename = \"AlimentationEtatCodeType\")]\npub enum AlimentationEtatCodeType {\n    #[default]\n    #[yaserde(rename = \"ALIM\")]\n    Alim,\n}\nimpl restrictions::CheckRestrictions for AlimentationEtatCodeType {\n  fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()>  {\n    drop(restrictions);\n    Ok(())\n  }\n}\n";
+        const EXPECTED: &str = "#[derive(Debug, Default, YaSerialize, YaDeserialize)]\n#[yaserde(prefix = \"ex\", namespaces = {\"ex\" = \"http://example.com\"}, rename = \"AlimentationEtatCodeType\")]\npub enum AlimentationEtatCodeType {\n    /// ALIM\n    #[default]\n    #[yaserde(rename = \"ALIM\")]\n    Alim,\n}\nimpl restrictions::CheckRestrictions for AlimentationEtatCodeType {\n  fn check_restrictions(&self, restrictions: Option<Rc<restrictions::Restrictions>>) -> error::SoapResult<()>  {\n    drop(restrictions);\n    Ok(())\n  }\n}\n";
         let mut writer = Vec::new();
         let props = prep_enum_props(
             Some(Rc::new(Namespace {
