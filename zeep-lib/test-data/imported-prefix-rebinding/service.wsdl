@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Message names equal their element names, so when "tns:affaireId" fails to
+  resolve in the merged document the fallback scan of this file lands on
+  <wsdl:message name="affaireId"> and the body becomes RustType::Ignore
+  ("rust type name not found" panic in the binding writer).
+-->
+<wsdl:definitions targetNamespace="http://example.com/m023/v1"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:tns="http://example.com/m023/v1"
+                  xmlns:err="http://example.com/technique/v1.0">
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://example.com/m023/v1" schemaLocation="model.xsd"/>
+            <xsd:import namespace="http://example.com/technique/v1.0" schemaLocation="technique.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="demande">
+        <wsdl:part name="demande" element="tns:demande"/>
+    </wsdl:message>
+    <wsdl:message name="affaireId">
+        <wsdl:part name="affaireId" element="tns:affaireId"/>
+    </wsdl:message>
+    <wsdl:message name="fault">
+        <wsdl:part name="erreur" element="err:erreur"/>
+    </wsdl:message>
+    <wsdl:portType name="M023Port">
+        <wsdl:operation name="commande">
+            <wsdl:input name="demande" message="tns:demande"/>
+            <wsdl:output name="affaireId" message="tns:affaireId"/>
+            <wsdl:fault name="fault" message="tns:fault"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="M023Binding" type="tns:M023Port">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="commande">
+            <wsdl:input><soap:body use="literal"/></wsdl:input>
+            <wsdl:output><soap:body use="literal"/></wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="M023Service">
+        <wsdl:port name="M023Port" binding="tns:M023Binding">
+            <soap:address location="https://example.com/m023/v1.0"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Binds the prefix "tns" to a different namespace than the importing WSDL does
+  (as Enedis' ENEDIS.Dictionnaire.Technique.v1.0.xsd binds it to the SOAP
+  envelope namespace). Prefixes are scoped to their own document, so this must
+  not change what "tns" means in the WSDL.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tec="http://example.com/technique/v1.0"
+           xmlns:tns="http://example.com/unrelated"
+           targetNamespace="http://example.com/technique/v1.0">
+    <xs:element name="erreur" type="tec:ErreurType"/>
+    <xs:complexType name="ErreurType">
+        <xs:sequence>
+            <xs:element name="code" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

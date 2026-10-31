@@ -39,7 +39,12 @@ impl RustDocument {
     }
 
     pub fn extend(&mut self, other: RustDocument) {
-        self.namespace_lookup.extend(other.namespace_lookup);
+        // Prefixes are scoped to their own document: an imported XSD binding a
+        // prefix we already use to another namespace must not
+        // change what that prefix means here.
+        for (abbreviation, namespace) in other.namespace_lookup {
+            self.namespace_lookup.entry(abbreviation).or_insert(namespace);
+        }
 
         extend_no_duplicates(&mut self.namespaces, other.namespaces);
         extend_no_duplicates(&mut self.target_namespaces, other.target_namespaces);

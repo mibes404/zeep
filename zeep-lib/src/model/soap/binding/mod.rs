@@ -278,4 +278,49 @@ mod tests {
         assert_eq!(binding.name, "ExchangeServiceBinding");
         assert_eq!(binding.operations.len(), 122);
     }
+
+    // Regression test for the "rust type name not found" panic that fired when a
+    // WSDL's own target namespace and an imported XSD's namespace abbreviate to the
+    // same 3 chars. The body element lives in the imported XSD (parsed in its own
+    // document) and must still resolve to a real type -- not the `RustType::Ignore`
+    // fallback that used to leak through when `Namespace` equality also compared the
+    // locally-generated abbreviation.
+    #[test]
+    fn resolves_body_element_when_wsdl_and_imported_namespaces_share_an_abbreviation() {
+        let wsdl_path = Path::new("./test-data/ns-abbreviation-collision/service.wsdl");
+        let mut files = read_input_file_and_xsd_files_at_path(wsdl_path).expect("can not read input file");
+        let document = XmlReader::read_xml(&mut files).expect("can not read xml");
+
+        let binding = &document.soap_bindings[0];
+        let operation = binding.operations.get("doThing").unwrap();
+
+        // Before the fix this resolved to `RustType::Ignore` (xml_name() == None),
+        // which later blew up in the binding writer.
+        assert_eq!(operation.input.body.rust_type.xml_name(), Some("doThing"));
+        // the element is declared as `type="ope:DoThingType"`, so it resolves to the
+        // referenced type's name
+        assert_eq!(
+            operation.input.body.rust_type.rust_type_name().as_deref(),
+            Some("DoThingType")
+        );
+    }
+
+    // Regression test for the same panic, triggered when an imported XSD binds a
+    // prefix the WSDL already uses ("tns") to another namespace. Merging the
+    // imported document used to overwrite the WSDL's "tns", so "tns:affaireId"
+    // resolved in the wrong namespace and fell back to <wsdl:message name="affaireId">.
+    #[test]
+    fn imported_xsd_does_not_rebind_the_wsdl_prefixes() {
+        let wsdl_path = Path::new("./test-data/imported-prefix-rebinding/service.wsdl");
+        let mut files = read_input_file_and_xsd_files_at_path(wsdl_path).expect("can not read input file");
+        let document = XmlReader::read_xml(&mut files).expect("can not read xml");
+
+        let binding = &document.soap_bindings[0];
+        let operation = binding.operations.get("commande").unwrap();
+        let output = operation.output.as_ref().unwrap();
+
+        assert_eq!(output.body.rust_type.xml_name(), Some("affaireId"));
+        assert_eq!(output.body.rust_type.rust_type_name().as_deref(), Some("AffaireId"));
+        assert_eq!(operation.input.body.rust_type.xml_name(), Some("demande"));
+    }
 }
