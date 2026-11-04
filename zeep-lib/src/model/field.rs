@@ -77,8 +77,8 @@ impl<'n> TryFromNode<'n> for Field {
         } else {
             node.attribute("minOccurs") == Some("0") || parent_is_optional || is_nillable
         };
-        let parent_is_vec = node.parent().and_then(|n| n.attribute("maxOccurs")) == Some("unbounded");
-        let is_vec = Node::attribute(&node, "maxOccurs") == Some("unbounded") || parent_is_vec;
+        let parent_is_vec = node.parent().is_some_and(|n| is_repeated(&n));
+        let is_vec = is_repeated(&node) || parent_is_vec;
         let is_choice = node.parent().is_some_and(|n| n.tag_name().name() == "choice");
 
         // check if this is an any type
@@ -365,6 +365,12 @@ pub fn rename_keywords(field_name: &str) -> &str {
     }
 }
 
+/// true when `maxOccurs` is "unbounded" or a number above 1
+fn is_repeated(node: &Node) -> bool {
+    node.attribute("maxOccurs")
+        .is_some_and(|max| max == "unbounded" || max.parse::<u64>().is_ok_and(|max| max > 1))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -593,5 +599,21 @@ mod tests {
         assert_eq!(field.xml_name, "Items");
         assert!(field.is_vec, "Field with maxOccurs='unbounded' should be a Vec");
         // Note: is_vec takes precedence over is_optional in the write_xml logic
+    }
+
+    #[test]
+    fn numeric_max_occurs_above_one_is_a_vec() {
+        const BOUNDED_VEC_FIELD: &str = r#"<s:element minOccurs="1" maxOccurs="10000" name="pointId" type="s:string" xmlns:s="http://www.w3.org/2001/XMLSchema"/>"#;
+        let doc = roxmltree::Document::parse(BOUNDED_VEC_FIELD).unwrap();
+        let mut rust_doc = RustDocument::init(&doc);
+        let field = Field::try_from_node(doc.root_element(), &mut rust_doc).unwrap();
+        assert!(field.is_vec, "Field with maxOccurs='10000' should be a Vec");
+
+        const SINGLE_FIELD: &str =
+            r#"<s:element maxOccurs="1" name="pointId" type="s:string" xmlns:s="http://www.w3.org/2001/XMLSchema"/>"#;
+        let doc = roxmltree::Document::parse(SINGLE_FIELD).unwrap();
+        let mut rust_doc = RustDocument::init(&doc);
+        let field = Field::try_from_node(doc.root_element(), &mut rust_doc).unwrap();
+        assert!(!field.is_vec, "Field with maxOccurs='1' should not be a Vec");
     }
 }

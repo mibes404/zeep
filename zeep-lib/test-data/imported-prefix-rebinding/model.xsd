@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Reduced from Enedis M023 CommandeHistoriqueDonneesMesuresFines. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:sc="http://example.com/m023/v1"
+           targetNamespace="http://example.com/m023/v1">
+    <xs:element name="affaireId" type="sc:affaireId"/>
+    <xs:element name="demande" type="sc:demande"/>
+
+    <xs:simpleType name="affaireId">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="8"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="demande">
+        <xs:sequence>
+            <xs:element name="pointId" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
